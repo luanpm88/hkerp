@@ -1,5 +1,13 @@
-<h1>New product</h1>
+<ul class="breadcrumb">
+        <li>
+          <p>YOU ARE HERE</p>
+        </li>
+        <li><%= link_to 'Products', products_url, :class => "active" %></li>
+      </ul>
+      <div class="page-title"> <i class="icon-plus-sign-alt"></i>
+        <h3>New - <span class="semi-bold">Product</span></h3>
+      </div>
+      
 
+	  
 <%= render 'form' %>
-
-<%= link_to 'Back', products_path %>

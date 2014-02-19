@@ -1,0 +1,80 @@
+       <div class="row">
+            <div class="col-md-6">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Category <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                
+                
+                
+                <div class="grid-body no-border">
+                  
+                  
+                  <% if @category.errors.any? %>
+                    <div class="alert alert-error">
+                      <button data-dismiss="alert" class="close"></button>
+                      <div id="error_explanation">
+                        <h5><%= pluralize(@category.errors.count, "error") %> prohibited this category from being saved:</h5>
+                  
+                        <ul>
+                        <% @category.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                    
+                 
+                  
+                  
+                  <%= form_for(@category) do |f| %>
+                           
+                      <div class="form-group">
+                        <label class="form-label"><%= f.label :name %></label>
+                        <span class="help">(required)</span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                                                        <%= f.text_field :name, :class => "form-control" %>
+						</div>
+                      </div>                     
+                      <div class="form-group">
+                        <label class="form-label"><%= f.label :description %></label>
+                        <span class="help"></span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                                                        <%= f.text_area :description, :class => "form-control" %>
+						</div>
+                      </div>
+                      
+                      <div class="form-group">
+                        <label class="form-label"><%= f.label :parent %></label>
+                        <span class="help"></span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                                                        <% Category.all.each do |category| %>
+                                                          <% if @category.id != category.id %>
+                                                            <div class="row-fluid">
+                                                              <div class="checkbox check-info">
+                                                                <%= check_box_tag 'category[parent_ids][]', category.id, @category.parent.include?(category), :id => "category_#{category.id}" %>
+                                                                <%= f.label category.name, :for => "category_#{category.id}" %>
+                                                              </div>
+                                                            </div>
+                                                          <% end %>
+                                                        <% end %>
+						</div>
+                      </div>
+				  <div class="form-actions">  
+					<div class="pull-right">
+					  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
+                                          <%= link_to 'Cancel', categories_path, :class => "btn btn-white btn-cons" %>
+					</div>
+					</div>
+				<% end %>
+                </div>
+              </div>
+            </div>		
+      </div>
+

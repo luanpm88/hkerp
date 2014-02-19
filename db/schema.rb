@@ -11,17 +11,60 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131109024606) do
+ActiveRecord::Schema.define(version: 20140215020559) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "categories", force: true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "categories_products", id: false, force: true do |t|
+    t.integer "category_id"
+    t.integer "product_id"
+  end
+
+  create_table "contact_types", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "contacts", force: true do |t|
+    t.string   "name"
+    t.string   "phone"
+    t.string   "mobile"
+    t.string   "fax"
+    t.string   "email"
+    t.string   "address"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "tax_code"
+    t.text     "note"
+    t.integer  "contact_type_id"
+  end
+
+  create_table "parent_categories", force: true do |t|
+    t.integer "category_id"
+    t.integer "parent_id"
+  end
+
+  create_table "parent_contacts", force: true do |t|
+    t.integer "contact_id"
+    t.integer "parent_id"
+  end
+
   create_table "products", force: true do |t|
     t.string   "name"
     t.text     "description"
-    t.decimal  "price",       precision: 16, scale: 2
+    t.decimal  "price",        precision: 16, scale: 2
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "product_code"
   end
 
   create_table "users", force: true do |t|

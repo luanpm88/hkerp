@@ -1,31 +1,75 @@
-<h1>Listing products</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Description</th>
-      <th>Price</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @products.each do |product| %>
-      <tr>
-        <td><%= product.name %></td>
-        <td><%= product.description %></td>
-        <td><%= product.price %></td>
-        <td><%= link_to 'Show', product %></td>
-        <td><%= link_to 'Edit', edit_product_path(product) %></td>
-        <td><%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Product', new_product_path %>
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Products', products_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>Product - <span class="semi-bold"> Management</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Products</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table no-more-tables">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:1%" >
+                                                    <div class="checkbox check-default">
+							<input id="checkbox10" type="checkbox" value="1" class="checkall">
+							<label for="checkbox10"></label>
+						    </div>
+                                                </th>
+                                                <th style="width:25%">Name</th>
+                                                <th style="width:15%">Categories</th>
+                                                <th style="width:15%">Code</th>
+                                                <th style="width:18%">Description</th>
+                                                <th style="width:6%">Price</th>
+                                                <th style="width:20%">Action</th>   
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+					    <% @products.each do |product| %>
+                                              <tr>
+                                                <td class="v-align-middle">
+							<div class="checkbox check-default">
+							    <input id="checkbox11" type="checkbox" value="1">
+							    <label for="checkbox11"></label>
+							</div>
+						</td>
+                                                <td><%= product.name %></td>
+                                                <td><%= product.product_code %></td>
+                                                <td><%= product.product_code %></td>
+                                                <td><%= product.description %></td>
+                                                <td><%= product.price %></td>
+                                                <td>
+							<%= link_to 'Show', product, :class => "btn btn-success btn-xs btn-mini" %>
+							<%= link_to edit_product_path(product), :class => "btn btn-info btn-xs btn-mini" do %>							
+							    <i class="icon-paste"></i>
+							    Edit
+							<% end %>
+							<%= link_to 'Destroy', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+						</td>
+                                              </tr>
+                                            <% end %>
+                                            
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
+			<%= link_to 'New Product', new_product_path, :class => 'btn btn-primary btn-cons' %>
+                    </div>
+                </div>

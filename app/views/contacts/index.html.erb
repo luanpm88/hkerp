@@ -1,0 +1,113 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Contacts', contacts_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-user"></i>
+                    	<h3>Contact - <span class="semi-bold"> Management</span></h3>	
+                </div>
+                <div class="row">                  
+                    <div class="col-md-12">
+                      <%= link_to 'New Contact', new_contact_path, :class => 'btn btn-primary btn-cons' %>
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Contacts</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table no-more-tables">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:1%" >
+                                                    <div class="checkbox check-default">
+							<input id="checkbox10" type="checkbox" value="1" class="checkall">
+							<label for="checkbox10"></label>
+						    </div>
+                                                </th>
+                                                <th width="25%">Name</th>
+                                                <th>Info</th>
+                                                <th width="20%">Action</th>   
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                            <% @contacts.each do |contact| %>
+                                              <tr>
+                                                <td class="v-align-middle">
+							<div class="checkbox check-default">
+							    <input id="checkbox11" type="checkbox" value="1">
+							    <label for="checkbox11"></label>
+							</div>
+						</td>
+                                                <td><%= contact.name %></td>
+                                                <td>
+                                                  <%= contact.address %><br />
+                                                  <% if contact.phone %><strong>Phone:</strong> <%= contact.phone %><% end %>
+                                                  <% if contact.fax %><strong>Fax:</strong> <%= contact.fax %><% end %>
+                                                  <% if contact.tax_code %><strong>MST:</strong> <%= contact.tax_code %><% end %>
+                                                </td>
+                                                <td>
+							<%= link_to 'Show', contact, :class => "btn btn-success btn-xs btn-mini" %>
+							<%= link_to edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" do %>							
+							    <i class="icon-paste"></i>
+							    Edit
+							<% end %>
+							<%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+						</td>
+                                              </tr>
+                                              
+                                              <% contact.children.each do |child_contact| %>
+                                                <tr class="child_contact_row">
+                                                  <td class="v-align-middle">
+                                                          <div class="checkbox check-default">
+                                                              <input id="checkbox11" type="checkbox" value="1">
+                                                              <label for="checkbox11"></label>
+                                                          </div>
+                                                  </td>
+                                                  <td>-- <%= child_contact.name %></td>
+                                                  <td><%= child_contact.tax_code %></td>
+                                                  <td><%= child_contact.phone %></td>
+                                                  <td><%= child_contact.mobile %></td>
+                                                  <td><%= child_contact.fax %></td>
+                                                  <td><%= child_contact.email %></td>
+                                                  <td><%= child_contact.address %></td>
+                                                  <td>
+                                                          <%= link_to 'Show', child_contact, :class => "btn btn-success btn-xs btn-mini" %>
+                                                          <%= link_to edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" do %>							
+                                                              <i class="icon-paste"></i>
+                                                              Edit
+                                                          <% end %>
+                                                          <%= link_to 'Destroy', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                  </td>
+                                                </tr>
+                                              <% end %>
+                                              
+                                            <% end %>
+					    
+                                          </tbody>
+                                    </table>
+                            </div>
+                        </div>
+			
+                        
+                        
+
+<h2>Import Products</h2>
+<%= form_tag import_contacts_path, multipart: true do %>
+  <%= file_field_tag :file %>
+  <%= submit_tag "Import" %>
+<% end %>
+
+
+                    </div>
+                </div>

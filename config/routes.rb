@@ -1,5 +1,17 @@
 Hkerp::Application.routes.draw do
   
+  resources :contact_types
+
+  resources :contacts do
+    collection do
+      post :import
+    end
+  end
+
+  resources :parent_categories
+
+  resources :categories
+
   get 'admin' => 'admin#index'
   
   controller :sessions do
@@ -16,7 +28,7 @@ Hkerp::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+  root 'products#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

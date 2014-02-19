@@ -1,22 +1,59 @@
-<div class="depot_form">
-  <% if flash[:alert] %>
-    <p id="notice"><%= flash[:alert] %></p>
-  <% end %>
-  <%= form_tag do %>
-    <fieldset>
-      <legend>Please Log In</legend>
+<div class="col-md-5 col-md-offset-1">
+          <h2>Sign in to webarch</h2>
+          <p>Use Facebook, Twitter or your email to sign in.<br>
+            <a href="#">Sign up Now!</a> for a webarch account,It's free and always will be..</p>
+          <br>
 
-      <div>
-        <%= label_tag :name, 'Name:' %>
-        <%= text_field_tag :name, params[:name] %>
-      </div>
-      <div>
-        <%= label_tag :password, 'Password:' %>
-        <%= password_field_tag :password, params[:password] %>
-      </div>
-      <div>
-        <%= submit_tag "Login" %>
-      </div>
-    </fieldset>
-  <% end %>
+		   <button class="btn btn-block btn-info col-md-8" type="button">
+            <span class="pull-left"><i class="icon-facebook"></i></span>
+            <span class="bold">Login with Facebook</span> </button>
+		   <button class="btn btn-block btn-success col-md-8" type="button">
+            <span class="pull-left"><i class="icon-twitter"></i></span>
+            <span class="bold">Login with Twitter</span>
+		    </button>
+        </div>
+        <div class="col-md-5 "> <br>
+        
+        <% if flash[:alert] %>
+          <p id="notice"><%= flash[:alert] %></p>
+        <% end %>
+        
+          <%= form_tag nil, :id => 'login-form', :class => 'login-form' do %>
+		 <div class="row">
+		 <div class="form-group col-md-10">
+            <label class="form-label"><%= label_tag :name, 'Username', :class => 'form-label' %></label>
+            <div class="controls">
+				<div class="input-with-icon  right">                                       
+					<i class=""></i>
+					<%= text_field_tag :name, params[:name], :class => "form-control" %>                                 
+				</div>
+            </div>
+          </div>
+          </div>
+		  <div class="row">
+          <div class="form-group col-md-10">
+            <label class="form-label"><%= label_tag :password, 'Password', :class => 'form-label' %></label>
+            <span class="help"></span>
+            <div class="controls">
+				<div class="input-with-icon  right">                                       
+					<i class=""></i>
+					<%= password_field_tag :password, params[:password], :class => "form-control" %>
+				</div>
+            </div>
+          </div>
+          </div>
+		  <div class="row">
+          <div class="control-group  col-md-10">
+            <div class="checkbox checkbox check-success"> <a href="#">Trouble login in?</a>&nbsp;&nbsp;
+              <input type="checkbox" id="checkbox1" value="1">
+              <label for="checkbox1">Keep me reminded </label>
+            </div>
+          </div>
+          </div>
+          <div class="row">
+            <div class="col-md-10">
+              <button type="submit" class="btn btn-primary btn-cons pull-right">Login</button>
+            </div>
+          </div>
+      <% end %>
 </div>
