@@ -132,13 +132,13 @@
                                                           <span class="help"></span>
                                                           <div class="input-with-icon  right">                                       
                                                             <i class=""></i>
-                                                            <select name="contact[parent_ids][]" class="select2" style="min-width: 200px;">
+                                                            <select name="contact[parent_ids][]" class="modern_select" style="min-width: 200px;">
                                                               <option value="">Root</option>
                                                               <% Contact.all.each do |contact| %>
-                                                                <% if @contact.id != contact.id %>                                                              
-                                                                  <option value="<%= contact.id %>"
-                                                                      <% if !@contact.parent.first.nil? && @contact.parent.first.id == contact.id %>selected="selected"<% end %>
-                                                                  ><%= contact.name %></option>
+                                                                <% if @contact.id != contact.id && contact.is_main %>                                                              
+                                                                  <option value="<%= contact.id %>" <% if !@contact.parent.first.nil? && @contact.parent.first.id == contact.id %>selected="selected"<% end %>>
+                                                                    <%= contact.name %>
+                                                                  </option>
                                                                 <% end %>
                                                               <% end %>
                                                             </select>
@@ -170,3 +170,4 @@
               </div>
             </div>		
       </div>
+       

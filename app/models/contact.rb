@@ -6,7 +6,16 @@ class Contact < ActiveRecord::Base
   has_many :child_contacts, :class_name => "ParentContact", :foreign_key => "parent_id", :dependent => :destroy
   has_many :children, :through => :child_contacts, :source => :contact
   
+  has_many :agents_contacts, :dependent => :destroy
+  has_many :agents, :through => :agents_contacts, :source => :agent
+  has_many :companies_contacts, :class_name => "ParentContact", :foreign_key => "parent_id", :dependent => :destroy
+  has_many :companies, :through => :companies_contacts, :source => :contact
+  
   belongs_to :contact_type
+  
+  def is_main
+    parent.first.nil?
+  end
   
   def self.main_contacts(options = {})
     if !options[:type].nil?

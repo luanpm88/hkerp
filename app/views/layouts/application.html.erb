@@ -39,13 +39,10 @@
 
 <style>
 	/* generic table styling */
-	table { border-collapse: collapse; }
-	th, td { padding: 5px; }
-	th { border-bottom: 2px solid #999; background-color: #eee; vertical-align: bottom; }
-	td { border-bottom: 1px solid #ccc; }
+	
 
 	/* filter-table specific styling */
-	td.alt { background-color: #ffc; background-color: rgba(255, 255, 0, 0.2); }
+	td.alt { background-color: #ffc !important; background-color: rgba(255, 255, 0, 0.2) !important; }
 </style>
 
 </head>
@@ -101,7 +98,7 @@
 					<div class="user-details"> 
 						<div class="username">
 							<span class="badge badge-important">3</span> 
-							John <span class="bold">Smith</span>									
+							Logged in as <span class="bold"><%= current_user.email %></span>									
 						</div>						
 					</div> 
 					<div class="iconset top-down-arrow"></div>
@@ -162,7 +159,7 @@
 						</div>				
 				</div>
 				<div class="profile-pic"> 
-					<img src="<%= url_for("/img") %>/avatar_small.jpg"  alt="" data-src="<%= url_for("/img") %>/avatar_small.jpg" data-src-retina<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 
+					<img src="<%= url_for("/img") %>/avatar_small.jpg"  alt="" data-src="<%= url_for("/img") %>/avatar_small.jpg" data-src-retina="<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 
 				</div>       			
 			</div>
 		 <ul class="nav quick-section ">
@@ -171,16 +168,16 @@
 					<div class="iconset top-settings-dark "></div> 	
 				</a>
 				<ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
-                  <li><a href="user-profile.html"> My Account</a>
-                  </li>
-                  <li><a href="calender.html">My Calendar</a>
-                  </li>
-                  <li><a href="email.html"> My Inbox&nbsp;&nbsp;<span class="badge badge-important animated bounceIn">2</span></a>
-                  </li>
+                  <li>
+		    <%= link_to 'Edit profile', edit_user_registration_path %>
+		  </li>
+                  <!--<li>		    
+		    <a href="email.html"> My Inbox&nbsp;&nbsp;<span class="badge badge-important animated bounceIn">2</span></a>
+                  </li>-->
                   <li class="divider"></li>                
                   <li>
 		    
-		    <%= link_to logout_path, method: :delete do %>
+		    <%= link_to destroy_user_session_path, method: :delete do %>
 		      <i class="icon-off"></i>&nbsp;&nbsp;Log Out
 		    <% end %>
 		    
@@ -236,7 +233,7 @@
    <!-- BEGIN SIDEBAR MENU -->	
 	<p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>	
-      <li class="start<% if params[:controller] == "products" || params[:controller] == "categories" %> active open<% end %>">
+      <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
 	<%= link_to products_url do %>
 	  <i class="icon-archive"></i>
 	  <span class="title" onclick="window.location='<%= url_for products_url %>'">Products</span>
@@ -245,6 +242,7 @@
 	<ul class="sub-menu">
           <li<% if params[:controller] == "products" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
 	  <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
+	  <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
         </ul>
       </li>
 	  
@@ -260,13 +258,6 @@
         </ul>
       </li>
       
-      <li <% if params[:controller] == "users" %> class="active"<% end %>>
-	<%= link_to users_url do %>
-	  <i class="icon-user"></i>
-	  <span class="title">Users</span>
-	  <span class=" badge badge-disable pull-right ">1</span>
-	<% end %>
-      </li>
 
       <!--<li class=""> <a href="../frontend/index.html"> <i class="icon-flag"></i>  <span class="title">Frontend</span></a></li>      
       <li class=""> <a href="javascript:;"> <i class="icon-custom-ui"></i> <span class="title">UI Elements</span> <span class="arrow "></span> </a>
@@ -398,6 +389,9 @@
             </div>
             <div class="clearfix"></div>
             <div class="content">
+	      
+	      <% if notice %><p class="notice"><%= notice %></p><% end %>
+	      <% if alert %><p class="alert"><%= alert %></p><% end %>
 	      
 	      <%= yield %> 
 	      
@@ -616,7 +610,7 @@
 	
 	//Multiselect for all
 	$(".multi_select").select2();
-	$(".select2").select2();
+	$(".modern_select").select2();
 	
 	//filter table
 	$('table').filterTable();

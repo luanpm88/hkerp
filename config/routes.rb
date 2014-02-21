@@ -1,5 +1,8 @@
 Hkerp::Application.routes.draw do
   
+  devise_for :users
+  resources :manufacturers
+
   resources :contact_types
 
   resources :contacts do
@@ -19,8 +22,6 @@ Hkerp::Application.routes.draw do
     post 'login' => :create
     delete 'logout' => :destroy
   end
-
-  resources :users
 
   resources :products
 

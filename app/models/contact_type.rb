@@ -1,12 +1,14 @@
 class ContactType < ActiveRecord::Base
+  validates :name, :presence => true
+  
   has_many :contacts
   
   def self.customer
-    1.to_s
+    self.find_by_name('Customer').id.to_s
   end
   
   def self.supplier
-    2.to_s
+    self.find_by_name('Supplier').id.to_s
   end
   
 end

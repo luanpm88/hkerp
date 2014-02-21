@@ -25,7 +25,7 @@
                             </div>
                             <div class="grid-body no-border">
                                  
-                                    <table class="table no-more-tables">
+                                    <table class="table table-striped no-more-tables">
                                         <thead>
                                             <tr>
                                                 <th style="width:1%" >
@@ -45,16 +45,16 @@
                                               <tr>
                                                 <td class="v-align-middle">
 							<div class="checkbox check-default">
-							    <input id="checkbox11" type="checkbox" value="1">
-							    <label for="checkbox11"></label>
+							    <input id="checkbox1<%= contact.id %>" type="checkbox" value="<%= contact.id %>">
+							    <label for="checkbox1<%= contact.id %>"></label>
 							</div>
 						</td>
                                                 <td><%= contact.name %></td>
                                                 <td>
-                                                  <%= contact.address %><br />
-                                                  <% if contact.phone %><strong>Phone:</strong> <%= contact.phone %><% end %>
-                                                  <% if contact.fax %><strong>Fax:</strong> <%= contact.fax %><% end %>
-                                                  <% if contact.tax_code %><strong>MST:</strong> <%= contact.tax_code %><% end %>
+                                                  <% if !contact.address.nil? && !contact.address.empty? %><p><%= contact.address %></p><% end %>
+                                                  <% if !contact.phone.nil? && !contact.phone.empty? %><strong>Phone:</strong> <%= contact.phone %><% end %>
+                                                  <% if !contact.fax.nil? && !contact.fax.empty? %><strong>Fax:</strong> <%= contact.fax %><% end %>
+                                                  <% if !contact.tax_code.nil? && !contact.tax_code.empty? %><strong>MST:</strong> <%= contact.tax_code %><% end %>
                                                 </td>
                                                 <td>
 							<%= link_to 'Show', contact, :class => "btn btn-success btn-xs btn-mini" %>
@@ -67,20 +67,20 @@
                                               </tr>
                                               
                                               <% contact.children.each do |child_contact| %>
-                                                <tr class="child_contact_row">
+                                                <tr>
                                                   <td class="v-align-middle">
                                                           <div class="checkbox check-default">
-                                                              <input id="checkbox11" type="checkbox" value="1">
-                                                              <label for="checkbox11"></label>
+                                                              <input id="checkbox1<%= child_contact.id %>" type="checkbox" value="<%= child_contact.id %>">
+                                                              <label for="checkbox1<%= child_contact.id %>"></label>
                                                           </div>
                                                   </td>
                                                   <td>-- <%= child_contact.name %></td>
-                                                  <td><%= child_contact.tax_code %></td>
-                                                  <td><%= child_contact.phone %></td>
-                                                  <td><%= child_contact.mobile %></td>
-                                                  <td><%= child_contact.fax %></td>
-                                                  <td><%= child_contact.email %></td>
-                                                  <td><%= child_contact.address %></td>
+                                                  <td>
+                                                    <% if !child_contact.address.nil? && !child_contact.address.empty? %><p><%= child_contact.address %></p><% end %>
+                                                    <% if !child_contact.phone.nil? && !child_contact.phone.empty? %><strong>Phone:</strong> <%= child_contact.phone %><% end %>
+                                                    <% if !child_contact.fax.nil? && !child_contact.fax.empty? %><strong>Fax:</strong> <%= child_contact.fax %><% end %>
+                                                    <% if !child_contact.tax_code.nil? && !child_contact.tax_code.empty? %><strong>MST:</strong> <%= child_contact.tax_code %><% end %>
+                                                  </td>
                                                   <td>
                                                           <%= link_to 'Show', child_contact, :class => "btn btn-success btn-xs btn-mini" %>
                                                           <%= link_to edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" do %>							
@@ -102,7 +102,7 @@
                         
                         
 
-<h2>Import Products</h2>
+<h2>Import Contacts</h2>
 <%= form_tag import_contacts_path, multipart: true do %>
   <%= file_field_tag :file %>
   <%= submit_tag "Import" %>
