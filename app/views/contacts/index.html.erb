@@ -36,62 +36,80 @@
                                                 </th>
                                                 <th width="25%">Name</th>
                                                 <th>Info</th>
+                                                <th width="15%">Agents</th>
                                                 <th width="20%">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
                                           
                                             <% @contacts.each do |contact| %>
-                                              <tr>
-                                                <td class="v-align-middle">
-							<div class="checkbox check-default">
-							    <input id="checkbox1<%= contact.id %>" type="checkbox" value="<%= contact.id %>">
-							    <label for="checkbox1<%= contact.id %>"></label>
-							</div>
-						</td>
-                                                <td><%= contact.name %></td>
-                                                <td>
-                                                  <% if !contact.address.nil? && !contact.address.empty? %><p><%= contact.address %></p><% end %>
-                                                  <% if !contact.phone.nil? && !contact.phone.empty? %><strong>Phone:</strong> <%= contact.phone %><% end %>
-                                                  <% if !contact.fax.nil? && !contact.fax.empty? %><strong>Fax:</strong> <%= contact.fax %><% end %>
-                                                  <% if !contact.tax_code.nil? && !contact.tax_code.empty? %><strong>MST:</strong> <%= contact.tax_code %><% end %>
-                                                </td>
-                                                <td>
-							<%= link_to 'Show', contact, :class => "btn btn-success btn-xs btn-mini" %>
-							<%= link_to edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" do %>							
-							    <i class="icon-paste"></i>
-							    Edit
-							<% end %>
-							<%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
-						</td>
-                                              </tr>
-                                              
-                                              <% contact.children.each do |child_contact| %>
+                                              <% if contact.is_main %>
                                                 <tr>
                                                   <td class="v-align-middle">
                                                           <div class="checkbox check-default">
-                                                              <input id="checkbox1<%= child_contact.id %>" type="checkbox" value="<%= child_contact.id %>">
-                                                              <label for="checkbox1<%= child_contact.id %>"></label>
+                                                              <input id="checkbox1<%= contact.id %>" type="checkbox" value="<%= contact.id %>">
+                                                              <label for="checkbox1<%= contact.id %>"></label>
                                                           </div>
                                                   </td>
-                                                  <td>-- <%= child_contact.name %></td>
+                                                  <td><%= contact.name %></td>
                                                   <td>
-                                                    <% if !child_contact.address.nil? && !child_contact.address.empty? %><p><%= child_contact.address %></p><% end %>
-                                                    <% if !child_contact.phone.nil? && !child_contact.phone.empty? %><strong>Phone:</strong> <%= child_contact.phone %><% end %>
-                                                    <% if !child_contact.fax.nil? && !child_contact.fax.empty? %><strong>Fax:</strong> <%= child_contact.fax %><% end %>
-                                                    <% if !child_contact.tax_code.nil? && !child_contact.tax_code.empty? %><strong>MST:</strong> <%= child_contact.tax_code %><% end %>
+                                                    <%= contact.html_info_line.html_safe %>
                                                   </td>
                                                   <td>
-                                                          <%= link_to 'Show', child_contact, :class => "btn btn-success btn-xs btn-mini" %>
-                                                          <%= link_to edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" do %>							
+                                                    <div id="agents-list" class="">
+                                                      <% if !contact.agents.nil? %>
+                                                        <% contact.agents.each do |agent| %>
+                                                          <div class="agent-line">                                                            
+                                                            <%= agent.html_agent_line.html_safe %>
+                                                          </div>
+                                                        <% end %>
+                                                      <% end %>
+                                                    </div>
+                                                  </td>
+                                                  <td>
+                                                          <%= link_to 'Show', contact, :class => "btn btn-success btn-xs btn-mini" %>
+                                                          <%= link_to edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" do %>							
                                                               <i class="icon-paste"></i>
                                                               Edit
                                                           <% end %>
-                                                          <%= link_to 'Destroy', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                          <%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                                   </td>
                                                 </tr>
+                                                
+                                                <% contact.children.each do |child_contact| %>
+                                                  <tr>
+                                                    <td class="v-align-middle">
+                                                            <div class="checkbox check-default">
+                                                                <input id="checkbox1<%= child_contact.id %>" type="checkbox" value="<%= child_contact.id %>">
+                                                                <label for="checkbox1<%= child_contact.id %>"></label>
+                                                            </div>
+                                                    </td>
+                                                    <td>-- <%= child_contact.name %></td>
+                                                    <td>
+                                                      <%= child_contact.html_info_line %>
+                                                    </td>
+                                                    <td>
+                                                      <div id="agents-list" class="">
+                                                        <% if !child_contact.agents.nil? %>
+                                                          <% child_contact.agents.each do |agent| %>
+                                                            <div class="agent-line">                                                            
+                                                              <%= child_contact.html_agent_line.html_safe %>
+                                                            </div>
+                                                          <% end %>
+                                                        <% end %>
+                                                      </div>
+                                                    </td>
+                                                    <td>
+                                                            <%= link_to 'Show', child_contact, :class => "btn btn-success btn-xs btn-mini" %>
+                                                            <%= link_to edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" do %>							
+                                                                <i class="icon-paste"></i>
+                                                                Edit
+                                                            <% end %>
+                                                            <%= link_to 'Destroy', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                    </td>
+                                                  </tr>
+                                                <% end %>
                                               <% end %>
-                                              
                                             <% end %>
 					    
                                           </tbody>

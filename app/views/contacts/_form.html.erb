@@ -103,58 +103,124 @@
                                                                                   </div>
                                                         </div>
                                                         
-                                                        
-                            </div>
-                            
-                            
-                            <div class="col-md-6">
-                              
                                                         <div class="form-group">
-                                                          <label class="form-label"><%= f.label :email %></label>
-                                                          <span class="help"></span>
-                                                                                  <div class="input-with-icon  right">                                       
-                                                                                          <i class=""></i>
-                                                                                          <%= f.text_field :email, :class => "form-control" %>
-                                                                                  </div>
-                                                        </div>
-                                                        
-                                                        <div class="form-group">
-                                                          <label class="form-label"><%= f.label :tax_code %></label>
-                                                          <span class="help"></span>
-                                                                                  <div class="input-with-icon  right">                                       
-                                                                                          <i class=""></i>
-                                                                                          <%= f.text_field :tax_code, :class => "form-control" %>
-                                                                                  </div>
-                                                        </div>
-                                                        
-                                                        <div class="form-group">
-                                                          <label class="form-label"><%= f.label :parent %></label>
-                                                          <span class="help"></span>
-                                                          <div class="input-with-icon  right">                                       
-                                                            <i class=""></i>
-                                                            <select name="contact[parent_ids][]" class="modern_select" style="min-width: 200px;">
-                                                              <option value="">Root</option>
-                                                              <% Contact.all.each do |contact| %>
-                                                                <% if @contact.id != contact.id && contact.is_main %>                                                              
-                                                                  <option value="<%= contact.id %>" <% if !@contact.parent.first.nil? && @contact.parent.first.id == contact.id %>selected="selected"<% end %>>
-                                                                    <%= contact.name %>
-                                                                  </option>
-                                                                <% end %>
-                                                              <% end %>
-                                                            </select>
+                                                            <label class="form-label"><%= f.label :email %></label>
+                                                            <span class="help"></span>
+                                                                                    <div class="input-with-icon  right">                                       
+                                                                                            <i class=""></i>
+                                                                                            <%= f.text_field :email, :class => "form-control" %>
+                                                                                    </div>
                                                           </div>
-                                                        </div>
+                                                          
+                                                          <div class="form-group">
+                                                            <label class="form-label"><%= f.label :website %></label>
+                                                            <span class="help"></span>
+                                                                                    <div class="input-with-icon  right">                                       
+                                                                                            <i class=""></i>
+                                                                                            <%= f.text_field :website, :class => "form-control" %>
+                                                                                    </div>
+                                                          </div>
+                                                          
+                                                          <div class="form-group">
+                                                            <label class="form-label"><%= f.label :tax_code %></label>
+                                                            <span class="help"></span>
+                                                                                    <div class="input-with-icon  right">                                       
+                                                                                            <i class=""></i>
+                                                                                            <%= f.text_field :tax_code, :class => "form-control" %>
+                                                                                    </div>
+                                                          </div>
                                                         
-                                                        <div class="form-group">
-                                                          <label class="form-label"><%= f.label :note %></label>
-                                                          <span class="help"></span>
-                                                                                  <div class="input-with-icon  right">                                       
-                                                                                          <i class=""></i>
-                                                                                          <%= f.text_area :note, :class => "form-control" %>
-                                                                                  </div>
-                                                        </div>
-                              
+                                                        
                             </div>
+                            
+                            
+          <div class="col-md-6">
+            
+              
+              
+              
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :account_number %></label>
+                <span class="help"></span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= f.text_field :account_number, :class => "form-control" %>
+                                        </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :bank %></label>
+                <span class="help"></span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= f.text_field :bank, :class => "form-control" %>
+                                        </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :representative %></label>
+                <span class="help"></span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= f.text_field :representative, :class => "form-control" %>
+                                                <%= f.label :phone %><%= f.text_field :representative_role, :class => "form-control" %>
+                                                <%= f.label :role %><%= f.text_field :representative_phone, :class => "form-control" %>
+                                                
+                                        </div>
+              </div>
+              
+              
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :parent %></label>
+                <span class="help"></span>
+                <div class="input-with-icon  right">                                       
+                  <i class=""></i>
+                  <select name="contact[parent_ids][]" class="modern_select" style="min-width: 200px;">
+                    <option value="">Root</option>
+                    <% Contact.all.each do |contact| %>
+                      <% if @contact.id != contact.id && contact.is_main %>                                                              
+                        <option value="<%= contact.id %>" <% if !@contact.parent.first.nil? && @contact.parent.first.id == contact.id %>selected="selected"<% end %>>
+                          <%= contact.name %>
+                        </option>
+                      <% end %>
+                    <% end %>
+                  </select>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :note %></label>
+                <span class="help"></span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= f.text_area :note, :class => "form-control" %>
+                                        </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label"><%= f.label :agents %></label>
+                <span class="help"></span>
+                <div class="input-with-icon  right">                                       
+                        <i class=""></i>
+                        <div id="agents-list" class="col-md-12">
+                          <% if !@contact.agents.nil? %>
+                            <% @contact.agents.each do |agent| %>
+                              <div class="agent-line">
+                                <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
+                                <%= agent.html_agent_line.html_safe %>
+                              </div>
+                            <% end %>
+                          <% end %>
+                        </div>
+                        <div class="controls">
+                          <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-agent-button" %>
+                        </div>
+                </div>
+              </div>
+            
+          </div>
                         
                         
                     </div>

@@ -1,5 +1,5 @@
 class ContactType < ActiveRecord::Base
-  validates :name, :presence => true
+  validates :name, :presence => true, :uniqueness => true
   
   has_many :contacts
   
@@ -9,6 +9,10 @@ class ContactType < ActiveRecord::Base
   
   def self.supplier
     self.find_by_name('Supplier').id.to_s
+  end
+  
+  def self.agent
+    self.find_by_name('Agent').id.to_s
   end
   
 end

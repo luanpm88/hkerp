@@ -18,6 +18,7 @@
 <%= stylesheet_link_tag "bootstrap-checkbox.css" %>
 <%= stylesheet_link_tag "ios7-switch.css" %>
 <%= stylesheet_link_tag "jquery.sidr.light.css" %>
+<%= stylesheet_link_tag "/javascripts/fancybox/jquery.fancybox.css" %>
 <!-- END PLUGIN CSS -->
 
 <!-- BEGIN CORE CSS FRAMEWORK -->
@@ -590,6 +591,7 @@
 <%= javascript_include_tag "jquery-sparkline.js" %>
 <%= javascript_include_tag "jquery.animateNumbers.js" %>
 <%= javascript_include_tag "jquery.filtertable.js" %>
+<%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
 <!-- END PAGE LEVEL PLUGINS --> 	
 <script>
   
@@ -614,6 +616,59 @@
 	
 	//filter table
 	$('table').filterTable();
+	
+	//action for add agent button
+	$('#add-agent-button').fancybox({
+		width: "70%",
+		height: "100%",
+		autoSize: false,
+		ajax: {
+		    complete: function(jqXHR, textStatus) {
+			$(".ajax_outer .modern_select").select2();
+		    }
+		}
+	});
+	
+	//submit ajax form
+	//callback handler for form submit
+	$("#ajax-contact-form").live("submit", function(e)
+	{
+	    var postData = $(this).serializeArray();
+	    var formURL = $(this).attr("action");
+	    
+	    $(this).find(".btn[type='submit']").addClass("btn-submitting");
+	    
+	    $.ajax(
+	    {
+		url : formURL,
+		type: "POST",
+		data : postData,
+		success:function(data, textStatus, jqXHR)
+		{
+		    if($('<div/>').html(data).find("#ajax-success-result").length)
+		    {
+		      $.fancybox.close();
+		      $('#agents-list').append($('<div/>').html(data).find("#ajax-success-result").html());
+		    }
+		    else
+		    {
+		      $('.fancybox-inner').html(data);
+		      $('.fancybox-inner').scrollTop(0)
+		      $(".ajax_outer .modern_select").select2();
+		    }		    
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+		    alert("error");
+		}
+	    });
+	    e.preventDefault(); //STOP default action
+	});
+	
+	//prevent submit while submitting form
+	$('.btn-submitting').live("click", function(e){ e.preventDefault(); });
+	
+	
 </script>
 <%= javascript_include_tag "form_validations.js" %>
 <%= javascript_include_tag "form_elements.js" %>

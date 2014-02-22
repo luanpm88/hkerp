@@ -7402,3 +7402,12 @@ ul.my-friends li .profile-pic{
 {
     background: #F9F9F9;
 }
+.btn-submitting
+{
+    background-color: #ccc !important;
+    cursor: default;
+}
+.agent-line
+{
+    margin-bottom: 5px;
+}

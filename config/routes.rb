@@ -8,6 +8,9 @@ Hkerp::Application.routes.draw do
   resources :contacts do
     collection do
       post :import
+      get :ajax_new
+      post :ajax_create
+      get :ajax_show
     end
   end
 

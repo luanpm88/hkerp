@@ -65,6 +65,35 @@ class ContactsController < ApplicationController
     @result = Contact.import(params[:file])
 
   end
+  
+  def ajax_show    
+    render :layout => nil
+  end
+  
+  def ajax_new    
+    @contact = Contact.new
+    
+    if (!params[:type_id].nil?)
+      @contact.contact_type = ContactType.find_by_id(params[:type_id])
+    end
+    
+    
+    render :layout => nil
+  end
+  
+  def ajax_create
+    @contact = Contact.new(contact_params)
+
+    respond_to do |format|
+      if @contact.save       
+        format.html { render action: 'ajax_show', :layout => nil, :id => @contact.id }
+        format.json { render action: 'show', status: :created, location: @contact }
+      else
+        format.html { render action: 'ajax_new', :layout => nil }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -74,6 +103,6 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :contact_type_id, :parent_ids => [])
+      params.require(:contact).permit(:name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :contact_type_id, :parent_ids => [], :agent_ids => [])
     end
 end

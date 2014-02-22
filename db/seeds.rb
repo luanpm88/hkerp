@@ -8,3 +8,4 @@
 
 ContactType.create(name: "Customer")
 ContactType.create(name: "Supplier")
+ContactType.create(name: "Agent")
