@@ -1,0 +1,15 @@
+      <div class="page-title"> <i class="icon-plus-sign-alt"></i>
+        <h3>New -
+        <span class="semi-bold">
+          <% if @contact.contact_type.nil? %>
+            Contact
+          <% else %>
+            <%= @contact.contact_type.name %>
+          <% end %>
+        </span>
+        </h3>
+      </div>
+      
+
+	  
+<%= render 'ajax_form' %>

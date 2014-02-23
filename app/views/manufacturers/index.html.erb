@@ -1,0 +1,77 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+			<%= link_to 'Products', products_url %>
+                    </li>
+		    <li>
+			<%= link_to 'Manfacturers', manufacturers_url, :class => "active" %>
+                    </li>
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Manufacturers - <span class="semi-bold"> Management</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Manufacturers</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+									<a href="#grid-config" data-toggle="modal" class="config"></a>
+									<a href="javascript:;" class="reload"></a>
+									<a href="javascript:;" class="remove"></a>
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:1%" >
+                                                    <div class="checkbox check-default">
+							<input id="checkbox10" type="checkbox" value="1" class="checkall">
+							<label for="checkbox10"></label>
+						    </div>
+                                                </th>
+                                                <th style="width:15%">Name</th>
+                                                <th style="width:22%">Description</th>
+                                                <th style="width:10%">Action</th>
+                                                <!--<th style="width:10%">Progress</th>-->
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+					    <% @manufacturers.each do |manufacturer| %>
+						<tr>
+						    <td class="v-align-middle">
+							<div class="checkbox check-default">
+							    <input id="checkbox11" type="checkbox" value="1">
+							    <label for="checkbox11"></label>
+							</div>
+						    </td>
+						    <td class="v-align-middle"><%= manufacturer.name %></td>
+						    <td class="v-align-middle"><%= manufacturer.description %></td>
+						    
+						 
+						    <td>
+							<%= link_to 'Show', manufacturer, :class => "btn btn-success btn-xs btn-mini" %>
+							<%= link_to edit_manufacturer_path(manufacturer), :class => "btn btn-info btn-xs btn-mini" do %>							
+							    <i class="icon-paste"></i>
+							    Edit
+							<% end %>
+							<%= link_to 'Destroy', manufacturer, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+						    </td>
+						</tr>
+					    <% end %>
+                                            
+                                        </tbody>
+                                    </table>
+                            </div>
+                        </div>
+			<%= link_to 'New Manufacturer', new_manufacturer_path, :class => 'btn btn-primary btn-cons' %>
+                    </div>
+                </div>
+

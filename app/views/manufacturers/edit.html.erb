@@ -1,0 +1,18 @@
+<ul class="breadcrumb">
+        <li>
+          <p>YOU ARE HERE</p>
+        </li>
+                    <li>
+			<%= link_to 'Products', products_url %>
+                    </li>
+		    <li>
+			<%= link_to 'Manufacturers', manufacturers_url, :class => "active" %>
+                    </li>
+      </ul>
+      <div class="page-title"> <i class="icon-edit"></i>
+        <h3>Edit - <span class="semi-bold">Manufacturer</span></h3>
+      </div>
+      
+
+	  
+<%= render 'form' %>

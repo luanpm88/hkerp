@@ -1,0 +1,6 @@
+<div id="ajax-success-result">
+  <div class="agent-line">
+    <input type="hidden" name="contact[agent_ids][]" value="<%= @contact.id %>" />
+    <%= @contact.html_agent_line.html_safe %>
+  </div>
+</div>
