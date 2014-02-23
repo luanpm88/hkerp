@@ -9,3 +9,5 @@
 ContactType.create(name: "Customer")
 ContactType.create(name: "Supplier")
 ContactType.create(name: "Agent")
+
+User.create(:email => "admin@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
