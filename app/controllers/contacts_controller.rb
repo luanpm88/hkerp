@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: [:show, :edit, :update, :destroy]
+  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy]
 
   # GET /contacts
   # GET /contacts.json
@@ -85,7 +85,7 @@ class ContactsController < ApplicationController
     @contact = Contact.new(contact_params)
 
     respond_to do |format|
-      if @contact.save       
+      if @contact.save
         format.html { render action: 'ajax_show', :layout => nil, :id => @contact.id }
         format.json { render action: 'show', status: :created, location: @contact }
       else
@@ -93,6 +93,13 @@ class ContactsController < ApplicationController
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  # DELETE /contacts/1
+  def ajax_destroy
+    @contact.destroy
+    
+    render :nothing => true
   end
 
   private

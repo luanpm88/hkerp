@@ -7411,3 +7411,7 @@ ul.my-friends li .profile-pic{
 {
     margin-bottom: 5px;
 }
+#agents-list .agent-line .delete_agent
+{
+    float: right;
+}

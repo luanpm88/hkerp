@@ -208,14 +208,18 @@
                           <% if !@contact.agents.nil? %>
                             <% @contact.agents.each do |agent| %>
                               <div class="agent-line">
-                                <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
-                                <%= agent.html_agent_line.html_safe %>
+				   <span>
+					<%= link_to 'Delete', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent" %>					
+				   </span>
+				   
+				   <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
+				   <%= agent.html_agent_line.html_safe %>				
                               </div>
                             <% end %>
                           <% end %>
                         </div>
                         <div class="controls">
-                          <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-agent-button" %>
+			      <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-agent-button" %>
                         </div>
                 </div>
               </div>

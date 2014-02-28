@@ -668,6 +668,26 @@
 	//prevent submit while submitting form
 	$('.btn-submitting').live("click", function(e){ e.preventDefault(); });
 	
+	//Delete agent in contact form
+	$('#agents-list .agent-line .delete_agent').live("click", function(e) {
+	    e.preventDefault(); //STOP default action
+
+	    var del_url = $(this).attr("href");
+	    
+	    $.ajax(
+	    {
+		url : del_url,
+		type: "GET",
+		success:function(data, textStatus, jqXHR)
+		{
+		    alert("ok");	    
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+		    alert("error");
+		}
+	    });	    
+	});
 	
 </script>
 <%= javascript_include_tag "form_validations.js" %>
