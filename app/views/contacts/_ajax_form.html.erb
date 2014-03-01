@@ -1,4 +1,4 @@
-       <div class="row" style="margin: 0">
+       <div class="row" style="margin: 0">	  
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
@@ -31,7 +31,12 @@
                   
                   
 		<%= form_for(@contact, :url => {:action => "ajax_create"}, :html => {:id => "ajax-contact-form"}) do |f| %>
-                           
+                         
+			 <% if !@contact.companies.nil? %>
+			      <% @contact.companies.each do |company| %>
+				   <input type="hidden" name="contact[company_ids][]" value="<%= company.id %>" />
+			      <% end %>
+			 <% end %>
                            
                     <div class="row column-seperation">
                            

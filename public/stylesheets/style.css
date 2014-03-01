@@ -7415,3 +7415,11 @@ ul.my-friends li .profile-pic{
 {
     float: right;
 }
+.datetime .select2-container
+{
+    min-width: 120px;
+}
+.order-form-agent-select
+{
+    display: none;
+}

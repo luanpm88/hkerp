@@ -1,5 +1,5 @@
 class ContactsController < ApplicationController
-  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy]
+  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent]
 
   # GET /contacts
   # GET /contacts.json
@@ -76,6 +76,9 @@ class ContactsController < ApplicationController
     if (!params[:type_id].nil?)
       @contact.contact_type = ContactType.find_by_id(params[:type_id])
     end
+    if (!params[:company_id].nil?)
+      @contact.companies << Contact.find_by_id(params[:company_id])
+    end
     
     
     render :layout => nil
@@ -101,6 +104,17 @@ class ContactsController < ApplicationController
     
     render :nothing => true
   end
+  
+    
+  # GET /orders/1
+  # GET /orders/1.json
+  def ajax_show
+    render :json => @contact.to_json
+  end
+  
+  def ajax_list_agent
+    render :layout => nil
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -110,6 +124,6 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :contact_type_id, :parent_ids => [], :agent_ids => [])
+      params.require(:contact).permit(:name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :contact_type_id, :parent_ids => [], :agent_ids => [], :company_ids => [])
     end
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140222052130) do
+ActiveRecord::Schema.define(version: 20140301030531) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,24 @@ ActiveRecord::Schema.define(version: 20140222052130) do
     t.datetime "updated_at"
   end
 
+  create_table "orders", force: true do |t|
+    t.integer  "customer_id"
+    t.integer  "supplier_id"
+    t.integer  "agent_id"
+    t.string   "shipping_place"
+    t.integer  "payment_method_id"
+    t.datetime "payment_deadline"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "buyer_name"
+    t.string   "buyer_company"
+    t.string   "buyer_tax_code"
+    t.string   "buyer_address"
+    t.string   "buyer_email"
+    t.string   "buyer_phone"
+    t.string   "buyer_fax"
+  end
+
   create_table "parent_categories", force: true do |t|
     t.integer "category_id"
     t.integer "parent_id"
@@ -76,6 +94,12 @@ ActiveRecord::Schema.define(version: 20140222052130) do
   create_table "parent_contacts", force: true do |t|
     t.integer "contact_id"
     t.integer "parent_id"
+  end
+
+  create_table "payment_methods", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "products", force: true do |t|

@@ -1,5 +1,8 @@
 <div id="ajax-success-result">
   <div class="agent-line">
+    <span>
+        <%= link_to 'Delete', ajax_destroy_contacts_path(:id => @contact.id), :class => "btn btn-danger btn-xs btn-mini delete_agent", data: { confirm: 'Are you sure?' } %>					
+   </span>
     <input type="hidden" name="contact[agent_ids][]" value="<%= @contact.id %>" />
     <%= @contact.html_agent_line.html_safe %>
   </div>

@@ -1,5 +1,9 @@
 Hkerp::Application.routes.draw do
   
+  resources :payment_methods
+
+  resources :orders
+
   devise_for :users
   resources :manufacturers
 
@@ -12,6 +16,8 @@ Hkerp::Application.routes.draw do
       post :ajax_create
       get :ajax_show
       get :ajax_destroy
+      get :ajax_show
+      get :ajax_list_agent
     end
   end
 

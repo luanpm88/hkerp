@@ -1,0 +1,8 @@
+<select name="order[agent_id]" class="modern_select" style="min-width: 400px;">
+  <option value="">Select Agent</option>
+  <% if !@contact.agents.nil? %>
+    <% @contact.agents.each do |agent| %>
+      <option value="<%= agent.id %>"><%= agent.html_agent_input %></option>
+    <% end %>
+  <% end %>
+</select>

@@ -11,3 +11,6 @@ ContactType.create(name: "Supplier")
 ContactType.create(name: "Agent")
 
 User.create(:email => "admin@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+
+PaymentMethod.create(name: "Tiền mặt")
+PaymentMethod.create(name: "Chuyển khoản")

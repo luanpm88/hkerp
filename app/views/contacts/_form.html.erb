@@ -209,7 +209,7 @@
                             <% @contact.agents.each do |agent| %>
                               <div class="agent-line">
 				   <span>
-					<%= link_to 'Delete', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent" %>					
+					<%= link_to 'Delete', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent", data: { confirm: 'Are you sure?' } %>					
 				   </span>
 				   
 				   <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
@@ -219,7 +219,7 @@
                           <% end %>
                         </div>
                         <div class="controls">
-			      <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-agent-button" %>
+			      <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent, :company_id => @contact.id), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-agent-button" %>
                         </div>
                 </div>
               </div>

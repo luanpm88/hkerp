@@ -594,6 +594,77 @@
 <%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
 <!-- END PAGE LEVEL PLUGINS --> 	
 <script>
+    
+    function updateOrderAgentFormInfo(customer_id)
+    {
+	if (customer_id != "") {
+	    $.ajax(
+	    {
+		url : '<%= ajax_list_agent_contacts_path %>',
+		type: "GET",
+		data: "id="+customer_id,
+		success:function(data, textStatus, jqXHR)
+		{		    
+		    $('.order-form-agent-select .select_inner').html(data);
+		    $('select[name="order[agent_id]"]').select2();
+		    if($('.order-form-agent-select select option').length > 1)
+		    {
+			$('.order-form-agent-select').show();
+		    }
+		    else
+		    {
+			$('.order-form-agent-select').val("");
+			$('.order-form-agent-select').hide();
+		    }
+		    
+		    $('input[name="order[buyer_name]"]').val("");
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			alert("error");
+		}
+	    });
+	}
+    }
+      
+      function updateOrderCustomerFormInfo(customer_id)
+      {
+	if (customer_id != "") {
+	    $.ajax(
+	    {
+		url : '<%= ajax_show_contacts_path %>',
+		type: "GET",
+		data: "id="+customer_id,
+		success:function(data, textStatus, jqXHR)
+		{
+		    $('input[name="order[buyer_company]"]').val(data.name);
+		    $('input[name="order[buyer_tax_code]"]').val(data.tax_code);
+		    $('input[name="order[buyer_phone]"]').val(data.phone);
+		    $('input[name="order[buyer_fax]"]').val(data.fax);
+		    $('input[name="order[buyer_address]"]').val(data.address);
+		    $('input[name="order[buyer_email]"]').val(data.email);
+		    
+		    //$('.order-form-agent-select').show();
+		    updateOrderAgentFormInfo(customer_id);
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			alert("error");
+		}
+	    });
+	}
+	else
+	{
+	    $('.order-form-agent-select').val("");
+	    $('.order-form-agent-select').hide();
+	    $('input[name="order[buyer_company]"]').val("");
+	    $('input[name="order[buyer_tax_code]"]').val("");
+	    $('input[name="order[buyer_phone]"]').val("");
+	    $('input[name="order[buyer_fax]"]').val("");
+	    $('input[name="order[buyer_address]"]').val("");
+	    $('input[name="order[buyer_email]"]').val("");
+	}
+      }
   
   ////TABLES
 	//Too Small for new file - Helps the to tick all options in the table 
@@ -613,6 +684,7 @@
 	//Multiselect for all
 	$(".multi_select").select2();
 	$(".modern_select").select2();
+	$(".datetime select").select2();
 	
 	//filter table
 	$('table').filterTable();
@@ -673,6 +745,7 @@
 	    e.preventDefault(); //STOP default action
 
 	    var del_url = $(this).attr("href");
+	    var box = $(this).parents(".agent-line");
 	    
 	    $.ajax(
 	    {
@@ -680,14 +753,38 @@
 		type: "GET",
 		success:function(data, textStatus, jqXHR)
 		{
-		    alert("ok");	    
+			box.fadeOut();	    
 		},
 		error: function(jqXHR, textStatus, errorThrown)
 		{
-		    alert("error");
+			alert("error");
 		}
 	    });	    
 	});
+	
+	    $('select[name="order[customer_id]"]').live("change", function() {
+		updateOrderCustomerFormInfo($(this).val());
+	    });
+	    
+	    
+	    if($('.order-form-agent-select select option').length > 1)
+	    {
+		$('.order-form-agent-select').show();
+	    }
+	    else
+	    {
+		$('.order-form-agent-select').val("");
+		$('.order-form-agent-select').hide();
+	    }
+	    $('select[name="order[agent_id]"]').live("change", function() {
+		if ($(this).val() != "") {
+		    $('input[name="order[buyer_name]"]').val($(this).find(":selected").text());
+		}
+		else
+		{
+		    $('input[name="order[buyer_name]"]').val("");
+		}
+	    });
 	
 </script>
 <%= javascript_include_tag "form_validations.js" %>

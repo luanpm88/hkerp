@@ -12,6 +12,7 @@ class Contact < ActiveRecord::Base
   has_many :companies_contacts, :class_name => "AgentsContact", :foreign_key => "agent_id", :dependent => :destroy
   has_many :companies, :through => :companies_contacts, :source => :contact
   
+  
   belongs_to :contact_type
   
   def is_main
@@ -150,6 +151,23 @@ class Contact < ActiveRecord::Base
     end
     if !email.nil? && !email.empty?
       line += "email: " + email + " "
+    end
+    
+    return line
+  end
+  
+  def html_agent_input
+    line = "";
+    line += name + " "
+
+    if !phone.nil? && !phone.empty?
+      line += ", phone: " + phone + " "
+    end
+    if !mobile.nil? && !mobile.empty?
+      line += ", mobile: " + mobile + " "
+    end
+    if !email.nil? && !email.empty?
+      line += ", email: " + email + " "
     end
     
     return line
