@@ -47,3 +47,5 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 gem "roo"
 gem "cancan"
 gem "devise"
+gem 'wkhtmltopdf-binary'
+gem 'wicked_pdf'

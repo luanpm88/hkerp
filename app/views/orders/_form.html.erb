@@ -2,10 +2,9 @@
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
-                  <h4>Order <span class="semi-bold">Details</span></h4>
+                  <h4>Quotation <span class="semi-bold">Details</span></h4>
                   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
                 </div>     
-                
                 
                 
                 
@@ -16,7 +15,7 @@
                     <div class="alert alert-error">
                       <button data-dismiss="alert" class="close"></button>
                       <div id="error_explanation">
-                        <h5><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h5>
+                        <h5><%= pluralize(@order.errors.count, "error") %> prohibited this quotation from being saved:</h5>
                   
                         <ul>
                         <% @order.errors.full_messages.each do |msg| %>
@@ -84,21 +83,7 @@
                             </div>
                             <div class="col-md-6">
                               
-                              <div class="form-group">
-                                <label class="form-label"><%= f.label :supplier %></label>
-                                <span class="help">(required)</span>
-                                <div class="input-with-icon  right">                                       
-                                  <i class=""></i>
-                                  <select name="order[supplier_id]" class="modern_select" style="min-width: 400px;">
-                                    <option value="">Select Supplier</option>
-                                    <% Contact.all.each do |contact| %>
-                                        <option value="<%= contact.id %>" <% if !@order.supplier.nil? && @order.supplier.id == contact.id %>selected="selected"<% end %>>
-                                          <%= contact.name %>
-                                        </option>
-                                    <% end %>
-                                  </select>
-                                </div>
-                              </div>
+                              
                               
                               <div class="form-group">
                                 <label class="form-label"><%= f.label :payment_method %></label>
@@ -209,19 +194,89 @@
                             </div>
                         </div>
                         
+                        <div class="form-group">
+                                <label class="form-label"><%= f.label :tax_id %></label>
+                                <span class="help"></span>
+                                  <div class="input-with-icon  right">                                       
+                                    <i class=""></i>
+                                    <select name="order[tax_id]" class="modern_select" style="min-width: 400px;">                                    
+                                    <% Tax.all(:order => "created_at DESC").each do |tax| %>
+                                        <option rel="<%= tax.rate %>" value="<%= tax.id %>" <% if !@order.tax_id.nil? && @order.tax_id == tax.id %>selected="selected"<% end %>>
+                                          <%= tax.name %>
+                                        </option>
+                                    <% end %>
+                                  </select>
+                                  </div>
+                              </div>
+                        
                         
                         
                       </div>
                       
                     </div>
+                    
                       
-				  <div class="form-actions">  
-					<div class="pull-right">
-					  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
-                                          <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
-					</div>
-					</div>
-				<% end %>
+                    <div class="row column-seperation">
+                      <div class="col-md-12">
+                        <h4>Products <span class="semi-bold"> Details</span></h4>
+                        
+                        
+                        <div class="product_order_list">
+                          <ul class="head">
+                            <li class="name">
+                              Product
+                            </li>
+                            <li class="unit">Unit</li>
+                            <li class="supplier_price">Sup. Price</li>
+                            <li class="price">Price</li>
+                            <li class="quantity">Quantity</li>
+                            <li class="price_total">Total</li>
+                            <li class="warranty">Warranty</li>
+                            <li class="action">Action</li>
+                          </ul>
+                          <div id="product-line-items">
+                            <% if !@order.order_details.nil? %>
+                                <% @order.order_details.each do |order_detail| %>
+                                  <%= render 'order_details/line_item', :order_detail => order_detail %>
+                                <% end %>
+                            <% end %>
+                          </div>
+                          <ul class="footer line1">
+                            <li class="name">
+                            </li>
+                            <li class="unit"></li>
+                            <li class="supplier_price"></li>
+                            <li class="sum">Tổng cộng</li>
+                            <li class="price_total">0</li>
+                            <li class="warranty"></li>
+                            <li class="action"></li>
+                          </ul>
+                          <ul class="footer line2">
+                            <li class="name">
+                            </li>
+                            <li class="unit"></li>
+                            <li class="supplier_price"></li>
+                            <li class="sum">Tổng cộng (+VAT)</li>
+                            <li class="price_total">0</li>
+                            <li class="warranty"></li>
+                            <li class="action"></li>
+                          </ul>
+                        </div>
+                        
+                        <div class="controls">
+			      <%= link_to 'Add Product', ajax_new_order_details_path(:order_id => @order.id), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
+                        </div>
+                      </div>
+                    </div>
+                    
+                      
+                        <div class="form-actions">  
+                          <div class="pull-right">
+                            <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
+                            <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                          </div>
+                        </div>
+                  <% end %>
                 </div>
               </div>
             </div>		
@@ -229,6 +284,11 @@
        
 
 
+<script>
+  $( document ).ready(function() {
+    updateOrderPrices();
+  });
+</script>
 
 
 
@@ -236,47 +296,3 @@
 
 
 
-
-
-
-<%= form_for(@order) do |f| %>
-  <% if @order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h2>
-
-      <ul>
-      <% @order.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :customer_id %><br>
-    <%= f.number_field :customer_id %>
-  </div>
-  <div class="field">
-    <%= f.label :supplier_id %><br>
-    <%= f.number_field :supplier_id %>
-  </div>
-  <div class="field">
-    <%= f.label :agent_id %><br>
-    <%= f.number_field :agent_id %>
-  </div>
-  <div class="field">
-    <%= f.label :shipping_place %><br>
-    <%= f.text_field :shipping_place %>
-  </div>
-  <div class="field">
-    <%= f.label :payment_method_id %><br>
-    <%= f.number_field :payment_method_id %>
-  </div>
-  <div class="field">
-    <%= f.label :payment_deadline %><br>
-    <%= f.datetime_select :payment_deadline %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>

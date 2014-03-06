@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :edit, :update, :destroy]
+  before_action :set_product, only: [:show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -62,6 +62,12 @@ class ProductsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  # GET /orders/1
+  # GET /orders/1.json
+  def ajax_show
+    render :json => @product.to_json
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -71,6 +77,6 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:name, :description, :price, :product_code, :manufacturer_id, :category_ids => [])
+      params.require(:product).permit(:name, :description, :price, :product_code, :manufacturer_id, :unit, :category_ids => [])
     end
 end

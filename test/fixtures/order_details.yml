@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  order_id: 1
+  product_id: 1
+  quantity: 1
+  price: 9.99
+  supplier_price: 9.99
+  product_name: MyString
+  warranty: 1
+
+two:
+  order_id: 1
+  product_id: 1
+  quantity: 1
+  price: 9.99
+  supplier_price: 9.99
+  product_name: MyString
+  warranty: 1

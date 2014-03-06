@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140301030531) do
+ActiveRecord::Schema.define(version: 20140304050802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,20 @@ ActiveRecord::Schema.define(version: 20140301030531) do
     t.datetime "updated_at"
   end
 
+  create_table "order_details", force: true do |t|
+    t.integer  "order_id"
+    t.integer  "product_id"
+    t.integer  "quantity"
+    t.decimal  "price",          precision: 16, scale: 2
+    t.decimal  "supplier_price", precision: 16, scale: 2
+    t.string   "product_name"
+    t.integer  "warranty"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "unit"
+    t.integer  "supplier_id"
+  end
+
   create_table "orders", force: true do |t|
     t.integer  "customer_id"
     t.integer  "supplier_id"
@@ -84,6 +98,7 @@ ActiveRecord::Schema.define(version: 20140301030531) do
     t.string   "buyer_email"
     t.string   "buyer_phone"
     t.string   "buyer_fax"
+    t.integer  "tax_id"
   end
 
   create_table "parent_categories", force: true do |t|
@@ -111,6 +126,14 @@ ActiveRecord::Schema.define(version: 20140301030531) do
     t.string   "product_code"
     t.string   "warranty"
     t.integer  "manufacturer_id"
+    t.string   "unit"
+  end
+
+  create_table "taxes", force: true do |t|
+    t.string   "name"
+    t.decimal  "rate"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|

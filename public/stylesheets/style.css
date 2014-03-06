@@ -7423,3 +7423,38 @@ ul.my-friends li .profile-pic{
 {
     display: none;
 }
+.product_order_list {
+    float: left;
+    margin-bottom: 20px;
+}
+.product_order_list ul {
+    float: left;
+    padding: 0;
+    width: 100%;
+}
+.product_order_list ul.head
+{
+    font-weight: bold;
+}
+.product_order_list ul li {
+    display: block;
+    float: left;
+    list-style: none outside none;
+    min-width: 102px;
+    padding: 15px;
+}
+.product_order_list ul li.price, .product_order_list ul li.supplier_price, .product_order_list ul li.price_total{
+    text-align: right
+}
+.product_order_list ul li.name {
+    width: 240px;
+}
+.product_order_list ul.footer li
+{
+    padding: 5px 15px;
+}
+.product_order_list ul.footer li.sum
+{
+    width: 204px;
+    text-align: right;
+}

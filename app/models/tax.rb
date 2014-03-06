@@ -1,3 +1,3 @@
-class PaymentMethod < ActiveRecord::Base
+class Tax < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
 end

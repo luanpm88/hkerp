@@ -233,12 +233,24 @@
    
    <!-- BEGIN SIDEBAR MENU -->	
 	<p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
-    <ul>	
+    <ul>
+	<li class="start<% if ["orders"].include?(params[:controller]) %> active open<% end %>">
+	<%= link_to orders_url do %>
+	  <i class="icon-archive"></i>
+	  <span class="title" onclick="">Sales</span>
+	  <span class="arrow<% if params[:controller] == "orders" %> open<% end %>"></span>
+	<% end %>
+	<ul class="sub-menu">
+          <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Quotations', orders_url %></li>
+	  
+        </ul>
+      </li>
+	
       <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
 	<%= link_to products_url do %>
 	  <i class="icon-archive"></i>
 	  <span class="title" onclick="window.location='<%= url_for products_url %>'">Products</span>
-	  <span class="arrow<% if params[:controller] == "products" || params[:controller] == "categories" %> open<% end %>"></span>
+	  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 	<% end %>
 	<ul class="sub-menu">
           <li<% if params[:controller] == "products" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
@@ -592,8 +604,30 @@
 <%= javascript_include_tag "jquery.animateNumbers.js" %>
 <%= javascript_include_tag "jquery.filtertable.js" %>
 <%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
+<%= javascript_include_tag "jquery.number.min.js" %>
 <!-- END PAGE LEVEL PLUGINS --> 	
 <script>
+    
+    function ReplaceNumberWithDots(yourNumber) {
+	//Seperates the components of the number
+	//var n= yourNumber.toString().split(".");
+	//Comma-fies the first part
+	yourNumber = yourNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	//Combines the two sections
+	return yourNumber
+    }
+    
+    function updateOrderPrices()
+    {
+	var sum = 0;
+	$('#product-line-items .price_total').each(function() {
+	    sum = sum + parseFloat($(this).attr("rel"));
+	});
+	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select[name="order[tax_id]"] option:selected').attr("rel"))/100 + 1)).toFixed(0));
+	sum = ReplaceNumberWithDots(sum.toFixed(0));
+	$('.product_order_list .footer.line1 .price_total').html(sum);
+	$('.product_order_list .footer.line2 .price_total').html(sumvat);
+    }
     
     function updateOrderAgentFormInfo(customer_id)
     {
@@ -666,7 +700,7 @@
 	}
       }
   
-  ////TABLES
+	////TABLES
 	//Too Small for new file - Helps the to tick all options in the table 
 	$('table .checkbox input').click( function() {			
 		if($(this).is(':checked')){			
@@ -785,6 +819,142 @@
 		    $('input[name="order[buyer_name]"]').val("");
 		}
 	    });
+	    
+	    
+	    //action for add agent button
+	    $('#add-product-order-line-button').fancybox({
+		    width: "50%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    $(".ajax_outer .modern_select").select2();
+			}
+		    }
+	    });
+	    
+	    //submit ajax form
+	    //callback handler for form submit
+	    $("#ajax-order-detail-form").live("submit", function(e)
+	    {
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		
+		$(this).find(".btn[type='submit']").addClass("btn-submitting");
+		
+		$.ajax(
+		{
+		    url : formURL,
+		    type: "POST",
+		    data : postData,
+		    success:function(data, textStatus, jqXHR)
+		    {
+			if($('<div/>').html(data).find("#ajax-success-result").length)
+			{
+			  $.fancybox.close();
+			  
+			  var success_box = $('<div/>').html(data).find("#ajax-success-result");
+			  var saved_id = success_box.find("ul").attr("rel");
+			  if ($('#product-line-items ul[rel="'+saved_id+'"]').length) {
+			    $('#product-line-items ul[rel="'+saved_id+'"]').replaceWith(success_box.html());
+			  }
+			  else
+			  {
+			    $('#product-line-items').append(success_box.html());
+			  }
+			}
+			else
+			{
+			    $('.fancybox-inner').html(data);
+			    $('.fancybox-inner').scrollTop(0)
+			    $(".ajax_outer .modern_select").select2();
+			}
+			
+			updateOrderPrices();
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+			alert("error");
+		    }
+		});
+		e.preventDefault(); //STOP default action
+	    });
+	    
+	    $('.ajax_outer select[name="order_detail[product_id]"]').live("change", function() {
+		var product_id = $(this).val();
+		if (product_id != "") {
+		    $.ajax(
+		    {
+			url : '<%= ajax_show_products_path %>',
+			type: "GET",
+			data: "id="+product_id,
+			success:function(data, textStatus, jqXHR)
+			{
+			    //alert(data.name)
+			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.name);
+			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
+			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
+			    $('.ajax_outer input[name="order_detail[price]"]').val(data.price);
+			    $('.ajax_outer input[name="order_detail[quantity]"]').val(data.quantity);
+			    $('.ajax_outer input[name="order_detail[warranty]"]').val(data.warranty);
+
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
+			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
+			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val("");
+			    $('.ajax_outer input[name="order_detail[price]"]').val("");
+			    $('.ajax_outer input[name="order_detail[quantity]"]').val("");
+			    $('.ajax_outer input[name="order_detail[warranty]"]').val("");
+			}
+		    });
+		}
+		else
+		{
+		    alert("empty");
+		}
+	    });
+	    
+	    //Delete agent in contact form
+	    $('#product-line-items .delete_product_order_detail').live("click", function(e) {
+		e.preventDefault(); //STOP default action
+    
+		var del_url = $(this).attr("href");
+		var box = $(this).parents("ul");
+		
+		$.ajax(
+		{
+		    url : del_url,
+		    type: "GET",
+		    success:function(data, textStatus, jqXHR)
+		    {
+			    box.remove();
+			    updateOrderPrices();
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+			    alert("error");
+		    }
+		});	    
+	    });	    
+	    
+	    //action for add agent button
+	    $('.edit-order-detail').fancybox({
+		    width: "50%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    $(".ajax_outer .modern_select").select2();
+			}
+		    }
+	    });
+	    
+	    $('select[name="order[tax_id]"]').live("change", function(){
+		updateOrderPrices();
+	    });
+	    
 	
 </script>
 <%= javascript_include_tag "form_validations.js" %>

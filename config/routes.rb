@@ -1,8 +1,24 @@
 Hkerp::Application.routes.draw do
   
+  resources :taxes
+
+  resources :order_details do
+    collection do
+      get :ajax_new
+      post :ajax_create
+      get :ajax_destroy
+      get :ajax_edit
+      patch :ajax_update
+    end
+  end
+
   resources :payment_methods
 
-  resources :orders
+  resources :orders do
+    collection do
+      get :download_pdf
+    end
+  end
 
   devise_for :users
   resources :manufacturers
@@ -33,7 +49,11 @@ Hkerp::Application.routes.draw do
     delete 'logout' => :destroy
   end
 
-  resources :products
+  resources :products do
+    collection do
+      get :ajax_show
+    end
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
