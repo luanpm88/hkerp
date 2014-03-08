@@ -15,7 +15,7 @@ User.create(:email => "admin@hoangkhang.com.vn", :password => "aA456321@", :pass
 PaymentMethod.create(name: "Tiền mặt")
 PaymentMethod.create(name: "Chuyển khoản")
 
-Tax.create(name: "NONE", rate: 0)
+Tax.create(name: "VAT 0%", rate: 0)
 Tax.create(name: "VAT 10%", rate: 10)
 
 @HK = Contact.create(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",

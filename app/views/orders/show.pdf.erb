@@ -25,12 +25,19 @@
       border-left: none;
       padding: 5px;
       text-align: center;
+      font-size: 12px;
   }
   table th, table td, p, div, span
   {
     font-size: 10px;
     font-family: Arial;
   }
+  
+  .cominfo table th, .cominfo table td, .cominfo p, .cominfo div, .cominfo span, .cominfo label
+  {
+    font-size: 10px;
+  }
+  
   table td
   {
     padding: 0;
@@ -55,7 +62,11 @@
   }
   .top-info
   {
-    margin-top: 20px;
+    margin-top: 40px;
+  }
+  .top-info td
+  {
+    font-size: 13px;
   }
   label
   {
@@ -63,33 +74,39 @@
   }
   .middle1 label
   {
-    width:115px;
+    width:103px;
     display: block;
     float: left;
   }
   .middle2 label
   {
-    width:140px;
+    width:145px;
     display: block;
     float: left;
   }
   
 .middle2 span {
     float: left;
-    line-height: 11px;
-    margin-left: 140px;
-    margin-top: -11px;
+    line-height: 12px;
+    margin-left: 145px;
+    margin-top: -12px;
     padding-bottom: 5px;
 }
   .middle3 label
   {
-    width:115px;
+    width:103px;
+    display: block;
+    float: left;
+  }
+  .top-left label
+  {
+    width: 55px;
     display: block;
     float: left;
   }
 </style>
 
-<table>
+<table class="cominfo">
   <tr>
     <td rowspan="2" width="18%">
       <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="95" valign="top" />
@@ -104,7 +121,7 @@
       <p><label style="font-weight: normal">VPGD: </label><strong><%= @hk.children.first.address %></strong></p>
       <p><label>ĐT: </label><%= @hk.phone %> - <label>Fax: </label><%= @hk.fax %> - <label>Hotline: </label><%= @hk.hotline %></p>
     </td>
-    <td>
+    <td class="top-left">
       <p><label>MST: </label><%= @hk.tax_code %></p>
       <p><label>Email: </label><%= @hk.email %></p>
       <p><label>Website: </label><%= @hk.website %></p>
@@ -114,18 +131,18 @@
 
 <table class="top-info" cellspacing="0">
   <tr>
-    <td align="center" style="padding-bottom: 5px;">
+    <td align="center" style="padding-bottom: 30px;">
       <h1>BẢNG BÁO GIÁ</h1>
       <h3>(ĐƠN ĐẶT HÀNG)</h3>
     </td>
-    <td class="middle1" style="padding-bottom: 5px;">
+    <td class="middle1" style="padding-bottom: 30px;">
       <p><label>Ngày báo giá: </label><%= @order.order_date.strftime("%d/%m/%Y") %></p>
       <p><label>Hiệu lực BG đến: </label><%= @order.order_deadline.strftime("%d/%m/%Y") %></p>
       <p><label>Số: </label><%= @order.quotation_code %></p>
     </td>
   </tr>
   <tr>
-    <td class="middle2" width="480px" style="padding-top: 5px;border-top: solid 0px #000">
+    <td class="middle2" width="496px" style="padding-top: 5px;border-top: solid 0px #000">
       <p><label>Họ tên người mua hàng: </label><%= @order.buyer_name %></p>
       <p><label>Tên đơn vị: </label><%= @order.buyer_company %></p>
       <p><label>Mã số thuế: </label><%= @order.buyer_tax_code %></p>
@@ -184,7 +201,7 @@
     <td></td>
   </tr>
   <tr>
-    <td colspan="4" style="text-align: right">Tiền thuế GTGT</td>
+    <td colspan="4" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
     <td style="text-align: right"><%= @order.formated_vat_amount %></td>
     <td></td>
   </tr>
@@ -197,7 +214,7 @@
 
 
 <p></p><p></p>
-<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ VAT 10%</strong></p>
+<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ <%= @order.tax.name %></strong></p>
 <p><strong>Điều khoản thương mại:</strong></p>
 <p>
   1.	Hàng hóa mới 100%. Bảo hành theo tiêu chuẩn nhà sản xuất và tem bảo hành HK Incotech:								

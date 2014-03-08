@@ -184,7 +184,7 @@
     <td></td>
   </tr>
   <tr>
-    <td colspan="4" style="text-align: right">Tiền thuế GTGT</td>
+    <td colspan="4" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
     <td style="text-align: right"><%= @order.formated_vat_amount %></td>
     <td></td>
   </tr>
@@ -197,7 +197,7 @@
 
 
 <p></p><p></p>
-<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ VAT 10%</strong></p>
+<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ <%= @order.tax.name %></strong></p>
 <p><strong>Điều khoản thương mại:</strong></p>
 <p>
   1.	Hàng hóa mới 100%. Bảo hành theo tiêu chuẩn nhà sản xuất và tem bảo hành HK Incotech:								

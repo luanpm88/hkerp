@@ -159,16 +159,16 @@ class Contact < ActiveRecord::Base
   
   def html_agent_input
     line = "";
-    line += name + " "
+    line += name
 
     if !phone.nil? && !phone.empty?
-      line += ", phone: " + phone + " "
+      line += "; phone: " + phone + " "
     end
     if !mobile.nil? && !mobile.empty?
-      line += ", mobile: " + mobile + " "
+      line += "; mobile: " + mobile + " "
     end
     if !email.nil? && !email.empty?
-      line += ", email: " + email + " "
+      line += "; email: " + email + " "
     end
     
     return line
