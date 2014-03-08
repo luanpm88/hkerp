@@ -30,12 +30,12 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
-
+    @order.salesperson = current_user
+    @order.create_quotation_code
+    
     respond_to do |format|
       if @order.save
         #save order quotation code
-        @order.create_quotation_code
-        
         format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else

@@ -9,10 +9,13 @@ class Order < ActiveRecord::Base
   #belongs_to :supplier, :class_name => "Contact"
   belongs_to :tax
   belongs_to :payment_method
+  belongs_to :salesperson, :class_name => "User"
   
   has_many :order_details, :dependent => :destroy
   
   accepts_nested_attributes_for :order_details
+  
+  #before_create :create_quotation_code
   
   def total
     total = 0;
@@ -47,7 +50,7 @@ class Order < ActiveRecord::Base
   end
   
   def create_quotation_code
-    lastest = Order.where("order_date::text LIKE :val AND id != :val2", :val2 => id, :val => order_date.strftime("%Y")+"-"+order_date.strftime("%m")+"%").order("quotation_code DESC").first
+    lastest = Order.where("order_date::text LIKE :val", :val => order_date.strftime("%Y")+"-"+order_date.strftime("%m")+"%").order("quotation_code DESC").first
     
     if !lastest.nil? && !lastest.quotation_code.nil?
       num = lastest.quotation_code.split(/\-/).last.to_i + 1
@@ -55,7 +58,6 @@ class Order < ActiveRecord::Base
     else
       self.quotation_code = "HK-"+order_date.strftime("%Y")+order_date.strftime("%m")+"-"+1.to_s.rjust(3, '0')
     end
-    self.save
   end
 
 end
