@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140304050802) do
+ActiveRecord::Schema.define(version: 20140308021800) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -59,6 +59,8 @@ ActiveRecord::Schema.define(version: 20140304050802) do
     t.string   "representative"
     t.string   "representative_role"
     t.string   "representative_phone"
+    t.boolean  "is_mine",              default: false
+    t.string   "hotline"
   end
 
   create_table "manufacturers", force: true do |t|
@@ -72,14 +74,15 @@ ActiveRecord::Schema.define(version: 20140304050802) do
     t.integer  "order_id"
     t.integer  "product_id"
     t.integer  "quantity"
-    t.decimal  "price",          precision: 16, scale: 2
-    t.decimal  "supplier_price", precision: 16, scale: 2
+    t.decimal  "price",               precision: 16, scale: 2
+    t.decimal  "supplier_price",      precision: 16, scale: 2
     t.string   "product_name"
     t.integer  "warranty"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "unit"
     t.integer  "supplier_id"
+    t.string   "product_description"
   end
 
   create_table "orders", force: true do |t|
@@ -99,6 +102,9 @@ ActiveRecord::Schema.define(version: 20140304050802) do
     t.string   "buyer_phone"
     t.string   "buyer_fax"
     t.integer  "tax_id"
+    t.datetime "order_date"
+    t.datetime "order_deadline"
+    t.string   "quotation_code",    default: "HK-0000-000"
   end
 
   create_table "parent_categories", force: true do |t|

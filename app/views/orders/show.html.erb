@@ -1,34 +1,250 @@
-<p id="notice"><%= notice %></p>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<style>
 
+  .list {
+      border-left: 1px solid #000000;
+      border-top: 1px solid #000000;
+      border-bottom: none;
+      border-right: none;
+      margin-top: 15px;
+  }
+  
+  .list th {
+      background: none repeat scroll 0 0 #EFEFEF;
+      border-bottom: 1px solid #000000;
+      border-right: 1px solid #000000;
+      border-top: none;
+      border-left: none;
+      padding: 5px;
+  }
+  
+  .list td {
+      border-bottom: 1px solid #000000;
+      border-right: 1px solid #000000;
+      border-top: none;
+      border-left: none;
+      padding: 5px;
+      text-align: center;
+  }
+  table th, table td, p, div, span
+  {
+    font-size: 10px;
+    font-family: Arial;
+  }
+  table td
+  {
+    padding: 0;
+  }  
+  table
+  {
+    width: 100%;
+  }
+  h1, h2, h3, h4
+  {
+    margin: 0;
+  }
+  p
+  {
+    margin-bottom: 7px;
+    margin-top: 0;
+    min-height: 11px;
+  }
+  h2
+  {
+    margin-bottom: 5px;
+  }
+  .top-info
+  {
+    margin-top: 20px;
+  }
+  label
+  {
+    font-weight: bold;
+  }
+  .middle1 label
+  {
+    width:110px;
+    display: block;
+    float: left;
+  }
+  .middle2 label
+  {
+    width:140px;
+    display: block;
+    float: left;
+  }
+  
+.middle2 span {
+    float: left;
+    line-height: 11px;
+    margin-left: 140px;
+    margin-top: -11px;
+    padding-bottom: 5px;
+}
+  .middle3 label
+  {
+    width:110px;
+    display: block;
+    float: left;
+  }
+</style>
+
+<table>
+  <tr>
+    <td rowspan="2" width="18%">
+      <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="95" valign="top" />
+    </td>
+    <td colspan="2">
+      <h2><%= @hk.name %></h2>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><%= @hk.address %></p>
+      <p><label style="font-weight: normal">VPGD: </label><strong><%= @hk.children.first.address %></strong></p>
+      <p><label>ĐT: </label><%= @hk.phone %> - <label>Fax: </label><%= @hk.fax %> - <label>Hotline: </label><%= @hk.hotline %></p>
+    </td>
+    <td>
+      <p><label>MST: </label><%= @hk.tax_code %></p>
+      <p><label>Email: </label><%= @hk.email %></p>
+      <p><label>Website: </label><%= @hk.website %></p>
+    </td>
+  </tr>
+</table>
+
+<table class="top-info" cellspacing="0">
+  <tr>
+    <td align="center" style="padding-bottom: 5px;">
+      <h1>BẢNG BÁO GIÁ</h1>
+      <h3>(ĐƠN ĐẶT HÀNG)</h3>
+    </td>
+    <td class="middle1" style="padding-bottom: 5px;">
+      <p><label>Ngày báo giá: </label><%= @order.order_date.strftime("%d/%m/%Y") %></p>
+      <p><label>Hiệu lực BG đến: </label><%= @order.order_deadline.strftime("%d/%m/%Y") %></p>
+      <p><label>Số: </label><%= @order.quotation_code %></p>
+    </td>
+  </tr>
+  <tr>
+    <td class="middle2" width="480px" style="padding-top: 5px;border-top: solid 0px #000">
+      <p><label>Họ tên người mua hàng: </label><%= @order.buyer_name %></p>
+      <p><label>Tên đơn vị: </label><%= @order.buyer_company %></p>
+      <p><label>Mã số thuế: </label><%= @order.buyer_tax_code %></p>
+      <p><label>Địa chỉ (xuất hóa đơn): </label><span><%= @order.buyer_address %></span></p>
+      <p><label>Hình thức thanh toán: </label><%= @order.payment_method.name %></p>
+    </td>
+    <td class="middle3" style="padding-top: 5px;border-top: solid 0px #000" valign="top">
+      <p><label>Email: </label><%= @order.buyer_email %></p>
+      <p><label>ĐT: </label><%= @order.buyer_phone %></p>
+      <p><label>Fax: </label><%= @order.buyer_fax %></p>
+      <p><label>Giao hàng tại: </label><%= @order.shipping_place %></p>
+      <p><label>Thời hạn TT: </label><%= @order.payment_deadline.strftime("%d/%m/%Y") %></p>
+    </td>
+  </tr>
+</table>
+
+<table class="list" cellspacing="0">
+  <tr>
+    <th>STT<br />No.</th>
+    <th>Mô tả<br />Description</th>
+    <th>Số lượng<br />Quantity<br />(Đơn vị tính)</th>
+    <th>Đơn giá<br />Unit Price<br />VNĐ</th>
+    <th>Tổng cộng<br />Total<br />VNĐ</th>
+    <th>Bảo hành<br />Warranty<br />(Đơn vị TG)</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>2</td>
+    <td>3</td>
+    <td>4</td>
+    <td>5 = 3 x 4</td>
+    <td>6</td>
+  </tr>
+
+    <% if !@order.order_details.nil? %>
+      <% @count = 0 %>
+      <% @order.order_details.each do |order_detail| %>
+        <% @count = @count + 1 %>
+          <tr>
+            <td><%= @count %></td>
+            <td style="text-align: left;">
+              <%= order_detail.product_name %><br />
+              <%= order_detail.product.description if !order_detail.product.description.nil? %>
+            </td>
+            <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
+            <td style="text-align: right"><%= order_detail.formated_price %></td>
+            <td style="text-align: right"><%= order_detail.formated_total %></td>
+            <td><%= order_detail.warranty %> (tháng)</td>
+          </tr>
+      <% end %>
+    <% end %>
+  
+  <tr>
+    <td colspan="4" style="text-align: right">Cộng tiền hàng</td>
+    <td style="text-align: right"><%= @order.formated_total %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="4" style="text-align: right">Tiền thuế GTGT</td>
+    <td style="text-align: right"><%= @order.formated_vat_amount %></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="4" style="text-align: right">Tổng cộng tiền thanh toán</td>
+    <td style="text-align: right"><%= @order.formated_total_vat %></td>
+    <td></td>
+  </tr>
+</table>
+
+
+<p></p><p></p>
+<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ VAT 10%</strong></p>
+<p><strong>Điều khoản thương mại:</strong></p>
 <p>
-  <strong>Customer:</strong>
-  <%= @order.customer_id %>
+  1.	Hàng hóa mới 100%. Bảo hành theo tiêu chuẩn nhà sản xuất và tem bảo hành HK Incotech:								
+	Thời gian bảo hành:					02	tháng
 </p>
-
 <p>
-  <strong>Supplier:</strong>
-  <%= @order.supplier_id %>
+  2.	Giao hàng và bảo hành : Tận nơi				Phí:	0	VND,  trong TP HCM		
 </p>
-
 <p>
-  <strong>Agent:</strong>
-  <%= @order.agent_id %>
+  3.	Đổi trả hàng từ 01 đến 07 ngày: 				Phí:	5_10%	giá trị hàng hóa		
+	Miễn đổi hoặc trả hàng lại sau 07 ngày							
 </p>
-
 <p>
-  <strong>Shipping place:</strong>
-  <%= @order.shipping_place %>
+  4.	Thanh toán 				giá trị đơn hàng		sau khi xác nhận đặt  hàng		
+				100%	giá trị đơn hàng		sau khi nhận hàng		
 </p>
-
 <p>
-  <strong>Payment method:</strong>
-  <%= @order.payment_method_id %>
+  Mọi thông tin chi tiết xin Quý khách hàng vui lòng liên hệ: phòng kinh doanh: 3984 7690 _Ext:  102									
 </p>
-
 <p>
-  <strong>Payment deadline:</strong>
-  <%= @order.payment_deadline %>
+  Email:	nguyendtd@hoangkhang.com.vn			ĐT Di Động:	091 873 4414		
 </p>
-
-<%= link_to 'Edit', edit_order_path(@order) %> |
-<%= link_to 'Back', orders_path %>
+<p></p>
+<p>
+  Xin chân thành cảm ơn và trân trọng kính chào!
+</p>
+		
+<p></p><p></p>
+<table>
+  <tr>
+    <td>
+      <td align="center" valign="top">
+        <p><strong>Người mua hàng</strong></p>
+        
+      </td>
+      <td align="center" valign="top">
+        <p><strong>Thông tin đặt hàng</strong></p>
+        <p style="text-align:left"><label style="font-weight: normal">Địa điểm giao hàng: </label></p>
+        <p></p>
+        <p style="text-align:left"><label style="font-weight: normal">Người nhận hàng: </label></p>
+        <p></p>
+        <p style="text-align:left"><label style="font-weight: normal">Ngày đặt hàng: </label></p>
+        <p></p>
+      </td>
+      <td align="center" valign="top">
+        <p><strong>Đại diện kinh doanh</strong></p>
+      </td>
+    </td>
+  </tr>
+</table>

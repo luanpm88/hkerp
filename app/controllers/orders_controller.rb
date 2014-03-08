@@ -9,12 +9,17 @@ class OrdersController < ApplicationController
 
   # GET /orders/1
   # GET /orders/1.json
-  def show    
+  def show
+    @hk = Contact.HK
+    render :layout => nil
   end
 
   # GET /orders/new
   def new
     @order = Order.new
+    @order.order_date = Time.now
+    @order.order_deadline = Time.now + 7.days
+    @order.payment_deadline = Time.now + 3.days
   end
 
   # GET /orders/1/edit
@@ -28,6 +33,9 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
+        #save order quotation code
+        @order.create_quotation_code
+        
         format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
@@ -62,13 +70,19 @@ class OrdersController < ApplicationController
   end
   
   def download_pdf
+    @hk = Contact.HK
     render  :pdf => "quotation",
             :template => 'orders/show.pdf.erb',
             :layout => nil,
             :footer => {
-               :center => "Center",
-               :left => "Left",
-               :right => "Right"
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A4",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
             }
   end
 
@@ -76,11 +90,13 @@ class OrdersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_order
       @order = Order.find(params[:id])
+      #@order.order_date = @order.order_date.strptime("%m/%d/%Y") if !@order.order_date.nil?
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      params.require(:order).permit(:customer_id, :supplier_id, :agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id,
+      params.require(:order).permit(:customer_id, :supplier_id, :agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id, :order_date,
+                                    :order_deadline,
                                     :order_detail_ids => []                                   
                                   )
     end

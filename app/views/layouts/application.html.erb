@@ -892,6 +892,7 @@
 			{
 			    //alert(data.name)
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.name);
+			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
 			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
 			    $('.ajax_outer input[name="order_detail[price]"]').val(data.price);
@@ -902,6 +903,7 @@
 			error: function(jqXHR, textStatus, errorThrown)
 			{
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
+			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
 			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val("");
 			    $('.ajax_outer input[name="order_detail[price]"]').val("");

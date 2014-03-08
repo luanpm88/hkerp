@@ -28,13 +28,14 @@ $(document).ready(function(){
 	  //Date Pickers
 	  $('.input-append.date').datepicker({
 				autoclose: true,
-				todayHighlight: true
+				todayHighlight: true,
+				format: 'yyyy-mm-dd'
 	   });
 	 
 	 $('#dp5').datepicker();
 	 
 	 $('#sandbox-advance').datepicker({
-			format: "dd/mm/yyyy",
+			format: "yyyy-mm-dd",
 			startView: 1,
 			daysOfWeekDisabled: "3,4",
 			autoclose: true,
