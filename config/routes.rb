@@ -1,5 +1,7 @@
 Hkerp::Application.routes.draw do
   
+  resources :roles
+
   resources :taxes
 
   resources :order_details do

@@ -627,6 +627,9 @@
 	sum = ReplaceNumberWithDots(sum.toFixed(0));
 	$('.product_order_list .footer.line1 .price_total').html(sum);
 	$('.product_order_list .footer.line2 .price_total').html(sumvat);
+	
+	//update tax name
+	$('.order_tax_name').html($('select[name="order[tax_id]"] option:selected').html());
     }
     
     function updateOrderAgentFormInfo(customer_id)
@@ -823,7 +826,7 @@
 	    
 	    //action for add agent button
 	    $('#add-product-order-line-button').fancybox({
-		    width: "50%",
+		    width: "70%",
 		    height: "100%",
 		    autoSize: false,
 		    ajax: {
@@ -888,9 +891,12 @@
 			url : '<%= ajax_show_products_path %>',
 			type: "GET",
 			data: "id="+product_id,
-			success:function(data, textStatus, jqXHR)
+			success:function(respone, textStatus, jqXHR)
 			{
-			    //alert(data.name)
+			    //alert(respone.product.id);
+			    $('.order_supplier_history').html(respone.order_supplier_history);
+			    
+			    var data = respone.product;
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.name);
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
 			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
@@ -943,7 +949,7 @@
 	    
 	    //action for add agent button
 	    $('.edit-order-detail').fancybox({
-		    width: "50%",
+		    width: "70%",
 		    height: "100%",
 		    autoSize: false,
 		    ajax: {
@@ -956,6 +962,8 @@
 	    $('select[name="order[tax_id]"]').live("change", function(){
 		updateOrderPrices();
 	    });
+	    
+	    
 	    
 	
 </script>

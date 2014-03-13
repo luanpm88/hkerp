@@ -79,7 +79,7 @@
                     
                               <div class="form-group">
                                 <label class="form-label"><%= f.label :payment_deadline %></label>
-                                <span class="help"></span>
+                                <span class="help">(default: + 3 days)</span>
                                   <div class="input-with-icon  right">                                       
                                     <i class=""></i>
                                     <div class="input-append success date col-md-10 no-padding">
@@ -109,7 +109,7 @@
                               
                               <div class="form-group">
                                 <label class="form-label"><%= f.label :order_deadline %></label>
-                                <span class="help"></span>
+                                <span class="help">(default: + 7 days)</span>
                                   <div class="input-with-icon  right">                                       
                                     <i class=""></i>
                                     <div class="input-append success date col-md-10 no-padding">
@@ -292,7 +292,7 @@
                             </li>
                             <li class="unit"></li>
                             <li class="supplier_price"></li>
-                            <li class="sum">Tổng cộng (+VAT)</li>
+                            <li class="sum">Tổng cộng (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
                             <li class="action"></li>

@@ -48,7 +48,7 @@
                            
                     <div class="row column-seperation">
                            
-                            <div class="col-md-12">
+                         <div class="col-md-7">
 			      
 			      <div class="form-group">
                                 <label class="form-label"><%= f.label :product_id %></label>
@@ -140,8 +140,19 @@
 			      
                                                         
                                                         
-                            </div>
-                            
+                         </div>
+			 
+			 <div class="col-md-5">
+			      <div class="form-group">
+				   <label class="form-label">Product Supplier History</label>
+				   <span class="help"></span>
+				   <div class="order_supplier_history">
+					<%= @order_detail.product.order_supplier_history.html_safe if !@order_detail.product.nil? %>
+				   </div>
+			      </div>
+                              
+			      
+			 </div>                            
                             
                             
                         

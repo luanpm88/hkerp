@@ -11,6 +11,12 @@ ContactType.create(name: "Supplier")
 ContactType.create(name: "Agent")
 
 User.create(:email => "admin@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "nguyendtd@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "tuanthm@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "vietdq@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "trungtd@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "thuydp@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
+User.create(:email => "luanpm@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@")
 
 PaymentMethod.create(name: "Tiền mặt")
 PaymentMethod.create(name: "Chuyển khoản")
@@ -26,7 +32,8 @@ Tax.create(name: "VAT 10%", rate: 10)
                 tax_code: "0306146736",
                 website: "www.hoangkhang.com.vn",
                 email: "info@hoangkhang.com.vn",
-                contact_type_id: ContactType.supplier
+                contact_type_id: ContactType.supplier,
+                is_mine: true
               )
 
 @HK.children.create(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",

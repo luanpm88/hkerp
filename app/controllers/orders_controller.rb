@@ -24,6 +24,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
+    authorize! :manage, @order
   end
 
   # POST /orders
@@ -71,7 +72,7 @@ class OrdersController < ApplicationController
   
   def download_pdf
     @hk = Contact.HK
-    render  :pdf => "quotation",
+    render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
             :layout => nil,
             :footer => {

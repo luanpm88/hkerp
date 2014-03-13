@@ -9,7 +9,7 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1
   # GET /contacts/1.json
-  def show
+  def show    
   end
 
   # GET /contacts/new
@@ -18,7 +18,7 @@ class ContactsController < ApplicationController
   end
 
   # GET /contacts/1/edit
-  def edit
+  def edit    
   end
 
   # POST /contacts
