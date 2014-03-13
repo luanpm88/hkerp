@@ -20,6 +20,9 @@ class OrdersController < ApplicationController
     @order.order_date = Time.now
     @order.order_deadline = Time.now + 7.days
     @order.payment_deadline = Time.now + 3.days
+    @order.shipping_date = Time.now
+    @order.warranty_place = "Tận nơi"
+    @order.warranty_cost = "0"
   end
 
   # GET /orders/1/edit
@@ -98,6 +101,11 @@ class OrdersController < ApplicationController
     def order_params
       params.require(:order).permit(:customer_id, :supplier_id, :agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id, :order_date,
                                     :order_deadline,
+                                    :deposit,
+                                    :shipping_date,
+                                    :shipping_time,
+                                    :warranty_place,
+                                    :warranty_cost,
                                     :order_detail_ids => []                                   
                                   )
     end

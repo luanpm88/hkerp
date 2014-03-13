@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140313080223) do
+ActiveRecord::Schema.define(version: 20140313091940) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,11 @@ ActiveRecord::Schema.define(version: 20140313080223) do
     t.datetime "order_deadline"
     t.string   "quotation_code",    default: "HK-0000-000"
     t.integer  "salesperson_id"
+    t.integer  "deposit"
+    t.datetime "shipping_date"
+    t.string   "shipping_time"
+    t.string   "warranty_place"
+    t.text     "warranty_cost"
   end
 
   create_table "parent_categories", force: true do |t|
