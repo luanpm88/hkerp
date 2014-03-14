@@ -34,11 +34,11 @@
 							<label for="checkbox10"></label>
 						    </div>
                                                 </th>
-                                                <th width="25%">Customer</th>
-                                                <th>Total Price</th>
-                                                <th>Product Count</th>
-                                                <th width="20%">Order Date</th>
-                                                <th width="24%">Action</th>   
+                                                <th width="30%">Customer</th>
+                                                <th style="text-align: right">Total Price</th>
+                                                <th width="5%">Product Count</th>
+                                                <th width="15%">Order Date</th>
+                                                <th width="27%">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -52,18 +52,18 @@
                                                           </div>
                                                   </td>
                                                   <td><%= order.customer.name %></td>
-                                                  <td>
+                                                  <td align="right">
                                                     <%= order.formated_total_vat %>
                                                   </td>
                                                   <td>
                                                     <%= order.order_details.count %>
                                                   </td>
                                                   <td>
-                                                    <%= order.order_date %>
+                                                    <%= order.order_date.strftime("%Y-%m-%d") %>
                                                   </td>
                                                   <td>
                                                           
-                                                          <%= link_to 'Show', order, :class => "btn btn-success btn-xs btn-mini" %>
+                                                          <%= link_to 'Show', order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
                                                           <%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
                                                           <%= link_to edit_order_path(order), :class => "btn btn-info btn-xs btn-mini" do %>							
                                                               <i class="icon-paste"></i>

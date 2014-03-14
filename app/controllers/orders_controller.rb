@@ -17,10 +17,10 @@ class OrdersController < ApplicationController
   # GET /orders/new
   def new
     @order = Order.new
-    @order.order_date = Time.now
-    @order.order_deadline = Time.now + 7.days
-    @order.payment_deadline = Time.now + 3.days
-    @order.shipping_date = Time.now
+    @order.order_date = (Time.now).strftime("%Y-%m-%d")
+    @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
+    @order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
+    @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
     @order.warranty_place = "Tận nơi"
     @order.warranty_cost = "0"
   end

@@ -255,7 +255,7 @@
       <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
 	<%= link_to products_url do %>
 	  <i class="icon-archive"></i>
-	  <span class="title" onclick="window.location='<%= url_for products_url %>'">Products</span>
+	  <span class="title">Products</span>
 	  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 	<% end %>
 	<ul class="sub-menu">
@@ -268,7 +268,7 @@
       <li <% if params[:controller] == "contacts" %> class="active open"<% end %>>
 	<%= link_to contacts_url do %>
 	  <i class="icon-user"></i>
-	  <span class="title" onclick="window.location='<%= url_for contacts_url %>'">Contacts</span>
+	  <span class="title">Contacts</span>
 	  <span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
 	<% end %>
 	<ul class="sub-menu">
@@ -685,6 +685,7 @@
 		    $('input[name="order[buyer_phone]"]').val(data.phone);
 		    $('input[name="order[buyer_fax]"]').val(data.fax);
 		    $('input[name="order[buyer_address]"]').val(data.address);
+		    $('input[name="order[shipping_place]"]').val(data.address);		    
 		    $('input[name="order[buyer_email]"]').val(data.email);
 		    
 		    //$('.order-form-agent-select').show();
@@ -705,6 +706,7 @@
 	    $('input[name="order[buyer_phone]"]').val("");
 	    $('input[name="order[buyer_fax]"]').val("");
 	    $('input[name="order[buyer_address]"]').val("");
+	    $('input[name="order[shipping_place]"]').val("");
 	    $('input[name="order[buyer_email]"]').val("");
 	}
       }
@@ -978,6 +980,19 @@
 	    
 	    //format typping price
 	    $('input.price_input').number( true, 0 );
+	    
+	    //show order
+	    //action for add agent button
+	    $('.show_order').fancybox({
+		    width: "80%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    //$(".ajax_outer .modern_select").select2();
+			}
+		    }
+	    });
 	    
       });
 </script>

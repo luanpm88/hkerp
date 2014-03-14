@@ -93,10 +93,12 @@
                                   <i class=""></i>
                                   <select name="order_detail[supplier_id]" class="modern_select" style="min-width: 400px;">
                                     <option value="">Select Supplier</option>
-                                    <% Contact.all.each do |contact| %>
-                                        <option value="<%= contact.id %>" <% if !@order_detail.supplier.nil? && @order_detail.supplier.id == contact.id %>selected="selected"<% end %>>
-                                          <%= contact.name %>
-                                        </option>
+                                    <% Contact.main_contacts.each do |contact| %>
+					<% if contact.is_main %>
+					     <option value="<%= contact.id %>" <% if !@order_detail.supplier.nil? && @order_detail.supplier.id == contact.id %>selected="selected"<% end %>>
+					       <%= contact.name %>
+					     </option>
+					<% end %>
                                     <% end %>
                                   </select>
                                 </div>

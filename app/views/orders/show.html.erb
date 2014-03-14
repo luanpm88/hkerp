@@ -25,17 +25,17 @@
       border-left: none;
       padding: 5px;
       text-align: center;
-      font-size: 12px;
+      font-size: 14px;
   }
   table th, table td, p, div, span
   {
-    font-size: 10px;
+    font-size: 14px;
     font-family: Arial;
   }
   
   .cominfo table th, .cominfo table td, .cominfo p, .cominfo div, .cominfo span, .cominfo label
   {
-    font-size: 10px;
+    font-size: 14px;
   }
   
   table td
@@ -52,7 +52,7 @@
   }
   p
   {
-    margin-bottom: 7px;
+    margin-bottom: 15px;
     margin-top: 0;
     min-height: 11px;
   }
@@ -74,27 +74,34 @@
   }
   .middle1 label
   {
-    width:103px;
+    width:133px;
     display: block;
     float: left;
   }
   .middle2 label
   {
-    width:145px;
+    width:185px;
     display: block;
     float: left;
   }
   
 .middle2 span {
     float: left;
-    line-height: 12px;
-    margin-left: 145px;
-    margin-top: -12px;
+    line-height: 16px;
+    margin-left: 185px;
+    margin-top: -14px;
+    padding-bottom: 5px;
+}
+.middle3 span {
+    float: left;
+    line-height: 16px;
+    margin-left: 133px;
+    margin-top: -14px;
     padding-bottom: 5px;
 }
   .middle3 label
   {
-    width:103px;
+    width:133px;
     display: block;
     float: left;
   }
@@ -104,12 +111,52 @@
     display: block;
     float: left;
   }
+  
+  .btn-primary {
+    background-image: linear-gradient(to bottom, #428BCA 0px, #2D6CA2 100%);
+    background-repeat: repeat-x;
+    border-color: #2B669A;
+}
+.btn {
+    background-color: #D1DADE;
+    background-image: none !important;
+    border: medium none;
+    box-shadow: none;
+    color: #5E5E5E;
+    cursor: pointer;
+    display: inline-block;
+    font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin-bottom: 10px;
+    padding: 7px 12px 9px;
+    text-align: center;
+    text-shadow: none;
+    transition: all 0.12s linear 0s !important;
+    vertical-align: middle;
+    margin-top: 10px;
+    text-decoration: none;
+    
+}
+
+.btn-cons {
+    margin-bottom: 8px;
+    margin-right: 5px;
+    min-width: 120px;
+}
+
+  .btn-success {
+    background-color: #0090D9;
+    color: #FFFFFF;
+}
+
 </style>
+<div style="text-align:right"><%= link_to ' Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-success btn-xs btn-mini", :target => "_blank" %></div>
+<div class="wrapper" style="padding: 10px;border: solid 1px #aaa; background: #fff">
+
 
 <table class="cominfo">
   <tr>
-    <td rowspan="2" width="18%">
-      <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="95" valign="top" />
+    <td rowspan="2" width="15%">
+      <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
     </td>
     <td colspan="2">
       <h2><%= @hk.name %></h2>
@@ -142,7 +189,7 @@
     </td>
   </tr>
   <tr>
-    <td class="middle2" width="496px" style="padding-top: 5px;border-top: solid 0px #000">
+    <td class="middle2" width="605px" style="padding-top: 5px;border-top: solid 0px #000">
       <p><label>Họ tên người mua hàng: </label><%= @order.buyer_name %></p>
       <p><label>Tên đơn vị: </label><%= @order.buyer_company %></p>
       <p><label>Mã số thuế: </label><%= @order.buyer_tax_code %></p>
@@ -150,10 +197,11 @@
       <p><label>Hình thức thanh toán: </label><%= @order.payment_method.name  if !@order.payment_method.nil? %></p>
     </td>
     <td class="middle3" style="padding-top: 5px;border-top: solid 0px #000" valign="top">
+      <p></p>
       <p><label>Email: </label><%= @order.buyer_email %></p>
       <p><label>ĐT: </label><%= @order.buyer_phone %></p>
       <p><label>Fax: </label><%= @order.buyer_fax %></p>
-      <p><label>Giao hàng tại: </label><%= @order.shipping_place %></p>
+      <!--<p><label>Giao hàng tại: </label><span><%= @order.shipping_place %></span></p>-->
       <p><label>Thời hạn TT: </label><%= @order.payment_deadline.strftime("%d/%m/%Y") %></p>
     </td>
   </tr>
@@ -231,13 +279,13 @@
 <p>
   <table>
     <tr>
-      <td width="90px">4.	Thanh toán:</td>
-      <td><%= @order.deposit %>% giá trị đơn hàng sau khi xác nhận đặt hàng.</td>
+      <td width="115px">4.	Thanh toán:</td>
+      <td><%= @order.deposit if !@order.deposit.nil? %>% giá trị đơn hàng sau khi xác nhận đặt hàng.</td>
       <td></td>
     </tr>
     <tr>
       <td></td>
-      <td><%= 100 - @order.deposit %>% giá trị đơn hàng sau khi nhận hàng		</td>
+      <td><%= 100 - @order.deposit if !@order.deposit.nil? %>% giá trị đơn hàng sau khi nhận hàng		</td>
       <td></td>
     </tr>
   </table>
@@ -266,8 +314,10 @@
       <td width="33%" align="center" valign="top">
         <p><strong>Thông tin đặt hàng</strong></p>
         <p style="text-align:left"><label style="font-weight: normal">Địa điểm giao hàng: <%= @order.shipping_place %></label></p>
-        <p style="text-align:left"><label style="font-weight: normal">Ngày đặt hàng: <%= @order.shipping_date.strftime("%d/%m/%Y") %></label></p>
-        <p style="text-align:left"><label style="font-weight: normal">Thời gian giao hàng trong vòng <%= @order.shipping_time %> ngày sau khi đặt hàng</label></p>
+        <p style="text-align:left"><label style="font-weight: normal">Ngày đặt hàng: <%= @order.shipping_date.strftime("%d/%m/%Y") if !@order.shipping_date.nil? %></label></p>
+        <% if !@order.shipping_time.nil? && @order.shipping_time != '' %>
+          <p style="text-align:left"><label style="font-weight: normal">Thời gian giao hàng trong vòng <%= @order.shipping_time %> ngày sau khi đặt hàng</label></p>
+        <% end %>
       </td>
       <td width="33%" align="center" valign="top">
         <p><strong>Đại diện kinh doanh</strong></p>
@@ -275,3 +325,6 @@
 
   </tr>
 </table>
+
+</div>
+<div style="text-align:right"><%= link_to ' Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-success btn-xs btn-mini", :target => "_blank" %></div>
