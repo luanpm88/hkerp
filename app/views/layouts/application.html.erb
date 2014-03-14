@@ -919,6 +919,7 @@
 			},
 			error: function(jqXHR, textStatus, errorThrown)
 			{
+			      $('.order_supplier_history').html("");
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
 			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
@@ -970,6 +971,7 @@
 		    }
 	    });
 	    
+	    updateOrderPrices();
 	    $('select[name="order[tax_id]"]').live("change", function(){
 		updateOrderPrices();
 	    });
