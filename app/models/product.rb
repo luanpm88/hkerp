@@ -17,4 +17,9 @@ class Product < ActiveRecord::Base
     
     return @html
   end
+  
+  def price=(new_price)
+    self[:price] = new_price.gsub(/\,/, '')
+  end
+  
 end

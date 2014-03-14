@@ -29,4 +29,12 @@ class OrderDetail < ActiveRecord::Base
     number_to_currency(supplier_price, precision: 0, unit: '', delimiter: ".")
   end
   
+  def price=(new_price)
+    self[:price] = new_price.gsub(/\,/, '')
+  end
+  
+  def supplier_price=(new_price)
+    self[:supplier_price] = new_price.gsub(/\,/, '')
+  end
+  
 end

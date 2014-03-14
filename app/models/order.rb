@@ -53,6 +53,10 @@ class Order < ActiveRecord::Base
     number_to_currency(total, precision: 0, unit: '', delimiter: ".")
   end
   
+  def warranty_cost=(new_warranty_cost)
+    self[:warranty_cost] = new_warranty_cost.gsub(/\,/, '')
+  end
+  
   def create_quotation_code
     lastest = Order.where("order_date::text LIKE :val", :val => order_date.strftime("%Y")+"-"+order_date.strftime("%m")+"%").order("quotation_code DESC").first
     

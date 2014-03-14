@@ -99,7 +99,7 @@
 					<div class="user-details"> 
 						<div class="username">
 							<span class="badge badge-important">3</span> 
-							Logged in as <span class="bold"><%= current_user.email %></span>									
+							Logged in as <span class="bold"><%= current_user.first_name + " " + current_user.last_name %></span>									
 						</div>						
 					</div> 
 					<div class="iconset top-down-arrow"></div>
@@ -702,6 +702,9 @@
 	    $('input[name="order[buyer_email]"]').val("");
 	}
       }
+      
+      
+      $( document ).ready(function() {
   
 	////TABLES
 	//Too Small for new file - Helps the to tick all options in the table 
@@ -832,6 +835,8 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
+			    //format typping price
+			      $('input.price_input').number( true, 0 );
 			}
 		    }
 	    });
@@ -873,7 +878,7 @@
 			    $(".ajax_outer .modern_select").select2();
 			}
 			
-			updateOrderPrices();
+			updateOrderPrices();			
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {
@@ -963,9 +968,10 @@
 		updateOrderPrices();
 	    });
 	    
+	    //format typping price
+	    $('input.price_input').number( true, 0 );
 	    
-	    
-	
+      });
 </script>
 <%= javascript_include_tag "form_validations.js" %>
 <%= javascript_include_tag "form_elements.js" %>
