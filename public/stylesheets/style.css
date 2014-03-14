@@ -7426,6 +7426,7 @@ ul.my-friends li .profile-pic{
 .product_order_list {
     float: left;
     margin-bottom: 20px;
+    width: 100%;
 }
 .product_order_list ul {
     float: left;
@@ -7440,14 +7441,14 @@ ul.my-friends li .profile-pic{
     display: block;
     float: left;
     list-style: none outside none;
-    min-width: 102px;
+    width: 10%;
     padding: 15px;
 }
 .product_order_list ul li.price, .product_order_list ul li.supplier_price, .product_order_list ul li.price_total{
     text-align: right
 }
 .product_order_list ul li.name {
-    width: 240px;
+    width: 30%;
 }
 .product_order_list ul.footer li
 {
@@ -7455,6 +7456,6 @@ ul.my-friends li .profile-pic{
 }
 .product_order_list ul.footer li.sum
 {
-    width: 204px;
+    width: 20%;
     text-align: right;
 }
