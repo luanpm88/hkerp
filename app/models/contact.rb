@@ -1,5 +1,5 @@
 class Contact < ActiveRecord::Base
-  validates :name, presence: true
+  validates :name, presence: true, :uniqueness => true
   validates :contact_type_id, presence: true
   
   has_many :parent_contacts, :dependent => :destroy
