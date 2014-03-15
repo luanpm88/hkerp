@@ -9,11 +9,8 @@
                                     <li class="quantity"><%= order_detail.quantity %></li>
                                     <li class="price_total" rel="<%= order_detail.total %>"><%= order_detail.formated_total %></li>
                                     <li class="warranty"><%= order_detail.warranty %></li>
-                                    <li class="action">
-                                      <%= link_to 'Delete', ajax_destroy_order_details_path(:id => order_detail.id), :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail", data: { confirm: 'Are you sure?' } %>
-                                      <%= link_to ajax_edit_order_details_path(:id => order_detail.id), :class => "btn btn-info btn-xs btn-mini edit-order-detail fancybox.ajax" do %>							
-                                          <i class="icon-paste"></i>
-                                          Edit
-                                      <% end %>
+                                    <li class="action">                                      
+                                      <%= link_to '<i class="icon-paste"></i>'.html_safe, ajax_edit_order_details_path(:id => order_detail.id), :class => "btn btn-info btn-xs btn-mini edit-order-detail fancybox.ajax" %>
+                                      <%= link_to 'X', ajax_destroy_order_details_path(:id => order_detail.id), :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail", data: { confirm: 'Are you sure?' } %>
                                     </li>
                                   </ul>

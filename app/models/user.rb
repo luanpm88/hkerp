@@ -15,4 +15,12 @@ class User < ActiveRecord::Base
     roles.any? { |r| r.name.underscore.to_sym == role_sym }
   end
   
+  def name
+    if !first_name.nil?
+      first_name + " " + last_name
+    else
+      email.gsub(/@(.+)/,'')
+    end
+  end
+  
 end

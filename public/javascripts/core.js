@@ -1,4 +1,4 @@
-$(document).ready(function() {		
+$(document).on('page:load',function() {		
 	calculateHeight();
 	$(".remove-widget").click(function() {		
 		$(this).parent().parent().parent().addClass('animated fadeOut');

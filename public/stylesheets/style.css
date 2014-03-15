@@ -7459,3 +7459,7 @@ ul.my-friends li .profile-pic{
     width: 20%;
     text-align: right;
 }
+.tmp_hide
+{
+    display: none;
+}

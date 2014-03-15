@@ -34,10 +34,10 @@
 							<label for="checkbox10"></label>
 						    </div>
                                                 </th>
-                                                <th width="25%">Name</th>
+                                                <th colspan="2" width="30%">Name</th>
                                                 <th>Info</th>
                                                 <th width="15%">Agents</th>
-                                                <th width="20%">Action</th>   
+                                                <th style="width: 115px;">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -51,7 +51,7 @@
                                                               <label for="checkbox1<%= contact.id %>"></label>
                                                           </div>
                                                   </td>
-                                                  <td><%= contact.name %></td>
+                                                  <td colspan="2"><strong><%= contact.name %></strong></td>
                                                   <td>
                                                     <%= contact.html_info_line.html_safe %>
                                                   </td>
@@ -67,24 +67,23 @@
                                                     </div>
                                                   </td>
                                                   <td>
-                                                          <%= link_to 'Show', contact, :class => "btn btn-success btn-xs btn-mini" %>
-                                                          <%= link_to edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" do %>							
-                                                              <i class="icon-paste"></i>
-                                                              Edit
-                                                          <% end %>
-                                                          <%= link_to 'Destroy', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                          <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, contact, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+                                                          <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" %>							                                                              
+                                                          <%= link_to 'X', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                                   </td>
                                                 </tr>
                                                 
                                                 <% contact.children.each do |child_contact| %>
-                                                  <tr>
-                                                    <td class="v-align-middle">
+                                                  <tr class="child_contact">
+                                                    <td class="v-align-middle">                                                            
+                                                    </td>
+						    <td class="v-align-middle">
                                                             <div class="checkbox check-default">
                                                                 <input id="checkbox1<%= child_contact.id %>" type="checkbox" value="<%= child_contact.id %>">
                                                                 <label for="checkbox1<%= child_contact.id %>"></label>
                                                             </div>
                                                     </td>
-                                                    <td>-- <%= child_contact.name %></td>
+                                                    <td class="name"><%= child_contact.name %></td>
                                                     <td>
                                                       <%= child_contact.html_info_line.html_safe %>
                                                     </td>
@@ -100,12 +99,9 @@
                                                       </div>
                                                     </td>
                                                     <td>
-                                                            <%= link_to 'Show', child_contact, :class => "btn btn-success btn-xs btn-mini" %>
-                                                            <%= link_to edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" do %>							
-                                                                <i class="icon-paste"></i>
-                                                                Edit
-                                                            <% end %>
-                                                            <%= link_to 'Destroy', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                            <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_contact, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+                                                            <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" %>							
+                                                            <%= link_to 'x', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                                     </td>
                                                   </tr>
                                                 <% end %>
@@ -119,12 +115,13 @@
 			
                         
                         
-
-<h2>Import Contacts</h2>
-<%= form_tag import_contacts_path, multipart: true do %>
-  <%= file_field_tag :file %>
-  <%= submit_tag "Import" %>
-<% end %>
+		    <div class="tmp_hide">
+			<h2>Import Contacts</h2>
+			<%= form_tag import_contacts_path, multipart: true do %>
+			  <%= file_field_tag :file %>
+			  <%= submit_tag "Import" %>
+			<% end %>
+		    </div>
 
 
                     </div>
