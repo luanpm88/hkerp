@@ -49,434 +49,6 @@
 
 
 
-<!-- END CHAT --> 
-<!-- END CONTAINER --> 
-		
-<!-- BEGIN CORE JS FRAMEWORK-->
-<%= javascript_include_tag "jquery-1.8.3.min.js" %>
-<%= javascript_include_tag "jquery-ui-1.10.1.custom.min.js" %>
-<%= javascript_include_tag "bootstrap.min.js" %>
-<%= javascript_include_tag "breakpoints.js" %>
-<%= javascript_include_tag "jquery.unveil.min.js" %>
-<!-- END CORE JS FRAMEWORK --> 
-<!-- BEGIN PAGE LEVEL JS -->
-<%= javascript_include_tag "jquery.sidr.min.js" %>
-<%= javascript_include_tag "jqueryblockui.js" %>
-<%= javascript_include_tag "bootstrap-datepicker.js" %>
-<%= javascript_include_tag "bootstrap-timepicker.min.js" %>
-<%= javascript_include_tag "bootstrap-colorpicker.js" %>
-<%= javascript_include_tag "jquery.inputmask.min.js" %>
-<%= javascript_include_tag "autoNumeric.js" %>
-<%= javascript_include_tag "ios7-switch.js" %>
-<%= javascript_include_tag "wysihtml5-0.3.0.js" %>
-<%= javascript_include_tag "bootstrap-wysihtml5.js" %>
-<%= javascript_include_tag "bootstrap-tagsinput.min.js" %>
-<%= javascript_include_tag "dropzone.min.js" %>
-<%= javascript_include_tag "jquery.animateNumbers.js" %>
-<%= javascript_include_tag "pace.min.js" %>
-<%= javascript_include_tag "bootstrap-datepicker.js" %>
-<%= javascript_include_tag "select2.min.js" %>
-<%= javascript_include_tag "jquery.slimscroll.min.js" %>
-<%= javascript_include_tag "jquery.bootstrap.wizard.min.js" %>
-<%= javascript_include_tag "jquery.validate.min.js" %>
-<%= javascript_include_tag "jqueryblockui.js" %>
-<%= javascript_include_tag "jquery.sidr.min.js" %>
-<%= javascript_include_tag "jquery-sparkline.js" %>
-<%= javascript_include_tag "jquery.animateNumbers.js" %>
-<%= javascript_include_tag "jquery.filtertable.js" %>
-<%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
-<%= javascript_include_tag "jquery.number.min.js" %>
-<!-- END PAGE LEVEL PLUGINS --> 	
-<script>
-    
-    function ReplaceNumberWithDots(yourNumber) {
-	//Seperates the components of the number
-	//var n= yourNumber.toString().split(".");
-	//Comma-fies the first part
-	yourNumber = yourNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-	//Combines the two sections
-	return yourNumber
-    }
-    
-    function updateOrderPrices()
-    {
-	var sum = 0;
-	$('#product-line-items .price_total').each(function() {
-	    sum = sum + parseFloat($(this).attr("rel"));
-	});
-	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select[name="order[tax_id]"] option:selected').attr("rel"))/100 + 1)).toFixed(0));
-	sum = ReplaceNumberWithDots(sum.toFixed(0));
-	$('.product_order_list .footer.line1 .price_total').html(sum);
-	$('.product_order_list .footer.line2 .price_total').html(sumvat);
-	
-	//update tax name
-	$('.order_tax_name').html($('select[name="order[tax_id]"] option:selected').html());
-    }
-    
-    function updateOrderAgentFormInfo(customer_id)
-    {
-	if (customer_id != "") {
-	    $.ajax(
-	    {
-		url : '<%= ajax_list_agent_contacts_path %>',
-		type: "GET",
-		data: "id="+customer_id,
-		success:function(data, textStatus, jqXHR)
-		{		    
-		    $('.order-form-agent-select .select_inner').html(data);
-		    $('select[name="order[agent_id]"]').select2();
-		    if($('.order-form-agent-select select option').length > 1)
-		    {
-			$('.order-form-agent-select').show();
-		    }
-		    else
-		    {
-			$('.order-form-agent-select').val("");
-			$('.order-form-agent-select').hide();
-		    }
-		    
-		    $('input[name="order[buyer_name]"]').val("");
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-			alert("error");
-		}
-	    });
-	}
-    }
-      
-      function updateOrderCustomerFormInfo(customer_id)
-      {
-	if (customer_id != "") {
-	    $.ajax(
-	    {
-		url : '<%= ajax_show_contacts_path %>',
-		type: "GET",
-		data: "id="+customer_id,
-		success:function(data, textStatus, jqXHR)
-		{
-		    $('input[name="order[buyer_company]"]').val(data.name);
-		    $('input[name="order[buyer_tax_code]"]').val(data.tax_code);
-		    $('input[name="order[buyer_phone]"]').val(data.phone);
-		    $('input[name="order[buyer_fax]"]').val(data.fax);
-		    $('input[name="order[buyer_address]"]').val(data.address);
-		    $('input[name="order[shipping_place]"]').val(data.address);		    
-		    $('input[name="order[buyer_email]"]').val(data.email);
-		    
-		    //$('.order-form-agent-select').show();
-		    updateOrderAgentFormInfo(customer_id);
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-			alert("error");
-		}
-	    });
-	}
-	else
-	{
-	    $('.order-form-agent-select').val("");
-	    $('.order-form-agent-select').hide();
-	    $('input[name="order[buyer_company]"]').val("");
-	    $('input[name="order[buyer_tax_code]"]').val("");
-	    $('input[name="order[buyer_phone]"]').val("");
-	    $('input[name="order[buyer_fax]"]').val("");
-	    $('input[name="order[buyer_address]"]').val("");
-	    $('input[name="order[shipping_place]"]').val("");
-	    $('input[name="order[buyer_email]"]').val("");
-	}
-      }
-      
-      
-      $(document).on('page:load',function() {
-  
-	////TABLES
-	//Too Small for new file - Helps the to tick all options in the table 
-	$('table .checkbox input').click( function() {			
-		if($(this).is(':checked')){			
-			$(this).parent().parent().parent().toggleClass('row_selected');					
-		}
-		else{	
-		$(this).parent().parent().parent().toggleClass('row_selected');		
-		}
-	});
-	// Demo charts - not required 
-	$('.customer-sparkline').each(function () {	
-		$(this).sparkline('html', { type:$(this).attr("data-sparkline-type"), barColor:$(this).attr("data-sparkline-color") , enableTagOptions: true });	
-	});
-	
-	//Multiselect for all
-	$(".multi_select").select2();
-	$(".modern_select").select2();
-	$(".datetime select").select2();
-	
-	//filter table
-	$('table').filterTable();
-	
-	//action for add agent button
-	$('#add-agent-button').fancybox({
-		width: "70%",
-		height: "100%",
-		autoSize: false,
-		ajax: {
-		    complete: function(jqXHR, textStatus) {
-			$(".ajax_outer .modern_select").select2();
-		    }
-		}
-	});
-	
-	//submit ajax form
-	//callback handler for form submit
-	$("#ajax-contact-form").live("submit", function(e)
-	{
-	    var postData = $(this).serializeArray();
-	    var formURL = $(this).attr("action");
-	    
-	    $(this).find(".btn[type='submit']").addClass("btn-submitting");
-	    
-	    $.ajax(
-	    {
-		url : formURL,
-		type: "POST",
-		data : postData,
-		success:function(data, textStatus, jqXHR)
-		{
-		    if($('<div/>').html(data).find("#ajax-success-result").length)
-		    {
-		      $.fancybox.close();
-		      $('#agents-list').append($('<div/>').html(data).find("#ajax-success-result").html());
-		    }
-		    else
-		    {
-		      $('.fancybox-inner').html(data);
-		      $('.fancybox-inner').scrollTop(0)
-		      $(".ajax_outer .modern_select").select2();
-		    }		    
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-		    alert("error");
-		}
-	    });
-	    e.preventDefault(); //STOP default action
-	});
-	
-	//prevent submit while submitting form
-	$('.btn-submitting').live("click", function(e){ e.preventDefault(); });
-	
-	//Delete agent in contact form
-	$('#agents-list .agent-line .delete_agent').live("click", function(e) {
-	    e.preventDefault(); //STOP default action
-
-	    var del_url = $(this).attr("href");
-	    var box = $(this).parents(".agent-line");
-	    
-	    $.ajax(
-	    {
-		url : del_url,
-		type: "GET",
-		success:function(data, textStatus, jqXHR)
-		{
-			box.fadeOut();	    
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-			alert("error");
-		}
-	    });	    
-	});
-	
-	    $('select[name="order[customer_id]"]').live("change", function() {
-		updateOrderCustomerFormInfo($(this).val());
-	    });
-	    
-	    
-	    if($('.order-form-agent-select select option').length > 1)
-	    {
-		$('.order-form-agent-select').show();
-	    }
-	    else
-	    {
-		$('.order-form-agent-select').val("");
-		$('.order-form-agent-select').hide();
-	    }
-	    $('select[name="order[agent_id]"]').live("change", function() {
-		if ($(this).val() != "") {
-		    $('input[name="order[buyer_name]"]').val($(this).find(":selected").text());
-		}
-		else
-		{
-		    $('input[name="order[buyer_name]"]').val("");
-		}
-	    });
-	    
-	    
-	    //action for add agent button
-	    $('#add-product-order-line-button').fancybox({
-		    width: "70%",
-		    height: "100%",
-		    autoSize: false,
-		    ajax: {
-			complete: function(jqXHR, textStatus) {
-			    $(".ajax_outer .modern_select").select2();
-			    //format typping price
-			      $('input.price_input').number( true, 0 );
-			}
-		    }
-	    });
-	    
-	    //submit ajax form
-	    //callback handler for form submit
-	    $("#ajax-order-detail-form").live("submit", function(e)
-	    {
-		var postData = $(this).serializeArray();
-		var formURL = $(this).attr("action");
-		
-		$(this).find(".btn[type='submit']").addClass("btn-submitting");
-		
-		$.ajax(
-		{
-		    url : formURL,
-		    type: "POST",
-		    data : postData,
-		    success:function(data, textStatus, jqXHR)
-		    {
-			if($('<div/>').html(data).find("#ajax-success-result").length)
-			{
-			  $.fancybox.close();
-			  
-			  var success_box = $('<div/>').html(data).find("#ajax-success-result");
-			  var saved_id = success_box.find("ul").attr("rel");
-			  if ($('#product-line-items ul[rel="'+saved_id+'"]').length) {
-			    $('#product-line-items ul[rel="'+saved_id+'"]').replaceWith(success_box.html());
-			  }
-			  else
-			  {
-			    $('#product-line-items').append(success_box.html());
-			  }
-			}
-			else
-			{
-			    $('.fancybox-inner').html(data);
-			    $('.fancybox-inner').scrollTop(0)
-			    $(".ajax_outer .modern_select").select2();
-			}
-			
-			updateOrderPrices();			
-		    },
-		    error: function(jqXHR, textStatus, errorThrown)
-		    {
-			alert("error");
-		    }
-		});
-		e.preventDefault(); //STOP default action
-	    });
-	    
-	    $('.ajax_outer select[name="order_detail[product_id]"]').live("change", function() {
-		var product_id = $(this).val();
-		if (product_id != "") {
-		    $.ajax(
-		    {
-			url : '<%= ajax_show_products_path %>',
-			type: "GET",
-			data: "id="+product_id,
-			success:function(respone, textStatus, jqXHR)
-			{
-			    //alert(respone.product.id);
-			    $('.order_supplier_history').html(respone.order_supplier_history);
-			    
-			    var data = respone.product;
-			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.name);
-			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
-			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
-			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
-			    $('.ajax_outer input[name="order_detail[price]"]').val(data.price);
-			    $('.ajax_outer input[name="order_detail[quantity]"]').val(data.quantity);
-			    $('.ajax_outer input[name="order_detail[warranty]"]').val(data.warranty);
-
-			},
-			error: function(jqXHR, textStatus, errorThrown)
-			{
-			      $('.order_supplier_history').html("");
-			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
-			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
-			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
-			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val("");
-			    $('.ajax_outer input[name="order_detail[price]"]').val("");
-			    $('.ajax_outer input[name="order_detail[quantity]"]').val("");
-			    $('.ajax_outer input[name="order_detail[warranty]"]').val("");
-			}
-		    });
-		}
-		else
-		{
-		    alert("empty");
-		}
-	    });
-	    
-	    //Delete agent in contact form
-	    $('#product-line-items .delete_product_order_detail').live("click", function(e) {
-		e.preventDefault(); //STOP default action
-    
-		var del_url = $(this).attr("href");
-		var box = $(this).parents("ul");
-		
-		$.ajax(
-		{
-		    url : del_url,
-		    type: "GET",
-		    success:function(data, textStatus, jqXHR)
-		    {
-			    box.remove();
-			    updateOrderPrices();
-		    },
-		    error: function(jqXHR, textStatus, errorThrown)
-		    {
-			    alert("error");
-		    }
-		});	    
-	    });	    
-	    
-	    //action for add agent button
-	    $('.edit-order-detail').fancybox({
-		    width: "70%",
-		    height: "100%",
-		    autoSize: false,
-		    ajax: {
-			complete: function(jqXHR, textStatus) {
-			    $(".ajax_outer .modern_select").select2();
-			}
-		    }
-	    });
-	    
-	    updateOrderPrices();
-	    $('select[name="order[tax_id]"]').live("change", function(){
-		updateOrderPrices();
-	    });
-	    
-	    //format typping price
-	    $('input.price_input').number( true, 0 );
-	    
-	    //show order
-	    //action for add agent button
-	    $('.show_order').fancybox({
-		    width: "80%",
-		    height: "100%",
-		    autoSize: false,
-		    ajax: {
-			complete: function(jqXHR, textStatus) {
-			    //$(".ajax_outer .modern_select").select2();
-			}
-		    }
-	    });
-	    
-      });
-</script>
-<%= javascript_include_tag "form_validations.js" %>
-<%= javascript_include_tag "form_elements.js" %>
-<!-- BEGIN CORE TEMPLATE JS -->
-<%= javascript_include_tag "core.js" %>
-<%= javascript_include_tag "demo.js" %>
-<!-- END CORE TEMPLATE JS --> 
 
 
 
@@ -1004,6 +576,441 @@
         </div>
     </div>
 </div>
+
+
+
+
+<!-- END CHAT --> 
+<!-- END CONTAINER --> 
+		
+<!-- BEGIN CORE JS FRAMEWORK-->
+<%= javascript_include_tag "jquery-1.8.3.min.js" %>
+<%= javascript_include_tag "jquery-ui-1.10.1.custom.min.js" %>
+<%= javascript_include_tag "bootstrap.min.js" %>
+<%= javascript_include_tag "breakpoints.js" %>
+<%= javascript_include_tag "jquery.unveil.min.js" %>
+<!-- END CORE JS FRAMEWORK --> 
+<!-- BEGIN PAGE LEVEL JS -->
+<%= javascript_include_tag "jquery.sidr.min.js" %>
+<%= javascript_include_tag "jqueryblockui.js" %>
+<%= javascript_include_tag "bootstrap-datepicker.js" %>
+<%= javascript_include_tag "bootstrap-timepicker.min.js" %>
+<%= javascript_include_tag "bootstrap-colorpicker.js" %>
+<%= javascript_include_tag "jquery.inputmask.min.js" %>
+<%= javascript_include_tag "autoNumeric.js" %>
+<%= javascript_include_tag "ios7-switch.js" %>
+<%= javascript_include_tag "wysihtml5-0.3.0.js" %>
+<%= javascript_include_tag "bootstrap-wysihtml5.js" %>
+<%= javascript_include_tag "bootstrap-tagsinput.min.js" %>
+<%= javascript_include_tag "dropzone.min.js" %>
+<%= javascript_include_tag "jquery.animateNumbers.js" %>
+<%= javascript_include_tag "pace.min.js" %>
+<%= javascript_include_tag "bootstrap-datepicker.js" %>
+<%= javascript_include_tag "select2.min.js" %>
+<%= javascript_include_tag "jquery.slimscroll.min.js" %>
+<%= javascript_include_tag "jquery.bootstrap.wizard.min.js" %>
+<%= javascript_include_tag "jquery.validate.min.js" %>
+<%= javascript_include_tag "jqueryblockui.js" %>
+<%= javascript_include_tag "jquery.sidr.min.js" %>
+<%= javascript_include_tag "jquery-sparkline.js" %>
+<%= javascript_include_tag "jquery.animateNumbers.js" %>
+<%= javascript_include_tag "jquery.filtertable.js" %>
+<%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
+<%= javascript_include_tag "jquery.number.min.js" %>
+<!-- END PAGE LEVEL PLUGINS --> 	
+<script>
+    
+    function ReplaceNumberWithDots(yourNumber) {
+	//Seperates the components of the number
+	//var n= yourNumber.toString().split(".");
+	//Comma-fies the first part
+	yourNumber = yourNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	//Combines the two sections
+	return yourNumber
+    }
+    
+    function updateOrderPrices()
+    {
+	var sum = 0;
+	$('#product-line-items .price_total').each(function() {
+	    sum = sum + parseFloat($(this).attr("rel"));
+	});
+	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select[name="order[tax_id]"] option:selected').attr("rel"))/100 + 1)).toFixed(0));
+	sum = ReplaceNumberWithDots(sum.toFixed(0));
+	$('.product_order_list .footer.line1 .price_total').html(sum);
+	$('.product_order_list .footer.line2 .price_total').html(sumvat);
+	
+	//update tax name
+	$('.order_tax_name').html($('select[name="order[tax_id]"] option:selected').html());
+    }
+    
+    function updateOrderAgentFormInfo(customer_id)
+    {
+	if (customer_id != "") {
+	    $.ajax(
+	    {
+		url : '<%= ajax_list_agent_contacts_path %>',
+		type: "GET",
+		data: "id="+customer_id,
+		success:function(data, textStatus, jqXHR)
+		{		    
+		    $('.order-form-agent-select .select_inner').html(data);
+		    $('select[name="order[agent_id]"]').select2();
+		    if($('.order-form-agent-select select option').length > 1)
+		    {
+			$('.order-form-agent-select').show();
+		    }
+		    else
+		    {
+			$('.order-form-agent-select').val("");
+			$('.order-form-agent-select').hide();
+		    }
+		    
+		    $('input[name="order[buyer_name]"]').val("");
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			alert("error");
+		}
+	    });
+	}
+    }
+      
+      function updateOrderCustomerFormInfo(customer_id)
+      {
+	if (customer_id != "") {
+	    $.ajax(
+	    {
+		url : '<%= ajax_show_contacts_path %>',
+		type: "GET",
+		data: "id="+customer_id,
+		success:function(data, textStatus, jqXHR)
+		{
+		    $('input[name="order[buyer_company]"]').val(data.name);
+		    $('input[name="order[buyer_tax_code]"]').val(data.tax_code);
+		    $('input[name="order[buyer_phone]"]').val(data.phone);
+		    $('input[name="order[buyer_fax]"]').val(data.fax);
+		    $('input[name="order[buyer_address]"]').val(data.address);
+		    $('input[name="order[shipping_place]"]').val(data.address);		    
+		    $('input[name="order[buyer_email]"]').val(data.email);
+		    
+		    //$('.order-form-agent-select').show();
+		    updateOrderAgentFormInfo(customer_id);
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			alert("error");
+		}
+	    });
+	}
+	else
+	{
+	    $('.order-form-agent-select').val("");
+	    $('.order-form-agent-select').hide();
+	    $('input[name="order[buyer_company]"]').val("");
+	    $('input[name="order[buyer_tax_code]"]').val("");
+	    $('input[name="order[buyer_phone]"]').val("");
+	    $('input[name="order[buyer_fax]"]').val("");
+	    $('input[name="order[buyer_address]"]').val("");
+	    $('input[name="order[shipping_place]"]').val("");
+	    $('input[name="order[buyer_email]"]').val("");
+	}
+      }
+      
+      
+      $(document).ready(function() {
+  
+	////TABLES
+	//Too Small for new file - Helps the to tick all options in the table 
+	$('table .checkbox input').click( function() {			
+		if($(this).is(':checked')){			
+			$(this).parent().parent().parent().toggleClass('row_selected');					
+		}
+		else{	
+		$(this).parent().parent().parent().toggleClass('row_selected');		
+		}
+	});
+	// Demo charts - not required 
+	$('.customer-sparkline').each(function () {	
+		$(this).sparkline('html', { type:$(this).attr("data-sparkline-type"), barColor:$(this).attr("data-sparkline-color") , enableTagOptions: true });	
+	});
+	
+	//Multiselect for all
+	$(".multi_select").select2();
+	$(".modern_select").select2();
+	$(".datetime select").select2();
+	
+	//filter table
+	$('table').filterTable();
+	
+	//action for add agent button
+	$('#add-agent-button').fancybox({
+		width: "70%",
+		height: "100%",
+		autoSize: false,
+		ajax: {
+		    complete: function(jqXHR, textStatus) {
+			$(".ajax_outer .modern_select").select2();
+		    }
+		}
+	});
+	
+	//submit ajax form
+	//callback handler for form submit
+	$("#ajax-contact-form").live("submit", function(e)
+	{
+	    var postData = $(this).serializeArray();
+	    var formURL = $(this).attr("action");
+	    
+	    $(this).find(".btn[type='submit']").addClass("btn-submitting");
+	    
+	    $.ajax(
+	    {
+		url : formURL,
+		type: "POST",
+		data : postData,
+		success:function(data, textStatus, jqXHR)
+		{
+		    if($('<div/>').html(data).find("#ajax-success-result").length)
+		    {
+		      $.fancybox.close();
+		      $('#agents-list').append($('<div/>').html(data).find("#ajax-success-result").html());
+		    }
+		    else
+		    {
+		      $('.fancybox-inner').html(data);
+		      $('.fancybox-inner').scrollTop(0)
+		      $(".ajax_outer .modern_select").select2();
+		    }		    
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+		    alert("error");
+		}
+	    });
+	    e.preventDefault(); //STOP default action
+	});
+	
+	//prevent submit while submitting form
+	$('.btn-submitting').live("click", function(e){ e.preventDefault(); });
+	
+	//Delete agent in contact form
+	$('#agents-list .agent-line .delete_agent').live("click", function(e) {
+	    e.preventDefault(); //STOP default action
+
+	    var del_url = $(this).attr("href");
+	    var box = $(this).parents(".agent-line");
+	    
+	    $.ajax(
+	    {
+		url : del_url,
+		type: "GET",
+		success:function(data, textStatus, jqXHR)
+		{
+			box.fadeOut();	    
+		},
+		error: function(jqXHR, textStatus, errorThrown)
+		{
+			alert("error");
+		}
+	    });	    
+	});
+	
+	    $('select[name="order[customer_id]"]').live("change", function() {
+		updateOrderCustomerFormInfo($(this).val());
+	    });
+	    
+	    
+	    if($('.order-form-agent-select select option').length > 1)
+	    {
+		$('.order-form-agent-select').show();
+	    }
+	    else
+	    {
+		$('.order-form-agent-select').val("");
+		$('.order-form-agent-select').hide();
+	    }
+	    $('select[name="order[agent_id]"]').live("change", function() {
+		if ($(this).val() != "") {
+		    $('input[name="order[buyer_name]"]').val($(this).find(":selected").text());
+		}
+		else
+		{
+		    $('input[name="order[buyer_name]"]').val("");
+		}
+	    });
+	    
+	    
+	    //action for add agent button
+	    $('#add-product-order-line-button').fancybox({
+		    width: "70%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    $(".ajax_outer .modern_select").select2();
+			    //format typping price
+			      $('input.price_input').number( true, 0 );
+			}
+		    }
+	    });
+	    
+	    //submit ajax form
+	    //callback handler for form submit
+	    $("#ajax-order-detail-form").live("submit", function(e)
+	    {
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		
+		$(this).find(".btn[type='submit']").addClass("btn-submitting");
+		
+		$.ajax(
+		{
+		    url : formURL,
+		    type: "POST",
+		    data : postData,
+		    success:function(data, textStatus, jqXHR)
+		    {
+			if($('<div/>').html(data).find("#ajax-success-result").length)
+			{
+			  $.fancybox.close();
+			  
+			  var success_box = $('<div/>').html(data).find("#ajax-success-result");
+			  var saved_id = success_box.find("ul").attr("rel");
+			  if ($('#product-line-items ul[rel="'+saved_id+'"]').length) {
+			    $('#product-line-items ul[rel="'+saved_id+'"]').replaceWith(success_box.html());
+			  }
+			  else
+			  {
+			    $('#product-line-items').append(success_box.html());
+			  }
+			}
+			else
+			{
+			    $('.fancybox-inner').html(data);
+			    $('.fancybox-inner').scrollTop(0)
+			    $(".ajax_outer .modern_select").select2();
+			}
+			
+			updateOrderPrices();			
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+			alert("error");
+		    }
+		});
+		e.preventDefault(); //STOP default action
+	    });
+	    
+	    $('.ajax_outer select[name="order_detail[product_id]"]').live("change", function() {
+		var product_id = $(this).val();
+		if (product_id != "") {
+		    $.ajax(
+		    {
+			url : '<%= ajax_show_products_path %>',
+			type: "GET",
+			data: "id="+product_id,
+			success:function(respone, textStatus, jqXHR)
+			{
+			    //alert(respone.product.id);
+			    $('.order_supplier_history').html(respone.order_supplier_history);
+			    
+			    var data = respone.product;
+			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.name);
+			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
+			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
+			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
+			    $('.ajax_outer input[name="order_detail[price]"]').val(data.price);
+			    $('.ajax_outer input[name="order_detail[quantity]"]').val(data.quantity);
+			    $('.ajax_outer input[name="order_detail[warranty]"]').val(data.warranty);
+
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+			      $('.order_supplier_history').html("");
+			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
+			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
+			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
+			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val("");
+			    $('.ajax_outer input[name="order_detail[price]"]').val("");
+			    $('.ajax_outer input[name="order_detail[quantity]"]').val("");
+			    $('.ajax_outer input[name="order_detail[warranty]"]').val("");
+			}
+		    });
+		}
+		else
+		{
+		    alert("empty");
+		}
+	    });
+	    
+	    //Delete agent in contact form
+	    $('#product-line-items .delete_product_order_detail').live("click", function(e) {
+		e.preventDefault(); //STOP default action
+    
+		var del_url = $(this).attr("href");
+		var box = $(this).parents("ul");
+		
+		$.ajax(
+		{
+		    url : del_url,
+		    type: "GET",
+		    success:function(data, textStatus, jqXHR)
+		    {
+			    box.remove();
+			    updateOrderPrices();
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+			    alert("error");
+		    }
+		});	    
+	    });	    
+	    
+	    //action for add agent button
+	    $('.edit-order-detail').fancybox({
+		    width: "70%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    $(".ajax_outer .modern_select").select2();
+			}
+		    }
+	    });
+	    
+	    updateOrderPrices();
+	    $('select[name="order[tax_id]"]').live("change", function(){
+		updateOrderPrices();
+	    });
+	    
+	    //format typping price
+	    $('input.price_input').number( true, 0 );
+	    
+	    //show order
+	    //action for add agent button
+	    $('.show_order').fancybox({
+		    width: "80%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    //$(".ajax_outer .modern_select").select2();
+			}
+		    }
+	    });
+	    
+      });
+</script>
+<%= javascript_include_tag "form_validations.js" %>
+<%= javascript_include_tag "form_elements.js" %>
+<!-- BEGIN CORE TEMPLATE JS -->
+<%= javascript_include_tag "core.js" %>
+<%= javascript_include_tag "demo.js" %>
+<!-- END CORE TEMPLATE JS --> 
+
+
+
 
 </body>
 

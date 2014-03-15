@@ -1,4 +1,4 @@
-$(document).on('page:load',function() {				
+$(document).ready(function() {				
 	$(".select2").select2();
 			 
 	//Traditional form validation sample
