@@ -59,7 +59,7 @@
                                     <option value="">Select Product</option>
                                     <% Product.all.each do |product| %>
                                         <option value="<%= product.id %>" <% if !@order_detail.product.nil? && @order_detail.product.id == product.id %>selected="selected"<% end %>>
-                                          <%= product.name %>
+                                          <%= product.display_name %>
                                         </option>
                                     <% end %>
                                   </select>

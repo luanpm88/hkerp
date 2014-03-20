@@ -113,6 +113,11 @@
     display: block;
     float: left;
   }
+  .num_note td
+  {
+    font-size: 10px;
+  }
+  
 </style>
 <div class="page">
 <table class="cominfo">
@@ -173,18 +178,19 @@
   <tr>
     <th>STT<br />No.</th>
     <th>Mô tả<br />Description</th>
+    <th>Bảo hành<br />Warranty<br />(Đơn vị TG)</th>
     <th>Số lượng<br />Quantity<br />(Đơn vị tính)</th>
     <th>Đơn giá<br />Unit Price<br />VNĐ</th>
     <th>Tổng cộng<br />Total<br />VNĐ</th>
-    <th>Bảo hành<br />Warranty<br />(Đơn vị TG)</th>
+    
   </tr>
-  <tr>
-    <td>1</td>
-    <td>2</td>
-    <td>3</td>
-    <td>4</td>
-    <td>5 = 3 x 4</td>
-    <td>6</td>
+  <tr class="num_note">
+    <td>(1)</td>
+    <td>(2)</td>
+    <td>(3)</td>
+    <td>(4)</td>
+    <td>(5)</td>
+    <td>(6) = (4) x (5)</td>
   </tr>
 
     <% if !@order.order_details.nil? %>
@@ -197,28 +203,29 @@
               <%= order_detail.product_name %><br />
               <%= order_detail.product.description if !order_detail.product.description.nil? %>
             </td>
+            <td><%= order_detail.warranty %> (tháng)</td>
             <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
             <td style="text-align: right"><%= order_detail.formated_price %></td>
             <td style="text-align: right"><%= order_detail.formated_total %></td>
-            <td><%= order_detail.warranty %> (tháng)</td>
+            
           </tr>
       <% end %>
     <% end %>
   
   <tr>
-    <td colspan="4" style="text-align: right">Cộng tiền hàng</td>
+    <td colspan="5" style="text-align: right">Cộng tiền hàng</td>
     <td style="text-align: right"><%= @order.formated_total %></td>
-    <td></td>
+
   </tr>
   <tr>
-    <td colspan="4" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
+    <td colspan="5" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
     <td style="text-align: right"><%= @order.formated_vat_amount %></td>
-    <td></td>
+
   </tr>
   <tr>
-    <td colspan="4" style="text-align: right">Tổng cộng tiền thanh toán</td>
+    <td colspan="5" style="text-align: right">Tổng cộng tiền thanh toán</td>
     <td style="text-align: right"><%= @order.formated_total_vat %></td>
-    <td></td>
+
   </tr>
 </table>
 
@@ -258,7 +265,7 @@
   Mọi thông tin chi tiết xin Quý khách hàng vui lòng liên hệ: phòng kinh doanh: 3984 7690 _Ext:  102									
 </p>
 <p>
-  Email:	nguyendtd@hoangkhang.com.vn			ĐT Di Động:	091 873 4414		
+  Email:	<%= @order.salesperson.email %>			<% if !@order.salesperson.mobile.nil? %>; ĐT Di Động:	<%= @order.salesperson.mobile %><% end %>
 </p>
 <p></p>
 <p>

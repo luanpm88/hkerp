@@ -16,13 +16,17 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new
-    @order.order_date = (Time.now).strftime("%Y-%m-%d")
-    @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
-    @order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
-    @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
-    @order.warranty_place = "Tận nơi"
-    @order.warranty_cost = "0"
+    if !params[:old_id].nil?
+      @order = Order.find_by_id(params[:old_id]).new_order_history
+    else    
+      @order = Order.new
+      @order.order_date = (Time.now).strftime("%Y-%m-%d")
+      @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
+      @order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
+      @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
+      @order.warranty_place = "Tận nơi"
+      @order.warranty_cost = "0"
+    end
   end
 
   # GET /orders/1/edit
@@ -52,15 +56,48 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    respond_to do |format|
-      if @order.update(order_params)
-        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @order.errors, status: :unprocessable_entity }
+    
+    if !params[:dup].nil?
+      new_params = order_params
+      new_params[:order_detail_ids] = []
+      @dup_order = Order.new(new_params)
+      @dup_order.salesperson = current_user
+      @dup_order.create_quotation_code
+      
+      @dup_order.older = @order
+      
+      params[:order][:order_detail_ids].each do |id|
+        if @order.order_details.map(&:id).include?(id.to_i)
+          od = @order.order_details.find_by_id(id.to_i).dup
+          od.save
+          @dup_order.order_details << od
+        else
+          @dup_order.order_details << OrderDetail.find_by_id(id.to_i)
+        end
+      end
+      respond_to do |format|
+        if @dup_order.save
+          format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+          format.json { head :no_content }
+        else
+          @order = @dup_order
+          format.html { render action: 'edit' }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
+      end
+    else
+      respond_to do |format|
+        if @order.update(order_params)
+          format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+          format.json { head :no_content }
+        else
+          format.html { render action: 'edit' }
+          format.json { render json: @order.errors, status: :unprocessable_entity }
+        end
       end
     end
+    
+    
   end
 
   # DELETE /orders/1

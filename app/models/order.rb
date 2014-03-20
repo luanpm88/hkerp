@@ -17,6 +17,12 @@ class Order < ActiveRecord::Base
   
   #before_create :create_quotation_code
   
+  #has_one :older, :class_name => "Order", :foreign_key => "id"
+  #belongs_to :newer, :class_name => "Order", :foreign_key => "id"
+  
+  has_one :newer, class_name: "Order", foreign_key: "older_id"
+  belongs_to :older, class_name: "Order", :dependent => :destroy
+  
   def total
     total = 0;
     order_details.each {|item|
@@ -66,6 +72,43 @@ class Order < ActiveRecord::Base
     else
       self.quotation_code = "HK-"+order_date.strftime("%Y")+order_date.strftime("%m")+"-"+1.to_s.rjust(3, '0')
     end
+  end
+  
+  def clone_order
+    new_order = self.dup
+    new_order.order_details << self.order_details.collect { |item| item.dup }
+    
+    return new_order
+  end
+  
+  def new_order_history
+    new_order = self.clone_order
+    new_order.older = self
+    
+    new_order.create_quotation_code
+    
+    new_order.save
+    
+    return new_order
+  end
+  
+  def order_history_lines
+    arr = []
+    current = self
+    arr << current
+    while !(current = current.older).nil?
+      arr << current
+    end
+    
+    current = self.newer
+    if !current.nil?
+      arr.unshift(current)
+      while !(current = current.newer).nil?
+        arr.unshift(current)
+      end
+    end
+    
+    return arr
   end
 
 end

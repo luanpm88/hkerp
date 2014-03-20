@@ -1,7 +1,7 @@
                                   <ul rel="<%= order_detail.id %>">
                                     <li class="name">
                                       <input type="hidden" name="order[order_detail_ids][]" value="<%= order_detail.id %>" />
-                                      <%= order_detail.product.name %>
+                                      <%= order_detail.product.display_name %>
                                     </li>
                                     <li class="unit"><%= order_detail.unit %></li>
                                     <li class="supplier_price" rel="<%= order_detail.supplier_price %>"><%= order_detail.formated_supplier_price %></li>

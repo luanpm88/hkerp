@@ -46,23 +46,66 @@
                                         </thead>
                                         <tbody>
 					    <% @categories.each do |category| %>
-						<tr>
-						    <td class="v-align-middle">
-							<div class="checkbox check-default">
-							    <input id="checkbox11" type="checkbox" value="1">
-							    <label for="checkbox11"></label>
-							</div>
-						    </td>
-						    <td class="v-align-middle"><%= category.name %></td>
-						    <td class="v-align-middle"><%= category.description %></td>
+						<% if category.parent.count == 0 %>
+						    <tr>
+							<td class="v-align-middle">
+							    <div class="checkbox check-default">
+								<input id="checkbox<%= category.id %>" type="checkbox" value="<%= category.id %>">
+								<label for="checkbox<%= category.id %>"></label>
+							    </div>
+							</td>
+							<td class="v-align-middle"><%= category.name %></td>
+							<td class="v-align-middle"><%= category.description %></td>
+							
+						     
+							<td>
+							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, category, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(category), :class => "btn btn-info btn-xs btn-mini" %>							
+							    <%= link_to 'X', category, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+							</td>
+						    </tr>
 						    
-						 
-						    <td>
-							<%= link_to '<i class="icon-zoom-in"></i>'.html_safe, category, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-							<%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(category), :class => "btn btn-info btn-xs btn-mini" %>							
-							<%= link_to 'X', category, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
-						    </td>
-						</tr>
+						    <% category.children.each do |child_1| %>
+							    <tr>
+								<td class="v-align-middle">
+								    <div class="checkbox check-default">
+									<input id="checkbox<%= child_1.id %>" type="checkbox" value="<%= child_1.id %>">
+									<label for="checkbox<%= child_1.id %>"></label>
+								    </div>
+								</td>
+								<td class="v-align-middle">----<%= child_1.name %></td>
+								<td class="v-align-middle"><%= child_1.description %></td>
+								
+							     
+								<td>
+								    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_1, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(child_1), :class => "btn btn-info btn-xs btn-mini" %>							
+								    <%= link_to 'X', child_1, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+								</td>
+							    </tr>
+							    
+							    <% child_1.children.each do |child_2| %>
+								    <tr>
+									<td class="v-align-middle">
+									    <div class="checkbox check-default">
+										<input id="checkbox<%= child_2.id %>" type="checkbox" value="<%= child_2.id %>">
+										<label for="checkbox<%= child_2.id %>"></label>
+									    </div>
+									</td>
+									<td class="v-align-middle">--------<%= child_2.name %></td>
+									<td class="v-align-middle"><%= child_2.description %></td>
+									
+								     
+									<td>
+									    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_2, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(child_2), :class => "btn btn-info btn-xs btn-mini" %>							
+									    <%= link_to 'X', child_2, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+									</td>
+								    </tr>
+							    <% end %>
+						    <% end %>
+						    
+						<% end %>
 					    <% end %>
                                             
                                         </tbody>

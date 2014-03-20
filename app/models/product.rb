@@ -1,7 +1,11 @@
 class Product < ActiveRecord::Base
+  include ActionView::Helpers::NumberHelper
+  
   validates :name, presence: true
   validates :product_code, presence: true
   validates :unit, presence: true
+  validates :categories, presence: true
+  validates :manufacturer, presence: true
   
   has_and_belongs_to_many :categories
   belongs_to :manufacturer
@@ -20,8 +24,16 @@ class Product < ActiveRecord::Base
     return @html
   end
   
+  def formated_price
+    number_to_currency(price, precision: 0, unit: '', delimiter: ".")
+  end
+  
   def price=(new_price)
     self[:price] = new_price.gsub(/\,/, '')
+  end
+  
+  def display_name
+    categories.first.name + " " + manufacturer.name + " " + name + product_code
   end
   
 end

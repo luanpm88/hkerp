@@ -34,46 +34,51 @@
 							<label for="checkbox10"></label>
 						    </div>
                                                 </th>
-                                                <th width="30%">Customer</th>
+                                                <th width="27%">Customer</th>
                                                 <th style="text-align: right">Total Price</th>
-                                                <th width="5%">Product Count</th>
-                                                <th width="15%">Order Date</th>
-						<th width="15%">Salesperson</th>
+                                                <th style="text-align: center" width="14%">Product Count</th>                                                
+						<th style="text-align: center" width="14%">Salesperson</th>
+						<th style="text-align: center" width="13%">Created Date</th>
                                                 <th style="width:160px;">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
                                           
                                             <% @orders.each do |order| %>
-                                                <tr>
-                                                  <td class="v-align-middle">
-                                                          <div class="checkbox check-default">
-                                                              <input id="checkbox1<%= order.id %>" type="checkbox" value="<%= order.id %>">
-                                                              <label for="checkbox1<%= order.id %>"></label>
-                                                          </div>
-                                                  </td>
-                                                  <td><%= order.customer.name %></td>
-                                                  <td align="right">
-                                                    <%= order.formated_total_vat %>
-                                                  </td>
-                                                  <td>
-                                                    <%= order.order_details.count %>
-                                                  </td>
-                                                  <td>
-                                                    <%= order.order_date.strftime("%Y-%m-%d") %>
-                                                  </td>
-						  <td>
-						    <%= order.salesperson.name %>
-						  </td>
-                                                  <td>
-                                                          
-                                                          <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
-                                                          <%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
-							  <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_order_path(order), :class => "btn btn-info btn-xs btn-mini" if can? :manage, order %>						
-                                                          <%= link_to 'X'.html_safe, order, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can? :manage, order %>
-                                                  </td>
-                                                </tr>
-                                                
+					      <% if order.newer.nil? %>
+					      
+						  <tr>
+						    <td class="v-align-middle">
+							    <div class="checkbox check-default">
+								<input id="checkbox1<%= order.id %>" type="checkbox" value="<%= order.id %>">
+								<label for="checkbox1<%= order.id %>"></label>
+							    </div>
+						    </td>
+						    <td><%= order.customer.name %></td>
+						    <td align="right">
+						      <%= order.formated_total_vat %>
+						    </td>
+						    <td style="text-align: center">
+						      <%= order.order_details.count %>
+						    </td>
+						    <td style="text-align: center">
+						      <%= order.salesperson.name %>
+						    </td>
+						    <td style="text-align: center">
+						      <%= order.created_at.strftime("%Y-%m-%d") %>
+						    </td>
+						    
+						    <td>
+							    
+							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
+							    <%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
+							    <!--<%= link_to '<i class="icon-reply-all"></i>'.html_safe, new_order_path(old_id: order.id), :class => "btn btn-info btn-xs btn-mini show_old_order_version", title: "Create New Order History" %>-->
+							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_order_path(order), :class => "btn btn-info btn-xs btn-mini", title: "Edit Order" if can? :manage, order %>							    
+							    <%= link_to 'X'.html_safe, order, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can? :manage, order %>
+						    </td>
+						  </tr>
+						  
+					      <% end %>                                                
                                             <% end %>
 					    
                                           </tbody>

@@ -345,8 +345,10 @@
                       
                         <div class="form-actions">  
                           <div class="pull-right">
-                            <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
-                            <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                              <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
+                              <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
+                            
+                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
                           </div>
                         </div>
                   <% end %>
@@ -354,14 +356,6 @@
               </div>
             </div>		
       </div>
-       
-
-
-<script>
-  $( document ).ready(function() {
-    updateOrderPrices();
-  });
-</script>
 
 
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140314070155) do
+ActiveRecord::Schema.define(version: 20140320093203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(version: 20140314070155) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tmpcat"
   end
 
   create_table "categories_products", id: false, force: true do |t|
@@ -119,6 +120,7 @@ ActiveRecord::Schema.define(version: 20140314070155) do
     t.string   "shipping_time"
     t.string   "warranty_place"
     t.text     "warranty_cost"
+    t.integer  "older_id"
   end
 
   create_table "parent_categories", force: true do |t|
@@ -163,6 +165,33 @@ ActiveRecord::Schema.define(version: 20140314070155) do
     t.datetime "updated_at"
   end
 
+  create_table "tmpcats", force: true do |t|
+    t.text "category_id"
+    t.text "category_image"
+    t.text "category_parent_id"
+    t.text "category_publish"
+    t.text "category_ordertype"
+    t.text "category_template"
+    t.text "category_ordering"
+    t.text "category_add_date"
+    t.text "products_page"
+    t.text "products_row"
+    t.text "name_en_GB"
+    t.text "alias_en_GB"
+    t.text "short_description_en_GB"
+    t.text "description_en_GB"
+    t.text "meta_title_en_GB"
+    t.text "meta_description_en_GB"
+    t.text "meta_keyword_en_GB"
+    t.text "name_vi_VN"
+    t.text "alias_vi_VN"
+    t.text "short_description_vi_VN"
+    t.text "description_vi_VN"
+    t.text "meta_title_vi_VN"
+    t.text "meta_description_vi_VN"
+    t.text "meta_keyword_vi_VN"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -178,6 +207,8 @@ ActiveRecord::Schema.define(version: 20140314070155) do
     t.datetime "updated_at"
     t.string   "first_name"
     t.string   "last_name"
+    t.string   "phone_ext"
+    t.string   "mobile"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
