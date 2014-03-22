@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140320093203) do
+ActiveRecord::Schema.define(version: 20140322044616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,6 +77,7 @@ ActiveRecord::Schema.define(version: 20140320093203) do
     t.text     "description"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tmpmenu"
   end
 
   create_table "order_details", force: true do |t|
@@ -190,6 +191,32 @@ ActiveRecord::Schema.define(version: 20140320093203) do
     t.text "meta_title_vi_VN"
     t.text "meta_description_vi_VN"
     t.text "meta_keyword_vi_VN"
+  end
+
+  create_table "tmpmanus", force: true do |t|
+    t.text     "manufacturer_id"
+    t.text     "manufacturer_url"
+    t.text     "manufacturer_logo"
+    t.text     "manufacturer_publish"
+    t.text     "products_page"
+    t.text     "products_row"
+    t.text     "ordering"
+    t.text     "name_en_gb"
+    t.text     "alias_en_gb"
+    t.text     "short_description_en_gb"
+    t.text     "description_en_gb"
+    t.text     "meta_title_en_gb"
+    t.text     "meta_description_en_gb"
+    t.text     "meta_keyword_en_gb"
+    t.text     "name_vi_vn"
+    t.text     "alias_vi_vn"
+    t.text     "short_description_vi_vn"
+    t.text     "description_vi_vn"
+    t.text     "meta_title_vi_vn"
+    t.text     "meta_description_vi_vn"
+    t.text     "meta_keyword_vi_vn"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "users", force: true do |t|
