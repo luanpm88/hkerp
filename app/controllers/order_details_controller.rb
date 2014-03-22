@@ -74,6 +74,9 @@ class OrderDetailsController < ApplicationController
   
   # GET /order_details/1/edit
   def ajax_edit
+    @order_detail = @order_detail.dup
+    @order_detail.order = nil
+    
     render :layout => nil
   end
   
@@ -92,7 +95,6 @@ class OrderDetailsController < ApplicationController
   end
   
   def ajax_update
-    puts "kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk"
     respond_to do |format|
       if @order_detail.update(order_detail_params)
         format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }

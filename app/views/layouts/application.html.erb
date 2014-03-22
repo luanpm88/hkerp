@@ -336,8 +336,8 @@
 			  
 			  var success_box = $('<div/>').html(data).find("#ajax-success-result");
 			  var saved_id = success_box.find("ul").attr("rel");
-			  if ($('#product-line-items ul[rel="'+saved_id+'"]').length) {
-			    $('#product-line-items ul[rel="'+saved_id+'"]').replaceWith(success_box.html());
+			  if ($('#product-line-items ul[rel="'+current_line_item_id+'"]').length) {
+			    $('#product-line-items ul[rel="'+current_line_item_id+'"]').replaceWith(success_box.html());
 			  }
 			  else
 			  {
@@ -426,6 +426,12 @@
 		});	    
 	    });	    
 	    
+	    
+	    var current_line_item_id = 0;
+	    $('.edit-order-detail').live("click", function() {
+	      current_line_item_id = $(this).parents('ul').attr("rel");
+	      //alert(current_line_item_id);
+	    });
 	    //action for add agent button
 	    $('.edit-order-detail').fancybox({
 		    width: "90%",
