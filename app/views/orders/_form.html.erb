@@ -345,9 +345,12 @@
                       
                         <div class="form-actions">  
                           <div class="pull-right">
-                              <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
-                              <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
-                            
+                              <% if params[:old_id].nil? && !@order.id.nil? %>
+                                   <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
+                                   <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
+                              <% else %>
+                                   <input name="save" type="submit" class="btn btn-primary btn-cons" value="Save" />
+                              <% end %>
                               <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
                           </div>
                         </div>

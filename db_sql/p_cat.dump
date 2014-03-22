@@ -1,0 +1,200 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: parent_categories; Type: TABLE; Schema: public; Owner: luan; Tablespace: 
+--
+
+CREATE TABLE parent_categories (
+    id integer NOT NULL,
+    category_id integer,
+    parent_id integer
+);
+
+
+ALTER TABLE public.parent_categories OWNER TO luan;
+
+--
+-- Name: parent_categories_id_seq; Type: SEQUENCE; Schema: public; Owner: luan
+--
+
+CREATE SEQUENCE parent_categories_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parent_categories_id_seq OWNER TO luan;
+
+--
+-- Name: parent_categories_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: luan
+--
+
+ALTER SEQUENCE parent_categories_id_seq OWNED BY parent_categories.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: luan
+--
+
+ALTER TABLE ONLY parent_categories ALTER COLUMN id SET DEFAULT nextval('parent_categories_id_seq'::regclass);
+
+
+--
+-- Data for Name: parent_categories; Type: TABLE DATA; Schema: public; Owner: luan
+--
+
+COPY parent_categories (id, category_id, parent_id) FROM stdin;
+116	2	94
+117	3	1
+118	4	94
+119	5	3
+120	6	3
+121	8	3
+122	11	1
+123	12	94
+124	13	94
+125	14	3
+126	15	92
+127	16	92
+128	17	94
+129	18	3
+130	19	3
+131	20	3
+132	21	3
+133	22	3
+134	23	3
+135	24	3
+136	25	3
+137	26	3
+138	27	3
+139	28	3
+140	29	3
+141	30	3
+142	31	3
+143	32	81
+144	33	3
+145	34	81
+146	35	81
+147	36	81
+148	37	11
+149	38	11
+150	39	11
+151	40	52
+152	41	9
+153	42	9
+154	43	41
+155	44	41
+156	45	41
+157	46	41
+158	47	42
+159	48	42
+160	49	42
+161	50	42
+162	51	42
+163	52	7
+164	53	7
+165	54	52
+166	55	41
+167	56	52
+168	57	52
+169	58	52
+170	59	52
+171	60	52
+172	61	81
+173	62	52
+174	63	53
+175	64	53
+176	65	53
+177	66	53
+178	67	53
+179	68	10
+180	70	10
+181	71	68
+182	72	68
+183	73	68
+184	74	69
+185	75	69
+186	76	69
+187	77	69
+188	78	69
+189	79	69
+190	80	69
+191	81	7
+192	82	81
+193	83	81
+194	84	81
+195	85	70
+196	86	70
+197	87	70
+198	88	70
+199	89	92
+200	90	94
+201	91	7
+202	92	1
+203	93	94
+204	94	1
+205	95	91
+206	96	91
+207	97	91
+208	98	91
+209	99	91
+210	100	91
+211	101	91
+212	102	91
+213	103	91
+214	104	91
+215	105	41
+216	106	9
+217	107	106
+218	108	106
+219	109	106
+220	110	106
+221	111	106
+222	112	106
+223	113	106
+224	114	10
+225	115	114
+226	116	114
+227	117	114
+228	118	114
+229	119	114
+230	120	10
+\.
+
+
+--
+-- Name: parent_categories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: luan
+--
+
+SELECT pg_catalog.setval('parent_categories_id_seq', 230, true);
+
+
+--
+-- Name: parent_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: luan; Tablespace: 
+--
+
+ALTER TABLE ONLY parent_categories
+    ADD CONSTRAINT parent_categories_pkey PRIMARY KEY (id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+
