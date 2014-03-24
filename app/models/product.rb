@@ -2,8 +2,8 @@ class Product < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   
   validates :name, presence: true
-  validates :product_code, presence: true
-  validates :unit, presence: true
+  #validates :product_code, presence: true
+  #validates :unit, presence: true
   validates :categories, presence: true
   validates :manufacturer, presence: true
   
