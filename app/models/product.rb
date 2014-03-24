@@ -33,7 +33,10 @@ class Product < ActiveRecord::Base
   end
   
   def display_name
-    categories.first.name + " " + manufacturer.name + " " + name + product_code
+    result = categories.first.name + " " + manufacturer.name + " " + name
+    result += " " + product_code if !product_code.nil?
+    
+    return result
   end
   
 end

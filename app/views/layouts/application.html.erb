@@ -375,7 +375,7 @@
 			    $('.order_supplier_history').html(respone.order_supplier_history);
 			    
 			    var data = respone.product;
-			    $('.ajax_outer input[name="order_detail[product_name]"]').val(data.display_name);
+			    $('.ajax_outer input[name="order_detail[product_name]"]').val(respone.display_name);
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
 			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);

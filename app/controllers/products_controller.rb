@@ -67,7 +67,7 @@ class ProductsController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def ajax_show
-    @data = Hash[product: @product, order_supplier_history: @product.order_supplier_history]
+    @data = Hash[display_name: @product.display_name,product: @product, order_supplier_history: @product.order_supplier_history]
     render :json => @data
   end
 
