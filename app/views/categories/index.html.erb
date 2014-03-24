@@ -47,6 +47,7 @@
                                         <tbody>
 					    <% @categories.each do |category| %>
 						<% if category.parent.count == 0 %>
+						    <% category.update_level(1) %>
 						    <tr>
 							<td class="v-align-middle">
 							    <div class="checkbox check-default">
@@ -66,6 +67,7 @@
 						    </tr>
 						    
 						    <% category.children.each do |child_1| %>
+							<% child_1.update_level(2) %>
 							    <tr>
 								<td class="v-align-middle">
 								    <div class="checkbox check-default">
@@ -85,6 +87,7 @@
 							    </tr>
 							    
 							    <% child_1.children.each do |child_2| %>
+								<% child_2.update_level(3) %>
 								    <tr>
 									<td class="v-align-middle">
 									    <div class="checkbox check-default">

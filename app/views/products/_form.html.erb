@@ -64,7 +64,9 @@
                                                                       <option value="">No category</option>
                                                                       <optgroup label="Categories">
                                                                         <% Category.all.each do |category| %>
-                                                                          <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>                                                           
+									   <% if category.children == [] %>
+									      <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
+									   <% end %>
                                                                         <% end %>
                                                                       </optgroup>
                                                                     </select>
