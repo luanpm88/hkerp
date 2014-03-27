@@ -719,7 +719,7 @@
 	</div>
     <div class="user-info">
       <div class="greeting">Welcome</div>
-      <div class="username">John <span class="semi-bold">Smith</span></div>
+      <div class="username"><%= current_user.first_name %> <span class="semi-bold"><%= current_user.last_name %></span></div>
       <div class="status">Status<a href="#"><div class="status-icon green"></div>Online</a></div>
     </div>
    </div>
