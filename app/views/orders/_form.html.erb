@@ -192,7 +192,7 @@
                         
                          <div class="form-group datetime">
                                 <label class="form-label"><%= f.label :shipping_date %></label>
-                                <span class="help"></span>
+                                <span class="help">(default: current date)</span>
                                   <div class="input-append success date col-md-10 no-padding">
                                       <%= f.text_field :shipping_date, :class => "form-control" %>
                                       <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
@@ -337,7 +337,7 @@
                         </div>
                         
                         <div class="controls">
-			      <%= link_to 'Add Product', ajax_new_order_details_path(:order_id => @order.id), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
+			      <%= link_to 'Add Product Line', ajax_new_order_details_path(:order_id => @order.id), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
                         </div>
                       </div>
                     </div>

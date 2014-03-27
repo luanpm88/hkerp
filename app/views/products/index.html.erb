@@ -41,24 +41,32 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-					    <% @products.each do |product| %>
-                                              <tr>
-                                                <td class="v-align-middle">
-							<div class="checkbox check-default">
-							    <input id="checkbox11" type="checkbox" value="1">
-							    <label for="checkbox11"></label>
-							</div>
-						</td>
-                                                <td><%= product.display_name %></td>
-                                                
-                                                <td style="text-align: right"><%= product.formated_price %></td>
-                                                <td>
-							<%= link_to '<i class="icon-zoom-in"></i>'.html_safe, product, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-							<%= link_to '<i class="icon-paste"></i>'.html_safe, edit_product_path(product), :class => "btn btn-info btn-xs btn-mini" %>							
-							<%= link_to 'X', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
-						</td>
-                                              </tr>
-                                            <% end %>
+					    
+					    <% Category.order(:name).all.each do |category| %>
+						<% if category.children == [] %>
+						    <tr class="head"><td colspan="4"><%= category.name %></td></tr>
+						    
+						    <% category.products.order(:price).each do |product| %>
+						    <tr>
+						      <td class="v-align-middle">
+							      <div class="checkbox check-default">
+								  <input id="checkbox11" type="checkbox" value="1">
+								  <label for="checkbox11"></label>
+							      </div>
+						      </td>
+						      <td><%= product.display_name %></td>
+						      
+						      <td style="text-align: right"><%= product.formated_price %></td>
+						      <td>
+							      <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, product, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
+							      <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_product_path(product), :class => "btn btn-info btn-xs btn-mini" %>							
+							      <%= link_to 'X', product, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+						      </td>
+						    </tr>
+						  <% end %>
+						    
+						<% end %>
+					    <% end %>
                                             
                                         </tbody>
                                     </table>

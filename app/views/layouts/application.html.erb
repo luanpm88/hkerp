@@ -347,7 +347,7 @@
 			else
 			{
 			    $('.fancybox-inner').html(data);
-			    $('.fancybox-inner').scrollTop(0)
+			    $('.fancybox-inner').scrollTop(0);
 			    $(".ajax_outer .modern_select").select2();
 			}
 			
@@ -463,6 +463,55 @@
 			    //$(".ajax_outer .modern_select").select2();
 			}
 		    }
+	    });
+	    
+	    //action for ajax add product button
+	    $('.ajax_add_product').fancybox({
+		    width: "90%",
+		    height: "100%",
+		    autoSize: false,
+		    ajax: {
+			complete: function(jqXHR, textStatus) {
+			    $("#ajax-product-form .modern_select").select2();
+			    //format typping price
+			    //$('input.price_input').number( true, 0 );
+			}
+		    }
+	    });
+	    //submit ajax form
+	    //callback handler for form submit
+	    $("#ajax-product-form").live("submit", function(e)
+	    {
+		var postData = $(this).serializeArray();
+		var formURL = $(this).attr("action");
+		
+		$(this).find(".btn[type='submit']").addClass("btn-submitting");
+		
+		$.ajax(
+		{
+		    url : formURL,
+		    type: "POST",
+		    data : postData,
+		    success:function(data, textStatus, jqXHR)
+		    {
+			if($('<div/>').html(data).find("#ajax-success-result").length)
+			{
+			  $.fancybox.close();
+			  $('#add-product-order-line-button').trigger("click");
+			}
+			else
+			{
+			  $('.fancybox-inner').html(data);
+			  $('.fancybox-inner').scrollTop(0);
+			  $("#ajax-product-form .modern_select").select2();
+			}
+		    },
+		    error: function(jqXHR, textStatus, errorThrown)
+		    {
+			alert("error");
+		    }
+		});
+		e.preventDefault(); //STOP default action
 	    });
 	    
       });

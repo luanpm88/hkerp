@@ -7463,3 +7463,8 @@ ul.my-friends li .profile-pic{
 {
     display: none;
 }
+.table-striped tr.head td
+{
+    background-color: #EBF6FB !important;
+    text-transform: uppercase;
+}

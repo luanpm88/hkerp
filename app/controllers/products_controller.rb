@@ -70,6 +70,26 @@ class ProductsController < ApplicationController
     @data = Hash[display_name: @product.display_name,product: @product, order_supplier_history: @product.order_supplier_history]
     render :json => @data
   end
+  
+  def ajax_new    
+    @product = Product.new
+   
+    render :layout => nil
+  end
+  
+  def ajax_create
+    @product = Product.new(product_params)
+
+    respond_to do |format|
+      if @product.save
+        format.html { render action: 'ajax_show', :layout => nil, :id => @product.id }
+        format.json { render action: 'show', status: :created, location: @product }
+      else
+        format.html { render action: 'ajax_new', :layout => nil }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

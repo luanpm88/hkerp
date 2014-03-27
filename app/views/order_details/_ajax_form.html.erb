@@ -63,6 +63,9 @@
                                         </option>
                                     <% end %>
                                   </select>
+				  
+				   <%= link_to "Create new Product", ajax_new_products_path ,class: "btn btn-primary btn-sm btn-small fancybox.ajax ajax_add_product" %>
+				  
                                 </div>
                               </div>
 			      <input type="hidden" name="order_detail[product_name]" value="<%= @order_detail.product_name %>" />
