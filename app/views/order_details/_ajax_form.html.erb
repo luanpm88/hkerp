@@ -55,7 +55,7 @@
                                 <span class="help">(required)</span>
                                 <div class="input-with-icon  right">                                       
                                   <i class=""></i>
-				  <input style="width:100%;margin-bottom: 5px;" name="order_detail[product_id]" url="<%= products_path(format: "json") %>" class="select2-ajax-products" />
+				  <input style="width:100%;margin-bottom: 5px;" name="order_detail[product_id]" url="<%= products_path(format: "json") %>" class="select2-ajax-products" value="<%= @order_detail.product_id %>" text="<%= @order_detail.product_name %>" />
                                   
 				  <br />
 				   <%= link_to "Create new Product", ajax_new_products_path ,class: "btn btn-primary btn-sm btn-small fancybox.ajax ajax_add_product" %>

@@ -384,6 +384,9 @@
 				  return {results: data};
 				}
 			      },
+			      initSelection: function (element, callback) {				      
+				callback({ id: $('.select2-ajax-products').val, text: $('.select2-ajax-products').attr('text') });
+			      }
 			    });
 			}
 			
@@ -476,6 +479,25 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
+			    $('.select2-ajax-products').select2({
+			      placeholder: "Search for a product",
+			      minimumInputLength: 1,
+			      ajax: {
+				url: $('.select2-ajax-products').attr("url"),
+				dataType: 'json',
+				data: function (term, page) { // page is the one-based page number tracked by Select2
+				  return {
+				    q: term, //search term
+				  };
+				},
+				results: function (data, page) {
+				  return {results: data};
+				}
+			      },
+			      initSelection: function (element, callback) {				      
+				callback({ id: $('.select2-ajax-products').val, text: $('.select2-ajax-products').attr('text') });
+			      }
+			    });
 			}
 		    }
 	    });
