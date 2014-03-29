@@ -51,7 +51,7 @@ class Contact < ActiveRecord::Base
 
         
         contact.name = row["TÊN ĐƠN VỊ"].strip
-        contact.contact_type_id = ContactType.customer
+        contact.contact_type_id = ContactType.supplier
         contact.tax_code = row["MST"].to_s.strip if !row["MST"].nil?
         contact.address = row["ĐỊA CHỈ"].to_s.strip if !row["ĐỊA CHỈ"].nil?
         contact.phone = row["SỐ ĐIỆN THOẠI"].to_s.strip if !row["ĐIỆN THOẠI"].nil?
@@ -64,6 +64,7 @@ class Contact < ActiveRecord::Base
         contact.representative = row["NGƯỜI ĐẠI DIỆN"].to_s.strip if !row["NGƯỜI ĐẠI DIỆN"].nil?
         contact.representative_role = row["CHỨC VỤ"].to_s.strip if !row["CHỨC VỤ"].nil?
         contact.representative_phone = row["SỐ ĐT ĐẠI DIỆN"].to_s.strip if !row["SỐ ĐT ĐẠI DIỆN"].nil?
+        contact.note = row["NOTE"].to_s.strip if !row["NOTE"].nil?
         
         contact.save
         
