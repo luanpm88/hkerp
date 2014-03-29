@@ -1,5 +1,6 @@
 class Product < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
+  include PgSearch
   
   validates :name, presence: true
   #validates :product_code, presence: true
@@ -37,6 +38,28 @@ class Product < ActiveRecord::Base
     result += " " + product_code if !product_code.nil?
     
     return result
+  end
+  
+  #def self.search(q)
+  #  self.joins(:categories,:manufacturer).where("CONCAT(lower(categories.name),' ',lower(manufacturers.name),' ',lower(products.name),' ',lower(products.product_code)) LIKE '%#{q.downcase}%'").map {|model| {:id => model.id, :text => model.display_name} }
+  #end
+  
+  pg_search_scope :search,
+                against: [:name, :product_code],
+                associated_against: {
+                  categories: :name,
+                  manufacturer: :name
+                },
+                using: {
+                  tsearch: {
+                    dictionary: 'english',
+                    any_word: true,
+                    prefix: true
+                  }
+                }
+  
+  def self.full_text_search(q)
+    self.search(q).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
 end

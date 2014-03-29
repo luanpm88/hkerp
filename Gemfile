@@ -49,3 +49,4 @@ gem "cancan"
 gem "devise"
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
+gem 'pg_search'

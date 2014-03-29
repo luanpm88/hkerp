@@ -5,6 +5,12 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.order("name").all
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Product.full_text_search(params[:q])
+      }
+    end
   end
 
   # GET /products/1
