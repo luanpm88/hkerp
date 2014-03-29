@@ -8,7 +8,7 @@ class Contact < ActiveRecord::Base
   has_many :children, :through => :child_contacts, :source => :contact
   
   has_many :agents_contacts, :dependent => :destroy
-  has_many :agents, :through => :agents_contacts, :source => :agent
+  has_many :agents, :through => :agents_contacts, :source => :agent, :dependent => :destroy
   has_many :companies_contacts, :class_name => "AgentsContact", :foreign_key => "agent_id", :dependent => :destroy
   has_many :companies, :through => :companies_contacts, :source => :contact
   
