@@ -94,13 +94,13 @@
 	$('#product-line-items .price_total').each(function() {
 	    sum = sum + parseFloat($(this).attr("rel"));
 	});
-	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select[name="order[tax_id]"] option:selected').attr("rel"))/100 + 1)).toFixed(0));
+	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(0));
 	sum = ReplaceNumberWithDots(sum.toFixed(0));
 	$('.product_order_list .footer.line1 .price_total').html(sum);
 	$('.product_order_list .footer.line2 .price_total').html(sumvat);
 	
 	//update tax name
-	$('.order_tax_name').html($('select[name="order[tax_id]"] option:selected').html());
+	$('.order_tax_name').html($('select.tax-select option:selected').html());
     }
     
     function updateOrderAgentFormInfo(customer_id)
@@ -503,7 +503,7 @@
 	    });
 	    
 	    updateOrderPrices();
-	    $('select[name="order[tax_id]"]').live("change", function(){
+	    $('select.tax-select').live("change", function(){
 		updateOrderPrices();
 	    });
 	    
@@ -588,6 +588,7 @@
 		}
 	      },
 	    });
+
 	    
       });
 </script>
@@ -818,7 +819,7 @@
 	    <% end %>
 	    <ul class="sub-menu">
 	      <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Quotations', orders_url %></li>
-	      <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Supplier Orders', orders_url %></li>
+	      <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Supplier Orders', supplier_orders_url %></li>
 	    </ul>
 	</li>
 	

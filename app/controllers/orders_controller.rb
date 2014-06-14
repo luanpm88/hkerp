@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order]
 
   # GET /orders
   # GET /orders.json
@@ -114,6 +114,23 @@ class OrdersController < ApplicationController
     @hk = Contact.HK
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
+            :layout => nil,
+            :footer => {
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A4",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
+  end
+  
+  def print_order
+    @hk = Contact.HK
+    render  :pdf => "quotation_"+@order.quotation_code,
+            :template => 'orders/print_order.pdf.erb',
             :layout => nil,
             :footer => {
                :center => "",

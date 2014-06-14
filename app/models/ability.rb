@@ -38,6 +38,7 @@ class Ability
     # can    :read   , Tag , released: true
     
     can :manage, Order, :salesperson_id => user.id
+    can :manage, SupplierOrder, :salesperson_id => user.id
 
   end
 end

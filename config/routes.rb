@@ -1,5 +1,17 @@
 Hkerp::Application.routes.draw do
   
+  resources :supplier_order_details do
+    collection do
+      get :ajax_new
+      post :ajax_create
+      get :ajax_destroy
+      get :ajax_edit
+      patch :ajax_update
+    end
+  end
+
+  resources :supplier_orders
+
   resources :roles
 
   resources :taxes
@@ -19,6 +31,7 @@ Hkerp::Application.routes.draw do
   resources :orders do
     collection do
       get :download_pdf
+      get :print_order
     end
   end
 

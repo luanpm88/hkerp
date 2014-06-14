@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Supplier order:</strong>
+  <%= @supplier_order_detail.supplier_order_id %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @supplier_order_detail.product_id %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @supplier_order_detail.quantity %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @supplier_order_detail.price %>
+</p>
+
+<p>
+  <strong>Product name:</strong>
+  <%= @supplier_order_detail.product_name %>
+</p>
+
+<%= link_to 'Edit', edit_supplier_order_detail_path(@supplier_order_detail) %> |
+<%= link_to 'Back', supplier_order_details_path %>

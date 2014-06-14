@@ -1,22 +1,22 @@
-                <ul class="breadcrumb">
+<ul class="breadcrumb">
                     <li>
                         <p>YOU ARE HERE</p>
                     </li> 
-                    <li><%= link_to 'Orders', orders_url, :class => "active" %></li>
+                    <li><%= link_to 'Supplier Orders', supplier_orders_url, :class => "active" %></li>
                 </ul>
                 <div class="page-title">
                         <i class="icon-user"></i>
-                    	<h3>Order - <span class="semi-bold"> Management</span></h3>	
+                    	<h3>Supplier Order - <span class="semi-bold"> Management</span></h3>	
                 </div>
                 <div class="row">
 		  
 		  
 		  
                     <div class="col-md-12">
-                      <%= link_to 'New Quotation', new_order_path, :class => 'btn btn-primary btn-cons' %>
+                      <%= link_to 'New Supplier Order', new_supplier_order_path, :class => 'btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
-                                <h4>Listing  <span class="semi-bold">Orders</span></h4>
+                                <h4>Listing  <span class="semi-bold">Supplier Orders</span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -37,7 +37,7 @@
 							<label for="checkbox10"></label>
 						    </div>
                                                 </th>
-                                                <th width="27%">Customer</th>
+                                                <th width="27%">Supplier Name</th>
                                                 <th style="text-align: right">Total Price</th>
                                                 <th style="text-align: center" width="14%">Product Count</th>                                                
 						<th style="text-align: center" width="14%">Salesperson</th>
@@ -47,8 +47,7 @@
                                         </thead>
                                         <tbody>
                                           
-                                            <% @orders.each do |order| %>
-					      <% if order.newer.nil? %>
+                                            <% @supplier_orders.each do |order| %>
 					      
 						  <tr>
 						    <td class="v-align-middle">
@@ -57,15 +56,15 @@
 								<label for="checkbox1<%= order.id %>"></label>
 							    </div>
 						    </td>
-						    <td><%= order.customer.name %></td>
+						    <td><%= order.supplier.name %></td>
 						    <td align="right">
-						      <%= order.formated_total_vat %>
+						      
 						    </td>
 						    <td style="text-align: center">
-						      <%= order.order_details.count %>
+						      <%= order.supplier_order_details.count %>
 						    </td>
 						    <td style="text-align: center">
-						      <%= order.salesperson.name %>
+						      <%= order.salesperson.name if !order.salesperson.nil? %>
 						    </td>
 						    <td style="text-align: center">
 						      <%= order.created_at.strftime("%Y-%m-%d") %>
@@ -75,14 +74,13 @@
 							    
 							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
 							    <%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
-							    <%= link_to 'Print Order', print_order_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
 							    <!--<%= link_to '<i class="icon-reply-all"></i>'.html_safe, new_order_path(old_id: order.id), :class => "btn btn-info btn-xs btn-mini show_old_order_version", title: "Create New Order History" %>-->
-							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_order_path(order), :class => "btn btn-info btn-xs btn-mini", title: "Edit Order" if can? :manage, order %>							    
+							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_supplier_order_path(order), :class => "btn btn-info btn-xs btn-mini", title: "Edit Supplier Order" if can? :manage, order %>							    
 							    <%= link_to 'X'.html_safe, order, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can? :manage, order %>
 						    </td>
 						  </tr>
 						  
-					      <% end %>                                                
+                                             
                                             <% end %>
 					    
                                           </tbody>
@@ -91,4 +89,3 @@
                         </div>
                     </div>
                 </div>
-

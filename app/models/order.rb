@@ -32,7 +32,7 @@ class Order < ActiveRecord::Base
   end
   
   def total_vat
-    total = 0;
+    total = 0
     order_details.each {|item|
       total = total + item.total
     }
@@ -110,5 +110,84 @@ class Order < ActiveRecord::Base
     
     return arr
   end
-
+  
+  @@mangso = ["không","một","hai","ba","bốn","năm","sáu","bảy","tám","chín"]
+  def dochangchuc(so,daydu)
+    chuoi = ""
+    chuc = (so/10).to_i
+    donvi = so%10
+    
+    if chuc > 1
+      chuoi = " " + @@mangso[chuc] + " mươi";
+      if donvi == 1
+        chuoi += " mốt"
+      end
+    elsif chuc==1
+      chuoi = " mười"
+      if donvi==1
+        chuoi += " một"
+      end
+    elsif daydu && donvi>0
+      chuoi = " lẻ"
+    end
+    
+    if donvi==5 && chuc>1
+      chuoi += " lăm"
+    elsif donvi>1 || ($donvi==1 && chuc==0)
+        chuoi += " " + @@mangso[donvi]
+    end
+    return chuoi
+  end
+  
+  def docblock(so,daydu)
+    chuoi = ""
+    tram = (so/100).floor
+    so = so%100
+    if daydu || tram>0
+      chuoi = " " + @@mangso[tram] + " trăm"
+      chuoi += dochangchuc(so,true)
+    else
+      chuoi = dochangchuc(so,false)
+    end
+    return chuoi;
+  end
+  
+  def dochangtrieu(so,daydu)
+    chuoi = ""
+    trieu = (so/1000000).floor
+    so = so%1000000
+    if trieu>0
+      chuoi = docblock(trieu,daydu) + " triệu"
+      daydu = true
+    end
+    nghin = (so/1000).floor
+    so = so%1000;
+    if nghin>0
+        chuoi += docblock(nghin,daydu) + " nghìn";
+        daydu = true;
+    end
+    if so>0
+        chuoi += docblock(so,daydu)
+    end
+    return chuoi
+  end
+    
+  def docso(so)
+    return @@mangso[0] if so==0 
+    chuoi = ""
+    hauto = ""
+    
+    begin
+      ty = so%1000000000
+      so = (so/1000000000).floor
+      if so>0
+        chuoi = dochangtrieu(ty,true) + hauto + chuoi
+      else
+        chuoi = dochangtrieu(ty,false) + hauto + chuoi
+      end
+      hauto = " tỷ"
+    end while so>0
+    
+    return chuoi.strip.capitalize
+  end
 end
