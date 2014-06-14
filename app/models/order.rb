@@ -188,6 +188,6 @@ class Order < ActiveRecord::Base
       hauto = " tỷ"
     end while so>0
     
-    return chuoi.strip.capitalize
+    return chuoi.strip.capitalize + " đồng"
   end
 end

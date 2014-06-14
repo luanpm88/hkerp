@@ -17,19 +17,19 @@
     <%= @order.order_date.strftime("%Y") %>
 </div>
 
-<div style="position: absolute;top:263px;left: 190px">
+<div style="position: absolute;top:262px;left: 190px">
     <%= @order.buyer_name %>
 </div>
-<div style="position: absolute;top:289px;left: 98px">
+<div style="position: absolute;top:288px;left: 98px">
     <%= @order.buyer_company %>
 </div>
-<div style="position: absolute;top:315px;left: 100px">
+<div style="position: absolute;top:314px;left: 100px">
     <%= @order.buyer_tax_code %>
 </div>
-<div style="position: absolute;top:341px;left: 75px">
+<div style="position: absolute;top:340px;left: 75px">
     <%= @order.buyer_address %>
 </div>
-<div style="position: absolute;top:366px;left: 175px">
+<div style="position: absolute;top:365px;left: 175px">
     <%= @order.payment_method.name  if !@order.payment_method.nil? %>
 </div>
 
@@ -42,37 +42,37 @@
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
         <% @count = @count + 1 %>
-            <div style="line-height: 31px;clear: both;margin-top: -2px;font-size: 14px">
+            <div style="line-height: 31px;clear: both;margin-top: -4px;font-size: 15px">
                 <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 17px;text-align: center"><%= @count %></div>
                 <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px"><%= order_detail.product_name %><br />
               <%= order_detail.product.description if !order_detail.product.description.nil? %></div>
                 <div style="border: solid 0px #aaa;float: left;width:50px;margin-right: 15px;text-align: center"><%= order_detail.unit %></div>
                 <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 15px;text-align: center"><%= order_detail.quantity %></div>
                 <div style="border: solid 0px #aaa;float: left;width:83px;margin-right: 15px;text-align: right"><%= order_detail.formated_price %></div>
-                <div style="border: solid 0px #aaa;float: left;width:120px;margin-right: 0;text-align: right"><%= order_detail.formated_total %></div>
+                <div style="border: solid 0px #aaa;float: left;width:130px;margin-right: 0;text-align: right"><%= order_detail.formated_total %></div>
             </div>
           
       <% end %>
     <% end %>
 </div>
 
-<div style="position: absolute;top:786px;left: 30px;width:122px;text-align: right">
+<div style="position: absolute;top:783px;left: 30px;width:122px;text-align: right">
     <%= @order.tax.rate.to_i %>
 </div>
 
-<div style="position: absolute;top:756px;left: 570px;width:122px;text-align: right">
+<div style="position: absolute;top:754px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total %>
 </div>
-<div style="position: absolute;top:786px;left: 570px;width:122px;text-align: right">
+<div style="position: absolute;top:784px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_vat_amount %>
 </div>
-<div style="position: absolute;top:816px;left: 570px;width:122px;text-align: right">
+<div style="position: absolute;top:814px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total_vat %>
 </div>
-<div style="position: absolute;top:838px;left: 165px;width:500px;line-height: 31px;">
+<div style="position: absolute;top:837px;left: 165px;width:500px;line-height: 31px;">
     <%= @order.docso(@order.total_vat.to_i) %>
 </div>
 
-<!--<img src="http://marketonline.vn/img011.png" width="100%" style="position:absolute;left:0;top:5px;z-index:-1;" valign="top" />-->
+<img src="http://marketonline.vn/img011.png" width="100%" style="position:absolute;left:0;top:5px;z-index:-1;" valign="top" />
 
 </div>
