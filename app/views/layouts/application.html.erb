@@ -479,6 +479,7 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
+			    $('input.price_input').number( true, 0 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -587,6 +588,44 @@
 		  return {results: data};
 		}
 	      },
+	    });
+	    
+	    $('.ajax_outer input[name="supplier_order_detail[product_id]"]').live("change", function() {
+		var product_id = $(this).val();
+		if (product_id != "") {
+		    $.ajax(
+		    {
+			url : '<%= ajax_show_products_path %>',
+			type: "GET",
+			data: "id="+product_id,
+			success:function(respone, textStatus, jqXHR)
+			{
+			    
+			    var data = respone.product;
+			    $('.ajax_outer input[name="supplier_order_detail[product_name]"]').val(respone.display_name);
+			    $('.ajax_outer textarea[name="supplier_order_detail[product_description]"]').html(data.description);
+			    $('.ajax_outer input[name="supplier_order_detail[unit]"]').val(data.unit);
+			    $('.ajax_outer input[name="supplier_order_detail[price]"]').val(data.price);
+			    $('.ajax_outer input[name="supplier_order_detail[quantity]"]').val(data.quantity);
+			    $('.ajax_outer input[name="supplier_order_detail[warranty]"]').val(data.warranty);
+
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+			      $('.order_supplier_history').html("");
+			    $('.ajax_outer input[name="supplier_order_detail[product_name]"]').val("");
+			    $('.ajax_outer textarea[name="supplier_order_detail[product_description]"]').html("");
+			    $('.ajax_outer input[name="supplier_order_detail[unit]"]').val("");
+			    $('.ajax_outer input[name="supplier_order_detail[price]"]').val("");
+			    $('.ajax_outer input[name="supplier_order_detail[quantity]"]').val("");
+			    $('.ajax_outer input[name="supplier_order_detail[warranty]"]').val("");
+			}
+		    });
+		}
+		else
+		{
+		    alert("empty");
+		}
 	    });
 
 	    

@@ -118,6 +118,6 @@ class SupplierOrderDetailsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def supplier_order_detail_params
-      params.require(:supplier_order_detail).permit(:supplier_order_id, :product_id, :quantity, :price, :product_name, :unit, :warranty)
+      params.require(:supplier_order_detail).permit(:supplier_order_id, :product_id, :quantity, :price, :product_name, :product_description, :unit, :warranty)
     end
 end

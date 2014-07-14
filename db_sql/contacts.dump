@@ -1,0 +1,416 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: contacts; Type: TABLE; Schema: public; Owner: luan; Tablespace: 
+--
+
+CREATE TABLE contacts (
+    id integer NOT NULL,
+    name character varying(255),
+    phone character varying(255),
+    mobile character varying(255),
+    fax character varying(255),
+    email character varying(255),
+    address character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    tax_code character varying(255),
+    note text,
+    contact_type_id integer,
+    website character varying(255),
+    account_number character varying(255),
+    bank character varying(255),
+    representative character varying(255),
+    representative_role character varying(255),
+    representative_phone character varying(255),
+    is_mine boolean DEFAULT false,
+    hotline character varying(255),
+    user_id integer
+);
+
+
+ALTER TABLE public.contacts OWNER TO luan;
+
+--
+-- Name: contacts_id_seq; Type: SEQUENCE; Schema: public; Owner: luan
+--
+
+CREATE SEQUENCE contacts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.contacts_id_seq OWNER TO luan;
+
+--
+-- Name: contacts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: luan
+--
+
+ALTER SEQUENCE contacts_id_seq OWNED BY contacts.id;
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: luan
+--
+
+ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq'::regclass);
+
+
+--
+-- Data for Name: contacts; Type: TABLE DATA; Schema: public; Owner: luan
+--
+
+COPY contacts (id, name, phone, mobile, fax, email, address, created_at, updated_at, tax_code, note, contact_type_id, website, account_number, bank, representative, representative_role, representative_phone, is_mine, hotline, user_id) FROM stdin;
+2	Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang	(08) 3984 7690	\N	(08) 3984 7691	info@hoangkhang.com.vn	140/17/38 Lê Đức Thọ, Phường 6, Quận Gò Vấp, TP HCM	2014-03-13 06:29:40.963438	2014-03-13 06:29:40.963438	0306146736	\N	2	www.hoangkhang.com.vn	\N	\N	\N	\N	\N	f	(08) 2212 9454	\N
+4	mr toàn	090 878 0552	\N	\N	tt.toan@mitani.co.jp	\N	2014-03-13 06:30:18.563689	2014-03-13 06:30:18.563689	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+5	VPĐD MITANI SANGYO CO., LTD TẠI TP.HCM	\N	\N	\N	\N	LẦU 22 TÒA NHÀ A & B , 76 LÊ LAI, Q1	2014-03-13 06:30:18.595707	2014-03-13 06:30:18.595707	0303 911 146	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+6	CÔNG TY TNHH ỐNG THÉP HÒA PHÁT BÌNH DƯƠNG	\N	\N	38114044.0	\N	LÔ M , ĐƯỜNG 26, KHU CÔNG NGHIỆP SÓNG THẦN 2, PHƯỜNG TÂN ĐÔNG HIỆP, THỊ XÃ DĨ AN,TỈNH BÌNH DƯƠNG, VN	2014-03-13 06:30:18.618038	2014-03-13 06:30:18.618038	37009 06 187	\N	1	\N	0100598873002	\N	\N	\N	\N	f	\N	\N
+7	Ms Thủy	0903677086	\N	\N	\N	\N	2014-03-13 06:30:18.637597	2014-03-13 06:30:18.637597	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+8	CTY CỔ PHẦN DUY HÒA PHÁT	\N	\N	\N	\N	232/8 QUỐC LỘ 13, P26, Q.BÌNH THẠNH	2014-03-13 06:30:18.658918	2014-03-13 06:30:18.658918	0309137497	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+9	Ms Hằng	0938200584	\N	\N	\N	\N	2014-03-13 06:30:18.678692	2014-03-13 06:30:18.678692	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+10	Cty TNHH MTV SX-TM-DV MINH SÁNG	\N	\N	62566160.0	minhsangglass@gmail.com	175 ĐƯỜNG TCH21, KP4, P.TÂN CHÁNH HIỆP, Q.12, HCM	2014-03-13 06:30:18.712863	2014-03-13 06:30:18.712863	03 05 28 94 81	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+11	CÔNG TY TNHH ĐIỆN LẠNH MIỀN TÂY	\N	\N	39164471.0	\N	14C AN HỘI, P13, GÒ VẤP	2014-03-13 06:30:18.735526	2014-03-13 06:30:18.735526	0303752369	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+12	Ms Tuyền	\N	\N	\N	\N	\N	2014-03-13 06:30:18.754007	2014-03-13 06:30:18.754007	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+13	CTY TNHH MỸ THUẬT QUẢNG CÁO HI	\N	\N	\N	\N	55/8A BÙI THỊ XUÂN, P5, TÂN BÌNH	2014-03-13 06:30:18.784087	2014-03-13 06:30:18.784087	0305062353	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+14	Mr Hi	0983666173	\N	\N	\N	\N	2014-03-13 06:30:18.799956	2014-03-13 06:30:18.799956	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+15	TRUNG TÂM NGHIÊN CỨU VÀ PHÁT TRIỂN QUẢN TRỊ	\N	\N	\N	\N	196 TRẦN QUANG KHẢI, P.TÂN ĐỊNH, Q1	2014-03-13 06:30:18.820227	2014-03-13 06:30:18.820227	0302 378 687-006	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+16	Mr Đức	0908888433	\N	\N	\N	\N	2014-03-13 06:30:18.8317	2014-03-13 06:30:18.8317	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+17	TRUNG TÂM ĐIỆN THOẠI NAM SÀI GÒN	\N	\N	54125974.0	\N	009 KP MỸ HƯNG, ĐƯỜNG NGUYỄN VĂN LINH, PHƯỜNG TÂN PHONG, Q7	2014-03-13 06:30:18.855113	2014-03-13 06:30:18.855113	0300 849 034 -1	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+18	Ms Thảo	0908503781	\N	\N	\N	\N	2014-03-13 06:30:18.876488	2014-03-13 06:30:18.876488	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+19	CTY CỔ PHẦN SẢN XUẤT THƯƠNG MẠI MAY SÀI GÒN	\N	\N	39844746.0	\N	252 NGUYỄN VĂN LƯỢNG, P17, GV	2014-03-13 06:30:18.906985	2014-03-13 06:30:18.906985	0300742387	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+20	Mr Nghĩa	0918 010 033	\N	\N	\N	\N	2014-03-13 06:30:18.922863	2014-03-13 06:30:18.922863	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+21	Mr Toàn	0934 070 988	\N	\N	\N	\N	2014-03-13 06:30:18.940373	2014-03-13 06:30:18.940373	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+22	CÔNG TY HỮU HẠN ĐIỆN CƠ SHIHLIN VIỆT NAM	\N	\N	061 398 3473	\N	KHU CÔNG NGHIỆP HỐ NAI , HUYỆN TRẢNG BOM, TỈNH ĐỒNG NAI	2014-03-13 06:30:18.970216	2014-03-13 06:30:18.970216	3600255171	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+23	Mr Dũng	0906022081	\N	\N	\N	\N	2014-03-13 06:30:18.979637	2014-03-13 06:30:18.979637	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+24	CTY TNHH IN BAO BÌ TRUNG ĐỨC	\N	\N	3984 5619	\N	128/5/16 NGUYỄN VĂN LƯỢNG, P17, GÒ VẤP\nđịa chỉ giao hàng: 513 Nguyễn Oanh, GV	2014-03-13 06:30:19.001763	2014-03-13 06:30:19.001763	0305 811 482	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+25	CTY TNHH QUẢNG CÁO THÁNG TƯ	\N	\N	\N	\N	27 Phó Đức Chính, P.Nguyễn Thái Bình, Quận 1, TPHCM.	2014-03-13 06:30:19.019606	2014-03-13 06:30:19.019606	0308 299 537	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+26	Mr Dũng	0983048404	\N	\N	\N	\N	2014-03-13 06:30:19.038601	2014-03-13 06:30:19.038601	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+27	CTY TNHH VĂN PHÒNG PHẨM SÀI GÒN	\N	\N	39800133.0	\N	87 CAO XUÂN DỤC. P12, Q8	2014-03-13 06:30:19.061106	2014-03-13 06:30:19.061106	0303 527 451	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+28	Mr Duy	0903300306	\N	\N	\N	\N	2014-03-13 06:30:19.080487	2014-03-13 06:30:19.080487	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+29	CTY CỔ PHẦN VĨNH TIẾN	\N	\N	38065714.0	\N	88 CAO XUÂN DỤC. P12, Q8	2014-03-13 06:30:19.100784	2014-03-13 06:30:19.100784	030224 2982	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+30	CTY TNHH TƯ VẤN KAIZEN TRÍ VIỆT	\N	\N	\N	\N	205A NGUYỄN THƯỢNG HIỀN, P6, Q.BÌNH THẠNH	2014-03-13 06:30:19.118371	2014-03-13 06:30:19.118371	0311 782 462	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+31	Ms Lan Anh	091 9977 007	\N	\N	\N	\N	2014-03-13 06:30:19.127623	2014-03-13 06:30:19.127623	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+32	CTY TNHH KỸ NGHỆ ĐÔNG NAM Á	\N	\N	\N	\N	98/2 ĐƯỜNG TÂN THỚI NHẤT 4, KP7, P. TÂN THỚI NHẤT, Q12	2014-03-13 06:30:19.153943	2014-03-13 06:30:19.153943	0309917747	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+33	Mr Ty	0958170905	\N	\N	\N	\N	2014-03-13 06:30:19.168948	2014-03-13 06:30:19.168948	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+34	NGÂN HÀNG TMCP ĐÔNG Á-CN TÂY NINH	\N	\N	\N	\N	540 Đường 30/4,KP.1, P. 3, Thị Xã Tây Ninh, Tỉnh Tây Ninh	2014-03-13 06:30:19.188332	2014-03-13 06:30:19.188332	0301442379-023	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+35	Mr Chí	090 9815 915	\N	\N	\N	\N	2014-03-13 06:30:19.202984	2014-03-13 06:30:19.202984	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+36	CHI NHÁNH CTY TNHH LONG NHIÊN	\N	\N	\N	\N	129 TỈNH LỘ 9, Ấp 5, X. BÌNH MỸ, H. CỦ CHI, TP HCM	2014-03-13 06:30:19.223645	2014-03-13 06:30:19.223645	030 260 4110-001	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+37	Ms Kiểm	0933044790	\N	\N	\N	\N	2014-03-13 06:30:19.234353	2014-03-13 06:30:19.234353	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+38	CÔNG TY TNHH HOÀNG PHÚC	\N	\N	663712 333	\N	Ấp Suối Dộp ,Xã Thái Bình ,H. Châu Thành ,Tỉnh Tây Ninh	2014-03-13 06:30:19.262216	2014-03-13 06:30:19.262216	3900 326 176	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+39	Ms Tâm	0903.804403	\N	\N	\N	\N	2014-03-13 06:30:19.275471	2014-03-13 06:30:19.275471	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+40	CTY CP XÂY DỰNG GIAO THÔNG THÁI BÌNH	\N	\N	01682 835 079	vpctytb103@gmail.com	94/1041 DƯƠNG QUẢNG HÀM, P6, GÒ VẤP\nđịa chỉ giao hàng: 103 CT1 CHUNG CƯ K26, P7, GV	2014-03-13 06:30:19.301912	2014-03-13 06:30:19.301912	030 600 8084	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+41	CTY CỔ PHẦN TD	\N	\N	(84) 58-3516169	\N	32-34 TRẦN PHÚ, P. LỘC THỌ, TP NHA TRANG, KHÁNH HÒA\nđịa chỉ gửi hóa đơn: Phòng 1202B Lầu 12 Tòa nhà Sailing Tower, 111A Pasteur, quận 1	2014-03-13 06:30:19.324616	2014-03-13 06:30:19.324616	4200 592 551	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+42	Ms Thắm	0969 162727	\N	\N	\N	\N	2014-03-13 06:30:19.341903	2014-03-13 06:30:19.341903	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+43	CÔNG TY TNHH DL SWEETS	\N	\N	\N	\N	2047 PHẠM THẾ HIỂN, P.6, Q.8, TP HCM\nđại chỉ giao hàng 1: Phòng 1202B Lầu 12 Tòa nhà Sailing Tower, 111A Pasteur, quận 1,\nđịa chỉ giao hàng 1: 24 TRẦN HƯNG ĐẠO, Q1	2014-03-13 06:30:19.367214	2014-03-13 06:30:19.367214	0310 681 888	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+44	ms Hằng	62910650	\N	\N	\N	\N	2014-03-13 06:30:19.383853	2014-03-13 06:30:19.383853	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+45	mr Du	0986611478	\N	\N	\N	\N	2014-03-13 06:30:19.401522	2014-03-13 06:30:19.401522	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+46	CÔNG TY TNHH JLD	\N	\N	\N	\N	2047 PHẠM THẾ HIỂN, P.6, Q.8, TP HCM	2014-03-13 06:30:19.42298	2014-03-13 06:30:19.42298	0312 054 297	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+47	ms Hoa	62910651	\N	\N	hoa.vu@dl-sweets.com	\N	2014-03-13 06:30:19.443128	2014-03-13 06:30:19.443128	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+48	CÔNG TY TNHH PHƯƠNG MY DESIGN	\N	\N	\N	\N	2047 PHẠM THẾ HIỂN, P.6, Q.8, TP HCM\n111A Pasteur, lầu 12 phòng 1202 A\nđịa chỉ gửi hóa đơn: 81 Lê Thánh Tôn, Q1	2014-03-13 06:30:19.465704	2014-03-13 06:30:19.465704	0311 92 94 82	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+49	ms Thủy	0908 099190	\N	\N	thuy.nguyen@tdcorp.com.vn	\N	2014-03-13 06:30:19.484523	2014-03-13 06:30:19.484523	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+50	CÔNG TY CỔ PHẦN AN ĐÔ	\N	\N	\N	\N	1202B, Lầu 12, Tòa nhà Sailing Tower, 111A Pasteur, P.Bến Nghé, Q.1, TP.HCM	2014-03-13 06:30:19.504336	2014-03-13 06:30:19.504336	0309 586 774	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+51	ms Thúy	0938980303	\N	\N	\N	\N	2014-03-13 06:30:19.516935	2014-03-13 06:30:19.516935	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+52	CTY TNHH MỘT THÀNH VIÊN ẤN PHẨM	\N	\N	38274755.0	\N	63A Võ Văn Tần, Phường 6, Quận 3, TP.HCM	2014-03-13 06:30:19.537909	2014-03-13 06:30:19.537909	0302 861 911	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+3	CTY PHÁT TRIỂN PHẦN MỀM XÂY DỰNG  AUREOLE			3821 9382		TÒA NHÀ AB TOWER,SỐ 76, ĐƯỜNG LÊ LAI, P. BẾN THÀNH, Q.1, TP.HCM	2014-03-13 06:30:18.501236	2014-06-14 02:34:49.190606	0302 26 0501		1	\N	00000000	\N	\N	\N	\N	f	\N	\N
+53	mr Trinh	0987 122 566	\N	\N	\N	\N	2014-03-13 06:30:19.54885	2014-03-13 06:30:19.54885	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+54	CÔNG TY ĐiỆN LỰC BÌNH PHƯỚC	\N	\N	\N	\N	Quốc lộ 14, Xã Tiến Thành, Thị Xã đồng xoài, tỉnh Bình Phước	2014-03-13 06:30:19.576785	2014-03-13 06:30:19.576785	0300942001-011	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+55	ms Thư	0918 335 457	\N	\N	\N	\N	2014-03-13 06:30:19.589575	2014-03-13 06:30:19.589575	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+56	mr Văn	0963.020279	\N	\N	\N	\N	2014-03-13 06:30:19.608673	2014-03-13 06:30:19.608673	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+57	CÔNG TY TNHH DU LỊCH THƯỞNG ĐIỂU	\N	\N	\N	\N	LẦU 3, 71-75 HAI BÀ TRƯNG, QUẬN 1, TP HCM	2014-03-13 06:30:19.631305	2014-03-13 06:30:19.631305	0305 44 3373	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+58	CHI NHÁNH CÔNG TY TNHH KDDI VIỆT NAM TẠI TP.HCM	\N	\N	3915 2244	\N	số 180 – 192 Nguyễn Công Trứ, P. Nguyễn Thái Bình, Q.1, Tp.HCM	2014-03-13 06:30:19.681682	2014-03-13 06:30:19.681682	0100971460-001	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+59	Lan	337	\N	\N	\N	\N	2014-03-13 06:30:19.698991	2014-03-13 06:30:19.698991	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+60	Nga	305	\N	\N	\N	\N	2014-03-13 06:30:19.71956	2014-03-13 06:30:19.71956	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+61	Khuyên	658	\N	\N	\N	\N	2014-03-13 06:30:19.73748	2014-03-13 06:30:19.73748	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+62	Chi nhánh Công ty TNHH KDDI Việt Nam tại Khu công viên phần mềm Quang Trung Thành Phố Hồ Chí Minh	\N	\N	\N	\N	QTSC Building 9, Đường số 3, công viên phần mềm Quang Trung, Phường Tân Chánh Hiệp, Quận 12	2014-03-13 06:30:19.761348	2014-03-13 06:30:19.761348	0100971460-002	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+63	Chi Nhánh Công ty TNHH dịch vụ tiện ích quốc tế OCS tại Thành Phố Hồ Chí Minh	\N	\N	\N	\N	Số 79C, đường Điện Biên Phủ, Phường Đa Kao , Quận 1, TPHCM\ngiao hàng tại 351/31 Nơ Trang long, chung cư Cửu Long	2014-03-13 06:30:19.784427	2014-03-13 06:30:19.784427	0105384723-002	\N	1	\N	\N	\N	\N	\N	\N	f	\N	\N
+64	ms Truyền	0903.644918	\N	\N	\N	\N	2014-03-13 06:30:19.795993	2014-03-13 06:30:19.795993	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+67	CÔNG TY TNHH A.B.M	\N	\N	08 35171069	abm-vn@vnn.vn	72 Cù Lao, P.2, Q.Phú Nhuận, Tp.HCM	2014-03-29 04:08:33.699632	2014-03-29 04:08:33.699632	0303121395	\N	2	www.abm.com.vn	741.7129	SGD NH Á CHÂU-HCM	\N	\N	\N	f	\N	\N
+68	Tuyền \nMỹ\nTRẦN DUY ĐÔNG	35171014-58\n0976 936 155\n0909. 812252	\N	\N	dong.abm@gmail.com	\N	2014-03-29 04:08:33.816827	2014-03-29 04:08:33.816827	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+69	Công Ty TNHH MTV Phát Triển Công Nghệ Quốc Tế Á Châu	\N	\N	08 38397415	ntmy@micro-asia.com	120 Sương Nguyệt ánh, P. Bến Thành, Q. 1,Tp. HCM	2014-03-29 04:08:33.850849	2014-03-29 04:08:33.850849	0307478477	\N	2	http://www.micro-asia.com	\N	\N	\N	\N	\N	f	\N	\N
+70	CÔNG TY CỔ PHẦN VIỄN THÔNG Á CHÂU (SIÊU THỊ VIỄN THÔNG)	\N	\N	08 35886356	info@sieuthivienthong.com	92K - Nguyễn Thái Sơn - P.3 - Q.Gò Vấp - Tp.HCM	2014-03-29 04:08:33.872687	2014-03-29 04:08:33.872687	0304926579	\N	2	www.sieuthivienthong.com	26515149.0	NH TMCP Á Châu ACB, CN Hồ Văn Huê - Tp.HCM	\N	\N	\N	f	\N	\N
+71	Ngân	0916 514 469	\N	\N	\N	\N	2014-03-29 04:08:33.892849	2014-03-29 04:08:33.892849	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+72	CÔNG TY TNHH TIN HỌC Á ĐÔNG	\N	\N	08 38621446	trungtammaychieu@yahoo.com	215 Độc Lập, Phường Tân Quý, Q.Tân Phú, TP.HCM\nCN: 163/17 Thành Thái, Phường 14, Quận 10, Tp. HCM	2014-03-29 04:08:33.920011	2014-03-29 04:08:33.920011	0302740113	\N	2	www.trungtammaychieu.com	352.9009	NH TM CP Á CHÂU - HCM	Ông Trần Quốc Cường	Giám Đốc	\N	f	\N	\N
+73	Hiền	0916.624.029	\N	\N	quynh@trungtammaychieu.com	\N	2014-03-29 04:08:33.959221	2014-03-29 04:08:33.959221	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+74	CN CÔNG TY CP ĐẦU TƯ & PHÁT TRIỂN CN QUỐC GIA ADG TẠI TP HCM  (ADG Distribution)	\N	\N	08 54298069	\N	167-169 Đường số 9A KDC Trung Sơn, Ấp 4B, xã Bình Hưng, h. Bình Chánh, tp. Hcm	2014-03-29 04:09:38.021876	2014-03-29 04:09:38.021876	0102023052-001	Cáp mạng AMP\nTủ rack Comrack \nUPS APC, Eaton\nSMC Switch	2	http://www.adg.vn/	\N	\N	\N	\N	\N	f	\N	\N
+75	Oanh	0982 782 483	\N	\N	oanh.huynh@adg.vn	\N	2014-03-29 04:09:38.048719	2014-03-29 04:09:38.048719	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+76	Công Ty TNHH Thương Mại và Dịch Vụ An Nhất	\N	\N	08 3930 5520	info@annhat.com.vn	256 Nguyễn Thị Minh Khai, P.6, Q.3, TP.HCM	2014-03-29 04:09:38.071364	2014-03-29 04:09:38.071364	0305746924	\N	2	www.annhat.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+77	CÔNG TY CỔ PHẦN TIN HỌC AN PHÚ	\N	\N	08 3925.0719	\N	121 Lê Thị Riêng, Phường Bến Thành, Quận 1, TP.HCM	2014-03-29 04:09:38.089651	2014-03-29 04:09:38.089651	0304717173	\N	2	http://coolermastervn.com/	\N	\N	\N	\N	\N	f	\N	\N
+78	Diệp	0902.330.996	\N	\N	\N	\N	2014-03-29 04:09:38.112889	2014-03-29 04:09:38.112889	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+79	CÔNG TY TNHH MTV KTS ANH TÚ	\N	\N	08 62680764	ale@camerakts.com	911 Lạc Long Quân, Phường 11, Q. Tân Bình, TP.HCM	2014-03-29 04:09:38.142454	2014-03-29 04:09:38.142454	0305718148	\N	2	http://www.Camerakts.com	\N	\N	\N	\N	\N	f	\N	\N
+80	Lương Quốc Tú	0934081283 - 0903144483	\N	\N	\N	\N	2014-03-29 04:09:38.165242	2014-03-29 04:09:38.165242	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+81	Công Ty Cổ Phần Axioo	\N	\N	08 38680593	axioo.saigon@axioo.vn	436B/40 Ba Tháng Hai, P.12, Q.10, TP.HCM	2014-03-29 04:09:38.187815	2014-03-29 04:09:38.187815	0305772145	\N	2	www.axiooworld.com	43226219	Á CHÂU - HCM	\N	\N	\N	f	\N	\N
+82	CÔNG TY CP ĐẦU TƯ LÊ BẢO MINH	\N	\N	08 3837 6666	info@lebaominh.vn	95B -97 -99 Trần Hưng Đạo, Q.1, TP.HCM	2014-03-29 04:09:38.217855	2014-03-29 04:09:38.217855	0308783233	\N	2	http://www.lebaominh.vn/	60 159 879	Ngân hàng ACB Tp HCM	\N	\N	\N	f	\N	\N
+83	DIỄM THÙY	0905.270.240	\N	\N	\N	\N	2014-03-29 04:09:38.236569	2014-03-29 04:09:38.236569	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+84	Trung tâm Dịch vụ Kỹ thuật Lê Bảo Minh	\N	\N	\N	\N	299 Tôn Thất Thuyết, Phường 1, Quận 4, TP.HCM	2014-03-29 04:09:38.268247	2014-03-29 04:09:38.268247	\N	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+85	CÔNG TY CỔ PHẦN LÊ BẢO MINH	\N	\N	08 38379666	lebaominh@hcm.fpt.vn	10A Trần Hưng Đạo, P.Phạm Ngũ Lão, Q.1, TP.HCM\n135A NGUYỄN VĂN TRỖI, PHÚ NHUẬN\n190-192 Đề Thám, Quận 1	2014-03-29 04:09:38.28626	2014-03-29 04:09:38.28626	0303329629	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+86	Tuyết \nThúy (máy in)\nbenQ	08 38386666 -13\n0905270240\n0976053833	\N	\N	\N	\N	2014-03-29 04:09:38.300908	2014-03-29 04:09:38.300908	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+87	CÔNG TY CP CÔNG NGHỆ THÔNG TIN LÊ BẢO MINH \nHÀ NỘI	\N	\N	04 37713 616, 37478 150	\N	14 Lý Nam Đế, Hàng Mã, Q. Hoàn Kiếm , HN\n130A Giảng Võ, Q. Ba Đình, TP. Hà Nội \n15-17 Nguyễn Chí Thanh, Ba Đình, Hà Nội	2014-03-29 04:09:38.32235	2014-03-29 04:09:38.32235	0102902670	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+88	Công Ty TNHH MTV TMDV Bảo Minh (Siêu Thị Kỹ Thuật Số)	\N	\N	08 39204998	baominhsieuthi@gmail.com	257 Trần Hưng Đạo ,P.Cô Giang, Q.1 , TP HCM	2014-03-29 04:09:38.345556	2014-03-29 04:09:38.345556	0305021741	\N	2	http://www.1000thuonghieu.com/sieuthibaominh/	\N	\N	\N	\N	\N	f	\N	\N
+89	Diệu	08 39202079	\N	\N	\N	\N	2014-03-29 04:09:38.375219	2014-03-29 04:09:38.375219	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+90	CÔNG TY CỔ PHẦN MỰC IN BẢO TÍN	\N	\N	08. 62906674	info@cisbaotin.com \n mucinbaotin@yahoo.com	284/32 Lê Văn Sỹ, P.14, Q.3	2014-03-29 04:09:38.391305	2014-03-29 04:09:38.391305	0304818742	\N	2	http://www.mucinbaotin.com/	00406072.0001	NH Đông Á - CN Lê Văn Sỹ	\N	\N	\N	f	\N	\N
+91	P. KINH DOANH\nTư vấn KT	0983 726 554\n0903 726 554	\N	\N	\N	\N	2014-03-29 04:09:38.408628	2014-03-29 04:09:38.408628	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+92	Cửa Hàng 208	\N	\N	08 35885673	\N	216 NGUYỄN VĂN NGHI, P.7, Q. GÒ VẤP, TP HCM	2014-03-29 04:09:38.433766	2014-03-29 04:09:38.433766	0301233044	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+93	CN Công Ty TNHH Phân Phối CMC	\N	\N	08 3929 2767	cmcdistribution@sg.cmc.com.vn	Lầu 2, 65-65A Đường 3 tháng 2 , P.11 , Q.10 , TP.HCM	2014-03-29 04:09:38.454083	2014-03-29 04:09:38.454083	0100244112-006	\N	2	 www.cmcdistribution.com.vn	033.1003.707278\n488.10279	VIETCOMBANK CN BẾN THÀNH \nÁ CHÂU-KỲ HÒA	\N	\N	\N	f	\N	\N
+94	CÔNG TY TNHH TƯ VẤN & GIẢI PHÁP PHẨN MỀM \nCHÂN TÍN	\N	\N	\N	\N	57/20 BÙI THỊ XUÂN, P.5, Q.TÂN BÌNH\n154/29/19 Phạm Văn Hai, P.3, Q. Tân Bình, TP HCM	2014-03-29 04:09:38.479937	2014-03-29 04:09:38.479937	0304050820	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+95	Trâm	0966506650	\N	\N	\N	\N	2014-03-29 04:09:38.49975	2014-03-29 04:09:38.49975	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+96	CÔNG TY TNHH TM KỸ THUẬT DIỆP KHÁNH	\N	\N	08 3925 9748	support@diepkhanh.vn	212A/A70 Nguyễn Trãi, P. Nguyễn Cư Trinh, Q.1	2014-03-29 04:09:38.526741	2014-03-29 04:09:38.526741	0303899837	\N	2	http://www.diepkhanh.vn/	138.88179	Á CHÂU - HCM	\N	\N	\N	f	\N	\N
+97	Thịnh	08 3925 9747	\N	\N	\N	\N	2014-03-29 04:09:38.554964	2014-03-29 04:09:38.554964	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+98	Khánh		\N	\N	\N	\N	2014-03-29 04:09:38.58461	2014-03-29 04:09:38.58461	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+99	CÔNG TY CP DỊCH VỤ PHÂN PHỐI TỔNG HỢP DẦU KHÍ	\N	\N	08 3911 5579\n08 35561581	\N	P207, Tòa nhà Petrovietnam, Số 1-5 Lê Duẩn, Q.1\n12AB CƯ XÁ THANH ĐA, P27, BÌNH THẠNH	2014-03-29 04:09:38.613614	2014-03-29 04:09:38.613614	0305482862	\N	2	http://www.psd.com.vn/	008 212 04 0001	ĐÔNG Á - CN Q.5	\N	\N	\N	f	\N	\N
+100	Doanh Nghiệp Tư Nhân Đức Lan\nCHI NHÁNH DNTN ĐỨC LAN	\N	\N	08 3933 3546, 38374112	\N	147-149, Võ Văn Tần, P. 6, Q. 3, TP HCM\n189 Nguyễn Thái Học,P. Phạm Ngũ Lão, Q. 1	2014-03-29 04:09:38.632147	2014-03-29 04:09:38.632147	0302884193	\N	2	www.duclanphotocopy.com	125.2010.6014.018	TECHCOMBANK - HCM	\N	\N	\N	f	\N	\N
+101	CÔNG TY TNHH TM-DV ĐÀI NGUYÊN	\N	\N	08 62900953	\N	945 HẬU GIANG, P.11, Q.6, TP HCM	2014-03-29 04:09:38.659627	2014-03-29 04:09:38.659627	0303472918	\N	2	\N	171.02249	ACB - HCM	\N	\N	\N	f	\N	\N
+102	CÔNG TY TNHH ĐỒNG NAM	\N	\N	08 38225883	dongnamco@hcm.vnn.vn	67-69-71 Trương Định, Q.1, TP HCM	2014-03-29 04:09:38.682046	2014-03-29 04:09:38.682046	0300835779-1	\N	2	http://www.dongnamco.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+103	Bảo	08 38244509	\N	\N	\N	\N	2014-03-29 04:09:38.695376	2014-03-29 04:09:38.695376	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+104	CÔNG TY TNHH CÔNG NGHỆ ĐÔNG NGÂN	\N	\N	08 3862. 2459	\N	283/51 Cách Mạng Tháng 8, P.12, Q.10, TPHCM	2014-03-29 04:09:38.713442	2014-03-29 04:09:38.713442	0303002775	\N	2	www.dongngan.vn	6357 359	ACB- CN KỲ HÒA	\N	\N	\N	f	\N	\N
+105	Long \nHiền	0913 806 961 \n0933 64 94 64	\N	\N	thlong0774@gmail.com\nthanhhien@dongngan.vn	\N	2014-03-29 04:09:38.729793	2014-03-29 04:09:38.729793	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+106	CÔNG TY TNHH TM-DV TIN HỌC ĐIỆN TỬ ĐA THÔNG	\N	\N	08 38945087, 3551 3571	\N	43A QUANG TRUNG, P.10, Q.GV, TP. HCM	2014-03-29 04:09:38.758397	2014-03-29 04:09:38.758397	0305119867	\N	2	\N	2934.3529	ACB - HCM	\N	\N	\N	f	\N	\N
+107	CÔNG TY TNHH FIBO	\N	\N	62645982.0	hai.nv@fibo.vn	P3-P3A Bạch Mã, P. 15, Q.10 , TP HCM	2014-03-29 04:09:38.7802	2014-03-29 04:09:38.7802	0305105134	\N	2	http://www.fibosms.com/	0037.2577.0001	ĐÔNG Á- CN Q10-HCM	\N	\N	\N	f	\N	\N
+108	Đạt\nKT công nợ	08 62645984-112\n08 62645983-125	\N	\N	\N	\N	2014-03-29 04:09:38.809508	2014-03-29 04:09:38.809508	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+109	CÔNG TY TNHH THƯƠNG MẠI GIÀU PHÁT	\N	\N	\N	\N	443/1 Phan Xích Long, P.2, Q. Phú Nhuận, TP HCM	2014-03-29 04:09:38.838201	2014-03-29 04:09:38.838201	0303716628	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+110	CÔNG TY TNHH TIN HỌC & TM HỒNG CƠ	\N	\N	08.3925 2934	hongco@hongco.com.vn	Số 4 Nam Quốc Cang, P.Phạm Ngũ Lão, Q.1, TP.HCM	2014-03-29 04:09:38.853645	2014-03-29 04:09:38.853645	0300873950	\N	2	http://www.hongco-it.com/	1002300.002\n018.100.0352.472	INDOVINABANK _ HCM\nVIETCOMBANK-CN NSG	\N	\N	\N	f	\N	\N
+111	CÔNG TY CỔ PHẦN  CÔNG NGHỆ TIN HỌC HỒNG HẢI	\N	\N	\N	\N	149/29/16 LŨY BÁN BÍCH, Q.TÂN PHÚ, TP HCM	2014-03-29 04:09:38.869963	2014-03-29 04:09:38.869963	0307022451	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+112	CÔNG TY CP MÁY TÍNH HOÀN LONG\nCN CÔNG TY CP MÁY TÍNH HOÀN LONG	\N	\N	08.39259119	lienhe@hoanlong.com.vn	244 Cống Quỳnh, p.Phạm Ngũ Lão, Q.1, TP HCM\n15 NGUYỄN OANH, P.10, Q.GÒ VẤP	2014-03-29 04:09:38.884589	2014-03-29 04:09:38.884589	0304722166	\N	2	www.hoanlong.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+113	CÔNG TY TNHH ĐIỆN- ĐIỆN TỬ HIỆP LỰC	\N	\N	\N	\N	87 NGUYỄN VĂN LƯỢNG, P.17, Q.GV	2014-03-29 04:09:38.909161	2014-03-29 04:09:38.909161	\N	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+114	CTY TNHH TM VÀ DV LÊ HOÀNG LINH	\N	\N	\N	\N	767/2 TRẦN HƯNG ĐẠO, P.1, Q. 5 \n ĐC LẤY HÀNG: 31/21 Ðồng Xoài, P. 13, Q. Tân Bình	2014-03-29 04:09:38.929322	2014-03-29 04:09:38.929322	0304271756	\N	2	\N	61 68 74 79	Tại ngân hàng á châu Phòng giao dịch Maxximax cộng hòa 2	\N	\N	\N	f	\N	\N
+115	Long ( kỹ thuật)	0937975179	\N	\N	máy in OKI	\N	2014-03-29 04:09:38.956895	2014-03-29 04:09:38.956895	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+116	CÔNG TY TNHH TIN HỌC VIỄN THÔNG HỢP LỰC	\N	\N	08 2934219	\N	814/1 SƯ VẠN HẠNH, P.12, Q.10, TP. HCM	2014-03-29 04:09:38.979699	2014-03-29 04:09:38.979699	0304302651	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+117	CÔNG TY CP CÔNG NGHỆ THÔNG TIN VÀ VIỄN THÔNG HƠP NHẤT	\N	\N	08 38322419	\N	85B BÙI THI XUÂN, P.PHẠM NGŨ LÃO, Q.1 ,TP HCM	2014-03-29 04:09:39.012931	2014-03-29 04:09:39.012931	0305500215	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+118	TRUNG TÂM GIAO DỊCH CÔNG NGHỆ THÔNG TIN VÀ \nTRUYỀN THÔNG HÀ NỘI	\N	\N	\N	\N	K1 HÀO NAM, ĐƯỜNG GIẢNG VÕ, Q.ĐỐNG ĐA, HN	2014-03-29 04:09:39.035347	2014-03-29 04:09:39.035347	0101555689	\N	2	\N	125-10-0000-17203	Bank Đầu Tư & Phát Triển VN - CN Đông Đô	\N	\N	\N	f	\N	\N
+119	Phương	0943888091	\N	\N	\N	\N	2014-03-29 04:09:39.050499	2014-03-29 04:09:39.050499	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+120	CÔNG TY CỔ PHẦN THƯƠNG MẠI DỊCH VỤ HỒNG QUANG	\N	\N	08 38 371 377	info@sunshine-jsc.com.vn	74C Nguyễn Văn Cừ, Q.1, TP.HCM	2014-03-29 04:09:39.078221	2014-03-29 04:09:39.078221	0302156010	\N	2	http://sunshine-jsc.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+121	Sơn	0938 202 774	\N	\N	son.buithanh@sunshine-jsc.com	\N	2014-03-29 04:09:39.10379	2014-03-29 04:09:39.10379	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+122	CÔNG TY TNHH HỢP TOÀN	\N	\N	08 3920.65.62	\N	48A1 Trần Đình Xu, P.Cô Giang, Q.1, TP HCM	2014-03-29 04:09:39.127015	2014-03-29 04:09:39.127015	0304529645	\N	2	http://www.hoptoan.com/	\N	\N	\N	\N	\N	f	\N	\N
+123	CÔNG TY TNHH HỮU VĂN	\N	\N	08 3812 6662	\N	708 LŨY BÁN BÍCH, P. TÂN THÀNH, Q. TÂN PHÚ	2014-03-29 04:09:39.140353	2014-03-29 04:09:39.140353	0302859528	\N	2	http://toner.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+124	Cường	0918736162	\N	\N	cuonghuuvan@gmail.com\nID: cuongvt76	\N	2014-03-29 04:09:39.16059	2014-03-29 04:09:39.16059	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+125	CÔNG TY TNHH SX TM KIM HOÀN VŨ	\N	\N	08 39483790, 39970782	khv@hcm.vnn.vn	H31 Bis - K300 Cộng Hòa, P.12, Q. Tân Bình, TP HCM	2014-03-29 04:09:39.185185	2014-03-29 04:09:39.185185	0301424549	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+126	C. Thanh	\N	\N	\N	\N	\N	2014-03-29 04:09:39.211611	2014-03-29 04:09:39.211611	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+127	CÔNG TY TNHH TM-DV HUỲNH KIM MINH	\N	\N	08 38374695	\N	345/84 TRẦN HƯNG ĐẠO, P.CẦU KHO, Q.1, TP. HCM	2014-03-29 04:09:39.234327	2014-03-29 04:09:39.234327	0303458134	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+128	CÔNG TY TNHH K.A.S	\N	\N	08 3868-6784	minhnho@vnn.vn	3/6 Thành Thái, Phường 14, Q.10, TP Hồ Chí Minh	2014-03-29 04:09:39.259111	2014-03-29 04:09:39.259111	0303224640	\N	2	http://kas.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+129	Nguồn ACBEL	08 3868 6779	\N	\N	\N	\N	2014-03-29 04:09:39.284355	2014-03-29 04:09:39.284355	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+130	CÔNG TY TNHH KHẢI THIÊN-KTC	\N	\N	08 38322037	\N	384 Nguyễn Thị Minh Khai, Q.3, Tp HCM	2014-03-29 04:09:39.312407	2014-03-29 04:09:39.312407	0301676433	\N	2	http://www.ktc.com.vn/	690.509	ACB-HỘI SỞ	\N	\N	\N	f	\N	\N
+131	Công Ty Cổ Phần Thương Mại Công Nghệ KHAI TRÍ	\N	\N	08 37754879	nkhaitri@hcm.vnn.vn	62A Nguyễn Trọng Tuyển, P.15, Q. Phú Nhuận, TP.HCM	2014-03-29 04:09:39.331257	2014-03-29 04:09:39.331257	0305184591	\N	2	www.khaitri.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+132	CÔNG TY CỔ PHẦN KHANG THỊNH	\N	\N	08 38 323 241	kt@hcm.vn.vn	93 Trần Phú, P.4, Quận 5, Hồ Chí Minh	2014-03-29 04:09:39.34651	2014-03-29 04:09:39.34651	0301287003	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+133	CÔNG TY TNHH MÁY TÍNH KIẾN TƯỜNG	\N	\N	08 62911124	kientuongcomputer@yahoo.com	153Bis Lê Thị Riêng, P. Bến Thành, Q. 1, TP HCM	2014-03-29 04:09:39.364489	2014-03-29 04:09:39.364489	0304181397	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+134	DOANH NGHIỆP TƯ NHÂN TM DV  L&C	\N	\N	08 38121573	lc_tbvpp@hcm.fpt.vn	375 Cộng Hòa, P. 13, Q. Tân Bình, TP HCM	2014-03-29 04:09:39.391853	2014-03-29 04:09:39.391853	0302088184	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+135	CÔNG TY TNHH LIÊN HUY	\N	\N	08 38444336	lienhuyco@lienhuy.com	350/12b, Lê Đức Thọ, P.16, Q. Gò Vấp, TP HCM	2014-03-29 04:09:39.422766	2014-03-29 04:09:39.422766	0303054773	\N	2	http://lienhuy.com/	\N	\N	\N	\N	\N	f	\N	\N
+136	CHI NHÁNH CÔNG TY CP LITEK	\N	\N	08 35737703	\N	157 Điện Biên Phủ, P.15, Bình Thạnh, TP HCM	2014-03-29 04:09:39.437966	2014-03-29 04:09:39.437966	0101635944-001	\N	2	\N	606.704.0600.18945	VIB- CN BINH THANH	\N	\N	\N	f	\N	\N
+137	Nhi	08 35144484	\N	\N	\N	\N	2014-03-29 04:09:39.455992	2014-03-29 04:09:39.455992	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+282	MỸ HẠNH	0908.824 267	\N	\N	hanhdtm@chanchinh.com.vn	\N	2014-03-29 04:09:42.839334	2014-03-29 04:09:42.839334	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+138	CÔNG TY TNHH LÊ PHỤNG	\N	\N	08 39290605\n08 3 9251599	lephungcomputer@yahoo.com	301 Võ Văn Tần, P. 5, Q. 3, TP HCM\n73A2 - 73A3 Nguyễn Thị Minh Khai, Quận 1, TP.HCM	2014-03-29 04:09:39.479947	2014-03-29 04:09:39.479947	0303109084	\N	2	www.lephung.vn	200.006519	Sài gòn thương tín	\N	\N	\N	f	\N	\N
+139	CÔNG TY TNHH GIẤY VI TÍNH LIÊN SƠN	\N	\N	08 39 100 666	lienson@lienson.vn	34 Nguyễn Bỉnh Khiêm, Q.1, TP.HCM	2014-03-29 04:09:39.497282	2014-03-29 04:09:39.497282	0301452923	\N	2	http://lienson.vn/	\N	\N	\N	\N	\N	f	\N	\N
+140	CÔNG TY TNHH ĐẦU TƯ PHÁT TRIỂN CÔNG NGHỆ TIN HỌC LONG TRÍ	\N	\N	08 39257476	\N	150/56 NGUYỄN TRÃI, P.BT, Q.1, TP. HCM	2014-03-29 04:09:39.523622	2014-03-29 04:09:39.523622	0305920241	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+141	CÔNG TY TNHH VI TÍNH NGUYÊN KIM	\N	\N	08.3920 1570	sale@nguyenkimvn.vn	117 Nguyễn Cư Trinh, Q.1, TP.HCM\nTTBH:  122c Trần Đình Xu, Q1, TP HCM	2014-03-29 04:09:39.550997	2014-03-29 04:09:39.550997	0303753468	\N	2	http://vitinhnguyenkim.vn/	0067 1227 0001	ĐÔNG Á PGD Phạm Ngũ Lão. Q1	\N	\N	\N	f	\N	\N
+142	sale laptop\nThịnh\nChinh	0938 808 857\n0923 808 808\n39203191-9-E63	\N	\N	\N	\N	2014-03-29 04:09:39.571189	2014-03-29 04:09:39.571189	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+143	CÔNG TY TNHH TM-DV VÂN PHÁT	\N	\N	08 8376403	vanphatco@vanphat.vn	75 Nguyễn Cư Trinh, P. Nguyễn Cư Trinh, Q.1,TP. HCM	2014-03-29 04:09:39.596727	2014-03-29 04:09:39.596727	0303332212	\N	2	http://www.vanphat.vn/	33 36 5209	Á CHÂU- CN Lê Văn Sỹ	\N	\N	\N	f	\N	\N
+144	Vân	38374741 Ext 107\n0918.891.866	\N	\N	\N	\N	2014-03-29 04:09:39.619764	2014-03-29 04:09:39.619764	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+145	CÔNG TY TNHH LIÊN PHÚC NAM	\N	\N	08 3938 1710	info@lienphucnam.com	16/55/11 Nguyễn Thiện Thuật, P. 2, Quận 3	2014-03-29 04:09:39.653287	2014-03-29 04:09:39.653287	0310209675	\N	2	http://lienphucnam.com/	8488 9439	Á CHÂU- HS NGUYỄN THỊ MINH KHAI	\N	\N	\N	f	\N	\N
+146	Hạnh	0908826513\n0916 525 248	\N	\N	\N	\N	2014-03-29 04:09:39.666188	2014-03-29 04:09:39.666188	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+147	CÔNG TY TNHH TM-DV TRÍ ĐỨC	\N	\N	08 38307205	triducprinting@vnn.vn	586 Điện Biên Phủ, P.11, Q.10, TP.HCM	2014-03-29 04:09:39.685991	2014-03-29 04:09:39.685991	0300884053	\N	2	http://www.triducprinting.com.vn	79095959.0	ACB - PGD ngã 7 SG	\N	\N	\N	f	\N	\N
+148	CÔNG TY TNHH CÔNG NGHỆ TIN HỌC TG	\N	\N	08 39205053	tingia@hcm.vnn.vn	21/16 Trần Đình Xu , P.Cầu Kho, Q.1, TP HCM	2014-03-29 04:09:39.702686	2014-03-29 04:09:39.702686	0310595893	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+149	CÔNG TY TNHH TM DV XNK ĐẠI THẮNG	\N	\N	08 3716 1731	sales@acquydaithang.com	1/10 đường số 7, Phường 17, Q. Gò Vấp, Tp. HCM\nCN: 01 Quốc Lộ 1A, KP3, P.Thạnh Lộc, Q. 12	2014-03-29 04:09:39.727985	2014-03-29 04:09:39.727985	0311750284	\N	2	http://www.acquydaithang.com/	135351739.0	Á Châu - CN Văn Lang Tp. HCM.	\N	\N	\N	f	\N	\N
+150	CN CÔNG TY TNHH MTV THIẾT BỊ TIN HỌC AN PHÚ	\N	\N	08 629 10994	\N	121/1 Lê Thị Riêng, P. Bếnh Thành, Q.1, TP HCM	2014-03-29 04:09:39.743828	2014-03-29 04:09:39.743828	3702167037-001	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+151	CÔNG TY TNHH MTV PHÁT TRIỂN TIN HỌC SÀI GÒN (INFOCOM)\nCông Ty TNHH Phát Triển Tin Học (Infocom) – CN	\N	\N	08 3997 3364	kinhdoanhinfocom@yahoo.com	4/32B Đường Số 46, P.14, Q.Gò Vấp, TP HCM\n176/37A, Trần Huy Liệu , P.15, Q. Phú Nhuận	2014-03-29 04:09:39.759335	2014-03-29 04:09:39.759335	0310631855\n0100513647-001	CPU Intel; HDD PC Laptop Samsung, Western, Hitachi, Seagate; USB Kingston, Kingmax, Trancend; Mitsumi; Ram; Asus; Máy in; Linkpro, Dlink; Draytek; Santak; cable	2	\N	102010001205268.0	NH CÔNG THƯƠNG - CN 7	\N	\N	\N	f	\N	\N
+152	Hằng	09038 55899	\N	\N	Bichhanginfo@yahoo.com	\N	2014-03-29 04:09:39.777046	2014-03-29 04:09:39.777046	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+153	CÔNG TY CP CÔNG NGHỆ AUTOID	\N	\N	08 3962.1356	sales@autoid.vn	62 Lê Thị Bạch Cát - P.13 - Q.11, TP HCM	2014-03-29 04:09:39.801196	2014-03-29 04:09:39.801196	0311945043	\N	2	http://autoid.com.vn/	0421 000 421614	VIETCOMBANK- CN PHÚ THỌ	\N	\N	\N	f	\N	\N
+154	CÔNG TY TNHH PHÂN PHỐI GIẢI PHÁP MỚI	\N	\N	08 3842 0459	\N	489A/23/203, Huỳnh Văn Bánh ,P.13, Q.Phú Nhuận	2014-03-29 04:09:39.820795	2014-03-29 04:09:39.820795	0309979616	\N	2	\N	136571949.0	Á CHÂU - PGD TÔN ĐẢN	\N	\N	\N	f	\N	\N
+155	CÔNG TY TNHH TMDV ÁNH MINH CƯỜNG	\N	\N	08 38 38 99 40	\N	8A Nguyễn Cảnh Chân, P.Nguyễn Cư Trinh, Q. 1	2014-03-29 04:09:39.844647	2014-03-29 04:09:39.844647	0303284689	\N	2	http://www.anhminhcuong.vn/	889 8589	ACB - CN TP HCM	\N	\N	\N	f	\N	\N
+156	CÔNG TY TNHH TMDV TIN HỌC BNI	\N	\N	\N	\N	182 Trần Bình Trọng, P.3, Q.5, TP HCM	2014-03-29 04:09:39.873687	2014-03-29 04:09:39.873687	0312002669	\N	2	\N	0071 0007 32929	VIETCOMBANK - CN LÊ HỒNG PHONG	\N	\N	\N	f	\N	\N
+157	CÔNG TY TNHH TIN HỌC LONG GIA	\N	\N	08 3929 3498	logico@hcm.vnn.vn	409 Võ Văn Tần -P.5 -  Q. 3 – TP HCM	2014-03-29 04:09:39.891645	2014-03-29 04:09:39.891645	0301888879	\N	2	www.logicovn.com	685219.0	NH ACB - Hội sở HCM -  442 Nguyễn Thị Minh Khai, Quận 3, TP. HCM	\N	\N	\N	f	\N	\N
+158	CÔNG TY TNHH TM-XNK NGUYỄN LÊ VY	\N	\N	(08) 39706740	lv2002@hcmc.netnam.vn	LL1B Ba Vì, P. 15, Q. 10, TP HCM	2014-03-29 04:09:39.920015	2014-03-29 04:09:39.920015	0303827913	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+159	CÔNG TY TNHH MTV BÌNH MINH PHÁT	\N	\N	08.3517.1855	\N	50 Cù Lao -P2-Phú Nhuận -TP HCM \nĐịa chỉ cũ : 95A - Nguyễn Trọng Tuyển - P15 - Phú Nhuận	2014-03-29 04:09:39.941761	2014-03-29 04:09:39.941761	0307850631	\N	2	http://binhminhphat.com/	0421003821980	CN Vietcombank - Phú Thọ	\N	\N	\N	f	\N	\N
+160	Bình	0906929268	\N	\N	\N	\N	2014-03-29 04:09:39.957742	2014-03-29 04:09:39.957742	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+161	CÔNG TY CP TIN HỌC MINH THÔNG	\N	\N	08 39254622	sale@mtc.com.vn	116B Bùi Thị Xuân, P.Bến Thành, Q.1, TP HCM	2014-03-29 04:09:39.981593	2014-03-29 04:09:39.981593	0302500746	Main VGA LCD Asus, Laptop Dell Samsung, Mitsumi, Intel HDD Solid - SSD, Main CPU Intel	2	http://www.mtc.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+162	Hạnh\nHà	0909540960\n0908229773	\N	\N	ngocha@mtc.com.vn	\N	2014-03-29 04:09:39.99921	2014-03-29 04:09:39.99921	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+163	CN CÔNG TY TNHH MÁY TÍNH NÉT (HÀ NỘI) - NETCOM	\N	\N	(08) 299 3004\n08 3868 2928	netcomsaigon@netcom.com.vn	526 ĐIỆN BIÊN PHỦ, P.11, Q.10\n402 Cao Thắng , P.12 , Q.10 , TP.HCM	2014-03-29 04:09:40.026716	2014-03-29 04:09:40.026716	0100945911-001	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+164	Võ Vân Duẩn	0914 453 166	\N	\N	duanvv@netcom.com.vn	\N	2014-03-29 04:09:40.049796	2014-03-29 04:09:40.049796	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+165	CÔNG TY TNHH TM-DV VÙNG ĐẤT MÁY TÍNH	\N	\N	\N	support@compuland.vn	43 Đường số 1, Cư Xá Đô Thành, P.4, Q.3\n100 ĐƯỜNG SỐ 4, KP3, TAM PHÚ, THỦ ĐỨC	2014-03-29 04:09:40.077588	2014-03-29 04:09:40.077588	0303659200	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+166	CÔNG TY TNHH PHÁT TRIỂN CÔNG NGHỆ MÁY TÍNH VIỆT NAM	\N	\N	04 3793 0968	vnctco@gmail.com	Số 30 Trần Quốc Hoàn - Dịch Vọng - Cầu Giấy - Hà Nội\nXÓM HOA, THÔN PHÚ MỸ, MỸ ĐÌNH, TỪ LIÊM, HN	2014-03-29 04:09:40.099804	2014-03-29 04:09:40.099804	0101803194	\N	2	http://www.vnctco.com/	\N	\N	\N	\N	\N	f	\N	\N
+167	Dung	0169 428 5555	\N	\N	\N	\N	2014-03-29 04:09:40.124879	2014-03-29 04:09:40.124879	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+168	CÔNG TY TNHH XUẤT NHẬP KHẨU NHẬT HUY	\N	\N	(08) 39293103	\N	183 VÕ VĂN TẦN, P.5, Q.3, TP HCM	2014-03-29 04:09:40.152131	2014-03-29 04:09:40.152131	0305358696	\N	2	\N	51999.019\n033.100.378.2146	Á CHÂU_ CN KỲ HÒA\nVIETCOMBANK-CN BẾN THÀNH	\N	\N	\N	f	\N	\N
+169	Linh-Trung	08 38249943	\N	\N	\N	\N	2014-03-29 04:09:40.171657	2014-03-29 04:09:40.171657	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+170	CÔNG TY TNHH TM-DV TIN HỌC NHÂN LONG	\N	\N	08.39290229	haduy@hcm.vnn.vn	214Bis Võ Văn Tần P.5, Q. 3 , TP HCM	2014-03-29 04:09:40.197934	2014-03-29 04:09:40.197934	0301853019	\N	2	\N	54267569.0	Á CHÂU - HCM	\N	\N	\N	f	\N	\N
+171	CÔNG TY TNHH MÁY TÍNH NGUYỄN SƠN	\N	\N	\N	\N	55 DUY TÂN, P.15, Q.PHÚ NHUẬN, TP. HCM	2014-03-29 04:09:40.221966	2014-03-29 04:09:40.221966	0304494784	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+172	CÔNG TY TNHH TMDV PT CN KT PHÚ HẢI (MGM)\nCN CÔNG TY TNHH TMDV PT CN KT PHÚ HẢI	\N	\N	08. 39250948	nghiavov@gmail.com	30 TÔN THẤT TÙNG, P.BẾN THÀNH, Q.1\n187 NGUYỄN CƯ TRINH, Q.1	2014-03-29 04:09:40.260027	2014-03-29 04:09:40.260027	0304987596	\N	2	\N	5665.5149	Á CHÂU-CN ÔNG ÍCH KHIÊM-Q.11	\N	\N	\N	f	\N	\N
+173	Anh Thủy	0907793772	\N	\N	\N	\N	2014-03-29 04:09:40.278372	2014-03-29 04:09:40.278372	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+174	CÔNG TY TNHH TM KỸ THUẬT PHÁT LỘC	\N	\N	08 38361053	\N	269/4 NGUYỄN TRÃI, P.NCT, Q.1, TP HCM	2014-03-29 04:09:40.305547	2014-03-29 04:09:40.305547	0303792185	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+175	CÔNG TY TNHH TM-DV ĐẠI PHÚ LỢI	\N	\N	08 3862 5523	daiphuloi@dpl.com.vn	27 lô B Trường Sơn, P. 15, Q. 10	2014-03-29 04:09:40.32898	2014-03-29 04:09:40.32898	0303410365	\N	2	www.daiphuloi.com	\N	\N	\N	\N	\N	f	\N	\N
+176	CN CÔNG TY TNHH TM ĐẦU TƯ VÀ PHÁT TRIỂN-TID	\N	\N	08 38340293	contacthcm@tid.vn	197 Cách Mạng Tháng 8, P.4, Q.3, TP.HCM	2014-03-29 04:09:40.346835	2014-03-29 04:09:40.346835	0100510533-002	Tổng đài, điện thoại panasonic	2	http://www.tid.vn/	007.100.0311.749	NGOẠI THƯƠNG -HCM	\N	\N	\N	f	\N	\N
+177	Hùng	0984.152.522	\N	\N	ngochung.tid@gmail.com\n           hungln@tid.vn	\N	2014-03-29 04:09:40.367502	2014-03-29 04:09:40.367502	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+178	CỬA HÀNG PHONG VŨ\nCÔNG TY CP THƯƠNG MẠI DỊCH VỤ PHONG VŨ	\N	\N	6290 8779\n3930 1292	phongvu@vitinhphongvu.com	125 Cách Mạng Tháng 8, P.Bến Thành, Q. 1\n264A-264B-264C Nguyễn Thị Minh Khai, P.6. Q.3	2014-03-29 04:09:40.398349	2014-03-29 04:09:40.398349	0306004523	\N	2	http://phongvu.vn/	2 8 3 2 2 1 8 9	NH ACB – 442 Nguyễn Thị Minh Khai, Quận 3	\N	\N	\N	f	\N	\N
+179	CÔNG TY TNHH PHỤNG VI	\N	\N	(08) 39105074	phungvico@gmail.com	12L Nguyễn Thị Minh Khai, P. Đa Kao, Q.1, TP. HCM	2014-03-29 04:09:40.422702	2014-03-29 04:09:40.422702	0303105435	\N	2	http://www.phungvi.net/	\N	\N	\N	\N	\N	f	\N	\N
+180	Loan	0913 944 805	\N	\N	nguyenttloan@yahoo.com	\N	2014-03-29 04:09:40.442871	2014-03-29 04:09:40.442871	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+181	CÔNG TY TNHH PHÂN PHỐI CÔNG NGHỆ QUANG DŨNG	\N	\N	08 3521 0584\n08 3823 3318	info@qdfeed.com	LẦU 2, 27 NGUYỄN TRUNG TRỰC, Q1 Tầng 20, tòa nhà Centec, 72-74 Nguyễn Thị Minh Khai , P.6, Q.3	2014-03-29 04:09:40.471762	2014-03-29 04:09:40.471762	0303754648	ADC Krone\nSwitch KVM Aten\nCamera Axis\nTủ rack Ekorack\nPDU THRUPOWER\nMáng lưới CABLOFIL Trunk	2	http://www.qdfed.com	1309 4009	Á CHÂU-CN SÀI GÒN	\N	\N	\N	f	\N	\N
+182	Phạm Đình Hiếu	091 555 4326	\N	\N	hieupham@qd-tek.com.vn	\N	2014-03-29 04:09:40.493019	2014-03-29 04:09:40.493019	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+183	CÔNG TY CP ĐẦU TƯ PHÁT TRIỂN CÔNG NGHỆ ROBO	\N	\N	08 3925 2796	robocorp@robo.com.vn	106-108 Cống Quỳnh, P.Phạm Ngũ Lão, Q.1,TP.HCM	2014-03-29 04:09:40.52096	2014-03-29 04:09:40.52096	0301982582	\N	2	www.robo.com.vn	6073.0929	Á CHÂU-  PGD THỊ NGHÈ	\N	\N	\N	f	\N	\N
+184	Trang	08 39253709	\N	\N	\N	\N	2014-03-29 04:09:40.542332	2014-03-29 04:09:40.542332	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+185	CÔNG TY TNHH IDC SAIGON	\N	\N	(08) 38455905	support@idcsaigon.com	244B HUỲNH VĂN BÁNH, P.11, Q.PHÚ NHUẬN	2014-03-29 04:09:40.571506	2014-03-29 04:09:40.571506	0302285658	Oki, Zyxel, Cnet, màn hình LG, Màn hình Fujitsu, Ares	2	http://www.idcsaigon.com/	692.129	Á CHÂU-HỘI SỞ   HCM	\N	\N	\N	f	\N	\N
+186	Hằng \nQuân\nTâm (mực OKI)\nHữu Điền	0909 392 744 \n0908554848\n08 38455905\n0902 36 58 38	\N	\N	\N	\N	2014-03-29 04:09:40.591496	2014-03-29 04:09:40.591496	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+187	CÔNG TY TNHH SONG HY	\N	\N	\N	songhycom@yahoo.com	100/2 Nguyễn Xuân Khoát, P. Tân Thành, Q. Tân Phú\n 320 Cao Thắng - P.12 - Q.10 - TP.HCM	2014-03-29 04:09:40.618733	2014-03-29 04:09:40.618733	0303708176	\N	2	http://vinatoner.vn/	\N	\N	\N	\N	\N	f	\N	\N
+188	Hà	(08) 3868 2068	\N	\N	\N	\N	2014-03-29 04:09:40.641215	2014-03-29 04:09:40.641215	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+189	CN SÀI GÒN: CÔNG TY CP CÔNG NGHỆ SILICOM	\N	\N	\N	gd.sg@silicom.com.vn	165 Bến Vân Đồn, P.6, Q.4, TP.HCM	2014-03-29 04:09:40.67095	2014-03-29 04:09:40.67095	0100777230-012	Máy bộ SingPC, màn hình AOC, Máy in Brother, Adata, Genius	2	http://silicom.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+190	Kinh doanh\nNguyễn Nam Hòa	0946 980 150\n0907698465	\N	\N	hoann@silicom.com.vn	\N	2014-03-29 04:09:40.692998	2014-03-29 04:09:40.692998	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+191	CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ TIN HỌC NHÂN SINH PHÚC	\N	\N	08 3834 2109	info@nsp.com.vn	359 Võ Văn Tần, P. 5, Q.3, TP.HCM\n158/15 TRẦN HUY LIỆU, PN	2014-03-29 04:09:40.717448	2014-03-29 04:09:40.717448	0301667950	Cáp mạng AMP, ADC Krone\nTủ rack Vietrack\nSwitch KVM Avocent\nCamera ACTi	2	http://www.nsp.com.vn	001.270115.061	HSBC BANK (VIETNAM)	\N	\N	\N	f	\N	\N
+192	CÔNG TY TNHH MTV TM&DV MÁY TÍNH THIÊN ÂN	\N	\N	08 62921.829	maquocloi@vitinhthienan.com	65 Thích Quảng Đức,P. 4, Q.Phú Nhuận	2014-03-29 04:09:40.75246	2014-03-29 04:09:40.75246	0305705910	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+193	Lợi\nVũ	0903654365, 0909353594\n'0909121214	\N	\N	\N	\N	2014-03-29 04:09:40.774047	2014-03-29 04:09:40.774047	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+194	CÔNG TY TNHH TIN HỌC KIM THIÊN BẢO	\N	\N	08.54.319.159	\N	SỐ 22, ĐƯỜNG SỐ 10, KDC TRUNG SƠN, BÌNH CHÁNH\n150/52 NGUYỄN TRÃI, P.BT, Q.1, TP. HCM	2014-03-29 04:09:40.798789	2014-03-29 04:09:40.798789	0305680448	\N	2	http://kimthienbao.com/	\N	\N	\N	\N	\N	f	\N	\N
+195	CÔNG TY CỔ PHẦN THIẾT BỊ số	\N	\N	08 39147436	\N	2-2A Trần Hưng Đạo, P.Phạm Ngũ Lão, Q.1	2014-03-29 04:09:40.836768	2014-03-29 04:09:40.836768	0304841075	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+196	CÔNG TY TNHH GIẢI PHÁP SỐ TOÀN CẦU	\N	\N	08 3588 8507	info@dsgvietnam.com	Lầu 2, tòa nhà 37, Nguyễn Bỉnh Khiêm, P.1, Q. Gò Vấp\nLẦU 2 TOÀN NHÀ ANNA, CVPM QUANG TRUNG, Q.12	2014-03-29 04:09:40.85541	2014-03-29 04:09:40.85541	0305486031	\N	2	http://dsgvietnam.com/	\N	\N	\N	\N	\N	f	\N	\N
+197	CÔNG TY TNHH TH VIỄN THÔNG NHẤT TIẾN CHUNG	\N	\N	08 54.319.903\n08-3925 5103	sales@thegioimaychu.vn	Tòa nhà Rosana, Số 60 Nguyễn Đình Chiểu, P.Đa Kao, Q.1\n 61 Sương Nguyệt Ánh, P. Bến Thành, Quận 1, TP.HCM	2014-03-29 04:09:40.875236	2014-03-29 04:09:40.875236	0303781634	Server đủ loại: IBM, Dell, HP, Lifecom, SuperMicro	2	http://www.thegioimaychu.vn\nhttp://www.nhattienchung.vn/	1900.201.217.822	NHNN & PTNT Chi Nhánh Mạc Thị Bưởi	\N	\N	\N	f	\N	\N
+198	Vo Hong Thai (Mr)	0918 477 177	\N	\N	hongthai@nhattienchung.vn	\N	2014-03-29 04:09:40.898755	2014-03-29 04:09:40.898755	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+199	CÔNG TY TNHH TM-DV TAM GIA	\N	\N	08 39201201	trankhanhmanh@3glaptop.com	316B ĐIỆN BIÊN PHỦ, P.11, Q.10	2014-03-29 04:09:40.928231	2014-03-29 04:09:40.928231	0305660498	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+200	CÔNG TY CỔ PHẦN THẾ GIỚI SỐ- DIGIWORLD	\N	\N	08. 3929 0060	support@notebook.com.vn	211-213 Võ Văn Tần, P.5, Q.3, TP.HCM  \nTầng 8, Tòa nhà Ngân Hàng Nam Á\n201 - 203, Cách Mạng Tháng 8, P.4, Q. 3	2014-03-29 04:09:40.954252	2014-03-29 04:09:40.954252	0302861742	Laptop, PC: HP, Toshiba, Samsung, Dell, Acer, Gateway	2	www.digiworld.com.vn	500.9999	ACB-HCM	\N	\N	\N	f	\N	\N
+201	Ms Ngân\nMr Khánh	0913 609335 \n 0933 466157	\N	\N	vinhngan@dgw.com.vn\nquockhanh@dgw.com.vn	\N	2014-03-29 04:09:40.971865	2014-03-29 04:09:40.971865	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+202	DNTN TM&DV VI TÍNH THĂNG LONG	\N	\N	\N	prohd@hcm.vnn.vn	51/60, Cao Thắng, P.3, Quận 3, TP.HCM	2014-03-29 04:09:40.997937	2014-03-29 04:09:40.997937	0302118590	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+203	CÔNG TY TNHH TM & CN TIN HỌC THỊNH LONG	\N	\N	08 3868.1779, 3929.3417	tlc@hcm.vnn.vn	285/36/7A, CMT8, P.12. Q.10, TP.HCM	2014-03-29 04:09:41.021541	2014-03-29 04:09:41.021541	0301449832	\N	2	http://www.thinhlong.vn/	\N	\N	\N	\N	\N	f	\N	\N
+204	CÔNG TY TNHH TM-DV TIN HỌC TOÀN NHÂN	\N	\N	08 38351230\n08 39797667	\N	321 NGUYỄN THIỆN THUẬT, P.1, Q.3\nGIAO DỊCH : 350 CAO THẮNG, P.12, Q.10	2014-03-29 04:09:41.045248	2014-03-29 04:09:41.045248	0303161285	\N	2	\N	788.1929	Á CHÂU _ HỘI SỞ	\N	\N	\N	f	\N	\N
+205	CN TẠI TPHCM-CÔNG TY CP MÁY TÍNH TẦM NHÌN (VISCOM)	\N	\N	08 39 200 362,3836 9586	info-sg@viscom.vn	299 Tôn Thất Thuyết, .P1, Q.4\n37/6 TRẦN ĐÌNH XU, P CẦU KHO, Q1\n23A NGUYỄN THỊ DỊÊU,P.6 , Q3	2014-03-29 04:09:41.074107	2014-03-29 04:09:41.074107	0305716969	\N	2	http://www.viscom.vn/	719.25659	ACB- CN VÕ VĂN TẦN	\N	\N	\N	f	\N	\N
+206	Vy\nMs. Loan	08 62599599 -105 \n01212.335190	\N	\N	A4Tech, BenQ, WD Western Digital, D-link Dlink	\N	2014-03-29 04:09:41.093942	2014-03-29 04:09:41.093942	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+207	CÔNG TY TNHH TIN HỌC THÀNH NHÂN	\N	\N	08.3925 0140	thanhnhan@tnc.com.vn	174 - 176 - 178 Bùi Thị Xuân, P. Phạm Ngũ Lão, Q.1	2014-03-29 04:09:41.118721	2014-03-29 04:09:41.118721	0302802641	\N	2	www.tnc.com.vn	0331.000.413.706\n4423.779	NH Vietcombank - CN Bến Thành. \nACB-HCM	\N	\N	\N	f	\N	\N
+208	Email đặt hàng	\N	\N	\N	sales@tnc.vn	\N	2014-03-29 04:09:41.13316	2014-03-29 04:09:41.13316	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+209	CÔNG TY TNHH - TMDV TIN HỌC THIÊN PHÚC	\N	\N	(08)62650084	\N	301/15 Lê Văn Sỹ, P.13, Q.3\n71/26/25, Nguyễn Bặc, P. 3, Q. Tân Bình	2014-03-29 04:09:41.149408	2014-03-29 04:09:41.149408	0307328947	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+210	CÔNG TY TNHH SX-TM-DV VIỄN ĐÔNG	\N	\N	(08) 38308855	info@vie.vn	207 Trần Bình Trọng, P. 3, Q. 5, TP HCM	2014-03-29 04:09:41.169185	2014-03-29 04:09:41.169185	0302117501	\N	2	http://www.vie.vn	018.100.035247.2	\N	\N	\N	\N	f	\N	\N
+211	Khiêm	0909.741.328	\N	\N	khiem.nguyen@vie.vn	\N	2014-03-29 04:09:41.181081	2014-03-29 04:09:41.181081	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+212	CÔNG TY TNHH TIN HỌC Á ĐÔNG VINA	\N	\N	(08) 392 45676\n08 38213647	sales-hcm@advn.vn	164 Trần Bình Trọng, P.3, Q.5, Tp. HCM\n300 Nguyễn Công Trứ, P. Nguyễn Thái Bình, Q. 1	2014-03-29 04:09:41.204363	2014-03-29 04:09:41.204363	0304515709	\N	2	http://www.advn.vn/	\N	\N	\N	\N	\N	f	\N	\N
+213	CÔNG TY TNHH TIN HỌC VIẾT SƠN	\N	\N	08 39293765\n08.39293780	\N	150TER BÙI THỊ XUÂN, P.PNL, Q.1, TP. HCM\nSỐ 2 LÔ V  NGUYỄN THỊ TẦN, P.2, Q.8 \n 2/31 CAO THẮNG, P.5, Q.3, HCM	2014-03-29 04:09:41.230114	2014-03-29 04:09:41.230114	0302985265	\N	2	\N	007.100.118.0690\n63 40 319	VIETCOMBANK-HCM\nÁ CHÂU- HỘI SỞ	\N	\N	\N	f	\N	\N
+214	Lan\nVân - công nợ\nVuong Thanh Tam	08 39293770 \n08 39293780 \n0907 459 111	\N	\N	tamvt@vietsontdc.com	\N	2014-03-29 04:09:41.250468	2014-03-29 04:09:41.250468	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+215	Công Ty TNHH MTV Công Nghệ Tin Học Viễn Sơn	\N	\N	08 3839 0119 - 3925 0030	ms-info@microstar.com.vn	162B Bùi Thị Xuân, Q.1, TP.HCM	2014-03-29 04:09:41.279412	2014-03-29 04:09:41.279412	0302866490	Gigabyte	2	www.microstar.com.vn	4740 659\n1602.201.012.010	ACB - HỘI SỞ\nNgân hàng NN& PTNT , Chi nhánh 3, Tp.HCM	\N	\N	\N	f	\N	\N
+216	Nghĩa	0903 751 290	\N	\N	\N	\N	2014-03-29 04:09:41.297802	2014-03-29 04:09:41.297802	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+217	CÔNG TY CỔ PHẦN TM DV TÂN VIỄN TIN-VITICO	\N	\N	08 3910 1480\n083844 2373	vtt@vientin.com	11B Nguyễn Đình Chiểu, P. Đa Kao, Q.1, TP.HCM \n47 Đào Duy Anh , P.9 , Q. Phú Nhuận , TP.HCM\n 496/63 Dương Quảng Hàm, P.6, Gò Vấp	2014-03-29 04:09:41.317564	2014-03-29 04:09:41.317564	0302249265	\N	2	www.vientin.com	200.000.548	SÀI GÒN THƯƠNG TÍN- \nCN GÒ VẤP	\N	\N	\N	f	\N	\N
+218	CÔNG TY CP ĐẦU TƯ XD BƯU CHÍNH-VIỄN THÔNG (SAICOM)	\N	\N	08 3899 4561, 3514 2897\n08 3866 9995	info@saicom.com.vn\nsales@saicom.com.vn	69 Ngô Tất Tố, p. 21, q. Bình Thạnh\n347( số 76 cũ) Lý Thường Kiệt, P. 9, Q.Tân Bình	2014-03-29 04:09:41.347759	2014-03-29 04:09:41.347759	030 290 5164	\N	2	http://www.saicom.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+219	CÔNG TY TNHH TIN HỌC TÍCH VIỄN TIN	\N	\N	08 39.414.892	info@ittivn.com	11 Khánh Hội, P. 3, Quận 4	2014-03-29 04:09:41.366538	2014-03-29 04:09:41.366538	0304370852	\N	2	http://www.giaiphapmangvn.com/	\N	\N	\N	\N	\N	f	\N	\N
+220	Hải	0903.759.444	\N	\N	\N	\N	2014-03-29 04:09:41.390886	2014-03-29 04:09:41.390886	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+221	Công ty cổ phần Thương mại và Dịch Vụ Xem Sơn (XESCO)	\N	\N	08 35267673	\N	127 Lý Chính Thắng, p.7, quận 3	2014-03-29 04:09:41.418314	2014-03-29 04:09:41.418314	0301005756	\N	2	www.xesco.com.vn	\N	\N	Nguyễn Anh Bảo	Giám Đốc Điều Hành	\N	f	\N	\N
+222	Kinh doanh linh kiện	08 35267768	\N	\N	\N	\N	2014-03-29 04:09:41.443671	2014-03-29 04:09:41.443671	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+223	CÔNG TY CP ESYS (eSys Technologies Jsc.)	\N	\N	(08)3 512 8708, 3512 3958	\N	289/1 Ung Văn Khiêm, P. 25, Q. Bình Thạnh	2014-03-29 04:09:41.465845	2014-03-29 04:09:41.465845	0303853575	Server IBM\nMáy in, Máy scan HP	2	http://www.esysvietnam.com/	2111.9149	Á CHÂU- CN VĂN LANG- HCM	\N	\N	\N	f	\N	\N
+224	CÔNG TY CỔ PHẦN HUETRONICS	\N	\N	08.392.93264	info@huetronics.vn	183 Võ Văn Tần, p.5, q. 3, TP HCM\n05- 07, Hoàng Hoa Thám, Thành phố Huế, Tỉnh Thừa Thiên Huế	2014-03-29 04:09:41.501645	2014-03-29 04:09:41.501645	3300100699	\N	2	www.huetronics.vn	1425.1559\n016.100.0000.415	ACB-CN HUẾ\nVIETCOMBANK-CN HUẾ	\N	\N	\N	f	\N	\N
+225	Đạt\nHiếu	0909.510.889\n54826021	\N	\N	\N	\N	2014-03-29 04:09:41.525615	2014-03-29 04:09:41.525615	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+226	CÔNG TY TNHH TM-DV-XNK ĐĂNG KHÔI	\N	\N	(08 )38464710,39934649	info@dangkhoi.com.vn	472/66A Cách Mạng Tháng 8, P. 11, Q. 3	2014-03-29 04:09:41.549884	2014-03-29 04:09:41.549884	0309030828	\N	2	http://dangkhoi.com.vn/	06200.266.707101	TMCP SÀI GÒN- PGD LÊ VĂN SỸ	\N	\N	\N	f	\N	\N
+227	CÔNG TY TNHH KỸ THUẬT Q.T.C	\N	\N	(08) 5445 3102	qtc@qtctech.com.vn	Lầu 4, 29-31 Đinh Bộ Lĩnh, P.24, Quận. Bình Thạnh\n17/33 , Kp 7, Đường Linh Đông, P. Linh Đông, Q.Thủ Đức	2014-03-29 04:09:41.582254	2014-03-29 04:09:41.582254	0303063760	VMA Rack	2	http://www.qtctech.com.vn/	133 193 99 \n1020.10000.183679	Á CHÂU- CN THỦ ĐỨC\nCÔNG THƯƠNG-CN7 HCM	\N	\N	\N	f	\N	\N
+228	CÔNG TY TNHH TM & KT TIN HỌC TTC	\N	\N	08 8247067	sales@ttc-infotech.com.vn	58 Mạc Đĩnh Chi, Quận 1, TP Hồ Chí Minh	2014-03-29 04:09:41.610662	2014-03-29 04:09:41.610662	0302022514	\N	2	http://www.ttc-infotech.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+229	CÔNG TY TNHH NHÀ NƯỚC MTV THƯƠNG MẠI VÀ XNK VIETTEL	\N	\N	\N	\N	Số 1 Giang Văn Minh, P.Kim Mã, Q.Ba Đình, .Hà Nội	2014-03-29 04:09:41.634526	2014-03-29 04:09:41.634526	0104831030	\N	2	\N	120.10.000.351979	ĐẦU TƯ VÀ PHÁT TRIỂN VN\nCN- SGD 1 HÀ NỘI	\N	\N	\N	f	\N	\N
+230	Viettel Distribution	\N	\N	(08) 6264 5797	\N	Tầng 2, 430-432 Ba tháng Hai - Quận 10 - TP. Hồ Chí Minh	2014-03-29 04:09:41.656051	2014-03-29 04:09:41.656051	\N	Hardware: HP, Acer, Lenovo, APC, SonicWALL, Buffalo, Fujitsu\nSoftware: Microsoft, Oracle, Autodesk, Symantec, Redhat, VMWare, CA	2	www.viettel-distribution.vn	\N	\N	\N	\N	\N	f	\N	\N
+231	Nguyen Ngoc Chanh Thi (Mr.)	0909 174747-0977060956	\N	\N	thinnc@viettel.com.vn \n thinnc.viettel@gmail.com	\N	2014-03-29 04:09:41.676909	2014-03-29 04:09:41.676909	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+232	CÔNG TY CP THIẾT BỊ ĐIỆN VÀ CHIẾU SÁNG \nHỒNG PHÚC	\N	\N	08 6290 5578	\N	Lầu 6, Tòa Nhà Sông Đà - 14 B Kỳ Đồng, P. 9, Q. 3	2014-03-29 04:09:41.703098	2014-03-29 04:09:41.703098	\N	\N	2	\N	06.000.599.0036	TMCP SÀI GÒN THƯƠNG TÍN- Q3	\N	\N	\N	f	\N	\N
+233	CÔNG TY CỔ PHẦN U & ME	\N	\N	08 38627 610	\N	Lầu 3-4, 772(E-F-G) Sư Vạn Hạnh, P.12, Q.10	2014-03-29 04:09:41.721881	2014-03-29 04:09:41.721881	0302963582	Alcatel-Lucent, Nexans, Fluke Networks, JJ-Lappkabel	2	http://www.umevn.com/	1940.20100.5189	NN&PT NÔNG THÔN- CN HIỆP PHƯỚC- HCM	\N	\N	\N	f	\N	\N
+234	CÔNG TY TNHH CÔNG NGHỆ SỐ (Digitech Co.,Ltd)	\N	\N	04-3943.6889	\N	349 Ngõ Quỳnh - P. Quỳnh Lôi – Q.Hai Bà Trưng - Hà Nội	2014-03-29 04:09:41.744948	2014-03-29 04:09:41.744948	0101342916	\N	2	www.digitech.com.vn	059.100.178.7397	TM CP NGOẠI THƯƠNG VN- CN HƯNG YÊN	\N	\N	\N	f	\N	\N
+235	Phân phối thiết bị mã vạch	091 650 6868	\N	\N	\N	\N	2014-03-29 04:09:41.758855	2014-03-29 04:09:41.758855	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+236	Công ty CP ĐT & PT Công nghệ số Digitech TP Hồ Chí Minh	\N	\N	08-3965.1401	\N	Số 08 Tuệ Tĩnh - P.13 – Q.11 - TP Hồ Chí Minh	2014-03-29 04:09:41.782727	2014-03-29 04:09:41.782727	0309966631‎	Kiểm soát ra vào Soyal\nMáy chấm công Ronald Jack	2	www.digitech.com.vn	0421000 41 74 79	NH TMCP NGOẠI THƯƠNG VN-CN PHÚ THỌ	\N	\N	\N	f	\N	\N
+237	KẾ TOÁN\nthụy	08 3962 7144\n0904687270	\N	\N	hacm@hrm.vn	\N	2014-03-29 04:09:41.803245	2014-03-29 04:09:41.803245	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+238	CÔNG TY TNHH KỸ THUẬT MỸ CƯỜNG	\N	\N	08 997 1501	contact@mctech.vn	17 Bis Hồ Văn Huê, P.9, Q. Phú Nhuận TP.HCM	2014-03-29 04:09:41.832432	2014-03-29 04:09:41.832432	0307554255	\N	2	http://www.mctech.vn/	\N	\N	\N	\N	\N	f	\N	\N
+239	Thanh	08 3997 0061	\N	\N	\N	\N	2014-03-29 04:09:41.851754	2014-03-29 04:09:41.851754	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+240	CÔNG TY TNHH MỰC IN VMAX	\N	\N	08 39 11 55 30	info@vmax.com.vn	18A/28A/4-5 Nguyễn Thị Minh Khai,P. Đa Kao, Q.1	2014-03-29 04:09:41.877357	2014-03-29 04:09:41.877357	\N	\N	2	http://www.vmax.com.vn/	682979.0	Á CHÂU- HỘI SỞ HCM	\N	\N	\N	f	\N	\N
+241	cảnh- ms phương KT	08 39119966	\N	\N	\N	\N	2014-03-29 04:09:41.891552	2014-03-29 04:09:41.891552	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+242	Công Ty TNHH Sản Phẩm Công Nghệ FPT (FPT ELEAD)	\N	\N	08 39306002	fpc.sale@fpt.com.vn	236 ĐIỆN BIÊN PHỦ, P.7, Q. 3	2014-03-29 04:09:41.90908	2014-03-29 04:09:41.90908	0307864105	FPT Elead	2	http://www.elead.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+243	Phạm Văn Phước	0908 599 247	\N	\N	phuocpv@fpt.com.vn	\N	2014-03-29 04:09:41.9284	2014-03-29 04:09:41.9284	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+244	CN Công ty TNHH Phân phối FPT (FPT Distribution)	\N	\N	08 3930 6121	\N	Lầu 4, 5, 6, 63 Võ Văn Tần , P.6 , Q.3 , TP.HCM	2014-03-29 04:09:41.953803	2014-03-29 04:09:41.953803	0311263428	Microsoft, Symantec, Autodesk, VMWare\nFirewall SonicWall	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+245	Nguyen Minh Man (Mr.)\nDiep Bao Thang (Firewall)	0903.063.692\n0909 235 295	\N	\N	mannm@fpt.com.vn\nthangdb@fpt.com.vn	\N	2014-03-29 04:09:41.975298	2014-03-29 04:09:41.975298	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+246	CÔNG TY TNHH TM & DV NGUYỄN HOÀNG ANH	\N	\N	08 62943936, 39300764	\N	17 TRƯƠNG ĐỊNH, P.6, Q.3\nKHO : 198 HOÀNG VĂN THỤ, P.9, Q.PN\nBH    : 282/33 NGUYỄN T.M.KHAI, P .5, Q .3	2014-03-29 04:09:42.065636	2014-03-29 04:09:42.065636	0301518684	\N	2	\N	682819.0	BANK ACB- HCM	\N	\N	\N	f	\N	\N
+247	CÔNG TY TNHH TM DỊCH VỤ TIN HỌC DUY HẰNG	\N	\N	08 38 683 594	Info@duyhang.com	292 Cao Thắng, P. 12, Q.10, Tp.HCM \n87 Nguyễn Phúc Nguyên, P. 10, Q.3	2014-03-29 04:09:42.082092	2014-03-29 04:09:42.082092	0303392677	\N	2	www.duyhang.com	\N	\N	\N	\N	\N	f	\N	\N
+248	CN Công ty Cổ phần Công nghệ thông tin Nam Á (TP.HÀ NỘI )	\N	\N	08.3929 2057	\N	386 Nguyễn Thị Minh Khai, P.5, Q.3, Tp.Hồ Chí Minh	2014-03-29 04:09:42.09918	2014-03-29 04:09:42.09918	0101161451	\N	2	http://nama.com.vn/	120.1000.5958898	Tại Ngân hàng TMCP ĐT&PT Việt Nam - CN Sở Giao dịch 1	\N	\N	\N	f	\N	\N
+249	KD Phân phối	093 330 6333	\N	\N	totuan@nama.com.vn	\N	2014-03-29 04:09:42.112327	2014-03-29 04:09:42.112327	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+250	CÔNG TY TNHH VIỆT BẢO LONG	\N	\N	08 62580033	tim.tran@vietbaolong.com.vn	280/40 Bùi Hữu Nghĩa, Phường 2, Q. Bình Thạnh	2014-03-29 04:09:42.134333	2014-03-29 04:09:42.134333	0304311920	\N	2	http://www.vietbaolong.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+251	CÔNG TY TNHH TM AN KHANG SÀI GÒN (PHONG KHANG)	\N	\N	08 3.9291752	truongton7@gmail.com	47, đuờng số 3(Cư Xá Đô Thành), P.4, Q.3, TP.HCM	2014-03-29 04:09:42.155993	2014-03-29 04:09:42.155993	0310908602	SSK ALL IN 1	2	www.ankhangsaigon.vn	0103028735\n101973139	Ngân hàng Đông Á CN.TPHCM \nNgân hàng Á Châu CN.TPHCM (ACB)	\N	\N	\N	f	\N	\N
+252	Trường	0908 373 272	\N	\N	\N	\N	2014-03-29 04:09:42.173276	2014-03-29 04:09:42.173276	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+253	CN CÔNG TY CỔ PHẦN THẾ GIỚI CÔNG NGHỆ SỐ F5	\N	\N	08 38132184	sale@f5pro.vn	27 NGUYỄN QUANG BÍCH ,P.13 ,Q.TÂN BÌNH TP.HCM	2014-03-29 04:09:42.203929	2014-03-29 04:09:42.203929	0102028438-001	\N	2	http://f5pro.vn/	0441004019781	Ngân hàng TMCP Ngoại Thương VN - CN Tân Bình	\N	\N	\N	f	\N	\N
+254	CN Công ty cổ phần TM & ĐT công nghệ ANH EM	\N	\N	08 3.8371151	chamsockhachhang@anhemjsc.vn	393 / 1A Trần Hưng Đạo, P.Cầu Kho, Q.1, TP HCM	2014-03-29 04:09:42.225649	2014-03-29 04:09:42.225649	\N	Máy in HP, Canon, Ricoh	2	http://anhemjsc.vn/	8 6 6 9 7 7 7 9	Ngân hàng:  ACB Kỳ Hòa	\N	\N	\N	f	\N	\N
+255	Lê Quyên	0912415412	\N	\N	quyen.pham-hcm@anhemjsc.vn\nquyenpham0412@gmail.com	\N	2014-03-29 04:09:42.25534	2014-03-29 04:09:42.25534	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+256	CÔNG TY TNHH VIỄN THÔNG VIỆT HỒNG HÀ	\N	\N	08.37541399	sales@viethongha.com	4531-4533-4535 KP4 -Nguyễn Cửu Phú, P.Tân Tạo A, \nQ.Bình Tân	2014-03-29 04:09:42.285596	2014-03-29 04:09:42.285596	0303083478	\N	2	www.viethongha.com	\N	\N	\N	\N	\N	f	\N	\N
+257	Ms. Mười	0908588988	\N	\N	\N	\N	2014-03-29 04:09:42.303677	2014-03-29 04:09:42.303677	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+258	CÔNG TY TNHH TM DV TIN HỌC XNK SƠN PHÁT THÀNH	\N	\N	08.37622662	\N	76 ĐƯỜNG 36, P. BÌNH TRỊ ĐÔNG, Q. BÌNH TÂN	2014-03-29 04:09:42.319796	2014-03-29 04:09:42.319796	0303449147	\N	2	\N	49059169.0	NH Á CHÂU-PGD BÌNH TRỊ ĐÔNG	\N	\N	\N	f	\N	\N
+259	Ms.Hân	094669 3317	\N	\N	\N	\N	2014-03-29 04:09:42.338107	2014-03-29 04:09:42.338107	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+260	CÔNG TY TNHH HÀ MÃ VIỆT (HAMA)	\N	\N	(08) 39244527	sales@hamaviet.vn	157 NGUYỄN VĂN CỪ, P.2, Q.5, TP. HCM\n 27 bis trần nhật duật, p.tân định, Q.1	2014-03-29 04:09:42.363694	2014-03-29 04:09:42.363694	\N	\N	2	http://www.hama.vn	\N	\N	\N	\N	\N	f	\N	\N
+261	A. Phương\nC.Thủy	091 3677305\n01644756826	\N	\N	thuyhamaviet@gmail.com	\N	2014-03-29 04:09:42.387824	2014-03-29 04:09:42.387824	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+262	CÔNG TY TNHH TM-DV-TH-VT TRƯỜNG TIẾN (VIVOTEK)	\N	\N	08 38337374	welcome@vivotek.vn	5A/2 Trần phú ,P.4, Q. 5 TpHCM	2014-03-29 04:09:42.411697	2014-03-29 04:09:42.411697	\N	Camera Vivotek (Đài Loan)\nChuyên Camera IP	2	http://www.vivotek.vn	\N	\N	\N	\N	\N	f	\N	\N
+263	Ms.Nhung	0908087928	\N	\N	hongnhung@ion.vn	\N	2014-03-29 04:09:42.427995	2014-03-29 04:09:42.427995	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+264	CÔNG TY CỔ PHẦN THƯƠNG MẠI VẠN XUÂN	\N	\N	(08) 38660066	vaxco@vantech.pro	259-261 Lý Thường Kiệt, P.15, Q. 11\n189Bis Lý Thường Kiệt, Phường 7, Quận 11	2014-03-29 04:09:42.454574	2014-03-29 04:09:42.454574	0304402913	Camera Vantech (Đài Loan)\nChuyên Camera Analog	2	http://vantech.com.vn/	102010000842930	Ngân hàng Công Thương - CN HCM	\N	\N	\N	f	\N	\N
+265	Đỗ Nguyệt Cát	0908.560.165	\N	\N	nguyetcat@vantech.pro\nSkype: nguyetcat-vaxco	\N	2014-03-29 04:09:42.477023	2014-03-29 04:09:42.477023	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+266	CÔNG TY CP ĐẦU TƯ PHÁT TRIỂN CÔNG NGHỆ VIỆT	\N	\N	08 39231338	\N	60B Trần Hưng Đạo, P. 2, Q.5, TP. HCM	2014-03-29 04:09:42.517846	2014-03-29 04:09:42.517846	\N	Camera Vtech	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+267	CÔNG TY TNHH MTV TM & DV SÓNG NHẠC	\N	\N	08 3920 8299	\N	104 Nguyễn Văn Cừ, P. Nguyễn Cư Trinh, Q.1, TP. HCM\nTTBH : 32 Lê Lợi, P.Bến Nghé, Q.1, TP. HCM	2014-03-29 04:09:42.534291	2014-03-29 04:09:42.534291	0303779138	Camera Vtech	2	http://www.songnhac.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+268	Phan Vu Bao	08 3920 8080	\N	\N	\N	\N	2014-03-29 04:09:42.553599	2014-03-29 04:09:42.553599	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+269	Công ty TNHH Secom (Công Ty TNHH QUESTEK Việt Nam)	\N	\N	(08) 3963 1138	info@questekvietnam.vn	50 - 52 Lạc Long Quân, Phường 3, Q. 11, TP. HCM	2014-03-29 04:09:42.578462	2014-03-29 04:09:42.578462	\N	Camera Questek (Đài Loan)\nChuyên Camera Analog	2	http://questekvietnam.vn/	018 100 339 5115\n157 331 209	VietComBank - CN Nam Sài Gòn\nACB - CN Ông Ích Khiêm	Ms Hà	Giám đốc	0932685999	f	\N	\N
+270	Ms.Vy	0933440252	\N	\N	questek09@secomvn.com	\N	2014-03-29 04:09:42.599728	2014-03-29 04:09:42.599728	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+271	Công Ty Cổ Phần Phát Triển Thương Mại Châu Á (ATD)	\N	\N	08 35172657, 39977863	\N	10-11M, KDC Miếu Nổi, Phường 3, Quận Bình Thạnh\n244/20 Huỳnh Văn Bánh, P.11, Q.Phú Nhuận, TP.HCM	2014-03-29 04:09:42.624387	2014-03-29 04:09:42.624387	0309350095	UPS APC, UPS Emerson	2	http://www.atdc.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+272	Ms Hạnh\nTrang	0908 824 267 \n0987.200060	\N	\N	trangntd@atdc.com.vn	\N	2014-03-29 04:09:42.643409	2014-03-29 04:09:42.643409	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+273	CÔNG TY Cổ Phần TM DV Vùng Đất Kỹ Thuật Số (Digiland)	\N	\N	08 35500172\n08 35171775	\N	80/129 Hoàng Hoa Thám, P.7, Q. Bình Thạnh\nTầng 3, 96 Đinh Tiên Hoàng, P. 1, Q. Bình Thạnh, TP HCM	2014-03-29 04:09:42.67143	2014-03-29 04:09:42.67143	0309589408	Server IBM	2	http://www.digiland.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+274	Ms Phương Ly\nMs Đào Thị Thu Ba	0903.766635\n0908.294.224	\N	\N	phuongly@digiland.com.vn\ndttba@digiland.com.vn	\N	2014-03-29 04:09:42.688842	2014-03-29 04:09:42.688842	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+275	CÔNG TY TNHH ỨNG DỤNG KỸ THUẬT VÀ SẢN XUẤT (TECAPRO)	\N	\N	08 3811.0688	tecapro@tecapro.com.vn	18A - Đường Cộng Hoà, P.12, Q. Tân Bình	2014-03-29 04:09:42.716203	2014-03-29 04:09:42.716203	0300520578	Server Dell	2	tecapro@tecapro.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+276	Duong Thi Minh Tam	0983 885 037	\N	\N	tamdtm@tecapro.com.vn	\N	2014-03-29 04:09:42.729842	2014-03-29 04:09:42.729842	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+277	Công Ty Cổ Phần CNTT và Truyền Thông Nam Trường Sơn (NTS ICT)	\N	\N	08 3841 5555, 3526 8356	info@nts.com.vn	20 Tăng Bạt Hổ , P. 11 , Q. Bình Thạnh	2014-03-29 04:09:42.750064	2014-03-29 04:09:42.750064	0301482244	Firewall Astaro\nKaspersky	2	http://www.nts.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+278	THANH LOAN (Ms)	0903 02 01 47	\N	\N	loan-nguyen.thanh@nts.com.vn	\N	2014-03-29 04:09:42.764138	2014-03-29 04:09:42.764138	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+279	Văn Phòng Đại Diện Ingram Micro Asia	\N	\N	08 6291 2772	co.vo@ingrammicro-asia.com	Lầu 3, Tòa nhà BADACO, 16 Đặng Tất, P. Tân Định, Q.1	2014-03-29 04:09:42.783128	2014-03-29 04:09:42.783128	0310359871	Cisco\nAcronis, Adobe, Business Objects, CA, Citrix, HP Softwares, Mcafee, Nuance, PTC, Redhat, Symantec, Vizioncore, Vmware, Wyse	2	http://corp.ingrammicro.com/	\N	\N	\N	\N	\N	f	\N	\N
+280	PHUONG NGHI (Ms)	0908 318315	\N	\N	nghi.nguyen@ingrammicro-asia.com	\N	2014-03-29 04:09:42.799231	2014-03-29 04:09:42.799231	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+281	Công ty TNHH Tin Học & Thương Mai Chân Chính	\N	\N	08 3.526 4900	info@chanchinh.com.vn	220/96 Lê Văn Sỹ, Phường 14, Quận 3	2014-03-29 04:09:42.823913	2014-03-29 04:09:42.823913	0302013171‎	Cisco	2	http://www.chanchinh.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+283	CÔNG TY CỔ PHẦN PHÂN PHỐI TÂN NIỀM TIN	\N	\N	(08) 39 257 752	\N	150/10 Nguyễn Trãi, Phường Bến Thành, Q1, TPHCM.	2014-03-29 04:09:42.867627	2014-03-29 04:09:42.867627	0306065727	Linksys, Cisco, HP 3Com, Kaspersky, Norton, Wireless công suất cao ENGENIUS SENAO	2	www.tanniemtin.com	\N	\N	\N	\N	\N	f	\N	\N
+284	Tran Phuoc Dong Vu	0903935700	\N	\N	vu@tanniemtin.com	\N	2014-03-29 04:09:42.889937	2014-03-29 04:09:42.889937	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+285	Công ty TNHH MTV Dịch vụ thương mại C.B.I.T	\N	\N	08 7303 7579	\N	A01-10 (Tầng 2) Hoàng Anh Gia Lai 3, Đường Nguyễn Hữu Thọ, X.Phước Kiển, H.Nhà Bè, Thành Phố Hồ Chí Minh	2014-03-29 04:09:42.921234	2014-03-29 04:09:42.921234	0310543285	Switch DCN	2	www.dcnglobal.com	\N	\N	\N	\N	\N	f	\N	\N
+286	Duong Minh Tai (Mr)	0903 150 589	\N	\N	tai_cbit@dcnglobal.com	\N	2014-03-29 04:09:42.935573	2014-03-29 04:09:42.935573	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+287	CÔNG TY CỔ PHẦN BIỂN BẠC	\N	\N	08 9974319	bienbacbg@silversea.vn	Chi nhánh 1: 357A/8 Nguyễn Trọng Tuyển, P.1, Q. Tân Bình\nChi nhánh 2 : 202/54 Phạm Văn Hai, P5, Q. Tân Bình	2014-03-29 04:09:42.954292	2014-03-29 04:09:42.954292	01008 786 55 – 1	Kiểm soát ra vào access control, báo động, báo cháy Honeywell	2	http://www.bienbacsecurity.com.vn/	\N	\N	Trần Trọng Vinh	Chủ tịch HDQT - TGĐ	\N	f	\N	\N
+288	Chi nhánh 1: Mr.Sơn\nChi nhánh 2: Mr.Tuấn	0903393366\n0909668443	\N	\N	bienbachcm@silversea.vn\ndirector@hptvn.com	\N	2014-03-29 04:09:42.972383	2014-03-29 04:09:42.972383	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+289	Công ty TNHH Nhật Nam	\N	\N	08 3 8620 247	sales@nhatnam.com.vn	Số TT8, Tam Đảo, P.15, Q.10, TP. Hồ Chí Minh	2014-03-29 04:09:43.000048	2014-03-29 04:09:43.000048	0301954810	Báo trộm Pyronix\nBáo cháy Hochiki\nBáo động, access control SCS, Falco	2	http://www.nhatnam.com.vn/	007.100.0347183	NH TMCP Ngoại Thương VN – CN TP. HCM.	\N	\N	\N	f	\N	\N
+290	Phạm Diệu Thúy	0903 901 039	\N	\N	pdthuy@nhatnam.com.vn	\N	2014-03-29 04:09:43.022869	2014-03-29 04:09:43.022869	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+291	CÔNG TY TNHH DANH ĐẶNG	\N	\N	08 3762 8022	info@danhdang.vn	92/2 Đường số 29, P. Bình Trị Đông B, Q. Bình Tân, Tp. HCM	2014-03-29 04:09:43.052528	2014-03-29 04:09:43.052528	0304303101	Âm thanh công cộng Inter-M\nCamera Wonwoo\nDoorphone Commax (Chuông cửa màn hình), hệ thống gọi y tá Commax	2	http://www.denic.vn/	\N	\N	\N	\N	\N	f	\N	\N
+292	TRẦN QUỐC TOÀN	0937 68 37 47	\N	\N	toantran@danhdang.vn	\N	2014-03-29 04:09:43.070571	2014-03-29 04:09:43.070571	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+293	Công ty TNHH Viễn Thông Sáng Tạo Thuận Phong (Innotel)	\N	\N	08 3863 0366	sales@innotel.com.vn	Lầu 2, Toà nhà Duy Tân, Số 10, Đường 3/2, P.12, Q.10	2014-03-29 04:09:43.098415	2014-03-29 04:09:43.098415	0304195505	Load balance Peplink, Cisco, Fortinet, WatchGuard, Micronet, RAD, Video conference Nesfis, RHUB, Juniper Network	2	http://www.innotel.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+294	Huỳnh Thanh Hải	0982 88 70 89	\N	\N	hai.ht@innotel.com.vn	\N	2014-03-29 04:09:43.119269	2014-03-29 04:09:43.119269	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+295	CÔNG TY TNHH KT TIN HỌC VIỄN THÔNG AN PHÁT	\N	\N	08.39256597	an_phat@vnn.vn	205/2-3 Nguyễn Trãi - P.Nguyễn Cư Trinh - Q.1 - TP.HCM\n3C Trần Phú, P.4, Q.5, TP HCM	2014-03-29 04:09:43.148631	2014-03-29 04:09:43.148631	\N	Draytek, Totolink, Dintek, Rubytech	2	http://www.draytek.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+296	Lê Minh Khoa	0918.431.567	\N	\N	minhkhoa@draytek.com.vn	\N	2014-03-29 04:09:43.170696	2014-03-29 04:09:43.170696	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+297	CÔNG TY TNHH TM KỸ THUẬT TIN HỌC ANH NGỌC	\N	\N	08.355.111.99	\N	49A10, Phan Đăng Lưu, P.7, Q.Phú Nhuận, Tp HCM	2014-03-29 04:09:43.199643	2014-03-29 04:09:43.199643	\N	TP-link, Biostar, Huntkey, SiliconPower	2	www.anhngoc.com.vn	\N	\N	\N	\N	\N	f	\N	\N
+298	Trịnh Thái Bảo	0902.661.833	\N	\N	bao@anhngoc.com.vn	\N	2014-03-29 04:09:43.217767	2014-03-29 04:09:43.217767	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+299	CÔNG TY TNHH TM DV MÁY TÍNH THỚI KHANG	\N	\N	08 35923276	khang_tkc@vnn.vn	132/ 23 Trường Chinh, KP6, P. Tân Hưng Thuận, Q. 12	2014-03-29 04:09:43.246	2014-03-29 04:09:43.246	\N	Màn hình cảm ứng LCD CTX, TKC	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+300	A. CHUNG	090 367 7416	\N	\N	\N	\N	2014-03-29 04:09:43.267788	2014-03-29 04:09:43.267788	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+301	CÔNG TY TNHH TM ẮC QUY BẠCH LONG	\N	\N	08 39 554 591	bachlonggs@hcm.vnn.vn	140-144-146 HỒNG BÀNG, P.2, Q.5, TP HCM	2014-03-29 04:09:43.295699	2014-03-29 04:09:43.295699	030 2467 231	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+302	VIỆN QUY HOẠCH THỦY LỢI MIỀN NAM	\N	\N	08 3835 1721	siwarp@hcm.fpt.vn	271/3 An Dương Vương, Quận 5, Tp. HCM	2014-03-29 04:09:43.318041	2014-03-29 04:09:43.318041	\N	\N	2	http://www.siwrp.org.vn/	\N	\N	\N	\N	\N	f	\N	\N
+303	Công ty TNHH Phát triển Công nghệ thông tin Thịnh Minh Thiên	\N	\N	08 3826.6513	mail@thinhminhthien.com	203 Hoàng Diệu P.8, Q.4, TpHCM	2014-03-29 04:09:43.339227	2014-03-29 04:09:43.339227	0303591471	MÀN HÌNH  Sunview	2	www.thinhminhthien.com	\N	\N	\N	\N	\N	f	\N	\N
+304	Ms.Chi	0913.099.296	\N	\N	\N	\N	2014-03-29 04:09:43.360713	2014-03-29 04:09:43.360713	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+305	CÔNG TY TNHH MTV TMDV CHÍ THỊNH	\N	\N	\N	\N	78 PHAN XÍCH LONG, P.2, Q.PN, TP. HCM	2014-03-29 04:09:43.387161	2014-03-29 04:09:43.387161	0304987684	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+306	CÔNG TY TNHH SX.TM.DV.XNK SONG TẤN	\N	\N	\N	info@songtan.vn	214 Hoa Lan, Phường 2,Q.Phú Nhuận	2014-03-29 04:09:43.413812	2014-03-29 04:09:43.413812	0303694660	\N	2	http://songtan.vn/	0071.0005.94379\n77798089	NH Vietcombank - TPHCM\nNH  ACB - CN Phú Nhuận - TP HCM	\N	\N	\N	f	\N	\N
+307	Quỳnh	08.3517.8540-114	\N	\N	info@sotapc.com	\N	2014-03-29 04:09:43.430679	2014-03-29 04:09:43.430679	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+308	Công ty TNHH TM & DV Vi tính Mai Gia	\N	\N	08 39255145\n08 39252253	maigia@vnn.vn	27C Tôn Thất Tùng – P Phạm Ngũ Lão – Q.1\n160 A-B Bùi Thị Xuân – P Phạm Ngũ Lão - Q.1	2014-03-29 04:09:43.452499	2014-03-29 04:09:43.452499	\N	\N	2	www.maigia.com.vn\nhttp://maybodell.com/	\N	\N	\N	\N	\N	f	\N	\N
+309	CÔNG TY TN MTV  TM  XUẤT NHẬP KHẨU VI TA	\N	\N	(08) 3868 8252	admin@vita.net.vn	D9 Khu Nhà Ở Thương Mại, 319 Lý Thường Kiệt, P.15, Q.11	2014-03-29 04:09:43.47594	2014-03-29 04:09:43.47594	0305645718	\N	2	www.vita.net.vn	\N	\N	\N	\N	\N	f	\N	\N
+310	Công Ty TNHH TM Dịch Vụ Tin Học Thành Phước	\N	\N	62.649489	\N	57CT Tam Đảo P.15 Q.10 , cư xá bắc hải	2014-03-29 04:09:43.490476	2014-03-29 04:09:43.490476	0311872652	\N	2	\N	141850339.0	Ngân Hàng ACB – Phòng giao dịch Hoàng Việt	\N	\N	\N	f	\N	\N
+311	CÔNG TY TNHH MTV VIPA ( VIPA OM CO.,LTD)	\N	\N	\N	congtyvipa@yahoo.com.vn	Khu 15, Thị trấn Lai Cách, Cẩm Giàng, Hải Dương	2014-03-29 04:09:43.508361	2014-03-29 04:09:43.508361	0800830176	THIẾT BỊ TỰ ĐỘNG BÁO GIỜ	2	www.vipavietnam.com	46010001203337	NH Đầu tư và Phát triển, CN Hải Dương	\N	\N	\N	f	\N	\N
+312	TAM	0168.975.8889	\N	\N	pascal_tam@yahoo.com	\N	2014-03-29 04:09:43.532526	2014-03-29 04:09:43.532526	\N	\N	3	\N	\N	\N	\N	\N	\N	f	\N	\N
+313	CÔNG TY TNHH TM DỊCH VỤ TIN HỌC ANH PHƯƠNG  A.P.C.O.M	\N	\N	08 3839.8114 \n08 3925.3799	aptrading@hcm.vnn.vn	104 Nguyễn Trãi, P.Bến Thành, Quận 1, TP.HCM      \n Chi nhánh: 90  Nguyễn Trãi, P.Bến Thành, Quận 1	2014-03-29 04:09:43.555891	2014-03-29 04:09:43.555891	0303241124	\N	2	http://anhphuong.com.vn/	\N	\N	\N	\N	\N	f	\N	\N
+314	Công ty Cổ phần Hệ Thống Công nghệ Hoàng Hải	\N	\N	08. 38650576	info @ golden-sea.vn	456/48 Cao Thắng Nối Dài, P.12 - Q.10 - Tp.HCM	2014-03-29 04:09:43.582216	2014-03-29 04:09:43.582216	0305952571	\N	2	http://www.golden-sea.vn/	\N	\N	\N	\N	\N	f	\N	\N
+315	CÔNG TY TNHH DỊCH VỤ VẬN CHUYỂN BA KHỐI LIÊN MINH (TRI-ALLIANCE FREIGHT SERVICES)	\N	\N	\N	\N	57-59 HỒ TÙNG MẬU, P. BẾN NGHÉ, Q. 1	2014-03-29 04:09:43.601762	2014-03-29 04:09:43.601762	0305680416	\N	2	\N	\N	\N	\N	\N	\N	f	\N	\N
+1	Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang	(08) 3984 7690		(08) 3984 7691	info@hoangkhang.com.vn	178 Nguyễn Văn Lượng, Phường 17, Quận Gò Vấp, TP HCM	2014-03-13 06:29:40.920226	2014-06-14 02:39:02.112969	0306146736		2	www.hoangkhang.com.vn	003747700001	Ngân hàng TMCP Đông Á - CN Gò Vấp, TP.HCM	\N	\N	\N	t	(08) 2212 9454	\N
+\.
+
+
+--
+-- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: luan
+--
+
+SELECT pg_catalog.setval('contacts_id_seq', 315, true);
+
+
+--
+-- Name: contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: luan; Tablespace: 
+--
+
+ALTER TABLE ONLY contacts
+    ADD CONSTRAINT contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

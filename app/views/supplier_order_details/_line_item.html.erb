@@ -1,9 +1,9 @@
                                   <ul rel="<%= supplier_order_detail.id %>">
                                     <li class="name">
                                       <input type="hidden" name="supplier_order[supplier_order_detail_ids][]" value="<%= supplier_order_detail.id %>" />
-                                      <%= supplier_order_detail.product.name %>
+                                      <%= supplier_order_detail.product_name %>
                                     </li>
-                                    <li class="unit"><%= supplier_order_detail.product.unit %></li>                                    
+                                    <li class="unit"><%= supplier_order_detail.unit %></li>                                    
                                     <li class="price" rel="<%= supplier_order_detail.price %>"><%= supplier_order_detail.formated_price %></li>
                                     <li class="quantity"><%= supplier_order_detail.quantity %></li>
                                     <li class="price_total" rel="<%= supplier_order_detail.total %>"><%= supplier_order_detail.formated_total %></li>

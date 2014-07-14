@@ -66,7 +66,7 @@
                                   <div class="input-with-icon  right">                                       
                                     <i class=""></i>
                                     <select name="supplier_order[tax_id]" class="modern_select tax-select" style="min-width: 400px;">                                    
-                                    <% Tax.all(:order => "created_at DESC").each do |tax| %>
+                                    <% Tax.all.order("created_at DESC").each do |tax| %>
                                         <option rel="<%= tax.rate %>" value="<%= tax.id %>" <% if !@supplier_order.tax_id.nil? && @supplier_order.tax_id == tax.id %>selected="selected"<% end %>>
                                           <%= tax.name %>
                                         </option>
