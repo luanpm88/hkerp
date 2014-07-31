@@ -49,6 +49,10 @@ Contact.where(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thô
 Role.create(name: "admin")
 Role.create(name: "user")
 
+User.all.each do |user|
+        user.add_role Role.where(name: "user").first
+end
+
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
 user.save

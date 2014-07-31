@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   
   layout :layout_by_resource
+  
+  rescue_from CanCan::AccessDenied do |exception|
+    flash[:alert] = "Access denied."
+    redirect_to root_url
+  end
+  
   def layout_by_resource
     if devise_controller? && resource_name == :user && action_name == 'new'
       "login"

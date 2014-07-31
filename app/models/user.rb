@@ -18,7 +18,7 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true
   
   def has_role?(role_sym)
-    roles.any? { |r| r.name.underscore.to_sym == role_sym }
+    roles.any? { |r| r.name == role_sym }
   end
   
   def name
@@ -26,6 +26,14 @@ class User < ActiveRecord::Base
       first_name + " " + last_name
     else
       email.gsub(/@(.+)/,'')
+    end
+  end
+  
+  def add_role(role)
+    if self.has_role?(role.name)
+      return false
+    else
+      self.roles << role
     end
   end
   

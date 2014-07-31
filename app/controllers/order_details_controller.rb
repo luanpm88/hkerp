@@ -1,4 +1,6 @@
 class OrderDetailsController < ApplicationController
+  load_and_authorize_resource
+  
   before_action :set_order_detail, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_edit, :ajax_update]
 
   # GET /order_details

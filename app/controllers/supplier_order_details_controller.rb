@@ -1,4 +1,6 @@
 class SupplierOrderDetailsController < ApplicationController
+  load_and_authorize_resource
+  
   before_action :set_supplier_order_detail, only: [:show, :edit, :update, :destroy, :ajax_edit, :ajax_update, :ajax_destroy]
 
   # GET /supplier_order_details
