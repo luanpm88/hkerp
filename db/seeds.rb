@@ -45,3 +45,6 @@ Tax.create(name: "VAT 10%", rate: 10)
                 website: "www.hoangkhang.com.vn",
                 email: "info@hoangkhang.com.vn",
                 contact_type_id: ContactType.supplier)
+
+Role.create(name: "admin")
+Role.create(name: "user")

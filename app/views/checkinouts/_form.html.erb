@@ -1,0 +1,25 @@
+<%= form_for(@checkinout) do |f| %>
+  <% if @checkinout.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@checkinout.errors.count, "error") %> prohibited this checkinout from being saved:</h2>
+
+      <ul>
+      <% @checkinout.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :user_id %><br>
+    <%= f.number_field :user_id %>
+  </div>
+  <div class="field">
+    <%= f.label :check_time %><br>
+    <%= f.datetime_select :check_time %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

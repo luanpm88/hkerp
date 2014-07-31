@@ -1,0 +1,36 @@
+<h1>Listing checkinouts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Check time</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @checkinouts.each do |checkinout| %>
+      <tr>
+        <td><%= checkinout.user_id %></td>
+        <td><%= checkinout.check_time %></td>
+        <td><%= link_to 'Show', checkinout %></td>
+        <td><%= link_to 'Edit', edit_checkinout_path(checkinout) %></td>
+        <td><%= link_to 'Destroy', checkinout, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Checkinout', new_checkinout_path %>
+
+<br />
+<div class="tmp_hidez">
+    <h2>Import Contacts</h2>
+    <%= form_tag import_checkinouts_path, multipart: true do %>
+      <%= file_field_tag :file %>
+      <%= submit_tag "Import" %>
+    <% end %>
+</div>

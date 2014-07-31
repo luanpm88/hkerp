@@ -1,5 +1,11 @@
 Hkerp::Application.routes.draw do
   
+  resources :checkinouts do
+    collection do
+      post :import
+    end
+  end
+
   resources :supplier_order_details do
     collection do
       get :ajax_new

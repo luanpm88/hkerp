@@ -29,7 +29,7 @@ class Ability
     # See the wiki for details:
     # https://github.com/ryanb/cancan/wiki/Defining-Abilities
     
-        # Handle the case where we don't have a current_user i.e. the user is a guest
+    # Handle the case where we don't have a current_user i.e. the user is a guest
     user ||= User.new
 
     # Define a few sample abilities

@@ -138,6 +138,38 @@ CREATE TABLE categories_products (
 
 
 --
+-- Name: checkinouts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE checkinouts (
+    id integer NOT NULL,
+    user_id integer,
+    check_time timestamp without time zone,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: checkinouts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE checkinouts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: checkinouts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE checkinouts_id_seq OWNED BY checkinouts.id;
+
+
+--
 -- Name: contact_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -896,6 +928,13 @@ ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY checkinouts ALTER COLUMN id SET DEFAULT nextval('checkinouts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY contact_types ALTER COLUMN id SET DEFAULT nextval('contact_types_id_seq'::regclass);
 
 
@@ -1040,6 +1079,14 @@ ALTER TABLE ONLY assignments
 
 ALTER TABLE ONLY categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: checkinouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY checkinouts
+    ADD CONSTRAINT checkinouts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1348,4 +1395,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140528023719');
 INSERT INTO schema_migrations (version) VALUES ('20140528025816');
 
 INSERT INTO schema_migrations (version) VALUES ('20140528025846');
+
+INSERT INTO schema_migrations (version) VALUES ('20140731010224');
 
