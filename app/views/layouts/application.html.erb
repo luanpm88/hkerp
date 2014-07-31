@@ -204,7 +204,7 @@
 	$(".datetime select").select2();
 	
 	//filter table
-	$('table').filterTable();
+	$('table').not('.no-filter').filterTable();
 	
 	//action for add agent button
 	$('#add-agent-button').fancybox({
@@ -884,6 +884,20 @@
 	<ul class="sub-menu">
           <li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
 	  <li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
+        </ul>
+      </li>
+      
+      <li <% if params[:controller] == "checkinouts" %> class="active open"<% end %>>
+	<%= link_to checkinouts_url do %>
+	  <i class="icon-user"></i>
+	  <span class="title">Attendance</span>
+	  <span class="arrow<% if params[:controller] == "checkinouts" %> open<% end %>"></span>
+	<% end %>
+	<ul class="sub-menu">
+	    <li<% if params[:controller] == "checkinouts" %> class="active"<% end %>>
+		<%= link_to 'Monthly Attendance Reports', checkinouts_url(month: Time.now.strftime("%m").to_i-1) %>
+	    </li>
+	  
         </ul>
       </li>
       
