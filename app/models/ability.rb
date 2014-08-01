@@ -56,8 +56,8 @@ class Ability
       end
       
       if user.has_role? "attendance_manager"
-        #can :manage, Checkinout
-        #can :manage, CheckinoutRequest
+        can :manage, Checkinout
+        can :manage, CheckinoutRequest
       end
       #can :manage, Checkinout
       #can :update, Comment do |comment|
