@@ -146,7 +146,9 @@ CREATE TABLE checkinouts (
     user_id integer,
     check_time timestamp without time zone,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    check_date date,
+    note text
 );
 
 
@@ -880,7 +882,8 @@ CREATE TABLE users (
     first_name character varying(255),
     last_name character varying(255),
     phone_ext character varying(255),
-    mobile character varying(255)
+    mobile character varying(255),
+    "ATT_No" character varying(255)
 );
 
 
@@ -1397,4 +1400,10 @@ INSERT INTO schema_migrations (version) VALUES ('20140528025816');
 INSERT INTO schema_migrations (version) VALUES ('20140528025846');
 
 INSERT INTO schema_migrations (version) VALUES ('20140731010224');
+
+INSERT INTO schema_migrations (version) VALUES ('20140731064555');
+
+INSERT INTO schema_migrations (version) VALUES ('20140731080017');
+
+INSERT INTO schema_migrations (version) VALUES ('20140801003248');
 

@@ -4,7 +4,12 @@ class CheckinoutsController < ApplicationController
   # GET /checkinouts
   # GET /checkinouts.json
   def index
-    @checkinouts = Checkinout.all
+    #@checkinouts = Checkinout.all
+    @checkinouts = []
+    @month = params[:month].to_i
+    @checks = Checkinout.get_by_month(current_user, @month)
+    @work_time = Checkinout.get_work_time_by_month(current_user, params[:month].to_i)
+
   end
 
   # GET /checkinouts/1
