@@ -143,8 +143,9 @@ class Checkinout < ActiveRecord::Base
     end
     
     late = self.get_late > 0 ? self.get_late : 0;
-    return Checkinout.format_time(@@work_time_per_day - late)
-
+    #return Checkinout.format_time(@@work_time_per_day - late)
+    return ((@@work_time_per_day - late)/3600).round(2).to_s+" hours"
+    
   end
   
   def check_time_formated   
