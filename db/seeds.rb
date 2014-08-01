@@ -52,3 +52,8 @@ Role.create(name: "user")
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
 user.save
+
+User.all.each do |user|
+        user.add_role Role.where(name: "user").first
+end
+

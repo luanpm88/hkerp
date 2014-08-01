@@ -1,5 +1,7 @@
 Hkerp::Application.routes.draw do
   
+  get 'home/index'
+
   resources :checkinouts do
     collection do
       post :import
@@ -82,7 +84,7 @@ Hkerp::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'orders#index'
+  root 'home#index'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

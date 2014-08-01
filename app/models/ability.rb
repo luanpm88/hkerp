@@ -37,8 +37,24 @@ class Ability
     # cannot :manage , Comment
     # can    :read   , Tag , released: true
     
-    can :manage, Order, :salesperson_id => user.id
-    can :manage, SupplierOrder, :salesperson_id => user.id
+    #can :manage, Order, :salesperson_id => user.id
+    #can :manage, SupplierOrder, :salesperson_id => user.id
+    
+    if user.has_role? :admin
+      can :manage, :all
+    else
+      can :read, :all
+      can :create, Checkinout
+      #can :update, Comment do |comment|
+      #  comment.try(:user) == user || user.role?(:moderator)
+      #end
+      #if user.role?(:author)
+      #  can :create, Article
+      #  can :update, Article do |article|
+      #    article.try(:user) == user
+      #  end
+      #end
+    end
 
   end
 end

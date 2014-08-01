@@ -1,4 +1,6 @@
 class TaxesController < ApplicationController
+  load_and_authorize_resource
+  
   before_action :set_tax, only: [:show, :edit, :update, :destroy]
 
   # GET /taxes

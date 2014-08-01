@@ -147,8 +147,12 @@ CREATE TABLE checkinouts (
     check_time timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
+<<<<<<< HEAD
     check_date date,
     note text
+=======
+    check_date date
+>>>>>>> 4633171a5990d3b4f05f7408cb8223eb66ba4c69
 );
 
 
@@ -1405,5 +1409,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140731064555');
 
 INSERT INTO schema_migrations (version) VALUES ('20140731080017');
 
+<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20140801003248');
 
+=======
+>>>>>>> 4633171a5990d3b4f05f7408cb8223eb66ba4c69

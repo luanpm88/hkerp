@@ -1,9 +1,14 @@
 class Checkinout < ActiveRecord::Base
+  Time.zone = "Asia/Bangkok"
+  
   @@in_morning_time = {:hour => 7 , :min => 30 , :sec => 0 }
   @@out_morning_time = {:hour => 11 , :min => 30 , :sec => 0 }
   @@in_noon_time = {:hour => 13 , :min => 0 , :sec => 0 }
   @@out_noon_time = {:hour => 17 , :min => 0 , :sec => 0 }
   @@work_time_per_day = 8*60*60
+
+  @@min_date = Time.zone.parse("2014-06-01")
+
   
   
   belongs_to :user, primary_key: 'ATT_No', foreign_key: 'user_id'
@@ -22,7 +27,7 @@ class Checkinout < ActiveRecord::Base
         id = line.split(",")[0]
         day = t.strftime("%Y:%m:%d")
         
-        if current_day != id+day
+        if current_day != id+day && t >= @@min_date
           current_day = id+day          
           
           #save to checkinout table
