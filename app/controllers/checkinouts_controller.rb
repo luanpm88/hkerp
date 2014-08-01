@@ -39,6 +39,7 @@ class CheckinoutsController < ApplicationController
     @checkinout = Checkinout.new
     @checkinout.check_date = params[:check_date]
     @checkinout.check_time = params[:check_date]
+    @checkinout.check_time = @checkinout.check_time.change({hour: 7, min: 30})
     @checkinout.user_id = params[:att_no].to_i
   end
 
