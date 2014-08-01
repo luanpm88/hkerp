@@ -6,6 +6,9 @@ class Checkinout < ActiveRecord::Base
   
   Time.zone = "Asia/Bangkok"
   
+  @@default_hours_per_month = 208
+  cattr_reader :default_hours_per_month
+  
   @@in_morning_time = {:hour => 7 , :min => 30 , :sec => 0 }
   @@out_morning_time = {:hour => 11 , :min => 30 , :sec => 0 }
   @@in_noon_time = {:hour => 13 , :min => 0 , :sec => 0 }
@@ -64,7 +67,7 @@ class Checkinout < ActiveRecord::Base
         if esxit.count > 0
           checks << esxit.first
         else
-          note = time > @@max_time ? 'no record' : 'imported'
+          note = time > @@max_time ? "<span class='grey'>updating...</span>" : 'imported'
           checks << self.new(user_id: user.ATT_No, check_time: time,check_date: time.to_date, note: note)
         end
       end      
@@ -75,7 +78,7 @@ class Checkinout < ActiveRecord::Base
   def get_result   
     if self.id.nil?
       if self.check_time > @@max_time
-        return "no record"
+        return "<span class='grey'>updating...</span>"
       else
         if self.check_time.wday == 0
           return "holiday"
@@ -87,7 +90,7 @@ class Checkinout < ActiveRecord::Base
       late = self.get_late
       
       if late > 0        
-        return "<span class='orange'>"+Checkinout.format_time(late)+" late</span>"
+        return "<span class='orange'>late ("+Checkinout.format_time(late)+")</span>"
       else
         return "<span class='green'>on time</span>"
       end
@@ -135,23 +138,27 @@ class Checkinout < ActiveRecord::Base
   
   def work_time_formated
     if self.check_time > @@max_time && self.note != 'custom'
-      return "no record"
+      return "<span class='grey'>updating...</span>"
+    end
+    
+    if self.check_time.wday == 0
+      return "----"
     end
     
     if self.id.nil?
-      return "--:--:--"
+      return "0 hour(s)"
     end
     
     late = self.get_late > 0 ? self.get_late : 0;
     #return Checkinout.format_time(@@work_time_per_day - late)
-    return ((@@work_time_per_day - late)/3600).round(2).to_s+" hours"
+    return ((@@work_time_per_day - late)/3600).round(2).to_s+" hour(s)"
     
   end
   
   def check_time_formated   
     
     if self.check_time > @@max_time && self.note != 'custom'
-      return "no record"
+      return "<span class='grey'>updating...</span>"
     end
     
     if self.id.nil?

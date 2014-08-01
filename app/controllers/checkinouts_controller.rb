@@ -2,6 +2,8 @@ class CheckinoutsController < ApplicationController
   load_and_authorize_resource :except => [:detail, :create]
   
   before_action :set_checkinout, only: [:show, :edit, :update, :destroy]
+  
+  @@max_time = !Checkinout.where(note: 'imported').order("check_time DESC").empty? ? Checkinout.where(note: 'imported').order("check_time DESC").first.check_time : Time.zone.parse("2010-01-01")
 
   # GET /checkinouts
   # GET /checkinouts.json
@@ -23,7 +25,7 @@ class CheckinoutsController < ApplicationController
       @month = 12
       @year = @year.to_i - 1
     end
-    
+    @state = @@max_time < Time.zone.parse(@year.to_s+"-"+@month.to_s+"-31") ? "Updating" : "Updated"
     @users = User.where.not(id: 1)
   end
 

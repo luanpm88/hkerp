@@ -7477,6 +7477,9 @@ ul.my-friends li .profile-pic{
 .green {
     color: green;
 }
+.grey {
+    color: #ccc;
+}
 .check-time select {
     padding: 0 10px;
     width: auto;
