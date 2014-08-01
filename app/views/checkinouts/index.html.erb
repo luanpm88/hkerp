@@ -15,7 +15,7 @@
                     <div class="col-md-12">
                         <div class="grid simple ">
                             <div class="grid-title no-border">
-                                <h4>Listing  <span class="semi-bold">Attendances - <%= Date::MONTHNAMES[@month] %></span> (<%= (@work_time/3600).round(2).to_s %>/208 hours)</h4>
+                                <h4><span class="semi-bold">My  Attendance Report</span> - <span class="green"><strong><%= Date::MONTHNAMES[@month] %>, <%= @year %></strong></span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -30,75 +30,66 @@
                                     <table class="table table-striped no-more-tables no-filter">
                                         <thead>
                                             <tr>
-                                                <th width="27%">Check-in Date</th>
-                                                <th>Check-in Time</th>
-                                                <th>Work Time</th>
-                                                <th>Result</th>
+                                                <th width="27%">Name</th>
+                                                <th style="text-align: center">Default Hours</th>
+                                                <th style="text-align: center">Work Hours</th>
+                                                <th style="text-align: center">Days of work (days/26)</th>
+                                                <th width="8%">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          
-                                            <% @checks.each do |check| %>
-                                                <% if check.id.nil? %>
-						  <tr>
-						    <td><%= check.check_date.strftime("%a")+", "+check.check_date.to_formatted_s(:long) %></td>
-                                                    <td>--:--</td>
-                                                    <td>0</td>
-                                                    <td><%= check.get_result %></td>
-						  </tr>
-                                                <% else %>
-                                                  <tr>
-						    <td><%= check.check_date.strftime("%a")+", "+check.check_date.to_formatted_s(:long) %></td>
-                                                    <td><%= check.check_time.strftime("%H:%M:%S") %></td>
-                                                    <td><%= Checkinout.format_time(check.work_time) %></td>
-                                                    <td><%= check.get_result %></td>
-						  </tr>
-                                                <% end %>
-                                            <% end %>
-					    
+                                            <tr>
+                                              <td><%= current_user.name %></td>
+                                              <td style="text-align: center">208</td>
+                                              <td style="text-align: center"><%= current_user.work_time_by_month(@month, @year) %></td>
+                                              <td style="text-align: center"><%= current_user.checkinouts_by_month(@month, @year).count %></td>
+                                              <td><a href="<%= detail_checkinouts_url(user_id: current_user.id, month: @month, year: @year) %>" class="btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
+                                            </tr>
                                           </tbody>
                                     </table>
                             </div>
+                            
+                            
+                            <% if can? :manage, Checkinout %>
+                              <div class="grid-title no-border">
+                                  <h4><span class="semi-bold">Other Attendance Reports</span> - <span class="green"><strong><%= Date::MONTHNAMES[@month] %>, <%= @year %></strong></span></h4>
+                                  <div class="tools">
+                                      
+                                      <a href="javascript:;" class="collapse"></a>
+                                      <a href="#grid-config" data-toggle="modal" class="config"></a>
+                                      <a href="javascript:;" class="reload"></a>
+                                      <a href="javascript:;" class="remove"></a>
+                                      
+                                  </div>
+                              </div>
+                              
+                              
+                                <div class="grid-body no-border">
+                                    <table class="table table-striped no-more-tables no-filter">
+                                        <thead>
+                                            <tr>
+                                                <th width="27%">Name</th>
+                                                <th style="text-align: center">Default Hours</th>
+                                                <th style="text-align: center">Work Hours</th>
+                                                <th style="text-align: center">Days of work (days/26)</th>
+                                                <th width="8%">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          <% @users.each do |user| %>
+                                            <tr>
+                                              <td><%= user.name %></td>
+                                              <td style="text-align: center">208</td>
+                                              <td style="text-align: center"><%= user.work_time_by_month(@month, @year) %></td>
+                                              <td style="text-align: center"><%= user.checkinouts_by_month(@month, @year).count %></td>
+                                              <td><a href="<%= detail_checkinouts_url(user_id: user.id, month: @month, year: @year) %>" class="btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
+                                            </tr>
+                                          <% end %>
+                                          </tbody>
+                                    </table>
+                                </div>
+                              
+                            <% end %>
                         </div>
                     </div>
                 </div>
-
-
-
-
-<h1>Listing checkinouts</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Check time</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @checkinouts.each do |checkinout| %>
-      <tr>
-        <td><%= checkinout.user_id %></td>
-        <td><%= checkinout.check_time %></td>
-        <td><%= link_to 'Show', checkinout %></td>
-        <td><%= link_to 'Edit', edit_checkinout_path(checkinout) %></td>
-        <td><%= link_to 'Destroy', checkinout, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Checkinout', new_checkinout_path %>
-
-<br />
-<div class="tmp_hidez">
-    <h2>Import Contacts</h2>
-    <%= form_tag import_checkinouts_path, multipart: true do %>
-      <%= file_field_tag :file %>
-      <%= submit_tag "Import" %>
-    <% end %>
-</div>

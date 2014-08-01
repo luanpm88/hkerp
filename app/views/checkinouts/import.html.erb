@@ -1,0 +1,36 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Attendance', checkinouts_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-user"></i>
+                    	<h3>Attendance - <span class="semi-bold"> Import</span></h3>	
+                </div>
+                <div class="row">
+		  
+		  
+		  
+                    <div class="col-md-12">
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <div class="tmp_hidez">
+                                    <%= form_tag import_checkinouts_path, multipart: true do %>
+                                      <div class="form-group">
+                                        <label class="form-label">CSV File</label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= file_field_tag :file %>
+                                        </div>
+                                      </div>
+                                    
+                                      
+                                      <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Import</button>
+                                    <% end %>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

@@ -5,6 +5,8 @@ Hkerp::Application.routes.draw do
   resources :checkinouts do
     collection do
       post :import
+      get :import
+      get :detail
     end
   end
 

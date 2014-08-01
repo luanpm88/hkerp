@@ -894,8 +894,11 @@
 	  <span class="arrow<% if params[:controller] == "checkinouts" %> open<% end %>"></span>
 	<% end %>
 	<ul class="sub-menu">
-	    <li<% if params[:controller] == "checkinouts" %> class="active"<% end %>>
-		<%= link_to 'Monthly Attendance Reports', checkinouts_url(month: Time.now.strftime("%m").to_i-1) %>
+	    <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
+		<%= link_to 'Monthly Attendance Reports', checkinouts_url %>
+	    </li>
+	    <li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
+		<%= link_to 'Import', import_checkinouts_url %>
 	    </li>
 	  
         </ul>

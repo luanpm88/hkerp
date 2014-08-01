@@ -40,11 +40,17 @@ class Ability
     #can :manage, Order, :salesperson_id => user.id
     #can :manage, SupplierOrder, :salesperson_id => user.id
     
-    if user.has_role? :admin
+    if user.has_role? "admin"
       can :manage, :all
     else
       can :read, :all
-      can :create, Checkinout
+      can :read_attendances, User do |u|
+        u.id == user.id || user.has_role?("attendance_manager")
+      end
+      if user.has_role? "attendance_manager"
+        can :manage, Checkinout
+      end
+      #can :manage, Checkinout
       #can :update, Comment do |comment|
       #  comment.try(:user) == user || user.role?(:moderator)
       #end

@@ -37,4 +37,23 @@ class User < ActiveRecord::Base
     end
   end
   
+  def work_time_by_month(month, year)
+    return (Checkinout.get_work_time_by_month(self, month, year)/3600).round(2).to_s
+  end
+  
+  def checkinouts_by_month(month, year)
+    time_string = year.to_s+"-"+month.to_s
+    checks = []
+    (1..31).each do |i|
+      time = Time.zone.parse(time_string+"-"+i.to_s)
+      if time.strftime("%m").to_i == month && time.wday != 0
+        esxit = Checkinout.where(user_id: self.ATT_No, check_date: time.to_date)
+        if esxit.count > 0
+          checks << esxit.first        
+        end
+      end      
+    end
+    return checks
+  end
+  
 end

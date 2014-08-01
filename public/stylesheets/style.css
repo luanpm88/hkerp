@@ -7468,3 +7468,16 @@ ul.my-friends li .profile-pic{
     background-color: #EBF6FB !important;
     text-transform: uppercase;
 }
+.red {
+    color: red;
+}
+.orange {
+    color: orange;
+}
+.green {
+    color: green;
+}
+.check-time select {
+    padding: 0 10px;
+    width: auto;
+}

@@ -17,6 +17,10 @@ User.create(:email => "vietdq@hoangkhang.com.vn", :password => "aA456321@", :pas
 User.create(:email => "trungpn@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Trung",:last_name => "Pham Nguyen")
 User.create(:email => "thuydp@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Thuy",:last_name => "Do Thi Phuong")
 User.create(:email => "luanpm@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Luan",:last_name => "Pham")
+User.create(:email => "tiennv@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Tien",:last_name => "Nguyen Van")
+User.create(:email => "trinhptt@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Trinh",:last_name => "Phan Thi Tuyet")
+User.create(:email => "bangdh@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Bang",:last_name => "Do Hai")
+User.create(:email => "phuongnt@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Phuong",:last_name => "Nguyen Tien")
 
 PaymentMethod.create(name: "Tiền mặt")
 PaymentMethod.create(name: "Chuyển khoản")
@@ -48,10 +52,46 @@ Contact.where(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thô
 
 Role.create(name: "admin")
 Role.create(name: "user")
+Role.create(name: "attendance_manager")
 
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
 user.save
+user.add_role Role.where(name: "attendance_manager").first
+
+user = User.where(:email => "nguyendtd@hoangkhang.com.vn").first
+user.ATT_No = 22
+user.save
+
+user = User.where(:email => "tuanthm@hoangkhang.com.vn").first
+user.ATT_No = 124
+user.save
+
+user = User.where(:email => "vietdq@hoangkhang.com.vn").first
+user.ATT_No = 21
+user.save
+
+user = User.where(:email => "thuydp@hoangkhang.com.vn").first
+user.ATT_No = 40
+user.save
+
+user = User.where(:email => "tiennv@hoangkhang.com.vn").first
+user.ATT_No = 52
+user.save
+
+user = User.where(:email => "trinhptt@hoangkhang.com.vn").first
+user.ATT_No = 128
+user.save
+
+user = User.where(:email => "bangdh@hoangkhang.com.vn").first
+user.ATT_No = 70
+user.save
+
+user = User.where(:email => "phuongnt@hoangkhang.com.vn").first
+user.ATT_No = 127
+user.save
+
+
 
 User.all.each do |user|
         user.add_role Role.where(name: "user").first
