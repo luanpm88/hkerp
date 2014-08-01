@@ -850,7 +850,7 @@
 	
 	
 	
-	<li class="start<% if ["orders","supplier_orders"].include?(params[:controller]) %> active open<% end %>">
+	<!--<li class="start<% if ["orders","supplier_orders"].include?(params[:controller]) %> active open<% end %>">
 	    <%= link_to orders_url do %>
 	      <i class="icon-archive"></i>
 	      <span class="title" onclick="">Sales</span>
@@ -885,7 +885,7 @@
           <li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
 	  <li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
         </ul>
-      </li>
+      </li>-->
       
       <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
 	<%= link_to checkinouts_url do %>
