@@ -36,7 +36,7 @@
 						<div class="input-with-icon  right">                                       
 							<i class=""></i>
                                                         <h5><strong><%= @checkinout.user.name %></strong></h5>
-                                                        <input name="checkinout[user_id]" value="<%= @checkinout.user.ATT_No %>" />
+                                                        <input type="hidden" name="checkinout[user_id]" value="<%= @checkinout.user.ATT_No %>" />
 						</div>
                       </div>                     
                       
@@ -46,7 +46,7 @@
 						<div class="input-with-icon  right">                                       
 							<i class=""></i>
                                                         <%= f.time_select :check_time %>
-                                                        <input name="checkinout[check_date]" value="<%= @checkinout.check_date %>" />
+                                                        <input type="hidden" name="checkinout[check_date]" value="<%= @checkinout.check_date %>" />
 						</div>
                       </div>
                       
