@@ -1,8 +1,8 @@
 class Checkinout < ActiveRecord::Base
   
-  #validates :user_id, presence: true
-  #validates :check_time, presence: true
-  #validates :check_date, presence: true
+  validates :user_id, presence: true
+  validates :check_time, presence: true
+  validates :check_date, presence: true
   
   Time.zone = "Asia/Bangkok"
   
@@ -110,7 +110,7 @@ class Checkinout < ActiveRecord::Base
     else
       more = self.check_time - Time.zone.parse(self.check_date.to_s).change(@@in_morning_time)
     end
-    return more;
+    return more > @@work_time_per_day ? @@work_time_per_day : more;
   end
   
   def self.get_work_time_by_month(user, month, year)
@@ -137,7 +137,7 @@ class Checkinout < ActiveRecord::Base
   end
   
   def work_time_formated
-    if self.check_time > @@max_time && self.note != 'custom'
+    if self.check_time > @@max_time && self.note != 'custom' && self.note != 'requested'
       return "<span class='grey'>updating...</span>"
     end
     
@@ -157,7 +157,7 @@ class Checkinout < ActiveRecord::Base
   
   def check_time_formated   
     
-    if self.check_time > @@max_time && self.note != 'custom'
+    if self.check_time > @@max_time && self.note != 'custom' && self.note != 'requested'
       return "<span class='grey'>updating...</span>"
     end
     
@@ -168,5 +168,7 @@ class Checkinout < ActiveRecord::Base
     return self.check_time.strftime("%H:%M:%S")
 
   end
+  
+  
   
 end

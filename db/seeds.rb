@@ -14,7 +14,7 @@ User.create(:email => "admin@hoangkhang.com.vn", :password => "aA456321@", :pass
 User.create(:email => "nguyendtd@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Nguyen",:last_name => "Do Thi Da")
 User.create(:email => "tuanthm@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Tuan",:last_name => "Thai Hoang Minh")
 User.create(:email => "vietdq@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Viet",:last_name => "Do Quoc")
-User.create(:email => "trungpn@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Trung",:last_name => "Pham Nguyen")
+#User.create(:email => "trungpn@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Trung",:last_name => "Pham Nguyen")
 User.create(:email => "thuydp@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Thuy",:last_name => "Do Thi Phuong")
 User.create(:email => "luanpm@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Luan",:last_name => "Pham")
 User.create(:email => "tiennv@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Tien",:last_name => "Nguyen Van")

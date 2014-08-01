@@ -12,6 +12,7 @@ class User < ActiveRecord::Base
   has_many :roles, :through => :assignments
   
   has_many :checkinouts, primary_key: 'ATT_No', foreign_key: 'user_id'
+  has_many :checkinout_requests
   
   validates :first_name, presence: true
   validates :last_name, presence: true

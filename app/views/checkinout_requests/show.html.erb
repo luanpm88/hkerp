@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @checkinout_request.user_id %>
+</p>
+
+<p>
+  <strong>Check time:</strong>
+  <%= @checkinout_request.check_time %>
+</p>
+
+<p>
+  <strong>Content:</strong>
+  <%= @checkinout_request.content %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @checkinout_request.status %>
+</p>
+
+<%= link_to 'Edit', edit_checkinout_request_path(@checkinout_request) %> |
+<%= link_to 'Back', checkinout_requests_path %>

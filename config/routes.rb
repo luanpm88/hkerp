@@ -1,5 +1,11 @@
 Hkerp::Application.routes.draw do
   
+  resources :checkinout_requests do
+    collection do
+      get :approve
+    end
+  end
+
   get 'home/index'
 
   resources :checkinouts do

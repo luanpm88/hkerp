@@ -47,8 +47,17 @@ class Ability
       can :read_attendances, User do |u|
         u.id == user.id || user.has_role?("attendance_manager")
       end
+      can :create, CheckinoutRequest
+      can :destroy, CheckinoutRequest do |request|
+        request.user_id == user.id && request.status == 0
+      end
+      can :update, CheckinoutRequest do |request|
+        request.user_id == user.id && request.status == 0
+      end
+      
       if user.has_role? "attendance_manager"
-        can :manage, Checkinout
+        #can :manage, Checkinout
+        #can :manage, CheckinoutRequest
       end
       #can :manage, Checkinout
       #can :update, Comment do |comment|

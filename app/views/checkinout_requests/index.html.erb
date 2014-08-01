@@ -1,0 +1,110 @@
+<ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Attendance', checkinouts_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-user"></i>
+                    	<h3>Attendance - <span class="semi-bold"> Requests</span></h3>	
+                </div>
+                <div class="row">
+		  
+		  
+		  
+                    <div class="col-md-12">
+                      <%= link_to 'Add Request', new_checkinout_request_path, :class => 'btn btn-primary btn-cons' %>
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Your <span class="semi-bold">Requests</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables no-filter">
+                                        <thead>
+                                            <tr>
+                                                <tr>
+                                                  <th>Check time</th>
+                                                  <th width="50%">Content</th>
+                                                  <th style="text-align: center">Status</th>
+                                                  <th colspan="3"></th>
+                                                </tr>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% @checkinout_requests.each do |checkinout_request| %>
+                                              <tr>
+                                                <td><%= checkinout_request.check_time.strftime("%a")+", "+checkinout_request.check_time.to_formatted_s(:long) %></td>
+                                                <td><%= checkinout_request.content %></td>
+                                                <td style="text-align: center"><%= checkinout_request.status_string %></td>
+                                                <td>
+                                                  <% if checkinout_request.status == 0 %>
+                                                    <% if can? :manage, CheckinoutRequest %>
+                                                      <%= link_to 'Approve'.html_safe, approve_checkinout_requests_url(id: checkinout_request.id), :class => "btn btn-success btn-xs btn-mini" %>
+                                                    <% end %>
+                                                    <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), data: { confirm: 'Are you sure?' }, :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
+                                                    <%= link_to 'Delete', checkinout_request, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                  <% end %>
+                                                  
+                                                </td>
+                                              </tr>
+                                            <% end %>
+                                          </tbody>
+                                    </table>
+                            </div>
+                    
+                            <% if can? :manage, CheckinoutRequest %>
+                              
+                              <div class="grid-title no-border">
+                                  <h4>Other <span class="semi-bold">Requests</span></h4>
+                                  <div class="tools">
+                                      
+                                      
+                                      
+                                  </div>
+                              </div>
+                              <div class="grid-body no-border">
+                                   
+                                      <table class="table table-striped no-more-tables no-filter">
+                                          <thead>
+                                              <tr>
+                                                  <tr>
+                                                    <th>Check time</th>
+                                                    <th width="60%">Content</th>
+                                                    <th style="text-align: center">Status</th>
+                                                    <th colspan="3"></th>
+                                                  </tr>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <% CheckinoutRequest.where.not(user_id: current_user.id).order("created_at DESC").each do |checkinout_request| %>
+                                                <tr>
+                                                  <td><%= checkinout_request.check_time.strftime("%a")+", "+checkinout_request.check_time.to_formatted_s(:long) %></td>
+                                                  <td><%= checkinout_request.content %></td>
+                                                  <td style="text-align: center"><%= checkinout_request.status_string %></td>
+                                                  <td>
+                                                    <% if checkinout_request.status == 0 %>
+                                                      <%= link_to 'Approve'.html_safe, approve_checkinout_requests_url(id: checkinout_request.id), :class => "btn btn-success btn-xs btn-mini" %>
+                                                      <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), data: { confirm: 'Are you sure?' }, :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
+                                                    <% end %>
+                                                    <%= link_to 'Delete', checkinout_request, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                                  </td>
+                                                </tr>
+                                              <% end %>
+                                            </tbody>
+                                      </table>
+                              </div>
+                              
+                            <% end %>  
+                            
+                        </div>
+                    </div>
+                </div>

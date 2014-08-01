@@ -138,6 +138,40 @@ CREATE TABLE categories_products (
 
 
 --
+-- Name: checkinout_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE checkinout_requests (
+    id integer NOT NULL,
+    user_id integer,
+    check_time timestamp without time zone,
+    content text,
+    status integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: checkinout_requests_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE checkinout_requests_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: checkinout_requests_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE checkinout_requests_id_seq OWNED BY checkinout_requests.id;
+
+
+--
 -- Name: checkinouts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -147,12 +181,8 @@ CREATE TABLE checkinouts (
     check_time timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-<<<<<<< HEAD
     check_date date,
     note text
-=======
-    check_date date
->>>>>>> 4633171a5990d3b4f05f7408cb8223eb66ba4c69
 );
 
 
@@ -935,6 +965,13 @@ ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_s
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY checkinout_requests ALTER COLUMN id SET DEFAULT nextval('checkinout_requests_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY checkinouts ALTER COLUMN id SET DEFAULT nextval('checkinouts_id_seq'::regclass);
 
 
@@ -1086,6 +1123,14 @@ ALTER TABLE ONLY assignments
 
 ALTER TABLE ONLY categories
     ADD CONSTRAINT categories_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: checkinout_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY checkinout_requests
+    ADD CONSTRAINT checkinout_requests_pkey PRIMARY KEY (id);
 
 
 --
@@ -1409,8 +1454,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140731064555');
 
 INSERT INTO schema_migrations (version) VALUES ('20140731080017');
 
-<<<<<<< HEAD
 INSERT INTO schema_migrations (version) VALUES ('20140801003248');
 
-=======
->>>>>>> 4633171a5990d3b4f05f7408cb8223eb66ba4c69
+INSERT INTO schema_migrations (version) VALUES ('20140801094257');
+

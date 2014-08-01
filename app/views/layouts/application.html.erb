@@ -887,7 +887,7 @@
         </ul>
       </li>
       
-      <li <% if params[:controller] == "checkinouts" %> class="active open"<% end %>>
+      <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
 	<%= link_to checkinouts_url do %>
 	  <i class="icon-user"></i>
 	  <span class="title">Attendance</span>
@@ -896,11 +896,13 @@
 	<ul class="sub-menu">
 	    <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
 		<%= link_to 'Monthly Attendance Reports', checkinouts_url %>
+	    </li>	    	    
+	    <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
+		<%= link_to 'Attendance Requests', checkinout_requests_url %>
 	    </li>
 	    <li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
 		<%= link_to 'Import', import_checkinouts_url %>
 	    </li>
-	  
         </ul>
       </li>
       
