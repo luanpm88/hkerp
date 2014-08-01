@@ -57,6 +57,11 @@ Role.create(name: "attendance_manager")
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
 user.save
+user.add_role Role.where(name: "admin").first
+
+user = User.where(:email => "luanpm@hoangkhang.com.vn").first
+user.ATT_No = 123
+user.save
 user.add_role Role.where(name: "attendance_manager").first
 
 user = User.where(:email => "nguyendtd@hoangkhang.com.vn").first

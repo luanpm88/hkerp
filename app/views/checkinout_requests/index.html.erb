@@ -50,7 +50,7 @@
                                                     <% if can? :manage, CheckinoutRequest %>
                                                       <%= link_to 'Approve'.html_safe, approve_checkinout_requests_url(id: checkinout_request.id), :class => "btn btn-success btn-xs btn-mini" %>
                                                     <% end %>
-                                                    <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), data: { confirm: 'Are you sure?' }, :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
+                                                    <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
                                                     <%= link_to 'Delete', checkinout_request, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                                   <% end %>
                                                   
@@ -95,7 +95,7 @@
                                                   <td style="text-align: right">
                                                     <% if checkinout_request.status == 0 %>
                                                       <%= link_to 'Approve'.html_safe, approve_checkinout_requests_url(id: checkinout_request.id), :class => "btn btn-success btn-xs btn-mini" %>
-                                                      <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), data: { confirm: 'Are you sure?' }, :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
+                                                      <%= link_to 'Edit'.html_safe, edit_checkinout_request_path(checkinout_request), :class => "btn btn-info btn-xs btn-mini", :title => "approve" %>
                                                     <% end %>
                                                     <%= link_to 'Delete', checkinout_request, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                                   </td>
