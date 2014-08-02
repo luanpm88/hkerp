@@ -26,7 +26,7 @@ class CheckinoutsController < ApplicationController
       @year = @year.to_i - 1
     end
     @state = @@max_time < Time.zone.parse(@year.to_s+"-"+@month.to_s+"-31") ? "Updating" : "Updated"
-    @users = User.where.not(id: 1)
+    @users = User.where.not(id: 1).order("first_name")
   end
 
   # GET /checkinouts/1
