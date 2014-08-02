@@ -14,7 +14,7 @@ class Checkinout < ActiveRecord::Base
   @@in_noon_time = {:hour => 13 , :min => 0 , :sec => 0 }
   @@out_noon_time = {:hour => 17 , :min => 0 , :sec => 0 }
   @@work_time_per_day = 8*60*60
-  @@max_time = !Checkinout.where(note: 'imported').order("check_time DESC").empty? ? Checkinout.where(note: 'imported').order("check_time DESC").first.check_time : Time.zone.parse("2010-01-01")
+  @@max_time = !Checkinout.order("check_time DESC").empty? ? Checkinout.order("check_time DESC").first.check_time : Time.zone.parse("2010-01-01")
 
   @@min_date = Time.zone.parse("2014-07-01")
 
