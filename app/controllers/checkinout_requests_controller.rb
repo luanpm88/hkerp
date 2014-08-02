@@ -4,7 +4,7 @@ class CheckinoutRequestsController < ApplicationController
   # GET /checkinout_requests
   # GET /checkinout_requests.json
   def index
-    @checkinout_requests = CheckinoutRequest.where(user_id: current_user.id).order("created_at DESC")
+    @checkinout_requests = CheckinoutRequest.where(user_id: current_user.id).order("check_time DESC")
   end
 
   # GET /checkinout_requests/1
