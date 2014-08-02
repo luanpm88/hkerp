@@ -17,6 +17,7 @@ class Checkinout < ActiveRecord::Base
   @@max_time = !Checkinout.where('note=?', 'imported').order("check_time DESC").empty? ? Checkinout.where('note=?', 'imported').order("check_time DESC").first.check_time : Time.zone.parse("2010-01-01")
 
   @@min_date = Time.zone.parse("2014-07-01")
+  cattr_reader :min_date
 
   
   

@@ -27,6 +27,7 @@ class CheckinoutsController < ApplicationController
     end
     @state = @@max_time < Time.zone.parse(@year.to_s+"-"+@month.to_s+"-31") ? "Updating" : "Updated"
     @users = User.where.not(id: 1).order("first_name")
+    @timezone = Time.zone
   end
 
   # GET /checkinouts/1
@@ -133,6 +134,7 @@ class CheckinoutsController < ApplicationController
     
     @checks = Checkinout.get_by_month(@user, @month, @year)
     @work_time = Checkinout.get_work_time_by_month(@user, @month, @year)
+    @timezone = Time.zone
   end
 
   private

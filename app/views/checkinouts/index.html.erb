@@ -8,12 +8,41 @@
                         <i class="icon-user"></i>
                     	<h3>Attendance - <span class="semi-bold"> Monthly Reports</span></h3>	
                 </div>
+                
+                
+                
+                
+                
+                
+                
                 <div class="row">
 		  
 		  
 		  
                     <div class="col-md-12">
                         <div class="grid simple ">
+                            <form id="CheckinoutsFilter" action="<%= checkinouts_url %>" method="get">
+                                      <div class="form-group">
+                                              <select name="year" style="width:100px" onchange="$('#CheckinoutsFilter').submit()">
+                                                <option value="2014"><%= @year %></option>
+                                                <% (2010..2020).each do |i| %>
+                                                  <% if Checkinout.min_date <= @timezone.parse(i.to_s+"-12-31") %>
+                                                    <option <% if @year == i %>selected="selected"<% end %> value="<%= i %>"><%= i.to_s %></option>
+                                                  <% end %>
+                                                <% end %>
+                                              </select>
+
+                                              <select name="month" style="width:150px" onchange="$('#CheckinoutsFilter').submit()">
+                                                <% (1..12).each do |i| %>
+                                                  <% if Checkinout.min_date <= @timezone.parse(@year.to_s+"-"+i.to_s+"-01") %>
+                                                    <option <% if @month == i %>selected="selected"<% end %> value="<%= i %>"><%= Date::MONTHNAMES[i] %></option>
+                                                  <% end %>
+                                                <% end %>
+                                              </select>
+                                      </div>
+                                        
+                                    </form>
+                          
                             <div class="grid-title no-border">
                                 <h4><span class="semi-bold">My  Attendance Report</span> - <span class="green"><strong><%= Date::MONTHNAMES[@month] %>, <%= @year %></strong></span></h4>
                                 <div class="tools">
@@ -97,3 +126,12 @@
                         </div>
                     </div>
                 </div>
+
+
+<script>
+  $(document).ready(function() {
+            //Filter
+	    $('select[name="year"]').select2();
+	    $('select[name="month"]').select2();
+  });
+</script>
