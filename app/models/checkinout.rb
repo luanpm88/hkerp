@@ -21,6 +21,7 @@ class Checkinout < ActiveRecord::Base
   
   
   belongs_to :user, primary_key: 'ATT_No', foreign_key: 'user_id'
+  belongs_to :checkinout_request
   
   def self.import(file)
     require 'access_db'

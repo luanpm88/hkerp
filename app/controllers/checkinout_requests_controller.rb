@@ -70,6 +70,7 @@ class CheckinoutRequestsController < ApplicationController
   
   def approve
     @checkinout_request.status = 1
+    @checkinout_request.manager = current_user
     @checkinout_request.approve_request
     
 

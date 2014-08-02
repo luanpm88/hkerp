@@ -148,7 +148,8 @@ CREATE TABLE checkinout_requests (
     content text,
     status integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    manager_id integer
 );
 
 
@@ -182,7 +183,8 @@ CREATE TABLE checkinouts (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     check_date date,
-    note text
+    note text,
+    checkinout_request_id integer
 );
 
 
@@ -1457,4 +1459,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140731080017');
 INSERT INTO schema_migrations (version) VALUES ('20140801003248');
 
 INSERT INTO schema_migrations (version) VALUES ('20140801094257');
+
+INSERT INTO schema_migrations (version) VALUES ('20140802025945');
+
+INSERT INTO schema_migrations (version) VALUES ('20140802030357');
 

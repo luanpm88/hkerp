@@ -4,6 +4,9 @@ class CheckinoutRequest < ActiveRecord::Base
   validates :content, presence: true
   
   belongs_to :user
+  belongs_to :manager, :class_name => "User", :foreign_key => "manager_id"
+  
+  has_many :checkinouts
   
   def status_string
     if self.status == 0
@@ -21,8 +24,9 @@ class CheckinoutRequest < ActiveRecord::Base
     #update checkinout
     checkinout = Checkinout.where(user_id: self.user.ATT_No, check_date: self.check_time.to_date).first
     if checkinout.nil?
-      checkinout = Checkinout.create(user_id: self.user.ATT_No, check_date: self.check_time.to_date, check_time: self.check_time, note: 'requested')
+      checkinout = Checkinout.create(checkinout_request_id: self.id,user_id: self.user.ATT_No, check_date: self.check_time.to_date, check_time: self.check_time, note: 'requested')
     else
+      checkinout.checkinout_request = self
       checkinout.check_time = self.check_time
       checkinout.check_date = self.check_time.to_date
       checkinout.note = 'requested'

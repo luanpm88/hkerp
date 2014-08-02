@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   
   has_many :checkinouts, primary_key: 'ATT_No', foreign_key: 'user_id'
   has_many :checkinout_requests
+  has_many :manage_checkinout_requests, :class_name => "CheckinoutRequest", :foreign_key => "manager_id"
   
   validates :first_name, presence: true
   validates :last_name, presence: true
