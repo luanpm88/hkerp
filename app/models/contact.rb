@@ -176,7 +176,7 @@ class Contact < ActiveRecord::Base
   end
   
   def self.HK
-    Contact.find(:first, :conditions => {:is_mine => true})
+    Contact.where(is_mine: true).first
   end
   
 end

@@ -1,6 +1,4 @@
 class CheckinoutsController < ApplicationController
-  load_and_authorize_resource :except => [:detail, :create]
-  
   before_action :set_checkinout, only: [:show, :edit, :update, :destroy]
   
   @@max_time = !Checkinout.where(note: 'imported').order("check_time DESC").empty? ? Checkinout.where(note: 'imported').order("check_time DESC").first.check_time : Time.zone.parse("2010-01-01")

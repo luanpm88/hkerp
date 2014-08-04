@@ -52,6 +52,10 @@ Hkerp::Application.routes.draw do
   end
 
   devise_for :users
+  scope "/admin" do
+    resources :users
+  end
+  
   resources :manufacturers
 
   resources :contact_types
