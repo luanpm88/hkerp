@@ -1,6 +1,4 @@
 class ContactsController < ApplicationController
-  load_and_authorize_resource
-  
   before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent]
 
   # GET /contacts

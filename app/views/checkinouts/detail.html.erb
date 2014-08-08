@@ -67,8 +67,8 @@
                                             <% @checks.each do |check| %>
                                                   <tr>
 						    <td><%= check.check_date.strftime("%a")+", "+check.check_date.to_formatted_s(:long) %></td>
-                                                    <td><%= check.check_time_formated.html_safe %></td>
-                                                    <td><%= check.work_time_formated.html_safe %></td>
+                                                    <td><%= check.check_time_formatted.html_safe %></td>
+                                                    <td><%= check.work_time_formatted.html_safe %></td>
                                                     <td><%= check.get_result.html_safe %></td>
                                                     <td><%= check.note.html_safe %></td>
                                                     <td style="text-align:right">
@@ -79,7 +79,7 @@
 							      <a href="<%= new_checkinout_path(att_no: @user.ATT_No, check_date: check.check_date) %>" class="btn btn-primary btn-sm btn-mini" type="button">Update</a>
 							    <% else %>
 							      <a href="<%= edit_checkinout_path(check) %>" class="btn btn-primary btn-sm btn-mini" type="button">Update</a>
-							      <!--<%= link_to 'Delete', check, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary btn-sm btn-mini btn-danger" %>-->
+							      <%= link_to 'Delete', check, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary btn-sm btn-mini btn-danger" %>
 							    <% end %>
 							<% end %>
                                                     </td>

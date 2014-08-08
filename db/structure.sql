@@ -360,6 +360,70 @@ ALTER SEQUENCE order_details_id_seq OWNED BY order_details.id;
 
 
 --
+-- Name: order_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE order_statuses (
+    id integer NOT NULL,
+    name character varying(255),
+    description text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: order_statuses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE order_statuses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: order_statuses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE order_statuses_id_seq OWNED BY order_statuses.id;
+
+
+--
+-- Name: order_statuses_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE order_statuses_orders (
+    id integer NOT NULL,
+    order_id integer,
+    order_status_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: order_statuses_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE order_statuses_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: order_statuses_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE order_statuses_orders_id_seq OWNED BY order_statuses_orders.id;
+
+
+--
 -- Name: orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1009,6 +1073,20 @@ ALTER TABLE ONLY order_details ALTER COLUMN id SET DEFAULT nextval('order_detail
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY order_statuses ALTER COLUMN id SET DEFAULT nextval('order_statuses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY order_statuses_orders ALTER COLUMN id SET DEFAULT nextval('order_statuses_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY orders ALTER COLUMN id SET DEFAULT nextval('orders_id_seq'::regclass);
 
 
@@ -1173,6 +1251,22 @@ ALTER TABLE ONLY manufacturers
 
 ALTER TABLE ONLY order_details
     ADD CONSTRAINT order_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_statuses_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY order_statuses_orders
+    ADD CONSTRAINT order_statuses_orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: order_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY order_statuses
+    ADD CONSTRAINT order_statuses_pkey PRIMARY KEY (id);
 
 
 --
@@ -1463,4 +1557,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140801094257');
 INSERT INTO schema_migrations (version) VALUES ('20140802025945');
 
 INSERT INTO schema_migrations (version) VALUES ('20140802030357');
+
+INSERT INTO schema_migrations (version) VALUES ('20140807031530');
+
+INSERT INTO schema_migrations (version) VALUES ('20140807042511');
 

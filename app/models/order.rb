@@ -23,6 +23,8 @@ class Order < ActiveRecord::Base
   has_one :newer, class_name: "Order", foreign_key: "older_id"
   belongs_to :older, class_name: "Order", :dependent => :destroy
   
+  has_and_belongs_to_many :order_statuses
+  
   def total
     total = 0;
     order_details.each {|item|
@@ -190,4 +192,41 @@ class Order < ActiveRecord::Base
     
     return chuoi.strip.capitalize + " đồng"
   end
+  
+  def status
+    self.order_statuses.all.order("created_at DESC").first
+  end
+  
+  def status_formatted
+    if self.status.nil?
+    else
+      self.status.description
+    end
+  end
+  
+  def set_status(name)
+    status = OrderStatus.where(name: name).first
+    if status.nil?
+      return false
+    else
+      self.order_statuses << status
+    end   
+  end
+  
+  def last_updated
+    if self.status.nil?
+      return self.updated_at
+    else
+      self.status.updated_at
+    end    
+  end
+  
+  def last_updated_formatted
+    self.last_updated.strftime("%Y-%m-%d, %H:%M")
+  end
+  
+  def confirm_order
+    self.set_status('confirmed')
+  end
+  
 end

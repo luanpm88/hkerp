@@ -1,7 +1,7 @@
 class SupplierOrdersController < ApplicationController
   load_and_authorize_resource
   
-  before_action :set_supplier_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_supplier_order, only: [:show, :edit, :update, :destroy, :download_pdf]
 
   # GET /supplier_orders
   # GET /supplier_orders.json
@@ -12,6 +12,8 @@ class SupplierOrdersController < ApplicationController
   # GET /supplier_orders/1
   # GET /supplier_orders/1.json
   def show
+    @hk = Contact.HK
+    render :layout => nil
   end
 
   # GET /supplier_orders/new
@@ -62,6 +64,23 @@ class SupplierOrdersController < ApplicationController
       format.html { redirect_to supplier_orders_url }
       format.json { head :no_content }
     end
+  end
+  
+  def download_pdf
+    @hk = Contact.HK
+    render  :pdf => "purchase_order_"+@supplier_order.id.to_s,
+            :template => 'supplier_orders/show.html.erb',
+            :layout => nil,
+            :footer => {
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A4",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
   end
 
   private

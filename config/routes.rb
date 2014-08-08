@@ -1,5 +1,7 @@
 Hkerp::Application.routes.draw do
   
+  resources :order_statuses
+
   resources :checkinout_requests do
     collection do
       get :approve
@@ -26,7 +28,11 @@ Hkerp::Application.routes.draw do
     end
   end
 
-  resources :supplier_orders
+  resources :supplier_orders do
+    collection do
+      get :download_pdf
+    end
+  end
 
   resources :roles
 

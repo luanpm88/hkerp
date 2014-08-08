@@ -1,4 +1,6 @@
 class CheckinoutRequestsController < ApplicationController
+  load_and_authorize_resource
+  
   before_action :set_checkinout_request, only: [:show, :edit, :update, :destroy, :approve]
 
   # GET /checkinout_requests

@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <meta charset="utf-8" />
-<title>Webarch - Responsive Admin Dashboard</title>
+<title>Hoàng Khang - ERP</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <meta content="" name="description" />
 <meta content="" name="author" />
@@ -94,11 +94,12 @@
 	$('#product-line-items .price_total').each(function() {
 	    sum = sum + parseFloat($(this).attr("rel"));
 	});
+	
 	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(0));
 	sum = ReplaceNumberWithDots(sum.toFixed(0));
 	$('.product_order_list .footer.line1 .price_total').html(sum);
 	$('.product_order_list .footer.line2 .price_total').html(sumvat);
-	
+	//alert($('select.tax-select option:selected').attr("rel"));
 	//update tax name
 	$('.order_tax_name').html($('select.tax-select option:selected').html());
     }
@@ -849,18 +850,25 @@
    <!-- BEGIN SIDEBAR MENU -->	
 	<p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
-	
-	
-	
-	<!--<li class="start<% if ["orders","supplier_orders"].include?(params[:controller]) %> active open<% end %>">
+	<li class="start<% if ["orders"].include?(params[:controller]) %> active open<% end %>">
 	    <%= link_to orders_url do %>
-	      <i class="icon-archive"></i>
+	      <i class="icon-signout"></i>
 	      <span class="title" onclick="">Sales</span>
-	      <span class="arrow<% if params[:controller] == "orders" %> open<% end %>"></span>
+	      <span class="arrow<% if ["orders"].include?(params[:controller]) %> open<% end %>"></span>
 	    <% end %>
 	    <ul class="sub-menu">
-	      <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Quotations', orders_url %></li>
-	      <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Supplier Orders', supplier_orders_url %></li>
+	      <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Customer Orders', orders_url %></li>	      
+	    </ul>
+	</li>
+	
+	<li class="start<% if ["supplier_orders"].include?(params[:controller]) %> active open<% end %>">
+	    <%= link_to orders_url do %>
+	      <i class="icon-reorder"></i>
+	      <span class="title" onclick="">Storage</span>
+	      <span class="arrow<% if ["supplier_orders"].include?(params[:controller]) %> open<% end %>"></span>
+	    <% end %>
+	    <ul class="sub-menu">	      
+	      <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Purchase Orders', supplier_orders_url %></li>
 	    </ul>
 	</li>
 	
@@ -879,7 +887,7 @@
 	  
       <li <% if params[:controller] == "contacts" %> class="active open"<% end %>>
 	<%= link_to contacts_url do %>
-	  <i class="icon-user"></i>
+	  <i class="icon-book"></i>
 	  <span class="title">Contacts</span>
 	  <span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
 	<% end %>
@@ -887,11 +895,11 @@
           <li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
 	  <li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
         </ul>
-      </li>-->
+      </li>
       
       <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
 	<%= link_to checkinouts_url do %>
-	  <i class="icon-user"></i>
+	  <i class="icon-calendar"></i>
 	  <span class="title">Attendance</span>
 	  <span class="arrow<% if params[:controller] == "checkinouts" %> open<% end %>"></span>
 	<% end %>
@@ -907,6 +915,18 @@
 	    </li>
         </ul>
       </li>
+      
+      
+	<li <% if params[:controller] == "users" %> class="active open"<% end %>>
+	    <%= link_to contacts_url do %>
+	      <i class="icon-user"></i>
+	      <span class="title">User Management</span>
+	      <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
+	    <% end %>
+	    <ul class="sub-menu">
+	      <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
+	    </ul>
+	</li>
       
 
       <!--<li class=""> <a href="../frontend/index.html"> <i class="icon-flag"></i>  <span class="title">Frontend</span></a></li>      

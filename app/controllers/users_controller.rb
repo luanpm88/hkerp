@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  load_and_authorize_resource
+  
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
@@ -32,7 +34,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(user_params)
-
+    
     respond_to do |format|
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
@@ -47,10 +49,15 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1
   # PATCH/PUT /users/1.json
   def update
-    authorize! :manage, User
+    new_params = user_params
+    
+    if new_params["password"].empty?      
+      new_params.delete("password")
+      new_params.delete("password_confirmation")
+    end
     
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.update(new_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
@@ -80,6 +87,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:password, :password_confirmation)
+      params.require(:user).permit(:password, :password_confirmation, :role_ids => [])
     end
 end

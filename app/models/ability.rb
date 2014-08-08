@@ -43,11 +43,16 @@ class Ability
     if user.has_role? "admin"
       can :manage, :all
     else
-      can :read, :all
+      can :read, Checkinout
       can :read_attendances, User do |u|
         u.id == user.id || user.has_role?("attendance_manager")
       end
+      
+      #permissions for personal attandence requests
       can :create, CheckinoutRequest
+      can :read, CheckinoutRequest do |request|
+        request.user_id == user.id
+      end
       can :destroy, CheckinoutRequest do |request|
         request.user_id == user.id && request.status == 0
       end
@@ -59,16 +64,33 @@ class Ability
         can :manage, Checkinout
         can :manage, CheckinoutRequest
       end
-      #can :manage, Checkinout
-      #can :update, Comment do |comment|
-      #  comment.try(:user) == user || user.role?(:moderator)
-      #end
-      #if user.role?(:author)
-      #  can :create, Article
-      #  can :update, Article do |article|
-      #    article.try(:user) == user
-      #  end
-      #end
+      
+      if user.has_role? "salesperson"
+        can :read, Product
+        
+        can :create, Order
+        can :read, Order do |order|
+          order.salesperson_id == user.id
+        end
+        can :update, Order do |order|
+          order.salesperson_id == user.id && order.status.name == 'quotation'
+        end
+        can :destroy, Order do |order|
+          order.salesperson_id == user.id && order.status.name == 'quotation'
+        end
+        
+        can :create, OrderDetail
+        can :read, OrderDetail do |order_detail|
+          order_detail.order.salesperson_id == user.id
+        end
+        can :update, OrderDetail do |order_detail|
+          order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation'
+        end
+        can :destroy, OrderDetail do |order_detail|
+          order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation'
+        end
+      end
+
     end
 
   end

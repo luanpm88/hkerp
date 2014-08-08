@@ -1,5 +1,5 @@
 class OrderDetailsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:ajax_new, :ajax_edit, :ajax_create, :ajax_update, :ajax_destroy]
   
   before_action :set_order_detail, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_edit, :ajax_update]
 
@@ -65,6 +65,8 @@ class OrderDetailsController < ApplicationController
   
   # GET /order_details/new
   def ajax_new
+    authorize! :create, OrderDetail
+    
     @order_detail = OrderDetail.new
     
     if (!params[:order_id].nil?)
@@ -76,6 +78,8 @@ class OrderDetailsController < ApplicationController
   
   # GET /order_details/1/edit
   def ajax_edit
+    authorize! :update, @order_detail
+    
     @order_detail = @order_detail.dup
     @order_detail.order = nil
     
@@ -83,6 +87,8 @@ class OrderDetailsController < ApplicationController
   end
   
   def ajax_create
+    authorize! :create, OrderDetail
+    
     @order_detail = OrderDetail.new(order_detail_params)
 
     respond_to do |format|
@@ -97,6 +103,8 @@ class OrderDetailsController < ApplicationController
   end
   
   def ajax_update
+    authorize! :update, @order_detail
+    
     respond_to do |format|
       if @order_detail.update(order_detail_params)
         format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
@@ -110,6 +118,8 @@ class OrderDetailsController < ApplicationController
   
   # DELETE /contacts/1
   def ajax_destroy
+    authorize! :destroy, @order_detail
+    
     @order_detail.destroy
     
     render :nothing => true

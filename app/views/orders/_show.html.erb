@@ -156,6 +156,13 @@
     background-color: #0090D9;
     color: #FFFFFF;
 }
+.btn-info {
+    background-color: #1f3853;
+    color: #FFFFFF;
+}
+.btn:hover {
+  opacity: 0.9;
+}
 
 </style>
 
@@ -243,7 +250,7 @@
             <td><%= @count %></td>
             <td style="text-align: left;">
               <%= order_detail.product_name %><br />
-              <%= order_detail.product.description if !order_detail.product.description.nil? %>
+              <%= order_detail.product_description if !order_detail.product.description.nil? %>
             </td>
             <td><%= order_detail.warranty %> (tháng)</td>
             <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>

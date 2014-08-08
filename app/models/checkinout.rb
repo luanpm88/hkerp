@@ -77,16 +77,17 @@ class Checkinout < ActiveRecord::Base
     return checks
   end
   
-  def get_result   
+  def get_result
+    
+    if self.check_time.wday == 0
+      return "holiday"
+    end
+    
     if self.id.nil?
       if self.check_time > @@max_time
         return "<span class='grey'>updating...</span>"
-      else
-        if self.check_time.wday == 0
-          return "holiday"
-        else
-          return "<span class='red'>absent</span>"
-        end
+      else        
+        return "<span class='red'>absent</span>"
       end
     else      
       late = self.get_late
@@ -120,7 +121,7 @@ class Checkinout < ActiveRecord::Base
     
     sum = 0
     checks.each do |check|
-      if !check.id.nil?
+      if !check.id.nil? && check.check_time.wday != 0
         sum += check.work_time
       end
     end
@@ -138,7 +139,7 @@ class Checkinout < ActiveRecord::Base
     return @@work_time_per_day - self.get_late
   end
   
-  def work_time_formated
+  def work_time_formatted
     if self.check_time > @@max_time && self.note != 'custom' && self.note != 'requested'
       return "<span class='grey'>updating...</span>"
     end
@@ -157,7 +158,7 @@ class Checkinout < ActiveRecord::Base
     
   end
   
-  def check_time_formated   
+  def check_time_formatted   
     
     if self.check_time > @@max_time && self.note != 'custom' && self.note != 'requested'
       return "<span class='grey'>updating...</span>"

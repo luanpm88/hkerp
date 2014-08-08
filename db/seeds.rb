@@ -53,6 +53,7 @@ Contact.where(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thô
 Role.create(name: "admin")
 Role.create(name: "user")
 Role.create(name: "attendance_manager")
+Role.create(name: "salesperson")
 
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
@@ -104,3 +105,5 @@ User.all.each do |user|
         user.add_role Role.where(name: "user").first
 end
 
+OrderStatus.create(name: "quotation", description: "Quotation")
+OrderStatus.create(name: "confirmed", description: "Order Confirmed")

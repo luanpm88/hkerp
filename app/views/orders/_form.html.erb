@@ -2,7 +2,7 @@
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
-                  <h4>Quotation <span class="semi-bold">Details</span></h4>
+                  <h4>Customer Order <span class="semi-bold">Details</span></h4>
                   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
                 </div>     
                 
@@ -15,7 +15,7 @@
                     <div class="alert alert-error">
                       <button data-dismiss="alert" class="close"></button>
                       <div id="error_explanation">
-                        <h5><%= pluralize(@order.errors.count, "error") %> prohibited this quotation from being saved:</h5>
+                        <h5><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h5>
                   
                         <ul>
                         <% @order.errors.full_messages.each do |msg| %>
@@ -272,7 +272,7 @@
                                 <span class="help"></span>
                                   <div class="input-with-icon  right">                                       
                                     <i class=""></i>
-                                    <select name="order[tax_id]" class="modern_select" style="min-width: 400px;">                                    
+                                    <select name="order[tax_id]" class="modern_select tax-select" style="min-width: 400px;">                                    
                                     <% Tax.all.order("created_at DESC").each do |tax| %>
                                         <option rel="<%= tax.rate %>" value="<%= tax.id %>" <% if !@order.tax_id.nil? && @order.tax_id == tax.id %>selected="selected"<% end %>>
                                           <%= tax.name %>
@@ -348,6 +348,9 @@
                               <% if params[:old_id].nil? && !@order.id.nil? %>
                                    <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
                                    <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
+                                   <% if @order.status.name = 'quotation' %>
+                                        <input name="confirm" type="submit" class="btn btn-info btn-cons" value="Confirm Customer Order" />
+                                   <% end %>
                               <% else %>
                                    <input name="save" type="submit" class="btn btn-primary btn-cons" value="Save" />
                               <% end %>

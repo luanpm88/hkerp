@@ -6,7 +6,7 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.order("created_at DESC").all
+    @orders = Order.order("updated_at DESC").all
   end
 
   # GET /orders/1
@@ -33,7 +33,6 @@ class OrdersController < ApplicationController
 
   # GET /orders/1/edit
   def edit
-    authorize! :manage, @order
   end
 
   # POST /orders
@@ -45,7 +44,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.save
-        #save order quotation code
+        @order.set_status('quotation')
         format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
         format.json { render action: 'show', status: :created, location: @order }
       else
@@ -90,6 +89,9 @@ class OrdersController < ApplicationController
     else
       respond_to do |format|
         if @order.update(order_params)
+          if !params[:confirm].nil?
+            @order.confirm_order
+          end
           format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
           format.json { head :no_content }
         else

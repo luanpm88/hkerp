@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create]
   
   before_action :set_product, only: [:show, :edit, :update, :destroy, :ajax_show]
 
@@ -75,17 +75,23 @@ class ProductsController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def ajax_show
+    authorize! :read, Product
+    
     @data = Hash[display_name: @product.display_name,product: @product, order_supplier_history: @product.order_supplier_history]
     render :json => @data
   end
   
-  def ajax_new    
+  def ajax_new
+    authorize! :create, Product
+    
     @product = Product.new
    
     render :layout => nil
   end
   
   def ajax_create
+    authorize! :create, Product
+    
     @product = Product.new(product_params)
 
     respond_to do |format|

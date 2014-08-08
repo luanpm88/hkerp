@@ -6,7 +6,7 @@
     }
 </style>
 <div class="page">
-    
+
 <div style="position: absolute;top:224px;left: 284px">
     <%= @order.order_date.strftime("%d") %>
 </div>
@@ -63,12 +63,15 @@
 <div style="position: absolute;top:754px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total %>
 </div>
+
 <div style="position: absolute;top:784px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_vat_amount %>
 </div>
+
 <div style="position: absolute;top:814px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total_vat %>
 </div>
+
 <div style="position: absolute;top:837px;left: 165px;width:500px;line-height: 31px;">
     <%= @order.docso(@order.total_vat.to_i) %>
 </div>

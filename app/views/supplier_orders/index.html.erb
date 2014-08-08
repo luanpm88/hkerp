@@ -6,7 +6,7 @@
                 </ul>
                 <div class="page-title">
                         <i class="icon-user"></i>
-                    	<h3>Supplier Order - <span class="semi-bold"> Management</span></h3>	
+                    	<h3>Purchase Order - <span class="semi-bold"> Management</span></h3>	
                 </div>
                 <div class="row">
 		  
@@ -16,7 +16,7 @@
                       <%= link_to 'New Supplier Order', new_supplier_order_path, :class => 'btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
-                                <h4>Listing  <span class="semi-bold">Supplier Orders</span></h4>
+                                <h4>Listing  <span class="semi-bold">Purchase Orders</span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -42,7 +42,7 @@
                                                 <th style="text-align: center" width="14%">Product Count</th>                                                
 						<th style="text-align: center" width="14%">Salesperson</th>
 						<th style="text-align: center" width="13%">Created Date</th>
-                                                <th style="width:160px;">Action</th>   
+                                                <th style="text-align: center">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -70,13 +70,31 @@
 						      <%= order.created_at.strftime("%Y-%m-%d") %>
 						    </td>
 						    
-						    <td>
+						    <td style="text-align: right">
 							    
 							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
-							    <%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>
+							    <!--<%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>-->
 							    <!--<%= link_to '<i class="icon-reply-all"></i>'.html_safe, new_order_path(old_id: order.id), :class => "btn btn-info btn-xs btn-mini show_old_order_version", title: "Create New Order History" %>-->
-							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_supplier_order_path(order), :class => "btn btn-info btn-xs btn-mini", title: "Edit Supplier Order" if can? :manage, order %>							    
-							    <%= link_to 'X'.html_safe, order, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can? :manage, order %>
+							    <!--<%= link_to 'View/Edit'.html_safe, edit_supplier_order_path(order), :class => "btn btn-info btn-xs btn-mini", title: "Edit Supplier Order" if can? :manage, order %>							    
+							    <%= link_to 'X'.html_safe, order, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can? :manage, order %>-->
+							    
+							    <div class="btn-group" style="height: 26px;">
+							    <button class="btn btn-mini btn-white btn-demo-space">More</button>
+							    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>
+							    <ul class="dropdown-menu">							      
+								<!--<li class="divider"></li>-->
+								<%  if can? :read, order %>
+								    <li><%= link_to 'PDF', download_pdf_supplier_orders_path(:id => order.id), :target => "_blank" %></li>
+								<% end %>
+								<%  if can? :update, order %>
+								    <li><%= link_to "Edit", edit_supplier_order_path(order), title: "Edit Order" %></li>
+								<% end %>
+								<%  if can? :destroy, order %>
+								    <li><%= link_to "Delete", order, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+								<% end %>
+								
+							    </ul>
+							</div>
 						    </td>
 						  </tr>
 						  
