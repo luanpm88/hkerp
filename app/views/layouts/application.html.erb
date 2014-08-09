@@ -848,86 +848,97 @@
    <!-- END MINI-WIGETS -->
    
    <!-- BEGIN SIDEBAR MENU -->	
-	<p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
+    <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
-	<li class="start<% if ["orders"].include?(params[:controller]) %> active open<% end %>">
-	    <%= link_to orders_url do %>
-	      <i class="icon-signout"></i>
-	      <span class="title" onclick="">Sales</span>
-	      <span class="arrow<% if ["orders"].include?(params[:controller]) %> open<% end %>"></span>
-	    <% end %>
-	    <ul class="sub-menu">
-	      <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Customer Orders', orders_url %></li>	      
-	    </ul>
-	</li>
 	
-	<li class="start<% if ["supplier_orders"].include?(params[:controller]) %> active open<% end %>">
-	    <%= link_to orders_url do %>
-	      <i class="icon-reorder"></i>
-	      <span class="title" onclick="">Storage</span>
-	      <span class="arrow<% if ["supplier_orders"].include?(params[:controller]) %> open<% end %>"></span>
-	    <% end %>
-	    <ul class="sub-menu">	      
-	      <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Purchase Orders', supplier_orders_url %></li>
-	    </ul>
-	</li>
+	<% if can? :read, Order %>
+	    <li class="start<% if ["orders"].include?(params[:controller]) %> active open<% end %>">
+		<%= link_to orders_url do %>
+		  <i class="icon-signout"></i>
+		  <span class="title" onclick="">Sales</span>
+		  <span class="arrow<% if ["orders"].include?(params[:controller]) %> open<% end %>"></span>
+		<% end %>
+		<ul class="sub-menu">
+		  <li<% if params[:controller] == "orders" %> class="active"<% end %>><%= link_to 'Customer Orders', orders_url %></li>	      
+		</ul>
+	    </li>
+	<% end %>
 	
-	<li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
-	<%= link_to products_url do %>
-	  <i class="icon-archive"></i>
-	  <span class="title">Products</span>
-	  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
-	<% end %>
-	<ul class="sub-menu">
-          <li<% if params[:controller] == "products" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
-	  <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
-	  <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
-        </ul>
-      </li>
-	  
-      <li <% if params[:controller] == "contacts" %> class="active open"<% end %>>
-	<%= link_to contacts_url do %>
-	  <i class="icon-book"></i>
-	  <span class="title">Contacts</span>
-	  <span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
-	<% end %>
-	<ul class="sub-menu">
-          <li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
-	  <li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
-        </ul>
-      </li>
-      
-      <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
-	<%= link_to checkinouts_url do %>
-	  <i class="icon-calendar"></i>
-	  <span class="title">Attendance</span>
-	  <span class="arrow<% if params[:controller] == "checkinouts" %> open<% end %>"></span>
-	<% end %>
-	<ul class="sub-menu">
-	    <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
-		<%= link_to 'Monthly Attendance Reports', checkinouts_url %>
-	    </li>	    	    
-	    <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
-		<%= link_to 'Attendance Requests', checkinout_requests_url %>
+	<% if can? :read, SupplierOrder %>
+	    <li class="start<% if ["supplier_orders"].include?(params[:controller]) %> active open<% end %>">
+		<%= link_to orders_url do %>
+		  <i class="icon-reorder"></i>
+		  <span class="title" onclick="">Storage</span>
+		  <span class="arrow<% if ["supplier_orders"].include?(params[:controller]) %> open<% end %>"></span>
+		<% end %>
+		<ul class="sub-menu">	      
+		  <li<% if ["supplier_orders"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Purchase Orders', supplier_orders_url %></li>
+		</ul>
 	    </li>
-	    <li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
-		<%= link_to 'Import', import_checkinouts_url %>
+	<% end %>
+	
+	<% if can? :read, Product %>
+	    <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
+		<%= link_to products_url do %>
+		  <i class="icon-archive"></i>
+		  <span class="title">Products</span>
+		  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
+		<% end %>
+		<ul class="sub-menu">
+		  <li<% if params[:controller] == "products" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
+		  <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
+		  <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
+		</ul>
 	    </li>
-        </ul>
-      </li>
-      
-      
-	<li <% if params[:controller] == "users" %> class="active open"<% end %>>
-	    <%= link_to contacts_url do %>
-	      <i class="icon-user"></i>
-	      <span class="title">User Management</span>
-	      <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
-	    <% end %>
-	    <ul class="sub-menu">
-	      <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
-	    </ul>
-	</li>
-      
+	<% end %>
+	
+	<% if can? :read, Contact %>
+	    <li <% if params[:controller] == "contacts" %> class="active open"<% end %>>
+	      <%= link_to contacts_url do %>
+		<i class="icon-book"></i>
+		<span class="title">Address Book</span>
+		<span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
+	      <% end %>
+	      <ul class="sub-menu">
+		<li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
+		<li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
+	      </ul>
+	    </li>
+	<% end %>
+	
+	<% if can? :read, Checkinout %>
+	    <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
+	      <%= link_to checkinouts_url do %>
+		<i class="icon-calendar"></i>
+		<span class="title">Attendance</span>
+		<span class="arrow<% if params[:controller] == "checkinouts" %> open<% end %>"></span>
+	      <% end %>
+	      <ul class="sub-menu">
+		  <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
+		      <%= link_to 'Monthly Attendance Reports', checkinouts_url %>
+		  </li>	    	    
+		  <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
+		      <%= link_to 'Attendance Requests', checkinout_requests_url %>
+		  </li>
+		  <li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
+		      <%= link_to 'Import', import_checkinouts_url %>
+		  </li>
+	      </ul>
+	    </li>
+	<% end %>
+	
+	<% if can? :read, User %>
+	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
+		<%= link_to contacts_url do %>
+		  <i class="icon-user"></i>
+		  <span class="title">User Management</span>
+		  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
+		<% end %>
+		<ul class="sub-menu">
+		  <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
+		</ul>
+	    </li>
+	<% end %>
 
       <!--<li class=""> <a href="../frontend/index.html"> <i class="icon-flag"></i>  <span class="title">Frontend</span></a></li>      
       <li class=""> <a href="javascript:;"> <i class="icon-custom-ui"></i> <span class="title">UI Elements</span> <span class="arrow "></span> </a>

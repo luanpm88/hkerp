@@ -47,6 +47,11 @@ class Ability
       can :read_attendances, User do |u|
         u.id == user.id || user.has_role?("attendance_manager")
       end
+      can :read, Contact
+      can :create, Contact
+      can :update, Contact do |contact|
+        contact.user_id == user.id
+      end
       
       #permissions for personal attandence requests
       can :create, CheckinoutRequest
