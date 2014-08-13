@@ -855,7 +855,7 @@
 	    <li class="start<% if ["orders"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-signout"></i>
-		  <span class="title" onclick="">Sales</span>
+		  <span class="title" onclick="">Sale</span>
 		  <span class="arrow<% if ["orders"].include?(params[:controller]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">
@@ -881,7 +881,7 @@
 	    <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
 		  <i class="icon-archive"></i>
-		  <span class="title">Products</span>
+		  <span class="title">Product</span>
 		  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">

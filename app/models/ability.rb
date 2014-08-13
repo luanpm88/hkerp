@@ -53,6 +53,12 @@ class Ability
         contact.user_id == user.id
       end
       
+      can :read, Product
+      can :create, Product
+      can :update, Product do |product|
+        product.user_id == user.id
+      end
+      
       #permissions for personal attandence requests
       can :create, CheckinoutRequest
       can :read, CheckinoutRequest do |request|

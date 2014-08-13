@@ -250,7 +250,7 @@
             <td><%= @count %></td>
             <td style="text-align: left;">
               <%= order_detail.product_name %><br />
-              <%= order_detail.product_description if !order_detail.product.description.nil? %>
+              <%= order_detail.product_description %>
             </td>
             <td><%= order_detail.warranty %> (tháng)</td>
             <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
