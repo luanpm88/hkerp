@@ -34,4 +34,9 @@ class CheckinoutRequest < ActiveRecord::Base
     end
   end
   
+  def send_request_notification
+    notification = Notification.new
+    notification.title = "New attendance request"
+  end
+  
 end

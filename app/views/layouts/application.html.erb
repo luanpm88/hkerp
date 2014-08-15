@@ -73,6 +73,7 @@
 <%= javascript_include_tag "jquery.filtertable.js" %>
 <%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
 <%= javascript_include_tag "jquery.number.min.js" %>
+<%= javascript_include_tag "jquery.nicefileinput.min.js" %>
 <!-- END PAGE LEVEL PLUGINS -->
 
 
@@ -630,7 +631,8 @@
 	    });
 	    
 	    
-
+	    //NICE FILE INPUT
+	    $("input[type=file]").nicefileinput();
 	    
       });
 </script>
@@ -776,7 +778,7 @@
 						</div>				
 				</div>
 				<div class="profile-pic"> 
-					<img src="<%= url_for("/img") %>/avatar_small.jpg"  alt="" data-src="<%= url_for("/img") %>/avatar_small.jpg" data-src-retina="<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 
+					<img src="<%= current_user.avatar(:thumb) %>"  alt="" data-src="<%= current_user.avatar(:thumb) %>" data-src-retina="<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 
 				</div>       			
 			</div>
 		 <ul class="nav quick-section ">
@@ -833,7 +835,7 @@
   <!-- BEGIN MINI-PROFILE -->
    <div class="user-info-wrapper">	
 	<div class="profile-wrapper">
-		<img src="<%= url_for("/img") %>/avatar.jpg"  alt="" data-src="<%= url_for("/img") %>/avatar.jpg" data-src-retina="<%= url_for("/img") %>avatar2x.jpg" width="69" height="69" />
+		<img src="<%= current_user.avatar(:thumb) %>"  alt="" data-src="<%= current_user.avatar(:thumb) %>" data-src-retina="<%= url_for("/img") %>/avatar2x.jpg" width="69" height="69" />
 	</div>
     <div class="user-info">
       <div class="greeting">Welcome</div>

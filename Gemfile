@@ -50,3 +50,5 @@ gem "devise"
 gem 'wkhtmltopdf-binary'
 gem 'wicked_pdf'
 gem 'pg_search'
+gem 'carrierwave'
+gem 'mini_magick'

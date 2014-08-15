@@ -1,5 +1,7 @@
 Hkerp::Application.routes.draw do
   
+  resources :notifications
+
   resources :order_statuses
 
   resources :checkinout_requests do

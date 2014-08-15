@@ -22,6 +22,7 @@ class CheckinoutRequestsController < ApplicationController
     @checkinout_request.user = current_user
     @checkinout_request.check_time = params[:check_time].nil? ? Time.zone.now : params[:check_time]
     @checkinout_request.check_time = @checkinout_request.check_time.change({hour: 7, min: 30})
+    @checkinout_request.send_request_notification
   end
 
   # GET /checkinout_requests/1/edit

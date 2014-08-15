@@ -4,6 +4,9 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
+  mount_uploader :image, ImageUploader
+  
+  
   has_many :sale_orders, :class_name => "Order"
   has_many :contacts
   has_many :products
@@ -56,6 +59,16 @@ class User < ActiveRecord::Base
       end      
     end
     return checks
+  end
+  
+  def avatar(version = nil)
+    if self.image_url.nil?
+      return "/img/avatar.jpg"
+    elsif !version.nil?
+      return self.image_url(version)
+    else
+      return self.image_url
+    end
   end
   
 end

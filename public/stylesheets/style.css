@@ -7484,3 +7484,73 @@ ul.my-friends li .profile-pic{
     padding: 0 10px;
     width: auto;
 }
+.nice {
+	font-family: arial;
+	font-size: 12px;
+	-moz-border-radius: 4px; 
+	-webkit-border-radius: 4px;
+	border-radius: 4px;
+}
+.nice .NFI-button {
+	-moz-border-radius-topleft: 3px; 
+	-moz-border-radius-bottomleft: 3px;
+	-webkit-border-top-left-radius: 3px;
+	-webkit-border-bottom-left-radius: 3px;
+	border-top-left-radius: 3px; 
+	border-bottom-left-radius: 3px;
+
+	background-color: #0192DD;
+
+	background-image: linear-gradient(bottom, #1774A3 0%, #0194DD 56%);
+	background-image: -o-linear-gradient(bottom, #1774A3 0%, #0194DD 56%);
+	background-image: -moz-linear-gradient(bottom, #1774A3 0%, #0194DD 56%);
+	background-image: -webkit-linear-gradient(bottom, #1774A3 0%, #0194DD 56%);
+	background-image: -ms-linear-gradient(bottom, #1774A3 0%, #0194DD 56%);
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0, #1774A3),
+		color-stop(0.56, #0194DD)
+	);
+	text-shadow: 0px -1px 0px #0172bd;
+	border: solid #0172bd 1px;
+	border-bottom: solid #00428d 1px;
+	
+	-webkit-box-shadow: inset 0px 1px 0px rgba(255,255,255,.2);
+	-moz-box-shadow: inset 0px 1px 0px rgba(255,255,255,.2);
+	box-shadow: inset 0px 1px 0px rgba(255,255,255,.2); 	
+	
+	color: #fff;
+	width: 100px;
+	height: 37px;
+	line-height: 37px;
+}
+.nice .NFI-button:hover {
+	background: #333;
+	text-shadow: 0px -1px 0px #111;
+	border: solid #000 1px;
+	
+}
+.nice .NFI-filename {
+	-moz-border-radius-topright: 3px; 
+	-moz-border-radius-bottomright: 3px;
+	-webkit-border-top-right-radius: 3px;
+	-webkit-border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px; 
+	border-bottom-right-radius: 3px;
+
+	width: 200px;
+	border: solid #e5e9ec 1px;
+	border-left: none;
+	height: 30px;
+	line-height: 30px;
+	
+	background: #fff;
+	-webkit-box-shadow: inset 0px 2px 0px rgba(0,0,0,.05);
+	-moz-box-shadow: inset 0px 2px 0px rgba(0,0,0,.05);
+	box-shadow: inset 0px 2px 0px rgba(0,0,0,.05); 
+
+	color: #777;
+	text-shadow: 0px 1px 0px #fff;
+}

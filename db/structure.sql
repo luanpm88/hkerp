@@ -320,6 +320,43 @@ ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
 
 
 --
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE notifications (
+    id integer NOT NULL,
+    title text,
+    description text,
+    image character varying(255),
+    url character varying(255),
+    viewed boolean DEFAULT false NOT NULL,
+    user_id integer,
+    type character varying(255),
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE notifications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notifications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE notifications_id_seq OWNED BY notifications.id;
+
+
+--
 -- Name: order_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -983,7 +1020,8 @@ CREATE TABLE users (
     last_name character varying(255),
     phone_ext character varying(255),
     mobile character varying(255),
-    "ATT_No" character varying(255)
+    "ATT_No" character varying(255),
+    image character varying(255)
 );
 
 
@@ -1060,6 +1098,13 @@ ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq':
 --
 
 ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY notifications ALTER COLUMN id SET DEFAULT nextval('notifications_id_seq'::regclass);
 
 
 --
@@ -1243,6 +1288,14 @@ ALTER TABLE ONLY contacts
 
 ALTER TABLE ONLY manufacturers
     ADD CONSTRAINT manufacturers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY notifications
+    ADD CONSTRAINT notifications_pkey PRIMARY KEY (id);
 
 
 --
@@ -1563,4 +1616,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140807031530');
 INSERT INTO schema_migrations (version) VALUES ('20140807042511');
 
 INSERT INTO schema_migrations (version) VALUES ('20140811081940');
+
+INSERT INTO schema_migrations (version) VALUES ('20140815012457');
+
+INSERT INTO schema_migrations (version) VALUES ('20140815013938');
 

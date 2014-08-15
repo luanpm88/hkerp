@@ -30,7 +30,16 @@
                  
                   
                   
-                  <%= form_for(@user) do |f| %>
+                  <%= form_for(@user, html: { multipart: true }) do |f| %>
+                  
+                      <div class="form-group">
+				<label class="form-label"><%= f.label :image %></label>
+				<span class="help">(required)</span>
+				<div class="input-with-icon  right">                                       
+					<i class=""></i>
+					<div class="nice"><%= f.file_field :image %></div>
+				</div>
+			</div>
                            
                       <div class="form-group">
                         <label class="form-label"><%= f.label :password %></label>
