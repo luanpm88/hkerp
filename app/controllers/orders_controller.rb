@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:print_order]
   
   before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order]
 
@@ -132,6 +132,8 @@ class OrdersController < ApplicationController
   end
   
   def print_order
+    authorize! :read, @order
+    
     @hk = Contact.HK
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/print_order.pdf.erb',
