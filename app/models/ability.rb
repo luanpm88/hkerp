@@ -77,7 +77,10 @@ class Ability
       end
       
       if user.has_role? "salesperson"
-        can :read, Product
+        can :manage, Product
+        can :manage, Manufacturer
+        can :manage, Category
+        can :manage, Contact
         
         can :create, Order
         can :read, Order do |order|
