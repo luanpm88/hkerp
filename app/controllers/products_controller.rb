@@ -18,49 +18,8 @@ class ProductsController < ApplicationController
   def datatable
     authorize! :read, Product
     
+    result = Product.datatable(params)
     
-    case params["order"]["0"]["column"]
-    when "1"
-      order = "categories.name"
-    when "2"
-      order = "manufacturers.name"
-    when "3"
-      order = "products.name"
-    when "4"
-      order = "products.price"
-    else
-      order = "products.name"
-    end
-    
-    order += " "+params["order"]["0"]["dir"]
-    
-    where = ["true"]
-    where = "LOWER(products.name) LIKE '%#{params["search"]["value"].downcase}%'" if !params["search"]["value"].empty?
-
-    @products = Product.joins(:categories).joins(:manufacturer).select("DISTINCT manufacturers.name AS manufacturer_name, categories.name AS category_name, products.name, products.price").where(where).order(order).limit(params[:length]).offset(params["start"])
-    data = []
-    @products.each do |product|
-      item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-              product.category_name,
-              product.manufacturer_name,
-              product.name,
-              product.formated_price,
-              ''
-            ]
-      data << item
-    end 
-    
-    total = Product.where(where).count
-    result = {
-              "drawn" => params[:drawn],
-              "recordsTotal" => total,
-              "recordsFiltered" => total
-    }
-    result["data"] = data
-    
-    puts result
-    
-    puts params
     render json: result
   end
 

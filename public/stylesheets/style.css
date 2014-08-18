@@ -7554,3 +7554,21 @@ ul.my-friends li .profile-pic{
 	color: #777;
 	text-shadow: 0px 1px 0px #fff;
 }
+ul.filter li {
+    list-style: none;
+    padding-left: 0;
+}
+ul.filter {
+    padding-left: 0;
+}
+.filter-manu-clear, .filter-cat-clear {
+    font-size: 13px;
+    cursor: pointer;
+    color: #0090d9;
+}
+.filter-manu-scroll {
+    max-height: 800px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-top: 5px;
+}

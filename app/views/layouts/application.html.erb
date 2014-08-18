@@ -714,12 +714,36 @@
 	    $('.datatable-products').dataTable( {
 		"processing": true,
 		"serverSide": true,
-		"ajax": "<%= datatable_products_path %>",
-		"columnDefs": [ { "targets": [0], "orderable": false } ],
-		"order": [[ 3, "asc" ]]
+		"ajax": {
+		    "url": "<%= datatable_products_path %>",
+		    "data": function ( d ) {
+			d.manufacturers = $("input[name='manufacturers[]']:checked").map(function () {return this.value;}).get().join(","),
+			d.category = $("select[name='category']").val()
+		    }
+		},
+		"columnDefs": [ { "targets": [0,5], "orderable": false } ],
+		"order": [[ 3, "asc" ]],
+		"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+		"iDisplayLength": 25
 	    });
 	    
 	    $('select[name="DataTables_Table_0_length"]').select2();
+	    
+	    $("input[name='manufacturers[]']").change(function() {
+		$('.datatable-products').dataTable().fnFilter();
+	    });
+	    $(".filter-manu-clear").click(function() {
+		$("input[name='manufacturers[]']").removeAttr("checked");
+		$('.datatable-products').dataTable().fnFilter();
+	    });
+	    $("select[name='category']").change(function() {
+		$('.datatable-products').dataTable().fnFilter();
+	    });
+	    $(".filter-cat-clear").click(function() {
+		$("select[name='category']").select2("val","");
+		$('.datatable-products').dataTable().fnFilter();
+	    });
+		
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>
