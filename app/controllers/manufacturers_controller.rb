@@ -7,6 +7,12 @@ class ManufacturersController < ApplicationController
   # GET /manufacturers.json
   def index
     @manufacturers = Manufacturer.all
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Manufacturer.full_text_search(params[:q])
+      }
+    end
   end
 
   # GET /manufacturers/1

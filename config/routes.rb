@@ -97,6 +97,7 @@ Hkerp::Application.routes.draw do
       get :ajax_show
       get :ajax_new
       post :ajax_create
+      get :datatable
     end
   end
 

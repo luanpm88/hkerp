@@ -59,7 +59,7 @@ class Product < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.search(q).map {|model| {:id => model.id, :text => model.display_name} }
+    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
 end
