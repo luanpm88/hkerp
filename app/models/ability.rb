@@ -98,7 +98,7 @@ class Ability
           order_detail.order.salesperson_id == user.id
         end
         can :update, OrderDetail do |order_detail|
-          order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation'
+          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation')
         end
         can :destroy, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation'
