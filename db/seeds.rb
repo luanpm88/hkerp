@@ -21,6 +21,7 @@ User.create(:email => "tiennv@hoangkhang.com.vn", :password => "aA456321@", :pas
 User.create(:email => "trinhptt@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Trinh",:last_name => "Phan Thi Tuyet")
 User.create(:email => "bangdh@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Bang",:last_name => "Do Hai")
 User.create(:email => "phuongnt@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Phuong",:last_name => "Nguyen Tien")
+User.create(:email => "quannt@hoangkhang.com.vn", :password => "aA456321@", :password_confirmation => "aA456321@",:first_name => "Quan",:last_name => "Nguyen The")
 
 PaymentMethod.create(name: "Tiền mặt")
 PaymentMethod.create(name: "Chuyển khoản")
@@ -96,6 +97,10 @@ user.save
 
 user = User.where(:email => "phuongnt@hoangkhang.com.vn").first
 user.ATT_No = 127
+user.save
+
+user = User.where(:email => "quannt@hoangkhang.com.vn").first
+user.ATT_No = 25
 user.save
 
 user = User.where(:email => "trungpn@hoangkhang.com.vn").first
