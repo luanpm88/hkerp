@@ -46,6 +46,19 @@ class User < ActiveRecord::Base
     return (Checkinout.get_work_time_by_month(self, month, year)/3600).round(2).to_s
   end
   
+  def addition_time(month, year)
+    return ((Checkinout.get_work_time_by_month(self, month, year)/3600).round(2)-Checkinout.default_hours_per_month)
+  end
+  
+  def addition_time_formatted(month, year)
+    add_time = self.addition_time(month, year)
+    if add_time < 0
+      return "<span class='red'>"+add_time.to_s+"</span>"
+    else
+      return "<span class='green'>"+add_time.to_s+"</span>"
+    end    
+  end
+  
   def checkinouts_by_month(month, year)
     time_string = year.to_s+"-"+month.to_s
     checks = []
