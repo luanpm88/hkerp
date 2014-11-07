@@ -51,7 +51,7 @@ class User < ActiveRecord::Base
   end
   
   def addition_time_formatted(month, year)
-    add_time = self.addition_time(month, year)
+    add_time = self.addition_time(month, year).round(2)
     if add_time < 0
       return "<span class='red'>"+add_time.to_s+"</span>"
     else
