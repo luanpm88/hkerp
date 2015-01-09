@@ -97,7 +97,8 @@ class Product < ActiveRecord::Base
               product.manufacturer.name,
               product.name,
               product.formated_price,
-              #product.category_name,
+              '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini"><i class="icon-paste"></i></a>'+
+              ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
               #product.manufacturer_name,
               #product.name,
               #product.formated_price,
