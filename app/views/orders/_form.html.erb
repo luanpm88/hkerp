@@ -40,7 +40,9 @@
                                 <span class="help">(required)</span>
                                 <div class="input-with-icon  right">                                       
                                   <i class=""></i>
-                                  <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
+                                   <% if !params[:purchase].nil? %>
+                                        <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
+                                   <% end %>
                                   <select name="order[supplier_id]" class="modern_select" style="min-width: 400px;">
                                     <option value="">Select Supplier</option>
                                     <% Contact.all.each do |contact| %>

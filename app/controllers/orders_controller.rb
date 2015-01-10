@@ -49,12 +49,6 @@ class OrdersController < ApplicationController
     @order.salesperson = current_user
     @order.create_quotation_code
     
-    if !params[:purchase].nil?
-      @order.customer = Contact.HK
-    else
-      @order.supplier = Contact.HK
-    end
-    
     respond_to do |format|
       if @order.save
         @order.set_status('quotation')
