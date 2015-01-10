@@ -226,6 +226,10 @@ class Order < ActiveRecord::Base
     self.last_updated.strftime("%Y-%m-%d, %H:%M")
   end
   
+  def order_date_formatted
+    self.order_date.strftime("%Y-%m-%d, %H:%M")
+  end
+  
   def confirm_order
     self.set_status('confirmed')
   end

@@ -15,7 +15,7 @@
                                                 <th width="10%" style="text-align: right">Total Price</th>
                                                 <th style="text-align: center" width="10%">Count</th>                                                
 						<th style="text-align: center" width="9%">Salesperson</th>
-						<th style="text-align: center" width="13%">Last Updated</th>
+						<th style="text-align: center" width="13%">Order Date</th>
 						<th style="text-align: center" width="13%">Status</th>
                                                 <th style="width:160px;text-align: center">Action</th>   
                                             </tr>
@@ -47,7 +47,7 @@
 						      <%= order.salesperson.name %>
 						    </td>
 						    <td style="text-align: center">
-						      <%= order.last_updated_formatted %>
+						      <%= order.order_date_formatted %>
 						    </td>
 						    <td style="text-align: center">
 						      <%= order.status_formatted %>
