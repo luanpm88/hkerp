@@ -81,8 +81,9 @@ class Ability
         can :manage, Manufacturer
         can :manage, Category
         can :manage, Contact
+        #can :manage, Order
         
-        can [:show, :create], Order
+        can :create, Order
         can :read, Order do |order|
           order.salesperson_id == user.id
         end
@@ -92,8 +93,9 @@ class Ability
         can :destroy, Order do |order|
           order.salesperson_id == user.id && order.status.name == 'quotation'
         end
-        
-        can [:show, :create], OrderDetail
+        can :purchase_orders, Order
+       
+        can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id
         end
