@@ -1,12 +1,13 @@
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   
+  validates :supplier_id, presence: true
   validates :customer_id, presence: true
   validates :order_date, presence: true
   validates :order_deadline, presence: true
   
   belongs_to :customer, :class_name => "Contact"
-  #belongs_to :supplier, :class_name => "Contact"
+  belongs_to :supplier, :class_name => "Contact"
   belongs_to :tax
   belongs_to :payment_method
   belongs_to :salesperson, :class_name => "User"
@@ -227,6 +228,18 @@ class Order < ActiveRecord::Base
   
   def confirm_order
     self.set_status('confirmed')
+  end
+  
+  def self.customer_orders
+    order("updated_at DESC").where("supplier_id="+Contact.HK.id.to_s).all
+  end
+  
+  def self.purchase_orders
+    order("updated_at DESC").where("supplier_id!="+Contact.HK.id.to_s).all
+  end
+  
+  def is_purchase
+    self.customer == Contact.HK
   end
   
 end

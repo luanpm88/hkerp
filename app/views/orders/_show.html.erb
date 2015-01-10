@@ -175,19 +175,19 @@
       <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
     </td>
     <td colspan="2">
-      <h2><%= @hk.name %></h2>
+      <h2><%= @order.supplier.name %></h2>
     </td>
   </tr>
   <tr>
     <td>
-      <p><%= @hk.address %></p>
-      <p><label style="font-weight: normal">VPGD: </label><strong><%= @hk.children.first.address %></strong></p>
-      <p><label>ĐT: </label><%= @hk.phone %> - <label>Fax: </label><%= @hk.fax %> - <label>Hotline: </label><%= @hk.hotline %></p>
+      <p><%= @order.supplier.address %></p>
+      <p><label style="font-weight: normal">VPGD: </label><strong><% if !@order.supplier.children.empty? %><%= @order.supplier.children.first.address %><% end %></strong></p>
+      <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
     </td>
     <td class="top-left">
-      <p><label>MST: </label><%= @hk.tax_code %></p>
-      <p><label>Email: </label><%= @hk.email %></p>
-      <p><label>Website: </label><%= @hk.website %></p>
+      <p><label>MST: </label><%= @order.supplier.tax_code %></p>
+      <p><label>Email: </label><%= @order.supplier.email %></p>
+      <p><label>Website: </label><%= @order.supplier.website %></p>
     </td>
   </tr>
 </table>

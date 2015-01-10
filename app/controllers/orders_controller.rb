@@ -6,13 +6,14 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.order("updated_at DESC").all
+    #Find Customer orders
+    @orders = Order.customer_orders
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
-    @hk = Contact.HK
+    @hk = @order.supplier
     render :layout => nil
   end
 
@@ -28,6 +29,12 @@ class OrdersController < ApplicationController
       @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
       @order.warranty_place = "Tận nơi"
       @order.warranty_cost = "0"
+      if !params[:purchase].nil?
+        @order.customer = Contact.HK
+      else
+        @order.supplier = Contact.HK
+      end
+      
     end
   end
 
@@ -42,11 +49,22 @@ class OrdersController < ApplicationController
     @order.salesperson = current_user
     @order.create_quotation_code
     
+    if !params[:purchase].nil?
+      @order.customer = Contact.HK
+    else
+      @order.supplier = Contact.HK
+    end
+    
     respond_to do |format|
       if @order.save
         @order.set_status('quotation')
-        format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @order }
+        if !@order.is_purchase
+          format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
+          format.json { render action: 'show', status: :created, location: @order }
+        else
+          format.html { redirect_to purchase_orders_orders_path, notice: 'Order was successfully created.' }
+          format.json { render action: 'show', status: :created, location: @order }
+        end
       else
         format.html { render action: 'new' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -78,8 +96,14 @@ class OrdersController < ApplicationController
       end
       respond_to do |format|
         if @dup_order.save
-          format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-          format.json { head :no_content }
+          @dup_order.set_status('quotation')
+          if !@order.is_purchase
+            format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+            format.json { render action: 'show', status: :created, location: @order }
+          else
+            format.html { redirect_to purchase_orders_orders_path, notice: 'Order was successfully updated.' }
+            format.json { render action: 'show', status: :created, location: @order }
+          end
         else
           @order = @dup_order
           format.html { render action: 'edit' }
@@ -115,7 +139,7 @@ class OrdersController < ApplicationController
   end
   
   def download_pdf
-    @hk = Contact.HK
+    @hk = @order.supplier
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
             :layout => nil,
@@ -134,20 +158,27 @@ class OrdersController < ApplicationController
   def print_order
     authorize! :read, @order
     
-    @hk = Contact.HK
+    @hk = @order.supplier
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/print_order.pdf.erb',
             :layout => nil,
             :footer => {
-               :center => "",
-               :left => "",
-               :right => "",
-               :page_size => "A4",
-               :margin  => {:top    => 0, # default 10 (mm)
+                :center => "",
+                :left => "",
+                :right => "",
+                :page_size => "A4",
+                :margin  => {:top    => 0, # default 10 (mm)
                           :bottom => 0,
                           :left   => 0,
                           :right  => 0},
             }
+  end
+  
+  
+  def purchase_orders
+    #Find Customer orders
+    @orders = Order.purchase_orders
+    
   end
 
   private

@@ -27,89 +27,10 @@
                                 </div>
                             </div>
                             <div class="grid-body no-border">
-                                 
-                                    <table class="table table-striped no-more-tables">
-                                        <thead>
-                                            <tr>
-                                                <th style="width:1%" >
-                                                    <div class="checkbox check-default">
-							<input id="checkbox10" type="checkbox" value="1" class="checkall">
-							<label for="checkbox10"></label>
-						    </div>
-                                                </th>
-                                                <th width="25%">Customer</th>
-                                                <th width="10%" style="text-align: right">Total Price</th>
-                                                <th style="text-align: center" width="10%">Count</th>                                                
-						<th style="text-align: center" width="9%">Salesperson</th>
-						<th style="text-align: center" width="13%">Last Updated</th>
-						<th style="text-align: center" width="13%">Status</th>
-                                                <th style="width:160px;text-align: center">Action</th>   
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                          
-                                            <% @orders.each do |order| %>
-					      <% if order.newer.nil? && (can? :read, order) %>
-					      
-						  <tr>
-						    <td class="v-align-middle">
-							    <div class="checkbox check-default">
-								<input id="checkbox1<%= order.id %>" type="checkbox" value="<%= order.id %>">
-								<label for="checkbox1<%= order.id %>"></label>
-							    </div>
-						    </td>
-						    <td><%= order.customer.name %></td>
-						    <td align="right">
-						      <%= order.formated_total_vat %>
-						    </td>
-						    <td style="text-align: center">
-						      <%= order.order_details.count %>
-						    </td>
-						    <td style="text-align: center">
-						      <%= order.salesperson.name %>
-						    </td>
-						    <td style="text-align: center">
-						      <%= order.last_updated_formatted %>
-						    </td>
-						    <td style="text-align: center">
-						      <%= order.status_formatted %>
-						    </td>
-						    <td style="text-align: right;">
-							
-							    
-							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" if can? :read, order %>
-							    <!--<%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>-->
-							    <!--<%= link_to 'Print Order', print_order_orders_path(:id => order.id), :class => "btn btn-success btn-xs btn-mini" %>-->
-							    <!--<%= link_to '<i class="icon-reply-all"></i>'.html_safe, new_order_path(old_id: order.id), :class => "btn btn-info btn-xs btn-mini show_old_order_version", title: "Create New Order History" %>-->
-							    
-							    
-							    
-							<div class="btn-group" style="height: 26px;">
-							    <button class="btn btn-mini btn-white btn-demo-space">More</button>
-							    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>
-							    <ul class="dropdown-menu">							      
-								<!--<li class="divider"></li>-->
-								<%  if can? :read, order %>
-								    <li><%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
-								    <li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
-								<% end %>
-								<%  if can? :update, order %>
-								    <li><%= link_to "Edit", edit_order_path(order), title: "Edit Order" %></li>
-								<% end %>
-								<%  if can? :destroy, order %>
-								    <li><%= link_to "Delete", order, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-								<% end %>
-								
-							    </ul>
-							</div>
-						    </td>
-						  </tr>
-						  
-					      <% end %>                                                
-                                            <% end %>
-					    
-                                          </tbody>
-                                    </table>
+				    
+				    <%= render 'orders' %>
+				    
+                                    
                             </div>
                         </div>
                     </div>

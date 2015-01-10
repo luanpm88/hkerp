@@ -56,6 +56,7 @@ Hkerp::Application.routes.draw do
     collection do
       get :download_pdf
       get :print_order
+      get :purchase_orders
     end
   end
 

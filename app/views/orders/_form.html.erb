@@ -2,7 +2,7 @@
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
-                  <h4>Customer Order <span class="semi-bold">Details</span></h4>
+                  <h4>Order <span class="semi-bold">Details</span></h4>
                   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
                 </div>     
                 
@@ -34,6 +34,25 @@
                     <div class="row column-seperation">
                            
                             <div class="col-md-6">
+                              
+                              <div class="form-group">
+                                <label class="form-label"><%= f.label :supplier %></label>
+                                <span class="help">(required)</span>
+                                <div class="input-with-icon  right">                                       
+                                  <i class=""></i>
+                                  <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
+                                  <select name="order[supplier_id]" class="modern_select" style="min-width: 400px;">
+                                    <option value="">Select Supplier</option>
+                                    <% Contact.all.each do |contact| %>
+                                      <% if contact.is_main %>
+                                          <option value="<%= contact.id %>" <% if !@order.supplier.nil? && @order.supplier.id == contact.id %>selected="selected"<% end %>>
+                                            <%= contact.name %>
+                                          </option>
+                                      <% end %>
+                                    <% end %>
+                                  </select>
+                                </div>
+                              </div>
                               
                               <div class="form-group">
                                 <label class="form-label"><%= f.label :customer %></label>
