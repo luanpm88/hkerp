@@ -43,17 +43,17 @@ class Ability
     if user.has_role? "admin"
       can :manage, :all
     else
-      can [:show, :create], Checkinout
+      can :read, Checkinout
       can :read_attendances, User do |u|
         u.id == user.id || user.has_role?("attendance_manager")
       end
-      can [:show, :create], Contact
+      can :read, Contact
       can :create, Contact
       can :update, Contact do |contact|
         contact.user_id == user.id
       end
       
-      can [:show, :create], Product
+      can :read, Product
       can :create, Product
       can :update, Product do |product|
         product.user_id == user.id
@@ -61,7 +61,7 @@ class Ability
       
       #permissions for personal attandence requests
       can :create, CheckinoutRequest
-      can [:show, :create], CheckinoutRequest do |request|
+      can :read, CheckinoutRequest do |request|
         request.user_id == user.id
       end
       can :destroy, CheckinoutRequest do |request|
@@ -82,8 +82,8 @@ class Ability
         can :manage, Category
         can :manage, Contact
         
-        can :create, Order
-        can [:show, :create], Order do |order|
+        can [:show, :create], Order
+        can :read, Order do |order|
           order.salesperson_id == user.id
         end
         can :update, Order do |order|
@@ -93,8 +93,8 @@ class Ability
           order.salesperson_id == user.id && order.status.name == 'quotation'
         end
         
-        can :create, OrderDetail
-        can [:show, :create], OrderDetail do |order_detail|
+        can [:show, :create], OrderDetail
+        can :read, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id
         end
         can :update, OrderDetail do |order_detail|
