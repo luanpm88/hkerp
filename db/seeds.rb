@@ -41,7 +41,7 @@ Tax.create(name: "VAT 10%", rate: 10)
                 is_mine: true
               )
 
-Contact.where(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang").first.children.create(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
+Contact.where(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang").first.children.create(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
                 address: "140/17/38 Lê Đức Thọ, Phường 6, Quận Gò Vấp, TP HCM",
                 phone: "(08) 3984 7690",
                 fax: "(08) 3984 7691",
