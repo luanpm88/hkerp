@@ -235,11 +235,11 @@ class Order < ActiveRecord::Base
   end
   
   def self.customer_orders
-    order("updated_at DESC").where("supplier_id="+Contact.HK.id.to_s).all
+    order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s).all
   end
   
   def self.purchase_orders
-    order("updated_at DESC").where("supplier_id!="+Contact.HK.id.to_s).all
+    order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s).all
   end
   
   def is_purchase

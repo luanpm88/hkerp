@@ -491,7 +491,8 @@ CREATE TABLE orders (
     shipping_time character varying(255),
     warranty_place character varying(255),
     warranty_cost text,
-    older_id integer
+    older_id integer,
+    watermark text
 );
 
 
@@ -1620,4 +1621,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140811081940');
 INSERT INTO schema_migrations (version) VALUES ('20140815012457');
 
 INSERT INTO schema_migrations (version) VALUES ('20140815013938');
+
+INSERT INTO schema_migrations (version) VALUES ('20150116023630');
 

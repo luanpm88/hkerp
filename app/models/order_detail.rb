@@ -2,9 +2,9 @@ class OrderDetail < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   
   validates :product_id, presence: true
-  validates :supplier_id, presence: true
+  #validates :supplier_id, presence: true
   validates :unit, presence: true
-  validates :supplier_price, presence: true
+  #validates :supplier_price, presence: true
   validates :price, presence: true
   validates :warranty, presence: true
   validates :quantity, presence: true

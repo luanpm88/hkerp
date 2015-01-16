@@ -211,7 +211,7 @@
 	$('table').not('.no-filter').filterTable();
 	
 	//action for add agent button
-	$('#add-agent-button').fancybox({
+	$('#add-agent-button,.add-agent-button').fancybox({
 		width: "70%",
 		height: "100%",
 		autoSize: false,
@@ -283,7 +283,7 @@
 	    });	    
 	});
 	
-	    $('select[name="order[customer_id]"]').live("change", function() {
+	    $('input[name="order[customer_id]"]').live("change", function() {
 		updateOrderCustomerFormInfo($(this).val());
 	    });
 	    
@@ -556,7 +556,7 @@
 			    });
 			    
 			    $('.select2-ajax-manufacturers').select2({
-			      placeholder: "Search for a category",
+			      placeholder: "Search for a manufacturer",
 			      minimumInputLength: 1,
 			      ajax: {
 				url: $('.select2-ajax-manufacturers').attr("url"),
@@ -743,7 +743,52 @@
 		$("select[name='category']").select2("val","");
 		$('.datatable-products').dataTable().fnFilter();
 	    });
-		
+	    
+	    //auto update customer info
+	    $('input[name="order[customer_id]"]').trigger("change");
+	    
+	    
+	    //ajax select2 for contacts
+	    $('.select2-ajax-customers').select2({
+		placeholder: "Search for a contact",
+		minimumInputLength: 1,
+		ajax: {
+		  url: $('.select2-ajax-customers').attr("url"),
+		  dataType: 'json',
+		  data: function (term, page) { // page is the one-based page number tracked by Select2
+		    return {
+		      q: term, //search term
+		    };
+		  },
+		  results: function (data, page) {
+		    return {results: data};
+		  }
+		},
+		initSelection: function (element, callback) {				      
+		  callback({ id: $('.select2-ajax-customers').val, text: $('.select2-ajax-customers').attr('text') });
+		}
+	    });
+	    
+	    //ajax select2 for contacts
+	    $('.select2-ajax-suppliers').select2({
+		placeholder: "Search for a contact",
+		minimumInputLength: 1,
+		ajax: {
+		  url: $('.select2-ajax-suppliers').attr("url"),
+		  dataType: 'json',
+		  data: function (term, page) { // page is the one-based page number tracked by Select2
+		    return {
+		      q: term, //search term
+		    };
+		  },
+		  results: function (data, page) {
+		    return {results: data};
+		  }
+		},
+		initSelection: function (element, callback) {				      
+		  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
+		}
+	    });
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>

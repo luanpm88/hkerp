@@ -191,6 +191,7 @@ class OrdersController < ApplicationController
                                     :shipping_time,
                                     :warranty_place,
                                     :warranty_cost,
+                                    :watermark,
                                     :order_detail_ids => []                                   
                                   )
     end

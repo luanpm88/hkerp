@@ -5,6 +5,12 @@ class ContactsController < ApplicationController
   # GET /contacts.json
   def index
     @contacts = Contact.main_contacts(type: params[:type])
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Contact.full_text_search(params[:q])
+      }
+    end
   end
 
   # GET /contacts/1
