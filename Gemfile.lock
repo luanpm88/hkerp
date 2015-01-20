@@ -156,6 +156,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   mini_magick
+  nokogiri (~> 1.6.1)
   pg
   pg_search
   rails (~> 4.1.4)
