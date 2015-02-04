@@ -53,6 +53,7 @@ class Checkinout < ActiveRecord::Base
         end      
         
       rescue
+        str += ": error :: exsit\n"
       end
     end
     
