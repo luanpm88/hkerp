@@ -52,8 +52,8 @@ class Checkinout < ActiveRecord::Base
           str += id + ": " + t.to_formatted_s(:db) + " / " + t.strftime("%Y:%m:%d") + "####\n"
         end      
         
-      rescue
-        str += ": error :: exsit\n"
+      rescue StandardError => e
+        str += ": error "+e.message.to_s+" :: exsit\n"
       end
     end
     
