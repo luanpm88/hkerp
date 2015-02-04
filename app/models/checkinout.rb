@@ -34,7 +34,18 @@ class Checkinout < ActiveRecord::Base
     file.each_line do |line|
       begin
         Time.zone = "Asia/Bangkok"
-        t = Time.zone.parse(line.split(",")[1])
+        
+        #exe string
+        
+        raw = line.split(",")[1]
+        date_a = raw.split(" ")
+        day_string = date_a[0]
+        time_string = date_a[1]
+        
+        day_string = day_string.split("/")[2]+"-"+day_string.split("/")[0]+"-"+day_string.split("/")[1]
+        
+        t = Time.zone.parse(day_string+" "+time_string)
+        
         id = line.split(",")[0]
         day = t.strftime("%Y:%m:%d")
         
