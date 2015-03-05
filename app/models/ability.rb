@@ -93,7 +93,22 @@ class Ability
         can :destroy, Order do |order|
           order.salesperson_id == user.id && order.status.name == 'quotation'
         end
-        can :purchase_orders, Order
+        can :confirm_order, Order do |order|
+          order.salesperson_id == user.id && order.status.name == 'quotation'
+        end
+        can :confirm_order, Order do |order|
+          order.salesperson_id == user.id && order.status.name == 'quotation'
+        end
+        can :print_order, Order do |order|
+          order.salesperson_id == user.id
+        end
+        can :download_pdf, Order do |order|
+          order.salesperson_id == user.id
+        end
+        
+        can :purchase_orders, Order do |order|
+          order.salesperson_id == user.id
+        end
        
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|

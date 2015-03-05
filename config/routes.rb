@@ -57,6 +57,7 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :print_order
       get :purchase_orders
+      get :confirm_order      
     end
   end
 
@@ -99,6 +100,7 @@ Hkerp::Application.routes.draw do
       get :ajax_new
       post :ajax_create
       get :datatable
+      get :sales_delivery
     end
   end
 

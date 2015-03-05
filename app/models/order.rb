@@ -24,7 +24,7 @@ class Order < ActiveRecord::Base
   has_one :newer, class_name: "Order", foreign_key: "older_id"
   belongs_to :older, class_name: "Order", :dependent => :destroy
   
-  belongs_to :order_status
+  has_and_belongs_to_many :order_statuses
   
   def total
     total = 0;
@@ -203,11 +203,11 @@ class Order < ActiveRecord::Base
   end
   
   def status
-    if self.order_status.nil?      
+    if self.order_statuses.first.nil?      
       return self.set_status('quotation')      
     end
     
-    return self.order_status
+    return self.order_statuses.order("created_at DESC").first
   end
   
   def status_formatted
@@ -222,8 +222,7 @@ class Order < ActiveRecord::Base
     if status.nil?
       return false
     else
-      self.order_status = status
-      self.save
+      self.order_statuses << status
     end
     
     return status
@@ -242,7 +241,7 @@ class Order < ActiveRecord::Base
   end
   
   def order_date_formatted
-    self.order_date.strftime("%Y-%m-%d, %H:%M")
+    self.order_date.strftime("%Y-%m-%d")
   end
   
   def confirm_order
@@ -262,10 +261,21 @@ class Order < ActiveRecord::Base
   end
   
   def self.statistics_by_month(year, month)
-    orders = Order.customer_orders.joins(:order_status)
-                  .where(order_statuses: {name: ['confirmed']})
+    status = OrderStatus.get("confirmed")
+    
+    orders = Order.customer_orders
+                  .where("EXISTS(SELECT 1 from order_statuses_orders where order_status_id=#{status.id})")
                   .where('extract(year from order_date) = ?', year)
                   .where('extract(month from order_date) = ?', month)
+    
+    return orders
+  end
+  
+  def self.get_sales_orders_with_delivery
+    status = OrderStatus.get("confirmed")
+    
+    orders = Order.customer_orders
+                  .where("EXISTS(SELECT 1 from order_statuses_orders where order_status_id=#{status.id})")
     
     return orders
   end

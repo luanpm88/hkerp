@@ -67,9 +67,9 @@
 							    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>
 							    <ul class="dropdown-menu">							      
 								<!--<li class="divider"></li>-->
-								<%  if can? :read, order %>
-								    <li><%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
-								    <li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
+								
+								<%  if can? :confirm_order, order %>
+								    <li><%= link_to "Confirm", confirm_order_orders_path(:id => order.id), data: { confirm: 'Are you sure?' } %></li>
 								<% end %>
 								<%  if can? :update, order %>
 								    <li><%= link_to "Edit", edit_order_path(order), title: "Edit Order" %></li>
@@ -77,7 +77,10 @@
 								<%  if can? :destroy, order %>
 								    <li><%= link_to "Delete", order, method: :delete, data: { confirm: 'Are you sure?' } %></li>
 								<% end %>
-								
+								<%  if can? :read, order %>
+								    <li><%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
+								    <li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
+								<% end %>
 							    </ul>
 							</div>
 						    </td>

@@ -112,6 +112,10 @@ class ProductsController < ApplicationController
       end
     end
   end
+  
+  def sales_delivery
+    @orders = Order.get_sales_orders_with_delivery
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

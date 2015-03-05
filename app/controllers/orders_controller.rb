@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
-  load_and_authorize_resource :except => [:print_order]
+  load_and_authorize_resource
   
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order]
+  before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -168,11 +168,19 @@ class OrdersController < ApplicationController
             }
   end
   
-  
   def purchase_orders
     #Find Customer orders
     @orders = Order.purchase_orders
     
+  end
+  
+  def confirm_order
+    @order.confirm_order
+    
+    respond_to do |format|
+      format.html { redirect_to orders_url }
+      format.json { head :no_content }
+    end
   end
 
   private

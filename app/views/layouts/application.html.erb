@@ -1025,11 +1025,11 @@
 	    <li class="start<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-reorder"></i>
-		  <span class="title" onclick="">Storage</span>
+		  <span class="title" onclick="">Purchase</span>
 		  <span class="arrow<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">	      
-		  <li<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Orders', purchase_orders_orders_path %></li>
+		  <li<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Orders', purchase_orders_orders_path %></li>
 		</ul>
 	    </li>
 	<% end %>
@@ -1038,13 +1038,15 @@
 	    <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
 		  <i class="icon-archive"></i>
-		  <span class="title">Product</span>
+		  <span class="title">Storage</span>
 		  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">
-		  <li<% if params[:controller] == "products" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
-		  <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
-		  <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
+		    <li<% if params[:action] == "sales_delivery"  %> class="active"<% end %>><%= link_to 'Sales delivery', sales_delivery_products_path %></li>
+		    
+		    <li<% if ["products"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
+		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
+		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
 		</ul>
 	    </li>
 	<% end %>
