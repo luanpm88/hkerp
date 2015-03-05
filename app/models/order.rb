@@ -24,7 +24,7 @@ class Order < ActiveRecord::Base
   has_one :newer, class_name: "Order", foreign_key: "older_id"
   belongs_to :older, class_name: "Order", :dependent => :destroy
   
-  has_and_belongs_to_many :order_statuses
+  belongs_to :order_status
   
   def total
     total = 0;
@@ -40,6 +40,14 @@ class Order < ActiveRecord::Base
       total = total + item.total
     }
     return total*(tax.rate/100+1)
+  end
+  
+  def vat_amount
+    total = 0
+    order_details.each {|item|
+      total = total + item.total
+    }
+    return total*(tax.rate/100+1) - total
   end
   
   def vat_amount
@@ -195,7 +203,11 @@ class Order < ActiveRecord::Base
   end
   
   def status
-    self.order_statuses.all.order("created_at DESC").first
+    if self.order_status.nil?      
+      return self.set_status('quotation')      
+    end
+    
+    return self.order_status
   end
   
   def status_formatted
@@ -210,8 +222,11 @@ class Order < ActiveRecord::Base
     if status.nil?
       return false
     else
-      self.order_statuses << status
-    end   
+      self.order_status = status
+      self.save
+    end
+    
+    return status
   end
   
   def last_updated
@@ -235,15 +250,24 @@ class Order < ActiveRecord::Base
   end
   
   def self.customer_orders
-    order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s).all
+    order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
   end
   
   def self.purchase_orders
-    order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s).all
+    order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s)
   end
   
   def is_purchase
     self.customer == Contact.HK
+  end
+  
+  def self.statistics_by_month(year, month)
+    orders = Order.customer_orders.joins(:order_status)
+                  .where(order_statuses: {name: ['confirmed']})
+                  .where('extract(year from order_date) = ?', year)
+                  .where('extract(month from order_date) = ?', month)
+    
+    return orders
   end
   
 end
