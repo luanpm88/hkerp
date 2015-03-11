@@ -1,6 +1,7 @@
 class Order < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   
+  
   validates :supplier_id, presence: true
   validates :customer_id, presence: true
   validates :order_date, presence: true
@@ -278,6 +279,82 @@ class Order < ActiveRecord::Base
                   .where("EXISTS(SELECT 1 from order_statuses_orders where order_status_id=#{status.id})")
     
     return orders
+  end
+  
+  def self.datatable(params)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    if !params["order"].nil?
+      case params["order"]["0"]["column"]
+        when "1"
+          order = "categories.name"
+        when "2"
+          order = "manufacturers.name"
+        when "3"
+          order = "products.name"
+        when "4"
+          order = "products.price"
+        else
+          order = "products.name"
+      end
+      order += " "+params["order"]["0"]["dir"]
+    end
+    
+    where = {}    
+    where[:customer_id] = params["customer_id"] if params["customer_id"].present?
+    where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
+    #where[] = "extract(year from order_date) = 2015"
+    
+    if params[:purchase]
+      @items = self.purchase_orders
+    else
+      @items = self.customer_orders
+    end
+    
+    @items = @items.where('extract(year from order_date) = ?', params["year"]) if params["year"].present?
+    @items = @items.where('extract(month from order_date) = ?', params["month"]) if params["month"].present?
+    @items = @items.where('extract(day from order_date) = ?', params["day"]) if params["day"].present?
+    
+    @items = @items.where(where)
+    @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?    
+    @items = @items.order(order) if !order.nil?
+    
+    total = @items.count
+    
+    @items = @items.limit(params[:length]).offset(params["start"])
+    data = []
+    
+    @items.each do |item|
+      
+      if params[:purchase]
+        name_col = item.supplier.name
+      else
+        name_col = item.customer.name
+      end
+      
+      puts User.current_user
+      
+      row = ['<div class="checkbox check-default"><input id="checkbox#{item.id}" type="checkbox" value="1"><label for="checkbox#{item.id}"></label></div>',
+              link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
+              '<div class="text-right">'+item.formated_total_vat+'</div>',
+              '<div class="text-center">'+item.order_details.count.to_s+'</div>',
+              '<div class="text-center">'+item.salesperson.name+'</div>',
+              '<div class="text-center">'+item.order_date_formatted+'</div>',
+              '<div class="text-center">'+item.status_formatted+'</div>',
+              ''
+            ]
+      data << row
+    end 
+    
+    result = {
+              "drawn" => params[:drawn],
+              "recordsTotal" => total,
+              "recordsFiltered" => total
+    }
+    result["data"] = data
+    
+    return {result: result, items: @items}
   end
   
 end

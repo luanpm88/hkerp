@@ -8,12 +8,35 @@
                         <i class="icon-user"></i>
                     	<h3>Purchase Order - <span class="semi-bold"> Management</span></h3>	
                 </div>
+		
+		<%= link_to 'New Purchase Order', new_order_path(:purchase => 1), :class => 'btn btn-primary btn-cons' %>
+		
+		<div class="grid simple ">
+		    <div class="grid-body no-border filters">
+			<div class="row order-filters">
+			    <div class="col-md-4">
+				<h4>Order Date</h4>
+				<div class="date_select_filter">
+				    <div class="input-with-icon  right">                                       
+					<%= date_select(:filter, :date, {include_blank: true, use_two_digit_numbers: true}) %>
+				    </div>
+				</div>
+			    </div>
+			    <div class="col-md-4">
+				<h4>Supplier</h4>
+				<div class="">
+				    <div class="input-with-icon  right">                                       
+					<i class=""></i>
+					<input style="width:100%;margin-bottom: 5px;" name="supplier_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="" text="" data-placeholder="All" />
+				    </div>
+				</div>
+			    </div>
+			</div>
+		    </div>		    
+		</div>
+		
                 <div class="row">
-		  
-		  
-		  
                     <div class="col-md-12">
-                      <%= link_to 'New Purchase Order', new_order_path(:purchase => 1), :class => 'btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Orders</span></h4>

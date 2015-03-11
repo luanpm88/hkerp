@@ -57,7 +57,8 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :print_order
       get :purchase_orders
-      get :confirm_order      
+      get :confirm_order
+      get :datatable
     end
   end
 

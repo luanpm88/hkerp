@@ -182,6 +182,41 @@ class OrdersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def datatable
+    authorize! :read, Order
+    
+    result = Order.datatable(params)
+    
+    result[:items].each_with_index do |item, index|
+      
+      
+      actions = '<div class="text-right"><div class="btn-group" style="height: 26px;">
+                    <button class="btn btn-mini btn-white btn-demo-space">More</button>
+                    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>'
+      actions += '<ul class="dropdown-menu">'
+      
+      if can? :confirm_order, item
+        actions += '<li>'+view_context.link_to("Confirm", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
+      end      
+      if can? :update, item
+        actions += '<li>'+view_context.link_to("Edit", edit_order_path(item), title: "Edit Order")+'</li>'
+      end      
+      if can? :destroy, item
+        actions += '<li>'+view_context.link_to("Delete", item, method: :delete, data: { confirm: 'Are you sure?' })+'</li>'
+      end
+      if can? :read, item
+        actions += '<li>'+view_context.link_to('PDF', download_pdf_orders_path(:id => item.id), :target => "_blank")+'</li>'
+        actions += '<li>'+view_context.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
+      end
+      
+      actions += '</ul></div></div>'
+      
+      result[:result]["data"][index][7] = actions
+    end
+    
+    render json: result[:result]
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -7315,19 +7315,19 @@ ul.my-friends li .profile-pic{
 	color:#fff;
 }
 
-.cbp_tmtimeline .action-links li{
+.cbp_tmtimeline .action-links li {
 	display: inline;
     float: left;
     position: relative;
 }
 
-.cbp_tmtimeline .action-links{
+.cbp_tmtimeline .action-links {
 	margin:4px 0 0;
 	list-style:none;
 	font-size: 13px;
 	padding:0;
 }
-.cbp_tmtimeline .action-links li{
+.cbp_tmtimeline .action-links li {
 	display: inline;
     float: left;
     position: relative;
@@ -7571,4 +7571,11 @@ ul.filter {
     overflow-y: auto;
     overflow-x: hidden;
     padding-top: 5px;
+}
+.select2-container .select2-choice abbr {
+    top: 2px;
+    right: 30px;
+}
+.date_select_filter .select2-container {
+    min-width: 80px;
 }

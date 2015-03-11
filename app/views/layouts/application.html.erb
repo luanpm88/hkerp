@@ -82,6 +82,28 @@
  	
 <script>
     
+    function OrderDataTable(table, url) {
+	$(table).dataTable( {
+	    "processing": true,
+	    "serverSide": true,
+	    "ajax": {
+		"url": url,
+		"data": function ( d ) {
+		    d.customer_id = $('.select2-ajax-customers').val();
+		    d.supplier_id = $('.select2-ajax-suppliers').val();
+		    d.year = $('#filter_date_1i').val();
+		    d.month = $('#filter_date_2i').val();
+		    d.day = $('#filter_date_3i').val();
+		}
+	    },
+	    "columnDefs": [ { "targets": [0,1,2,3,4,5,6,7], "orderable": false } ],
+	    "order": [],
+	    "aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+	    "iDisplayLength": 25
+	    
+	});
+    }
+    
     function ReplaceNumberWithDots(yourNumber) {
 	//Seperates the components of the number
 	//var n= yourNumber.toString().split(".");
@@ -752,6 +774,7 @@
 	    $('.select2-ajax-customers').select2({
 		placeholder: "Search for a contact",
 		minimumInputLength: 1,
+		allowClear: true,
 		ajax: {
 		  url: $('.select2-ajax-customers').attr("url"),
 		  dataType: 'json',
@@ -773,6 +796,7 @@
 	    $('.select2-ajax-suppliers').select2({
 		placeholder: "Search for a contact",
 		minimumInputLength: 1,
+		allowClear: true,
 		ajax: {
 		  url: $('.select2-ajax-suppliers').attr("url"),
 		  dataType: 'json',
@@ -789,6 +813,34 @@
 		  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
 		}
 	    });
+	    
+	    //Datatable products
+	    OrderDataTable('.datatable-orders', "<%= datatable_orders_path %>");
+	    OrderDataTable('.datatable-purchase-orders', "<%= datatable_orders_path(purchase: 1) %>");
+	    
+	    $('.order-filters select, .order-filters input').change(function() {
+		$('.datatable-purchase-orders').dataTable().fnFilter();
+		$('.datatable-orders').dataTable().fnFilter();
+	    });
+	    
+	    $('.dataTables_length select').select2();
+	    
+	    $('.date_select_filter select').eq(0).select2({
+		allowClear: true,
+		placeholder: "year"
+	    });
+	    
+	    $('.date_select_filter select').eq(1).select2({
+		allowClear: true,
+		placeholder: "month"
+	    });
+	    
+	    $('.date_select_filter select').eq(2).select2({
+		allowClear: true,
+		placeholder: "day"
+	    });
+	    
+	    
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>
@@ -1044,7 +1096,7 @@
 		<ul class="sub-menu">
 		    <li<% if params[:action] == "sales_delivery"  %> class="active"<% end %>><%= link_to 'Sales delivery', sales_delivery_products_path %></li>
 		    
-		    <li<% if ["products"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
+		    <li<% if ["products"].include?(params[:controller]) && params[:action] != "sales_delivery" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
 		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
 		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
 		</ul>

@@ -82,6 +82,10 @@ class User < ActiveRecord::Base
     else
       return self.image_url
     end
+  end  
+  
+  def self.current_user
+    Thread.current[:current_user]
   end
   
 end

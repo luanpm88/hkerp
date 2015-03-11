@@ -90,15 +90,14 @@ class Product < ActiveRecord::Base
       order += " "+params["order"]["0"]["dir"]
     end
     
-    where = "true"
-    #where += " AND LOWER(products.name) LIKE '%#{params["search"]["value"].downcase}%'" if !params["search"]["value"].empty?
+    where = "true"    
     where += " AND products.manufacturer_id IN (#{params["manufacturers"]})" if !params["manufacturers"].empty?
-    #where += " AND categories.id = #{params["category"]}" if !params["category"].empty?
+    where += " AND categories.id = #{params["category"]}" if !params["category"].empty?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
     @products = @products.search(params["search"]["value"]) if !params["search"]["value"].empty?    
     @products = @products.order(order) if !order.nil?
-    #total = @products.count("products.id")
+
     @products = @products.limit(params[:length]).offset(params["start"])
     data = []
     @products.each do |product|
@@ -115,9 +114,8 @@ class Product < ActiveRecord::Base
               ''
             ]
       data << item
-    end 
+    end    
     
-    #total = Product.joins(:categories).joins(:manufacturer).select("DISTINCT manufacturers.name AS manufacturer_name, categories.name AS category_name, products.name, products.price").where(where).count("products.id");
     total = self.joins(:categories).joins(:manufacturer).where(where)
     total = total.search(params["search"]["value"]) if !params["search"]["value"].empty?    
     total = total.order(order) if !order.nil?
