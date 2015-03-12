@@ -19,7 +19,10 @@ module Hkerp
     # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
-    config.time_zone = 'Asia/Bangkok'
-    config.active_record.schema_format = :sql
+    config.time_zone = 'Asia/Ho_Chi_Minh'
+    config.active_record.default_timezone = :local
+    config.active_record.time_zone_aware_attributes = false
+    
+    config.active_record.schema_format = :sql    
   end
 end

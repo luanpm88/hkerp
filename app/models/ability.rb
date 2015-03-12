@@ -119,6 +119,10 @@ class Ability
         end
         can :destroy, OrderDetail
       end
+      
+      if user.has_role? "accountant"
+        can :read_statistics, Order
+      end
 
     end
 

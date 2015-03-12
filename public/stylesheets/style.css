@@ -7579,3 +7579,16 @@ ul.filter {
 .date_select_filter .select2-container {
     min-width: 80px;
 }
+.accounting-statistics-filters select {
+    font-size: 150%;
+}
+.statistics-content h4 {
+    margin: 0;
+}
+.statistics-content h2 {
+    margin-top: 0;
+    margin-bottom: 40px;
+}
+.accounting-statistics-filters #s2id_order_order_date_1i .select2-search-choice-close {
+    display: none;
+}

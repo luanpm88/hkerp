@@ -1,7 +1,5 @@
 class Order < ActiveRecord::Base
-  include ActionView::Helpers::NumberHelper
-  
-  
+
   validates :supplier_id, presence: true
   validates :customer_id, presence: true
   validates :order_date, presence: true
@@ -44,31 +42,27 @@ class Order < ActiveRecord::Base
   end
   
   def vat_amount
-    total = 0
-    order_details.each {|item|
-      total = total + item.total
-    }
-    return total*(tax.rate/100+1) - total
-  end
-  
-  def vat_amount
     return total*(tax.rate/100)
   end
   
+  def self.format_price(amount)
+    return ApplicationController.helpers.format_price(amount)
+  end
+  
   def formated_total
-    number_to_currency(total, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(total)
   end
   
   def formated_total_vat
-    number_to_currency(total_vat, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(total_vat)
   end
   
   def formated_vat_amount
-    number_to_currency(vat_amount, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(vat_amount)
   end
   
   def formated_warranty_cost
-    number_to_currency(total, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(warranty_cost)
   end
   
   def warranty_cost=(new_warranty_cost)
@@ -261,15 +255,53 @@ class Order < ActiveRecord::Base
     self.customer == Contact.HK
   end
   
-  def self.statistics_by_month(year, month)
+  def self.statistics(year, month=nil)
     status = OrderStatus.get("confirmed")
     
-    orders = Order.customer_orders
-                  .where("EXISTS(SELECT 1 from order_statuses_orders where order_status_id=#{status.id})")
-                  .where('extract(year from order_date) = ?', year)
-                  .where('extract(month from order_date) = ?', month)
+    total_buy = 0.00
+    total_sell = 0.00
+    total_buy_with_vat = 0.00
+    total_sell_with_vat = 0.00
+    total_vat_buy = 0.00
+    total_vat_sell = 0.00
     
-    return orders
+    sell_orders = Order.customer_orders                  
+                  .where('extract(year from order_date) = ?', year)
+    if month.present?
+      sell_orders = sell_orders.where('extract(month from order_date) = ?', month) 
+    end
+                  
+        
+    sell_orders.each do |order|
+      if order.newer.nil?
+        total_sell += order.total
+        total_sell_with_vat += order.total_vat
+        total_vat_sell += order.vat_amount
+      end      
+    end
+    
+    buy_orders = Order.purchase_orders                  
+                  .where('extract(year from order_date) = ?', year)
+    if month.present?
+      buy_orders = buy_orders.where('extract(month from order_date) = ?', month) 
+    end
+        
+    buy_orders.each do |order|
+      if order.newer.nil?
+        total_buy += order.total
+        total_buy_with_vat += order.total_vat
+        total_vat_buy += order.vat_amount
+      end      
+    end
+    
+    return {
+      total_buy: format_price(total_buy),
+      total_sell: format_price(total_sell),
+      total_buy_with_vat: format_price(total_buy_with_vat),
+      total_sell_with_vat: format_price(total_sell_with_vat),
+      total_vat_buy: format_price(total_vat_buy),
+      total_vat_sell: format_price(total_vat_sell)
+    }
   end
   
   def self.get_sales_orders_with_delivery
@@ -312,9 +344,9 @@ class Order < ActiveRecord::Base
       @items = self.customer_orders
     end
     
-    @items = @items.where('extract(year from order_date) = ?', params["year"]) if params["year"].present?
-    @items = @items.where('extract(month from order_date) = ?', params["month"]) if params["month"].present?
-    @items = @items.where('extract(day from order_date) = ?', params["day"]) if params["day"].present?
+    @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
+    @items = @items.where('extract(month from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["month"]) if params["month"].present?
+    @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?
     
     @items = @items.where(where)
     @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?    

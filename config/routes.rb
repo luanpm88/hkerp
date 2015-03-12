@@ -104,6 +104,8 @@ Hkerp::Application.routes.draw do
       get :sales_delivery
     end
   end
+  
+  resources :accounting
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
