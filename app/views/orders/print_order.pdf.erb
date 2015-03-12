@@ -1,3 +1,20 @@
+<%
+    top = 5
+    pos1 = 249 + top
+    pos2 = 286 + top
+    pos3 = 312 + top
+    pos4 = 338 + top
+    pos5 = 364 + top
+    pos6 = 389 + top
+    pos7 = 474 + top
+    pos8 = 801 + top
+    pos9 = 771 + top
+    pos10 = 801 + top
+    pos11 = 828 + top
+    pos12 = 860 + top
+
+%>
+
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <style>
     body {
@@ -7,42 +24,42 @@
 </style>
 <div class="page">
 
-<div style="position: absolute;top:249px;left: 284px">
+<div style="position: absolute;top:<%= pos1 %>px;left: 284px">
     <%= @order.order_date.strftime("%d") %>
 </div>
-<div style="position: absolute;top:249px;left: 350px">
+<div style="position: absolute;top:<%= pos1 %>px;left: 350px">
     <%= @order.order_date.strftime("%m") %>
 </div>
-<div style="position: absolute;top:249px;left: 410px">
+<div style="position: absolute;top:<%= pos1 %>px;left: 410px">
     <%= @order.order_date.strftime("%Y") %>
 </div>
 
-<div style="position: absolute;top:287px;left: 190px">
+<div style="position: absolute;top:<%= pos2 %>px;left: 190px">
     <%= @order.buyer_name %>
 </div>
-<div style="position: absolute;top:313px;left: 98px">
+<div style="position: absolute;top:<%= pos3 %>px;left: 98px">
     <%= @order.buyer_company %>
 </div>
-<div style="position: absolute;top:339px;left: 100px">
+<div style="position: absolute;top:<%= pos4 %>px;left: 300px">
     <%= @order.buyer_tax_code %>
 </div>
-<div style="position: absolute;top:365px;left: 75px">
+<div style="position: absolute;top:<%= pos5 %>px;left: 75px">
     <%= @order.buyer_address %>
 </div>
-<div style="position: absolute;top:390px;left: 175px">
+<div style="position: absolute;top:<%= pos6 %>px;left: 175px">
     <%= @order.payment_method.name  if !@order.payment_method.nil? %>
 </div>
 
-<div style="position: absolute;top:391px;left: 400px">
+<div style="position: absolute;top:<%= pos6 %>px;left: 400px">
     <%= @order.supplier.account_number %>
 </div>
 
-<div style="position: absolute;top:474px;left: 4px">
+<div style="position: absolute;top:<%= pos7 %>px;left: 4px">
     <% if !@order.order_details.nil? %>
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
         <% @count = @count + 1 %>
-            <div style="line-height: 31px;clear: both;margin-top: -4px;font-size: 15px">
+            <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 15px">
                 <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 17px;text-align: center"><%= @count %></div>
                 <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px"><%= order_detail.product_name %><br />
               <%= order_detail.product_description %></div>
@@ -56,26 +73,26 @@
     <% end %>
 </div>
 
-<div style="position: absolute;top:808px;left: 30px;width:122px;text-align: right">
+<div style="position: absolute;top:<%= pos8 %>px;left: 30px;width:122px;text-align: right">
     <%= @order.tax.rate.to_i %>
 </div>
 
-<div style="position: absolute;top:779px;left: 570px;width:130px;text-align: right">
+<div style="position: absolute;top:<%= pos9 %>px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total %>
 </div>
 
-<div style="position: absolute;top:809px;left: 570px;width:130px;text-align: right">
+<div style="position: absolute;top:<%= pos10 %>px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_vat_amount %>
 </div>
 
-<div style="position: absolute;top:839px;left: 570px;width:130px;text-align: right">
+<div style="position: absolute;top:<%= pos11 %>px;left: 570px;width:130px;text-align: right">
     <%= @order.formated_total_vat %>
 </div>
 
-<div style="position: absolute;top:862px;left: 165px;width:500px;line-height: 31px;">
+<div style="position: absolute;top:<%= pos12 %>px;left: 165px;width:500px;line-height: 31px;">
     <%= @order.docso(@order.total_vat.to_i) %>
 </div>
 
-<!--<img src="http://marketonline.vn/img011.png" width="100%" style="position:absolute;left:0;top:5px;z-index:-1;" valign="top" />-->
+<img src="http://marketonline.vn/img011.png" width="100%" style="position:absolute;left:0;top:5px;z-index:-1;" valign="top" />
 
 </div>
