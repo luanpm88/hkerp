@@ -33,7 +33,7 @@
 			
 			<div class="grid simple ">
 			    <div class="grid-title no-border">
-                                <h4>Statistics on <span class="semi-bold"><%= @order.order_date.strftime('%m/%Y') %></span></h4>
+                                <h4>Statistics in/on - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -46,32 +46,32 @@
                             <div class="grid-body no-border statistics-content">
 				<div class="row">
 				    <div class="col-md-4">
-					<h4>Total Sell</h4>
+					<h5>Total Sell</h5>
 					<h2><%= @statistics[:total_sell] %></h2>
 				    </div>
 				    
 				    <div class="col-md-4">
-					<h4>Total Sell (with VAT)</h4>
+					<h5>Total Sell (with VAT)</h5>
 					<h2><%= @statistics[:total_sell_with_vat] %></h2>
 				    </div>
 				    
 				    <div class="col-md-4">
-					<h4>Total Sell VAT</h4>
+					<h5>Total VAT (sell)</h5>
 					<h2><%= @statistics[:total_vat_sell] %></h2>
 				    </div>
 				    
 				    <div class="col-md-4">
-					<h4>Total Buy</h4>
+					<h5>Total Buy</h5>
 					<h2><%= @statistics[:total_buy] %></h2>
 				    </div>
 				    
 				    <div class="col-md-4">
-					<h4>Total Buy (with VAT)</h4>
+					<h5>Total Buy (with VAT)</h5>
 					<h2><%= @statistics[:total_buy_with_vat] %></h2>
 				    </div>
 				    
 				    <div class="col-md-4">
-					<h4>Total Buy VAT</h4>
+					<h5>Total VAT (Buy)</h5>
 					<h2><%= @statistics[:total_vat_buy] %></h2>
 				    </div>
 				</div>
