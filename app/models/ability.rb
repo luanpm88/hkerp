@@ -84,6 +84,7 @@ class Ability
         #can :manage, Order
         
         can :create, Order
+        can :view_list, Order
         can :read, Order do |order|
           order.salesperson_id == user.id
         end
@@ -100,7 +101,7 @@ class Ability
           order.salesperson_id == user.id && order.status.name == 'quotation'
         end
         can :print_order, Order do |order|
-          order.salesperson_id == user.id
+          order.salesperson_id == user.id && order.status.name == 'confirmed'
         end
         can :download_pdf, Order do |order|
           order.salesperson_id == user.id

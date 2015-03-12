@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:datatable]
   
   before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
@@ -184,7 +184,7 @@ class OrdersController < ApplicationController
   end
   
   def datatable
-    authorize! :read, Order
+    authorize! :view_list, Order
     
     result = Order.datatable(params)
     
@@ -207,6 +207,8 @@ class OrdersController < ApplicationController
       end
       if can? :read, item
         actions += '<li>'+view_context.link_to('PDF', download_pdf_orders_path(:id => item.id), :target => "_blank")+'</li>'
+      end
+      if can? :print_order, item       
         actions += '<li>'+view_context.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end
       
