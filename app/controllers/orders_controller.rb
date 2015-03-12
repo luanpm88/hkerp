@@ -186,7 +186,7 @@ class OrdersController < ApplicationController
   def datatable
     authorize! :view_list, Order
     
-    result = Order.datatable(params)
+    result = Order.datatable(params, current_user)
     
     result[:items].each_with_index do |item, index|
       

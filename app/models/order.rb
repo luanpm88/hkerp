@@ -313,7 +313,7 @@ class Order < ActiveRecord::Base
     return orders
   end
   
-  def self.datatable(params)
+  def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
@@ -336,7 +336,7 @@ class Order < ActiveRecord::Base
     where = {}    
     where[:customer_id] = params["customer_id"] if params["customer_id"].present?
     where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
-    #where[] = "extract(year from order_date) = 2015"
+    where[:salesperson_id] = user.id
     
     if params[:purchase]
       @items = self.purchase_orders
