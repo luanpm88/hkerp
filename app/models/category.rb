@@ -28,6 +28,7 @@ class Category < ActiveRecord::Base
   def self.full_text_search(q)
     rows = self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
     new_rows = []
+    new_rows << {id: "", text: "No category"}
     rows.each do |row|
       if self.find(row[:id]).children == []
         new_rows << row
