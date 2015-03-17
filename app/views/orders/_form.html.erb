@@ -358,7 +358,7 @@
                         </div>
                         
                         <div class="controls">
-			      <%= link_to 'Add Product Line', ajax_new_order_details_path(:order_id => @order.id), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
+			      <%= link_to 'Add Product Line', ajax_new_order_details_path(:order_id => @order.id, :purchase => params[:purchase]), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
                         </div>
                       </div>
                     </div>
@@ -370,7 +370,7 @@
                                    <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
                                    <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
                                    <% if @order.status.name = 'quotation' %>
-                                        <input name="confirm" type="submit" class="btn btn-info btn-cons" value="Confirm Customer Order" />
+                                        <input name="confirm" type="submit" class="btn btn-info btn-cons" value="Confirm Order" />
                                    <% end %>
                               <% else %>
                                    <input name="save" type="submit" class="btn btn-primary btn-cons" value="Save" />

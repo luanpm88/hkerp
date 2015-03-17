@@ -287,6 +287,72 @@ ALTER SEQUENCE contacts_id_seq OWNED BY contacts.id;
 
 
 --
+-- Name: deliveries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE deliveries (
+    id integer NOT NULL,
+    order_id integer,
+    user_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: deliveries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE deliveries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: deliveries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE deliveries_id_seq OWNED BY deliveries.id;
+
+
+--
+-- Name: delivery_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE delivery_details (
+    id integer NOT NULL,
+    delivery_id integer,
+    order_detail_id integer,
+    quantity integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    serial_numbers text
+);
+
+
+--
+-- Name: delivery_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE delivery_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: delivery_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE delivery_details_id_seq OWNED BY delivery_details.id;
+
+
+--
 -- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -493,7 +559,8 @@ CREATE TABLE orders (
     warranty_cost text,
     older_id integer,
     watermark text,
-    order_status_id integer
+    order_status_id integer,
+    newer_id integer
 );
 
 
@@ -623,7 +690,9 @@ CREATE TABLE products (
     manufacturer_id integer,
     unit character varying(255),
     user_id integer,
-    tmpproduct integer
+    tmpproduct integer,
+    stock integer DEFAULT 0,
+    serial_numbers text
 );
 
 
@@ -675,6 +744,71 @@ CREATE SEQUENCE roles_id_seq
 --
 
 ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
+
+
+--
+-- Name: sales_deliveries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sales_deliveries (
+    id integer NOT NULL,
+    order_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: sales_deliveries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sales_deliveries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sales_deliveries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sales_deliveries_id_seq OWNED BY sales_deliveries.id;
+
+
+--
+-- Name: sales_delivery_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sales_delivery_details (
+    id integer NOT NULL,
+    sales_delivery_id integer,
+    order_detail_id integer,
+    quantity integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    serial_numbers text
+);
+
+
+--
+-- Name: sales_delivery_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE sales_delivery_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: sales_delivery_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE sales_delivery_details_id_seq OWNED BY sales_delivery_details.id;
 
 
 --
@@ -1099,6 +1233,20 @@ ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY deliveries ALTER COLUMN id SET DEFAULT nextval('deliveries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY delivery_details ALTER COLUMN id SET DEFAULT nextval('delivery_details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
 
 
@@ -1170,6 +1318,20 @@ ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq':
 --
 
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sales_deliveries ALTER COLUMN id SET DEFAULT nextval('sales_deliveries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY sales_delivery_details ALTER COLUMN id SET DEFAULT nextval('sales_delivery_details_id_seq'::regclass);
 
 
 --
@@ -1285,6 +1447,22 @@ ALTER TABLE ONLY contacts
 
 
 --
+-- Name: deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY deliveries
+    ADD CONSTRAINT deliveries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: delivery_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY delivery_details
+    ADD CONSTRAINT delivery_details_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1370,6 +1548,22 @@ ALTER TABLE ONLY products
 
 ALTER TABLE ONLY roles
     ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales_deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sales_deliveries
+    ADD CONSTRAINT sales_deliveries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: sales_delivery_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sales_delivery_details
+    ADD CONSTRAINT sales_delivery_details_pkey PRIMARY KEY (id);
 
 
 --
@@ -1615,6 +1809,8 @@ INSERT INTO schema_migrations (version) VALUES ('20140802030357');
 
 INSERT INTO schema_migrations (version) VALUES ('20140807031530');
 
+INSERT INTO schema_migrations (version) VALUES ('20140807042511');
+
 INSERT INTO schema_migrations (version) VALUES ('20140811081940');
 
 INSERT INTO schema_migrations (version) VALUES ('20140815012457');
@@ -1626,4 +1822,24 @@ INSERT INTO schema_migrations (version) VALUES ('20150116023630');
 INSERT INTO schema_migrations (version) VALUES ('20150304075707');
 
 INSERT INTO schema_migrations (version) VALUES ('20150305085608');
+
+INSERT INTO schema_migrations (version) VALUES ('20150313042522');
+
+INSERT INTO schema_migrations (version) VALUES ('20150313082319');
+
+INSERT INTO schema_migrations (version) VALUES ('20150313082735');
+
+INSERT INTO schema_migrations (version) VALUES ('20150316011514');
+
+INSERT INTO schema_migrations (version) VALUES ('20150316051122');
+
+INSERT INTO schema_migrations (version) VALUES ('20150316092543');
+
+INSERT INTO schema_migrations (version) VALUES ('20150316094333');
+
+INSERT INTO schema_migrations (version) VALUES ('20150316094602');
+
+INSERT INTO schema_migrations (version) VALUES ('20150317071952');
+
+INSERT INTO schema_migrations (version) VALUES ('20150317083912');
 

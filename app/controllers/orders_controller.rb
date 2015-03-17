@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -79,15 +79,18 @@ class OrdersController < ApplicationController
       
       @dup_order.older = @order
       
-      params[:order][:order_detail_ids].each do |id|
-        if @order.order_details.map(&:id).include?(id.to_i)
-          od = @order.order_details.find_by_id(id.to_i).dup
-          od.save
-          @dup_order.order_details << od
-        else
-          @dup_order.order_details << OrderDetail.find_by_id(id.to_i)
+      if !params[:order][:order_detail_ids].nil?        
+        params[:order][:order_detail_ids].each do |id|
+          if @order.order_details.map(&:id).include?(id.to_i)
+            od = @order.order_details.find_by_id(id.to_i).dup
+            od.save
+            @dup_order.order_details << od
+          else
+            @dup_order.order_details << OrderDetail.find_by_id(id.to_i)
+          end
         end
       end
+        
       respond_to do |format|
         if @dup_order.save
           @dup_order.set_status('quotation')
@@ -108,10 +111,12 @@ class OrdersController < ApplicationController
       respond_to do |format|
         if @order.update(order_params)
           if !params[:confirm].nil?
-            @order.confirm_order
-          end
-          format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-          format.json { head :no_content }
+            format.html { redirect_to confirm_order_orders_url(id: @order.id) }
+            format.json { head :no_content }
+          else
+            format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+            format.json { head :no_content }
+          end          
         else
           format.html { render action: 'edit' }
           format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -134,6 +139,7 @@ class OrdersController < ApplicationController
   
   def download_pdf
     @hk = @order.supplier
+    
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
             :layout => nil,
@@ -147,6 +153,12 @@ class OrdersController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+  end
+  
+  def pdf_preview
+    @hk = @order.supplier
+    
+    render layout: nil, template: 'orders/_show.html.erb'
   end
   
   def print_order
@@ -175,11 +187,15 @@ class OrdersController < ApplicationController
   end
   
   def confirm_order
-    @order.confirm_order
-    
+    list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
-      format.html { redirect_to orders_url }
-      format.json { head :no_content }
+      if @order.confirm_order  
+        format.html { redirect_to list_path, notice: 'Order was successfully confimed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to list_path, alert: 'Order was unsuccessfully confimed. Check the order again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
     end
   end
   
@@ -192,8 +208,7 @@ class OrdersController < ApplicationController
       
       
       actions = '<div class="text-right"><div class="btn-group" style="height: 26px;">
-                    <button class="btn btn-mini btn-white btn-demo-space">More</button>
-                    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>'
+                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
       
       if can? :confirm_order, item

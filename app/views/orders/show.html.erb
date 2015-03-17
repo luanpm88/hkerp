@@ -1,4 +1,8 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<%= stylesheet_link_tag "print_html.css" %>
+
+
 <div class="order_histories" style="float: right">
   <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
   <%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>

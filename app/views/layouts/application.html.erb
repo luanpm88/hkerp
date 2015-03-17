@@ -539,7 +539,7 @@
 	    
 	    //show order
 	    //action for add agent button
-	    $('.show_order').fancybox({
+	    $('.ajax_iframe, .show_order').fancybox({
 		    width: "80%",
 		    height: "100%",
 		    autoSize: false,
@@ -1103,16 +1103,22 @@
 	<% end %>
 	
 	<% if can? :read, Product %>
-	    <li class="start<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> active open<% end %>">
+	    <li class="start<% if ["products", "categories", "manufacturers", "deliveries"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
 		  <i class="icon-archive"></i>
 		  <span class="title">Storage</span>
 		  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">
-		    <li<% if params[:action] == "sales_delivery"  %> class="active"<% end %>><%= link_to 'Sales Delivery', sales_delivery_products_path %></li>
+		    <li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
+			<%= link_to 'Sales Delivery', deliveries_url %>
+		    </li>
 		    
-		    <li<% if ["products"].include?(params[:controller]) && params[:action] != "sales_delivery" %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
+		    <li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
+			<%= link_to 'Purchase Delivery', deliveries_url(purchase: true) %>
+		    </li>
+		    
+		    <li<% if ["products"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
 		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
 		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
 		</ul>

@@ -8,11 +8,15 @@ class Product < ActiveRecord::Base
   validates :categories, presence: true
   validates :manufacturer, presence: true
   
+  validate :check_valid_serial_numbers
+  
   has_and_belongs_to_many :categories
   belongs_to :manufacturer
   belongs_to :user
   
   has_many :order_details
+  
+  before_save :fix_serial_numbers
   
   def order_supplier_history
     @list = order_details.where("order_id IS NOT NULL").order("created_at DESC").limit(10)
@@ -129,6 +133,69 @@ class Product < ActiveRecord::Base
     result["data"] = data
     
     return result
+  end
+  
+  def serial_numbers_extracted
+    arr = []
+    
+    if !serial_numbers.nil?
+      serial_numbers.split("\r\n").each do |line|
+        item = line.strip
+        if item.length < 40 && item.length > 4
+          arr << item
+        end      
+      end
+    end
+      
+    return arr
+  end
+  
+  def valid_serial_numbers
+    if stock.present?
+      return serial_numbers_extracted.count <= stock
+    else
+      return true
+    end
+  end
+  
+  def fix_serial_numbers
+    self.serial_numbers = serial_numbers_extracted.join("\r\n")
+  end
+  
+  def serial_numbers_html
+    serial_numbers.gsub("\r\n","<br />")
+  end
+  
+  def check_valid_serial_numbers
+    if !valid_serial_numbers
+      errors.add(:serial_numbers, "can't be greater than stock")
+    end
+  end
+  
+  def remove_serial_numbers(arr)
+    new_arr = serial_numbers_extracted
+    
+    arr.each do |number|
+      if new_arr.include?(number)
+        new_arr.delete(number)
+      end
+    end
+    
+    self.serial_numbers = new_arr.join("\r\n")
+    self.save
+  end
+  
+  def insert_serial_numbers(arr)
+    new_arr = serial_numbers_extracted
+    
+    arr.each do |number|
+      if !new_arr.include?(number)
+        new_arr << number
+      end
+    end
+    
+    self.serial_numbers = new_arr.join("\r\n")
+    self.save
   end
   
 end

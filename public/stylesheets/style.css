@@ -7469,13 +7469,16 @@ ul.my-friends li .profile-pic{
     text-transform: uppercase;
 }
 .red {
-    color: red;
+    color: #ce4844;
 }
 .orange {
-    color: orange;
+    color: #aa6708;
 }
 .green {
-    color: green;
+    color: #3c763d;
+}
+.blue {
+    color: #1b809e;
 }
 .grey {
     color: #ccc;
@@ -7591,4 +7594,7 @@ ul.filter {
 }
 .accounting-statistics-filters #s2id_order_order_date_1i .select2-search-choice-close {
     display: none;
+}
+.actions a {
+    margin: 0;
 }

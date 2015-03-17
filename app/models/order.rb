@@ -20,10 +20,16 @@ class Order < ActiveRecord::Base
   #has_one :older, :class_name => "Order", :foreign_key => "id"
   #belongs_to :newer, :class_name => "Order", :foreign_key => "id"
   
-  has_one :newer, class_name: "Order", foreign_key: "older_id"
-  belongs_to :older, class_name: "Order", :dependent => :destroy
+  belongs_to :newer, class_name: "Order"
+  has_one :older, class_name: "Order", foreign_key: "newer_id", :dependent => :destroy
   
   has_and_belongs_to_many :order_statuses
+  
+  belongs_to :order_status
+  
+  has_many :sales_deliveries, :dependent => :destroy
+  
+  has_many :deliveries, :dependent => :destroy
   
   def total
     total = 0;
@@ -198,11 +204,11 @@ class Order < ActiveRecord::Base
   end
   
   def status
-    if self.order_statuses.first.nil?      
+    if self.order_status.nil?      
       return self.set_status('quotation')      
     end
     
-    return self.order_statuses.order("created_at DESC").first
+    return self.order_status
   end
   
   def status_formatted
@@ -218,6 +224,8 @@ class Order < ActiveRecord::Base
       return false
     else
       self.order_statuses << status
+      self.order_status = status
+      self.save
     end
     
     return status
@@ -240,15 +248,22 @@ class Order < ActiveRecord::Base
   end
   
   def confirm_order
+    if order_details.count == 0
+      return false
+    end
+    
     self.set_status('confirmed')
+    return true
   end
   
   def self.customer_orders
     order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
+      .where(newer_id: nil)
   end
   
   def self.purchase_orders
     order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s)
+      .where(newer_id: nil)
   end
   
   def is_purchase
@@ -308,7 +323,16 @@ class Order < ActiveRecord::Base
     status = OrderStatus.get("confirmed")
     
     orders = Order.customer_orders
-                  .where("EXISTS(SELECT 1 from order_statuses_orders where order_status_id=#{status.id})")
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
+    
+    return orders
+  end
+  
+  def self.get_purchase_orders_with_delivery
+    status = OrderStatus.get("confirmed")
+    
+    orders = Order.purchase_orders
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
     
     return orders
   end
@@ -367,7 +391,8 @@ class Order < ActiveRecord::Base
       
       puts User.current_user
       
-      row = ['<div class="checkbox check-default"><input id="checkbox#{item.id}" type="checkbox" value="1"><label for="checkbox#{item.id}"></label></div>',
+      row = [
+              item.quotation_code,              
               link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
               '<div class="text-right">'+item.formated_total_vat+'</div>',
               '<div class="text-center">'+item.order_details.count.to_s+'</div>',
@@ -387,6 +412,32 @@ class Order < ActiveRecord::Base
     result["data"] = data
     
     return {result: result, items: @items}
+  end
+  
+  def items_total
+    order_details.sum :quantity
+  end
+  
+  def items_delivered
+    total = 0
+    order_details.each do |line|
+      total += line.delivered_count
+    end
+    
+    return total
+  end
+  
+  def items_delivery_remain
+    items_total - items_delivered
+  end
+  
+  def delivery_status
+    if items_delivery_remain <= 0
+      return '<div class="blue">delivered</div>'
+    else
+      return '<div class="orange">waiting...</div>'
+    end
+    
   end
   
 end

@@ -1,5 +1,23 @@
 Hkerp::Application.routes.draw do
   
+  resources :delivery_details
+
+  resources :deliveries do
+    collection do
+      get :deliver
+      get :download_pdf
+    end
+  end
+
+  resources :sales_delivery_details
+
+  resources :sales_deliveries do
+    collection do
+      get :deliver
+      get :download_pdf
+    end
+  end
+
   resources :notifications
 
   resources :order_statuses
@@ -59,6 +77,7 @@ Hkerp::Application.routes.draw do
       get :purchase_orders
       get :confirm_order
       get :datatable
+      get :pdf_preview
     end
   end
 
@@ -106,6 +125,7 @@ Hkerp::Application.routes.draw do
   end
   
   resources :accounting
+  
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

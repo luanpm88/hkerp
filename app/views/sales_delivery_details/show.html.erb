@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sales delivery:</strong>
+  <%= @sales_delivery_detail.sales_delivery_id %>
+</p>
+
+<p>
+  <strong>Order detail:</strong>
+  <%= @sales_delivery_detail.order_detail_id %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @sales_delivery_detail.quantity %>
+</p>
+
+<%= link_to 'Edit', edit_sales_delivery_detail_path(@sales_delivery_detail) %> |
+<%= link_to 'Back', sales_delivery_details_path %>
