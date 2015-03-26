@@ -1,4 +1,5 @@
 class Order < ActiveRecord::Base
+  attr_accessor :debt_days
 
   validates :supplier_id, presence: true
   validates :customer_id, presence: true
@@ -535,17 +536,6 @@ class Order < ActiveRecord::Base
     end    
   end
   
-  def debt_date
-    record = payment_records.order("created_at DESC").first
-    
-    if !record.nil? && !record.debt_days.nil?
-      return order_date + record.debt_days.days
-    else
-      return order_date
-    end
-    
-  end
-  
   def save_as_new(order_params)
       new_params = order_params.dup
       new_params[:order_detail_ids] = []
@@ -706,4 +696,25 @@ class Order < ActiveRecord::Base
   def purchase_manager_name
     purchase_manager.nil? ? "" : purchase_manager.name
   end
+  
+  def deposit=(value)
+    self[:deposit] = value.to_s.gsub(/\,/, '')
+  end 
+  
+  def debt_days
+    if !debt_date.nil?
+      (debt_date.to_date - order_date.to_date).to_i
+    else
+      Time.now
+    end
+  end
+  
+  def debt_date_formated
+    if !debt_date.nil?
+      debt_date.to_date
+    else
+      Time.now.to_date
+    end
+  end
+  
 end

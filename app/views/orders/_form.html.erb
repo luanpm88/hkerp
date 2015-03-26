@@ -89,7 +89,7 @@
                                 </div>
                               
                     
-                              <div class="form-group">
+                              <!--<div class="form-group">
                                 <label class="form-label"><%= f.label :payment_deadline %></label>
                                 <span class="help">(default: + 3 days)</span>
                                   <div class="input-with-icon  right">                                       
@@ -100,7 +100,11 @@
                                     </div>
                                     <br style="clear: both" />
                                   </div>
-                              </div>
+                              </div>-->
+                              
+                              
+                              
+                              
                               
                               
                             </div>
@@ -119,6 +123,8 @@
                                   </div>
                               </div>
                               
+                              
+                              
                               <div class="form-group">
                                 <label class="form-label"><%= f.label :order_deadline %></label>
                                 <span class="help">(default: + 7 days)</span>
@@ -130,6 +136,44 @@
                                     </div>
                                     <br style="clear: both" />
                                   </div>
+                              </div>
+                              
+                              
+                              <div class="row">
+                                   <div class="col-md-4">
+                                        <div class="form-group datetime">
+                                             <label class="form-label"><%= f.label :deposit %></label>
+                                             <span class="help">(%)</span>
+                                               <div class="input-with-icon  right">                                       
+                                                 <i class=""></i>
+                                                 <%= f.select :deposit, options_for_select(100.downto(0).map { |u| [u, u] },@order.deposit), :class => "form-control number_input" %>
+                                               </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-md-3">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_days %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <%= text_field_tag "order_debt_days", @order.debt_days, {:class => "form-control number_input"} %>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-5">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_date %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <div class="input-append success date col-md-10 no-padding">
+                                                     <%= f.text_field :debt_date, :class => "form-control" %>
+                                                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                   </div>
+                                                   <br style="clear: both" />
+                                           </div>
+                                       </div>
+                                   </div>
                               </div>
                               
                               
@@ -193,14 +237,7 @@
                           </div>
                         </div>
                         
-                        <div class="form-group datetime">
-                                <label class="form-label"><%= f.label :deposit %></label>
-                                <span class="help">(%)</span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <%= f.text_field :deposit, :class => "form-control" %>
-                                  </div>
-                        </div>
+                        
                         
                          <div class="form-group datetime">
                                 <label class="form-label"><%= f.label :shipping_date %></label>

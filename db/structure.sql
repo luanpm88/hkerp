@@ -567,7 +567,8 @@ CREATE TABLE orders (
     order_status_id integer,
     newer_id integer,
     parent_id integer,
-    purchase_manager_id integer
+    purchase_manager_id integer,
+    debt_date timestamp without time zone
 );
 
 
@@ -695,7 +696,8 @@ CREATE TABLE payment_records (
     updated_at timestamp without time zone,
     note text,
     paid_person text,
-    paid_address text
+    paid_address text,
+    debt_date timestamp without time zone
 );
 
 
@@ -1974,4 +1976,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150324063654');
 INSERT INTO schema_migrations (version) VALUES ('20150324094732');
 
 INSERT INTO schema_migrations (version) VALUES ('20150325074310');
+
+INSERT INTO schema_migrations (version) VALUES ('20150326071123');
+
+INSERT INTO schema_migrations (version) VALUES ('20150326090135');
 

@@ -82,6 +82,35 @@
  	
 <script>
     
+    function updateDebt_days() {
+	date1 = new Date($('#order_order_date').val());
+	date2 = new Date($('#order_debt_date').val());
+	
+	//$.datepicker.formatDate('yy-mm-dd', date);
+	
+	var oneDay  = 24*60*60*1000;
+	var diffDays = (date2.getTime() - date1.getTime())/oneDay;
+	
+	$('#order_debt_days').val(diffDays);
+    }
+    
+    function updateDebt_date() {
+	
+	date1 = new Date($('#order_order_date').val());
+	days = parseInt($('#order_debt_days').val());
+	
+	if ($('#order_debt_days').val() == "") {
+	    days = 0;
+	}
+	
+	//$.datepicker.formatDate('yy-mm-dd', date);
+	
+	var oneDay  = 24*60*60*1000;
+	var time = date1.getTime() + (oneDay*days);
+	
+	$('#order_debt_date').val($.datepicker.formatDate('yy-mm-dd', new Date(time)));
+    }
+    
     function OrderDataTable(table, url) {
 	$(table).dataTable( {
 	    "processing": true,
@@ -763,7 +792,7 @@
 	    });
 	    
 	    //auto update customer info
-	    $('input[name="order[customer_id]"]').trigger("change");
+	    //$('input[name="order[customer_id]"]').trigger("change");
 	    
 	    
 	    //ajax select2 for contacts
@@ -856,6 +885,17 @@
 		  }
 		},
 	    });
+	    
+	    
+	    updateDebt_days();
+	    $('#order_debt_date').change(function() {
+		updateDebt_days();
+	    });
+	    $('#order_debt_days').keyup(function() {
+		updateDebt_date();
+	    });
+	    
+	    $('input.number_input').number(true, 0);
 	    
       });
 </script>

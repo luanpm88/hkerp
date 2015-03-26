@@ -32,82 +32,8 @@
                             </div>
                             <div class="grid-body no-border">
 				
-				<% if @payment_record.errors.any? %>
-				    <div class="alert alert-error">
-				      <button data-dismiss="alert" class="close"></button>
-				      <div id="error_explanation">
-					<h5><%= pluralize(@payment_record.errors.count, "error") %> prohibited this payment record from being saved:</h5>
-				  
-					<ul>
-					<% @payment_record.errors.full_messages.each do |msg| %>
-					  <li><%= msg %></li>
-					<% end %>
-					</ul>
-				      </div>
-				    </div>
-				<% end %>
+				<%= render "form" %>
 				
-				
-                                <%= form_for(@payment_record) do |f| %>
-				    <%= f.hidden_field :order_id, {value: @order.id} %>
-				    
-                                    
-                                    <div class="row">
-                                      <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label"><%= f.label :amount %></label>
-                                            <span class="help">(required)</span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_field :amount, :class => "form-control price_input", value: @order.remain_amount_formated %>
-                                            </div>
-                                        </div>
-                                      </div>
-                                      <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label"><%= f.label :debt_days %></label>
-                                            <span class="help">(required)</span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_field :debt_days, :class => "form-control price_input", value: "7" %>
-                                            </div>
-                                        </div>
-					<div class="form-group">
-                                            <label class="form-label"><%= f.label :note %></label>
-                                            <span class="help">(required)</span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_area :note, :class => "form-control" %>
-                                            </div>
-                                        </div>
-					<div class="form-group">
-                                            <label class="form-label"><%= f.label :paid_person %></label>
-                                            <span class="help"></span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_field :paid_person, :class => "form-control" %>
-                                            </div>
-                                        </div>
-					<div class="form-group">
-                                            <label class="form-label"><%= f.label :paid_address %></label>
-                                            <span class="help"></span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_field :paid_address, :class => "form-control" %>
-                                            </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                      <div class="col-md-12">
-                                        <div class="text-right">
-                                            <input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
-                                        </div>
-                                      </div>
-                                    </div>
-                                      
-				<% end %>
                             </div>
                         </div>
 			
