@@ -33,6 +33,7 @@ class ManufacturersController < ApplicationController
   # POST /manufacturers.json
   def create
     @manufacturer = Manufacturer.new(manufacturer_params)
+    @manufacturer.user_id = current_user.id
 
     respond_to do |format|
       if @manufacturer.save

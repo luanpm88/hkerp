@@ -45,14 +45,109 @@
 				<% end %>
 				
 				
-                                <%= form_for(@delivery) do |f| %>
+                                
+				    
+				    
+				
+				
+				<%= form_for(@delivery) do |f| %>
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
+				    <%= f.hidden_field :is_return, {value: 1} %>
+				    
+				    <% if @order.has_return_items %>
+				    
+					    <h2>Return Items</h2>
+					    
+					    <div class="form-group">
+						<label class="form-label"><%= f.label :delivery_person %></label>
+						<span class="help">(required)</span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+							
+							<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+						</div>
+					    </div>
+					    
+					    <table class="table table-striped no-more-tables no-filter">
+						<thead>
+						    <tr>                                                
+							<th>Item</th>
+							<th class="text-center">Delivered / Quantity</th>
+							<th class="text-center">Return Quantity</th>
+							<th>Serial Numbers</th>
+							<th class="text-center">Stock</th>
+							<th class="text-center">Status</th>
+						    </tr>
+						</thead>
+						<tbody>
+						    <% @order.order_details.each do |line| %>
+							<tr>
+							    <td>
+								<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
+								<%= line.product_name %><br />
+								<%= line.product_description %>
+							    </td>
+							    
+							    <td class="text-center">
+								<%= line.delivered_count %> / <%= line.quantity %>
+							    </td>
+							    
+							    <td class="text-center">
+								<% if line.delivered_count > line.quantity %>
+								    <%= select_tag "delivery_lines[#{line.id}][quantity]", options_for_select((-line.return_count).upto(0)), class: "form-control text-center select2" %>
+								<% end %>
+							    </td>
+							    <td>
+								<% if line.delivered_count > line.quantity %>
+								    <%= text_area_tag "delivery_lines[#{line.id}][serial_numbers]" %>
+								<% end %>
+							    </td>
+							    
+							    <td class="text-center">
+								<%= line.product.stock %>
+							    </td>
+							    
+							    <td class="text-center">
+								<%= line.stock_status.html_safe %>
+							    </td>
+							</tr>
+						    <% end %>
+						    
+						    
+						    
+						</tbody>
+					    </table>
+					    <br />
+					    <br />
+					    <div class="text-right">
+						<input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
+					    </div>
+				    <% end %>
+				<% end %>
+			    
+				
+				<%= form_for(@delivery) do |f| %>
+				    <%= f.hidden_field :order_id, {value: @order.id} %>
+				    <%= f.hidden_field :is_return, {value: 0} %>
+				    
+				    <h2>Receive Items</h2>
+				    
+				    <div class="form-group">
+					<label class="form-label"><%= f.label :delivery_person %></label>
+					<span class="help">(required)</span>
+					<div class="input-with-icon  right">                                       
+						<i class=""></i>
+						
+						<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+					</div>
+				    </div>
+				    
                                     <table class="table table-striped no-more-tables no-filter">
                                         <thead>
                                             <tr>                                                
 						<th>Item</th>
 						<th class="text-center">Delivered / Quantity</th>
-                                                <th class="text-center">Deliver Items</th>
+                                                <th class="text-center">Deliver Quantity</th>
 						<th>Serial Numbers</th>
                                                 <th class="text-center">Stock</th>
                                                 <th class="text-center">Status</th>
@@ -63,7 +158,7 @@
 						<tr>
 						    <td>
 							<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
-							<%= line.product_name %>
+							<%= line.product_name %><br />
 							<%= line.product_description %>
 						    </td>
 						    
@@ -96,6 +191,7 @@
 				    
 				    <div class="text-right">
 					<input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
+					<%= link_to 'Cancel', deliveries_path, :class => "btn btn-white btn-cons" %>
 				    </div>
 				    
 				<% end %>

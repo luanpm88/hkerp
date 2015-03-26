@@ -7,11 +7,11 @@ class DeliveryDetail < ActiveRecord::Base
   before_save :fix_serial_numbers
   
   def total
-    order_detail.price * quantity
+    (order_detail.price * quantity).abs
   end
   
   def formated_total
-    number_to_currency(total, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(total)
   end
   
   def serial_numbers_extracted
@@ -30,7 +30,7 @@ class DeliveryDetail < ActiveRecord::Base
   end
   
   def check_valid_serial_numbers
-    serial_numbers_extracted.count <= quantity
+    serial_numbers_extracted.count <= quantity.abs
   end
   
   def fix_serial_numbers

@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -45,6 +45,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
+        @product.update_price(params["product_prices"])
         format.html { redirect_to products_url, notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
@@ -57,10 +58,9 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
-    p params[:product][:category_ids]
-    
     respond_to do |format|
       if @product.update(product_params)
+        @product.update_price(params["product_prices"])
         format.html { redirect_to products_url, notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
@@ -85,7 +85,12 @@ class ProductsController < ApplicationController
   def ajax_show
     authorize! :read, Product
     
-    @data = Hash[display_name: @product.display_name,product: @product, order_supplier_history: @product.order_supplier_history]
+    price = params[:purchase].present? ? @product.product_price.supplier_price : @product.product_price.price
+    
+    @data = Hash[display_name: @product.display_name,
+                 price: price,
+                 product: @product,
+                 order_supplier_history: @product.order_supplier_history]
     render :json => @data
   end
   
@@ -116,6 +121,22 @@ class ProductsController < ApplicationController
   def sales_delivery
     @orders = Order.get_sales_orders_with_delivery
   end
+  
+  def update_price
+    
+  end
+  
+  def do_update_price
+    respond_to do |format|
+      if @product.update_price(params["product_prices"])       
+        format.html { redirect_to products_url, notice: 'Product was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      else
+        format.html { render action: 'new' }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -125,6 +146,6 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty, :category_ids => [])
+      params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty, :category_ids => [], :product_prices => [:price, :supplier_price, :supplier_id])
     end
 end

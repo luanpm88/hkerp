@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include PgSearch
+  
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -86,6 +88,20 @@ class User < ActiveRecord::Base
   
   def self.current_user
     Thread.current[:current_user]
+  end
+  
+  pg_search_scope :search,
+                against: [:first_name, :last_name],                
+                using: {
+                  tsearch: {
+                    dictionary: 'english',
+                    any_word: true,
+                    prefix: true
+                  }
+                }
+  
+  def self.full_text_search(q)
+    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
   end
   
 end

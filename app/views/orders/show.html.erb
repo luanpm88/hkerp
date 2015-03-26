@@ -5,7 +5,7 @@
 
 <div class="order_histories" style="float: right">
   <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-  <%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+  <%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" if can? :print_order, @order %>
 </div>
 
 <div class="order_histories" style="float: left; max-width: 640px">
@@ -21,7 +21,7 @@
 <%= render 'show' %>
 <div class="order_histories" style="float: right;margin: 10px 0 0 0">
   <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-  <%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+  <%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" if can? :print_order, @order %>
 </div>
 <script>
   $('.show_order').fancybox({

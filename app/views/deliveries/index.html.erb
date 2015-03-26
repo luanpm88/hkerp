@@ -60,19 +60,19 @@
 						    </td>
 						    
 						    <td class="actions text-right">
-							<%= link_to 'Deliver', {action: "deliver", id: order.id}, :class => 'btn btn-small btn-primary' if order.items_delivery_remain > 0 %>
+							<%= link_to 'Deliver', {action: "deliver", order_id: order.id}, :class => 'btn btn-small btn-primary' if !order.is_delivered? %>
                                                         
                                                         
                                                         
-                                                        <% if order.deliveries.count > 0 %>
+                                                        <% if order.all_deliveries.count > 0 %>
                                                           <div class="btn-group">
                                                             <button type="button" class="btn btn-small btn-white dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                                               Deliveries <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu" role="menu">
-                                                              <% order.deliveries.order("created_at DESC").each do |delivery| %>
+                                                              <% order.all_deliveries.each do |delivery| %>
                                                                 <li>
-                                                                  <%= link_to delivery.created_at.strftime("%Y-%m-%d, %H:%M:%S"), {action: "show", id: delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
+								    <%= link_to delivery.created_at.strftime("%Y-%m-%d, %H:%M:%S"), {action: "show", id: delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
                                                                 </li>
                                                               <% end %>
                                                             </ul>

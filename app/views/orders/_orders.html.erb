@@ -9,81 +9,18 @@
                                                 <% else %>
 													<th width="25%">Supplier</th>
                                                 <% end %>
-                                                <th width="10%" style="text-align: right">Total Price</th>
-                                                <th style="text-align: center" width="10%">Count</th>                                                
+                                                <th width="10%" style="text-align: right">Total Price</th>                                             
 						<th style="text-align: center" width="9%">Salesperson</th>
+						<th style="text-align: center" width="9%">Purchase Manager</th>
 						<th style="text-align: center" width="13%">Order Date</th>
+						<th style="text-align: center" width="13%">Delivery</th>
 						<th style="text-align: center" width="13%">Status</th>
                                                 <th style="width:160px;text-align: center">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
                                           
-                                            <% @orders.each do |order| %>
-												<% if order.newer.nil? && (can? :read, order) %>
-												
-												<tr style="display: none">
-												  <td class="v-align-middle">
-																			<div class="checkbox check-default">
-																				<input id="checkbox1<%= order.id %>" type="checkbox" value="<%= order.id %>">
-																				<label for="checkbox1<%= order.id %>"></label>
-																			</div>
-												  </td>
-												  <% if params[:action] != "purchase_orders" %>
-													  <td width="25%">
-														  <%= link_to order.customer.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
-													  </td>
-												  <% else %>
-													  <td width="25%">
-															<%= link_to order.supplier.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
-													  </td>
-												  <% end %>
-												  <td align="right">
-													<%= order.formated_total_vat %>
-												  </td>
-												  <td style="text-align: center">
-													<%= order.order_details.count %>
-												  </td>
-												  <td style="text-align: center">
-													<%= order.salesperson.name %>
-												  </td>
-												  <td style="text-align: center">
-													<%= order.order_date_formatted %>
-												  </td>
-												  <td style="text-align: center">
-													<%= order.status_formatted %>
-												  </td>
-												  <td style="text-align: right;">
-												  
-													  
-													  
-												  <div class="btn-group" style="height: 26px;">
-													  <button class="btn btn-mini btn-white btn-demo-space">More</button>
-													  <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>
-													  <ul class="dropdown-menu">							      
-													  
-														<%  if can? :confirm_order, order %>
-															<li><%= link_to "Confirm", confirm_order_orders_path(:id => order.id), data: { confirm: 'Are you sure?' } %></li>
-														<% end %>
-														<%  if can? :update, order %>
-															<li><%= link_to "Edit", edit_order_path(order), title: "Edit Order" %></li>
-														<% end %>
-														<%  if can? :destroy, order %>
-															<li><%= link_to "Delete", order, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-														<% end %>
-														<%  if can? :read, order %>
-															<li><%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
-															<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
-														<% end %>
-													  
-													  
-													  </ul>
-												  </div>
-												  </td>
-												</tr>
-												
-												<% end %>                                                
-                                            <% end %>
+                                            
 					    
                                           </tbody>
                                     </table>

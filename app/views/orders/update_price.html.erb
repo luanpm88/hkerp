@@ -1,0 +1,91 @@
+      <ul class="breadcrumb">
+        <li>
+          <p>YOU ARE HERE</p>
+        </li>
+                    <li>
+			<%= link_to 'Customer Orders', orders_url, :class => "active" %>
+                    </li>
+      </ul>
+      <div class="page-title"> <i class="icon-plus-sign-alt"></i>
+        <h3>Update Price - <span class="semi-bold">Order</span></h3>
+      </div>
+      
+
+      <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Order <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                
+                
+                <div class="grid-body no-border">
+                  <%= form_for(@order, :url => url_for(:action => 'do_update_price')) do |f| %>
+                    <%= hidden_field_tag :id, @order.id %>
+                    
+                    <div class="row column-seperation">
+                           
+                            <div class="col-md-12">
+                                
+                                
+                                <table class="table table-striped no-more-tables no-filter">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Quantity</th>
+                                            <th>Current Price</th>
+					    <th>Supplier</th>
+					    <th>Supplier Price</th>
+                                            <th>New Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      
+                                        <% @order.order_details.order("product_name").each do |line| %>
+					  
+                                          <tr class="quantity-<%= line.quantity %>">
+                                            <td>					      
+					      <%= line.product_name %><br /><%= line.product_description %>
+					    </td>
+                                            <td class="text-center">
+					      <%= line.quantity %>
+					    </td>
+                                            <td class="text-right">
+					      <%= line.formated_price %>
+					    </td>
+					    <td>
+					      <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
+					      <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+					    </td>
+                                            <td><%= text_field_tag "order_details[#{line.id}][product][supplier_price]",line.product.product_price.supplier_price, {:class => "form-control price_input"} %></td>
+					    <td><%= text_field_tag "order_details[#{line.id}][product][price]",line.product.product_price.price, {:class => "form-control price_input"} %></td>
+                                          </tr>
+					  
+                                        <% end %>
+                                        
+                                    </tbody>
+                                </table>
+                                
+                                
+                            </div>
+                        
+                    </div>
+                
+                    
+                      
+                    
+                      
+                        <div class="form-actions">  
+                          <div class="pull-right">
+                              <input type="submit" class="btn btn-success btn-cons" value="Update" />
+			      <input name="confirm" type="submit" class="btn btn-info btn-cons" value="Update and Confirm" />
+                              <%= link_to 'Cancel', {action: "pricing_orders"}, :class => "btn btn-white btn-cons" %>
+                          </div>
+                        </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>		
+      </div>

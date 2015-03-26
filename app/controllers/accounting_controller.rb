@@ -1,7 +1,7 @@
 class AccountingController < ApplicationController
   
   def index
-    authorize! :read_statistics, Order
+    authorize! :read, Order
     
     if params[:order].present?
       @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
@@ -15,6 +15,16 @@ class AccountingController < ApplicationController
     end
     
     @statistics = Order.statistics(@order.order_date.year, @month_val)
+  end
+  
+  def orders
+    authorize! :read, Order
+    
+    if params[:purchase]
+      @orders = Order.get_confirmed_purchase_orders
+    else
+      @orders = Order.get_confirmed_sales_orders
+    end
   end
   
 end

@@ -7598,3 +7598,15 @@ ul.filter {
 .actions a {
     margin: 0;
 }
+.price_input {
+    text-align: right;
+    min-width: 95px;
+}
+.hidden, .quantity-0 {
+    position: absolute;
+    bottom: -9000px;
+    display: block;
+}
+.product_order_list .warranty, .product_order_list .quantity {
+    text-align: center;
+}

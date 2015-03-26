@@ -34,17 +34,17 @@
     </td>
     <td class="mid middle1" style="padding-bottom: 30px;">
       <p><label>Ngày báo giá: </label><%= @order.order_date.strftime("%d/%m/%Y") %></p>
-      <p><label>Hiệu lực BG đến: </label><%= @order.order_deadline.strftime("%d/%m/%Y") %></p>
+      <p><label>Hiệu lực đến: </label><%= @order.order_deadline.strftime("%d/%m/%Y") %></p>
       <p><label>Số: </label><%= @order.quotation_code %></p>
     </td>
   </tr>
   <tr>
-    <td class="mid middle2" width="605px" style="padding-top: 5px;border-top: solid 0px #000">
-      <p><label>Họ tên người mua hàng: </label><%= @order.buyer_name %></p>
+    <td class="mid middle2" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
+      <p><label>Người mua: </label><%= @order.buyer_name %></p>
       <p><label>Tên đơn vị: </label><%= @order.buyer_company %></p>
       <p><label>Mã số thuế: </label><%= @order.buyer_tax_code %></p>
-      <p><label>Địa chỉ (xuất hóa đơn): </label><span><%= @order.buyer_address %></span></p>
-      <p><label>Hình thức thanh toán: </label><%= @order.payment_method.name  if !@order.payment_method.nil? %></p>
+      <p><label>Địa chỉ: </label><span><%= @order.buyer_address %></span></p>
+      <p><label>Thanh toán: </label><%= @order.payment_method.name  if !@order.payment_method.nil? %></p>
     </td>
     <td class="mid middle3" style="padding-top: 5px;border-top: solid 0px #000" valign="top">
       <p style="color: #fff">.</p>
@@ -61,15 +61,15 @@
   <tr>
     <th>STT<br />No.</th>
     <th width="55%" style="max-width: 50%;">Mô tả<br />Description</th>
-    <th>Bảo hành<br />Warranty<br />(Đơn vị TG)</th>
-    <th>Số lượng<br />Quantity<br />(Đơn vị tính)</th>
+    <th>Bảo hành<br />Warranty<br />(Đơn vị)</th>
+    <th>Số lượng<br />Quantity<br />(Đơn vị)</th>
     <th>Đơn giá<br />Unit Price<br />VNĐ</th>
     <th>Tổng cộng<br />Total<br />VNĐ</th>
     
   </tr>
   <tr class="num_note">
     <td>(1)</td>
-    <td>(2)</td>
+    <td width="30%">(2)</td>
     <td>(3)</td>
     <td>(4)</td>
     <td>(5)</td>
@@ -80,7 +80,7 @@
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
         <% @count = @count + 1 %>
-          <tr>
+          <tr class="quantity-<%= order_detail.quantity %>">
             <td><%= @count %></td>
             <td style="text-align: left;">
               <%= order_detail.product_name %><br />

@@ -1,0 +1,27 @@
+<h1>Listing payment_records</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Order</th>
+      <th>Accountant</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @payment_records.each do |payment_record| %>
+      <tr>
+        <td><%= payment_record.order_id %></td>
+        <td><%= payment_record.accountant_id %></td>
+        <td><%= link_to 'Show', payment_record %></td>
+        <td><%= link_to 'Edit', edit_payment_record_path(payment_record) %></td>
+        <td><%= link_to 'Destroy', payment_record, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Payment record', new_payment_record_path %>

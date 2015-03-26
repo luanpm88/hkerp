@@ -8,7 +8,7 @@
 </div>
 
 <div class="order_histories" style="float: left; max-width: 640px">
-  <% @order.deliveries.order("created_at DESC").each do |d| %>
+  <% @order.all_deliveries.each do |d| %>
     <%
       active = d.id == @delivery.id
       t_class = params[:export_ticket].present? && active ? "success" : "white"
@@ -19,8 +19,13 @@
       <h4>
         <%= d.display_name %>
       </h4>
-      <%= link_to "Export", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class} btn-xs btn-mini fancybox.iframe show_order" %>
-      <%= link_to "Warranty", d, :class => "btn btn-#{w_class} btn-xs btn-mini fancybox.iframe show_order" %>      
+      
+      <% if d.is_return != 1 %>
+	  <%= link_to "Export", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class} btn-xs btn-mini fancybox.iframe show_order" %>
+	  <%= link_to "Warranty", d, :class => "btn btn-#{w_class} btn-xs btn-mini fancybox.iframe show_order" %>
+      <% else %>
+	  <%= link_to "Return", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class} btn-xs btn-mini fancybox.iframe show_order" %>
+      <% end %>
     </div>
 
   <% end %>

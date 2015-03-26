@@ -120,9 +120,12 @@ class OrderDetailsController < ApplicationController
   def ajax_destroy
     authorize! :destroy, @order_detail
     
-    @order_detail.destroy
+    @order_detail.update_attributes(quantity: 0)
     
-    render :nothing => true
+    respond_to do |format|
+        format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
+        format.json { head :no_content }
+    end
   end
 
   private

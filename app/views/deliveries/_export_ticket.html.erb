@@ -1,6 +1,9 @@
 <div class="wrapper page delivery-page" style="">
 
+<%
+  header_com = Contact.HK
 
+%>
 
 
 <table class="cominfo">
@@ -9,19 +12,21 @@
       <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
     </td>
     <td colspan="2">
-      <h2><%= @order.supplier.name %></h2>
+      <h2><%= header_com.name %></h2>
     </td>
   </tr>
   <tr>
-    <td>
-      <p><%= @order.supplier.address %></p>
-      <p><label style="font-weight: normal">VPGD: </label><strong><% if !@order.supplier.children.empty? %><%= @order.supplier.children.first.address %><% end %></strong></p>
-      <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
+    <td width="55%">
+      <p><%= header_com.address %></p>
+      <% if !header_com.children.empty? %>
+        <p><label style="font-weight: normal">VPGD: </label><strong><%= header_com.children.first.address %></strong></p>
+      <% end %>
+      <p><label>ĐT: </label><%= header_com.phone %> - <label>Fax: </label><%= header_com.fax %> - <label>Hotline: </label><%= header_com.hotline %></p>
     </td>
     <td class="top-left" valign="top">
-      <p><label>MST: </label><%= @order.supplier.tax_code %></p>
-      <p><label>Email: </label><%= @order.supplier.email %></p>
-      <p><label>Website: </label><%= @order.supplier.website %></p>
+      <p><label>MST: </label><%= header_com.tax_code %></p>
+      <p><label>Email: </label><%= header_com.email %></p>
+      <p><label>Website: </label><%= header_com.website %></p>
     </td>
   </tr>
 </table>
@@ -29,7 +34,9 @@
 <table class="top-info" cellspacing="0">
   <tr>
     <td class="maintitle" align="center" style="padding-bottom: 30px;">
-      <h1>PHIẾU XUẤT KHO</h1>
+      <h1>
+        <%= @delivery.ticket_title %>
+      </h1>
     </td>    
   </tr>
 </table>
@@ -49,25 +56,41 @@
     <td colspan="7"><br /></td>    
   </tr>  
   
-  <tr>
-    <td align=""><strong>Bên nhận hàng <div class="point2">:</div> </strong></td>
-    <td colspan="6"><strong><%= @order.buyer_company %></strong></td>
-  </tr>
-  <tr>
-    <td align="">Địa chỉ <div class="point2">:</div> </td>
-    <td colspan="6"><%= @order.buyer_address %></td>
-  </tr>
-  <tr>
-    <td align="">Điện thoại <div class="point2">:</div> </td>
-    <td colspan="2"><%= @order.buyer_phone %></td>    
-    <td colspan="3">Fax: <%= @order.buyer_fax %></td>
-  </tr>
+  <% if !@order.is_purchase %>
+      <tr>
+        <td align="" valign="top"><strong>Bên <%= @delivery.is_return == 1 ? "trả" : "nhận" %> hàng <div class="point2">:</div> </strong></td>
+        <td colspan="6"><strong><%= @order.buyer_company %></strong></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
+        <td colspan="6"><%= @order.buyer_address %></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
+        <td colspan="2"><%= @order.buyer_phone %></td>    
+        <td colspan="3">Fax: <%= @order.buyer_fax %></td>
+      </tr>
+  <% else %>
+      <tr>
+        <td align="" valign="top"><strong>Bên giao hàng <div class="point2">:</div> </strong></td>
+        <td colspan="6"><strong><%= @order.supplier.name %></strong></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
+        <td colspan="6"><%= @order.supplier.address %></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
+        <td colspan="2"><%= @order.supplier.phone %></td>    
+        <td colspan="3">Fax: <%= @order.supplier.fax %></td>
+      </tr>
+  <% end %>
   
 </table>
 
 <br />
 <p>
-  <strong>Khách hàng ký tên khi đã kiểm tra đủ số lượng, tình trạng hàng hóa và các điều khoản  bảo hành như sau:</strong>
+  <strong>Người nhận ký tên khi đã kiểm tra đủ số lượng, tình trạng hàng hóa và các điều khoản  bảo hành như sau:</strong>
 </p>
 
 <table class="list" cellspacing="0">
@@ -93,7 +116,7 @@
               <%= detail.order_detail.product_name %><br />
               <%= detail.order_detail.product_description %>
             </td>
-            <td><%= detail.quantity %> (<%= detail.order_detail.unit %>)</td>
+            <td><%= detail.quantity.abs %> (<%= detail.order_detail.unit %>)</td>
             <td><%= detail.order_detail.warranty %> (tháng)</td>
             <td style="text-align: right"><%= detail.order_detail.formated_price %></td>
             <td style="text-align: right"><%= detail.formated_total %></td>

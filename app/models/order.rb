@@ -10,6 +10,7 @@ class Order < ActiveRecord::Base
   belongs_to :tax
   belongs_to :payment_method
   belongs_to :salesperson, :class_name => "User"
+  belongs_to :purchase_manager, :class_name => "User"
   
   has_many :order_details, :dependent => :destroy
   
@@ -23,6 +24,9 @@ class Order < ActiveRecord::Base
   belongs_to :newer, class_name: "Order"
   has_one :older, class_name: "Order", foreign_key: "newer_id", :dependent => :destroy
   
+  has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
+  belongs_to :parent, class_name: "Order"
+  
   has_and_belongs_to_many :order_statuses
   
   belongs_to :order_status
@@ -30,6 +34,8 @@ class Order < ActiveRecord::Base
   has_many :sales_deliveries, :dependent => :destroy
   
   has_many :deliveries, :dependent => :destroy
+  
+  has_many :payment_records, :dependent => :destroy
   
   def total
     total = 0;
@@ -104,7 +110,7 @@ class Order < ActiveRecord::Base
     return new_order
   end
   
-  def order_history_lines
+  def order_history_lines_
     arr = []
     current = self
     arr << current
@@ -118,6 +124,18 @@ class Order < ActiveRecord::Base
       while !(current = current.newer).nil?
         arr.unshift(current)
       end
+    end
+    
+    return arr
+  end
+  
+  def order_history_lines
+    arr = []
+    parent = self.parent.nil? ? self : self.parent
+    arr << parent
+    
+    parent.drafts.order("created_at DESC").each do |o|
+      arr << o
     end
     
     return arr
@@ -205,7 +223,7 @@ class Order < ActiveRecord::Base
   
   def status
     if self.order_status.nil?      
-      return self.set_status('quotation')      
+      return self.set_status('new')      
     end
     
     return self.order_status
@@ -256,18 +274,27 @@ class Order < ActiveRecord::Base
     return true
   end
   
+  def confirm_items
+    if order_details.count == 0
+      return false
+    end
+    
+    self.set_status('items_confirmed')
+    return true
+  end
+  
   def self.customer_orders
     order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
-      .where(newer_id: nil)
+      .where(parent_id: nil)
   end
   
   def self.purchase_orders
     order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s)
-      .where(newer_id: nil)
+      .where(parent_id: nil)
   end
   
   def is_purchase
-    self.customer == Contact.HK
+    return self.customer == Contact.HK
   end
   
   def self.statistics(year, month=nil)
@@ -319,7 +346,7 @@ class Order < ActiveRecord::Base
     }
   end
   
-  def self.get_sales_orders_with_delivery
+  def self.get_confirmed_sales_orders
     status = OrderStatus.get("confirmed")
     
     orders = Order.customer_orders
@@ -328,13 +355,18 @@ class Order < ActiveRecord::Base
     return orders
   end
   
-  def self.get_purchase_orders_with_delivery
+  def self.get_confirmed_purchase_orders
     status = OrderStatus.get("confirmed")
     
     orders = Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
     
     return orders
+  end
+  
+  def get_outdated_orders
+    orders = Order.where(parent_id: self.id)
+                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
   end
   
   def self.datatable(params, user)
@@ -391,14 +423,18 @@ class Order < ActiveRecord::Base
       
       puts User.current_user
       
+      
+      
       row = [
               item.quotation_code,              
               link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
               '<div class="text-right">'+item.formated_total_vat+'</div>',
-              '<div class="text-center">'+item.order_details.count.to_s+'</div>',
+              #'<div class="text-center">'+item.order_details.count.to_s+'</div>',
               '<div class="text-center">'+item.salesperson.name+'</div>',
+              '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
-              '<div class="text-center">'+item.status_formatted+'</div>',
+              '<div class="text-center">'+item.delivery_status.html_safe+'</div>',
+              '<div class="text-center">'+item.display_status.html_safe+'</div>',
               ''
             ]
       data << row
@@ -432,12 +468,242 @@ class Order < ActiveRecord::Base
   end
   
   def delivery_status
-    if items_delivery_remain <= 0
-      return '<div class="blue">delivered</div>'
+    
+    if status.name != 'confirmed'
+      str = ""
+      
+      if is_out_of_stock
+        str += '<div class="red">out_of_stock</div> '
+      end
+      
+      return str
+    end 
+    
+    if is_delivered?
+      return '<div class="green">delivered</div> '
     else
-      return '<div class="orange">waiting...</div>'
+      str = ""
+      if has_return_items
+        str += '<div class="orange">returnback</div> '
+      end
+      if has_delvery_items
+        str += '<div class="orange">not_delivered</div> '
+      end
+      if is_out_of_stock
+        str += '<div class="red">out_of_stock</div> '
+      end
+      
+      return str
+    end
+  end
+  
+  def paid_amount
+    total = payment_records.sum :amount
+    
+    get_outdated_orders.each do |o|
+      total += o.payment_records.sum :amount
+    end
+    
+    return total
+  end
+  
+  def remain_amount
+    total_vat - paid_amount
+  end
+  
+  def remain_amount_formated
+    Order.format_price(remain_amount)
+  end
+  
+  def paid_amount_formated
+    Order.format_price(paid_amount)
+  end
+  
+  def is_paid
+    total_vat == paid_amount
+  end
+  
+  def paid_status
+    if paid_amount > total_vat
+      return '<div class="orange">payback</div>'
+    elsif paid_amount == total_vat
+      return '<div class="green">paid</div>'
+    elsif !debt_date.nil? && debt_date > order_date
+      return '<div class="blue">debt</div>'
+    else
+      return '<div class="orange">waiting</div>'      
+    end    
+  end
+  
+  def debt_date
+    record = payment_records.order("created_at DESC").first
+    
+    if !record.nil? && !record.debt_days.nil?
+      return order_date + record.debt_days.days
+    else
+      return order_date
     end
     
   end
   
+  def save_as_new(order_params)
+      new_params = order_params.dup
+      new_params[:order_detail_ids] = []
+      @dup_order = Order.new(new_params)
+      
+      @dup_order.create_quotation_code
+      
+      
+      @dup_order.supplier = self.supplier
+      @dup_order.customer = self.customer      
+      
+      @dup_order.save
+      
+      @dup_order.drafts << self
+      self.save
+      
+      self.drafts.each do |o|
+        @dup_order.drafts << o
+        o.save
+      end
+      
+      if !order_params[:order_detail_ids].nil?        
+        order_params[:order_detail_ids].each do |id|
+          if self.order_details.map(&:id).include?(id.to_i)
+            od = self.order_details.find_by_id(id.to_i).dup
+            od.save
+            @dup_order.order_details << od
+          else
+            @dup_order.order_details << OrderDetail.find_by_id(id.to_i)
+          end
+        end
+      end
+      
+      return @dup_order
+  end
+  
+  def is_delivered?
+    # return items_delivered == items_total    
+       
+    
+    order_details.each do |line|
+      if line.delivered_count != line.quantity
+        return false
+      end
+    end
+    
+    return true
+  end
+  
+  def has_return_items
+    order_details.each do |line|
+      if line.delivered_count > line.quantity
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  def has_delvery_items
+    order_details.each do |line|
+      if line.delivered_count < line.quantity
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  def is_out_of_stock
+    order_details.each do |line|
+      if line.is_out_of_stock
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  def all_deliveries
+    parent = self.parent.nil? ? self : self.parent
+    
+    orders = Order.select("id").where(parent_id: parent.id)
+                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
+    
+    ids = [parent.id]
+    
+    orders.each do |order|
+      ids << order.id
+    end
+    
+    deliveries = Delivery.where(order_id: ids).order("created_at DESC")
+  end
+  
+  def all_payment_records
+    parent = self.parent.nil? ? self : self.parent
+    
+    orders = Order.select("id").where(parent_id: parent.id)
+                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
+    
+    ids = [parent.id]
+    
+    orders.each do |order|
+      ids << order.id
+    end
+    
+    payment_records = PaymentRecord.where(order_id: ids).order("created_at DESC")
+  end
+  
+  def display_status
+    if self.status.nil?
+    else
+      if status.name == 'new'
+        return "<div class=\"grey\">#{status.name}</div>".html_safe
+      elsif status.name == 'confirmed'
+        return "<div class=\"green\">#{status.name}</div>".html_safe
+      elsif status.name == 'items_confirmed'
+        return "<div class=\"orange\">#{status.name}</div>".html_safe
+      elsif status.name == 'price_confirmed'
+        return "<div class=\"orange\">#{status.name}</div>".html_safe
+      else
+        return status.name
+      end
+    end
+  end
+  
+  def out_of_stock_details
+    # out of stock details
+    str = ""
+    
+    if is_out_of_stock    
+      order_details.each do |od|
+        str += '<div>'+od.product_name+'(<strong class="red">-'+od.out_of_stock_count.to_s+'</strong>) '+'</div>' if od.is_out_of_stock
+      end
+    end
+      
+    return str.html_safe
+  end
+  
+  def self.pricing_orders(user)
+    orders = Order.customer_orders
+                  .where('purchase_manager_id=? OR purchase_manager_id IS NULL', user.id)
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","items_confirmed","price_confirmed"]})
+  end
+  
+  def confirm_price
+    order_details.each do |od|
+      if od.product.product_prices.count == 0 || od.product.product_price.price != od.price
+        return false
+      end
+    end
+    
+    set_status("price_confirmed")
+    
+    return true
+  end
+  
+  def purchase_manager_name
+    purchase_manager.nil? ? "" : purchase_manager.name
+  end
 end

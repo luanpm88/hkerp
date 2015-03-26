@@ -1,4 +1,4 @@
-       <div class="row">
+     <div class="row">
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
@@ -321,7 +321,6 @@
                               Product
                             </li>
                             <li class="unit">Unit</li>
-                            <li class="supplier_price">Sup. Price</li>
                             <li class="price">Price</li>
                             <li class="quantity">Quantity</li>
                             <li class="price_total">Total</li>
@@ -339,7 +338,7 @@
                             <li class="name">
                             </li>
                             <li class="unit"></li>
-                            <li class="supplier_price"></li>
+                            <!--<li class="supplier_price"></li>-->
                             <li class="sum">Tổng cộng</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
@@ -349,7 +348,7 @@
                             <li class="name">
                             </li>
                             <li class="unit"></li>
-                            <li class="supplier_price"></li>
+                            <!--<li class="supplier_price"></li>-->
                             <li class="sum">Tổng cộng (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
@@ -366,14 +365,9 @@
                       
                         <div class="form-actions">  
                           <div class="pull-right">
-                              <% if params[:old_id].nil? && !@order.id.nil? %>
-                                   <input name="dup" type="submit" class="btn btn-success btn-cons" value="Save And Keep History" />
-                                   <input name="save" type="submit" class="btn btn-primary btn-cons" value="Just Save Changes" />
-                                   <% if @order.status.name = 'quotation' %>
-                                        <input name="confirm" type="submit" class="btn btn-info btn-cons" value="Confirm Order" />
-                                   <% end %>
-                              <% else %>
-                                   <input name="save" type="submit" class="btn btn-primary btn-cons" value="Save" />
+                              <input type="submit" class="btn btn-success btn-cons" value="Save" />
+                              <% if can? :confirm_items, @order %>
+                                   <input name="confirm_items" type="submit" class="btn btn-info btn-cons" value="Save and Confirm Items" />
                               <% end %>
                               <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
                           </div>

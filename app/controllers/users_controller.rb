@@ -9,6 +9,13 @@ class UsersController < ApplicationController
     authorize! :manage, User
     
     @users = User.all
+    
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: User.full_text_search(params[:q])
+      }
+    end
   end
 
   # GET /users/1

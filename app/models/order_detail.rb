@@ -22,23 +22,23 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def formated_total
-    number_to_currency(total, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(total)
   end
   
   def formated_price
-    number_to_currency(price, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(price)
   end
   
   def formated_supplier_price
-    number_to_currency(supplier_price, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(supplier_price)
   end
   
   def price=(new_price)
-    self[:price] = new_price.gsub(/\,/, '')
+    self[:price] = new_price.to_s.gsub(/\,/, '')
   end
   
   def supplier_price=(new_price)
-    self[:supplier_price] = new_price.gsub(/\,/, '')
+    self[:supplier_price] = new_price.to_s.gsub(/\,/, '')
   end
   
   def max_delivery
@@ -58,8 +58,7 @@ class OrderDetail < ActiveRecord::Base
     end
   end
   
-  def stock_status
-    stock = product.stock
+  def stock_status  
     
     if order.is_purchase
       if remain_count <= 0
@@ -70,22 +69,53 @@ class OrderDetail < ActiveRecord::Base
     end
     
     
-    if remain_count <= 0
-      return '<div class="blue">delivered</div>'
-    elsif stock.nil? || stock == 0
-      return '<div class="red">unavailable</div>'
-    elsif stock >= remain_count
-      return '<div class="green">available</div>'
+    if remain_count == 0
+      return '<div class="blue">delivered</div>'    
+    elsif remain_count < 0
+      return '<div class="orange">waiting for return</div>'
+    elsif is_out_of_stock
+      return '<div class="red">out_of_stock</div>'
     else
-      return '<div class="orange">not enough</div>'
+      return '<div class="green">not_delivered</div>'
     end
   end
   
+  def is_out_of_stock
+    stock = product.stock
+    
+    return (stock.nil? || stock == 0 || stock < remain_count) && !order.is_purchase
+  end
+  
   def delivered_count
-    delivery_details.sum :quantity
+    total = delivery_details.sum :quantity
+    
+    find_related_order_details.each do |od|
+      od.delivery_details.each do |dd|
+        total += dd.quantity
+      end
+    end
+    
+    return total
   end
   
   def remain_count
     quantity - delivered_count
+  end
+  
+  def find_related_order_details
+    arr = []
+    order.get_outdated_orders.each do |o|
+      arr << o.order_details.where(product_id: self.product_id).first if !o.order_details.where(product_id: self.product_id).empty?
+    end
+    
+    return arr
+  end
+  
+  def return_count
+    return delivered_count - quantity
+  end
+  
+  def out_of_stock_count
+    remain_count - product.stock
   end
 end

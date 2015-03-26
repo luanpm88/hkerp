@@ -1,16 +1,15 @@
-                                  <ul rel="<%= order_detail.id %>">
+                                  <ul class="quantity-<%= order_detail.quantity %>" rel="<%= order_detail.id %>">
                                     <li class="name">
                                       <input type="hidden" name="order[order_detail_ids][]" value="<%= order_detail.id %>" />
                                       <%= order_detail.product_name %>
                                     </li>
-                                    <li class="unit"><%= order_detail.unit %></li>
-                                    <li class="supplier_price" rel="<%= order_detail.supplier_price %>"><%= order_detail.formated_supplier_price %></li>
+                                    <li class="unit"><%= order_detail.unit %></li>                                    
                                     <li class="price" rel="<%= order_detail.price %>"><%= order_detail.formated_price %></li>
                                     <li class="quantity"><%= order_detail.quantity %></li>
                                     <li class="price_total" rel="<%= order_detail.total %>"><%= order_detail.formated_total %></li>
                                     <li class="warranty"><%= order_detail.warranty %></li>
                                     <li class="action">                                      
                                       <%= link_to '<i class="icon-paste"></i>'.html_safe, ajax_edit_order_details_path(:id => order_detail.id), :class => "btn btn-info btn-xs btn-mini edit-order-detail fancybox.ajax" %>
-                                      <%= link_to 'X', ajax_destroy_order_details_path(:id => order_detail.id), :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail", data: { confirm: 'Are you sure?' } %>
+                                      <%= link_to 'X', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
                                     </li>
                                   </ul>

@@ -1,5 +1,13 @@
 Hkerp::Application.routes.draw do
   
+  resources :product_prices
+
+  resources :payment_records do
+    collection do
+      get :download_pdf
+    end
+  end
+
   resources :delivery_details
 
   resources :deliveries do
@@ -62,7 +70,7 @@ Hkerp::Application.routes.draw do
     collection do
       get :ajax_new
       post :ajax_create
-      get :ajax_destroy
+      delete :ajax_destroy
       get :ajax_edit
       patch :ajax_update
     end
@@ -78,6 +86,14 @@ Hkerp::Application.routes.draw do
       get :confirm_order
       get :datatable
       get :pdf_preview
+      get :change
+      patch :do_change
+      get :confirm_items
+      
+      get :pricing_orders
+      get :update_price
+      patch :do_update_price
+      get :confirm_price
     end
   end
 
@@ -121,11 +137,18 @@ Hkerp::Application.routes.draw do
       post :ajax_create
       get :datatable
       get :sales_delivery
+      get :update_price
+      patch :do_update_price
     end
   end
   
-  resources :accounting
-  
+  resources :accounting do
+    collection do
+      get :orders
+      get :pay
+    end
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -56,6 +56,8 @@ Role.create(name: "user")
 Role.create(name: "attendance_manager")
 Role.create(name: "salesperson")
 Role.create(name: "accountant")
+Role.create(name: "storage_manager")
+Role.create(name: "purchase_manager")
 
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
@@ -111,5 +113,9 @@ User.all.each do |user|
         user.add_role Role.where(name: "user").first
 end
 
+OrderStatus.create(name: "new", description: "New")
+OrderStatus.create(name: "items_confirmed", description: "Items Confirmed")
+OrderStatus.create(name: "price_confirmed", description: "Price Confirmed")
 OrderStatus.create(name: "quotation", description: "Quotation")
 OrderStatus.create(name: "confirmed", description: "Order Confirmed")
+OrderStatus.create(name: "outdated", description: "Outdated")

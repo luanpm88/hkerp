@@ -43,14 +43,18 @@ class Ability
     if user.has_role? "admin"
       can :manage, :all
     else
-      can :read, Checkinout
-      can :read_attendances, User do |u|
-        u.id == user.id || user.has_role?("attendance_manager")
-      end
+      
       can :read, Contact
       can :create, Contact
       can :update, Contact do |contact|
         contact.user_id == user.id
+      end
+      can :ajax_show, Contact
+      can :ajax_new, Contact
+      can :ajax_create, Contact
+      can :ajax_list_agent, Contact
+      can :ajax_destroy, Contact do |c|
+        c.user_id == user.id && c.contact_type.name == 'Agent'
       end
       
       can :read, Product
@@ -59,7 +63,18 @@ class Ability
         product.user_id == user.id
       end
       
-      #permissions for personal attandence requests
+      can :read, Category
+      can :create, Category
+      
+      can :read, Manufacturer
+      can :create, Manufacturer
+      
+      # ATTANCENCE == permissions for personal attandence requests
+      can :read, Checkinout
+      can :read_attendances, User do |u|
+        u.id == user.id || user.has_role?("attendance_manager")
+      end
+      
       can :create, CheckinoutRequest
       can :read, CheckinoutRequest do |request|
         request.user_id == user.id
@@ -77,52 +92,111 @@ class Ability
       end
       
       if user.has_role? "salesperson"
-        can :manage, Product
-        can :manage, Manufacturer
-        can :manage, Category
-        can :manage, Contact
-        #can :manage, Order
-        
-        can :create, Order
+        can :create, Order do |order|
+          !order.is_purchase || order.id.nil?
+        end
         can :view_list, Order
         can :read, Order do |order|
-          order.salesperson_id == user.id
+          !order.is_purchase && order.salesperson_id == user.id
         end
         can :update, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'quotation'
+          !order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
         end
         can :destroy, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'quotation'
+          !order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+        end
+        can :confirm_items, Order do |order|
+          !order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
         end
         can :confirm_order, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'quotation'
-        end
-        can :confirm_order, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'quotation'
-        end
-        can :print_order, Order do |order|
+          !order.is_purchase && order.salesperson_id == user.id && order.status.name == 'price_confirmed'
+        end        
+        can :change, Order do |order|
           order.salesperson_id == user.id && order.status.name == 'confirmed'
         end
-        can :download_pdf, Order do |order|
-          order.salesperson_id == user.id
+        can :do_change, Order do |order|
+          order.salesperson_id == user.id && order.status.name == 'confirmed'
         end
         
-        can :purchase_orders, Order do |order|
-          order.salesperson_id == user.id
-        end
+        #can :print_order, Order do |order|
+        #  order.salesperson_id == user.id && order.status.name == 'confirmed'
+        #end
+        #can :download_pdf, Order do |order|
+        #  order.salesperson_id == user.id
+        #end        
+        #can :purchase_orders, Order do |order|
+        #  order.salesperson_id == user.id
+        #end
        
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id
         end
         can :update, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'quotation')
+          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
         end
-        can :destroy, OrderDetail
+        can :destroy, OrderDetail do |order_detail|
+          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
+        end        
+      end
+      
+      if user.has_role? "purchase_manager"        
+        can :show, Order
+        can :pricing_orders, Order do |order|
+          !order.is_purchase && order.status.name == 'items_confirmed'
+        end
+        can :update_price, Order do |order|
+          !order.is_purchase && order.status.name == 'items_confirmed'
+        end
+        can :do_update_price, Order do |order|
+          !order.is_purchase && order.status.name == 'items_confirmed'
+        end
+        
+        can :update_price, Product
+        can :do_update_price, Product
+        can :confirm_price, Order
+        
+        can :purchase_orders, Order do |order|
+          order.salesperson_id == user.id
+        end
+        can :view_list, Order
+        can :create, Order do |order|
+          order.is_purchase || order.id.nil?
+        end
+        can :confirm_order, Order do |order|
+          order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+        end
+        can :update, Order do |order|
+          order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+        end
+        
+        can :create, OrderDetail
+        can :read, OrderDetail do |order_detail|
+          order_detail.order.salesperson_id == user.id
+        end
+        can :update, OrderDetail do |order_detail|
+          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
+        end
+        can :destroy, OrderDetail do |order_detail|
+          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
+        end   
       end
       
       if user.has_role? "accountant"
-        can :read_statistics, Order
+        can :read, Order
+        can :print_order, Order
+        can :download_pdf, Order
+        
+        can :create, PaymentRecord
+        can :read, PaymentRecord do |item|
+          item.accountant.id == user.id
+        end        
+      end
+      
+      if user.has_role? "storage_manager"
+        can :create, Delivery
+        can :read, Delivery
+        can :deliver, Delivery
       end
 
     end

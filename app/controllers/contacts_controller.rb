@@ -1,4 +1,5 @@
 class ContactsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent]
 
   # GET /contacts
@@ -31,7 +32,7 @@ class ContactsController < ApplicationController
   # POST /contacts.json
   def create
     @contact = Contact.new(contact_params)
-    @contact.user = current_user
+    @contact.user_id = current_user.id
 
     respond_to do |format|
       if @contact.save       
@@ -93,6 +94,7 @@ class ContactsController < ApplicationController
   
   def ajax_create
     @contact = Contact.new(contact_params)
+    @contact.user_id = current_user.id
 
     respond_to do |format|
       if @contact.save

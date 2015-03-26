@@ -95,6 +95,8 @@ class CheckinoutsController < ApplicationController
   end
   
   def import
+    authorize! :import, Checkinout
+    
     if !params[:file].nil?
       @result = Checkinout.import(params[:file])
       respond_to do |format|

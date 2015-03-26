@@ -1,0 +1,129 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>Delivery</li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>Storage - <span class="semi-bold"> <%= params[:purchase] ? "Purchase" : "Sales" %> Orders</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">			
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Orders</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables no-filter">
+                                        <thead>
+                                            <tr>
+                                                <th>Order</th>
+						<th>
+                                                  <%= params[:purchase] ? "Supplier" : "Customer" %>
+                                                </th>
+						<th class="text-center">Paid</th>
+                                                <th class="text-center">Date</th>
+						<th class="text-center">Delivery</th>
+                                                <th class="text-center">Status</th>
+						<th class="text-center">Debt Date</th>
+                                                <th class="text-right">Action</th>   
+                                            </tr>
+                                        </thead>
+					<tbody>
+					    <% @orders.each do |order| %>
+						<tr>
+                                                    <td>
+							<%= order.quotation_code %>
+						    </td>
+						    
+							<% if !params[:purchase] %>
+								<td>
+									<%= link_to order.customer.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+								</td>
+							<% else %>
+								<td>
+									      <%= link_to order.supplier.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+								</td>
+							<% end %>
+							
+						    
+						    
+						    <td class="text-center">
+						      <%= order.paid_amount_formated %>/<%= order.formated_total_vat %>
+						    </td>
+						    
+						    <td class="text-center">
+							<%= order.order_date.strftime("%Y-%m-%d") %>
+						    </td>
+						    
+						    <td class="text-center">
+							<%= order.delivery_status.html_safe %>
+						    </td>
+						    
+						    <td class="text-center">
+						      <%= order.paid_status.html_safe %>
+						      
+						    </td>
+						    
+						    <td class="text-center">
+							<%= order.debt_date.strftime("%Y-%m-%d") if !order.debt_date.nil? && !order.is_paid %>
+						    </td>
+						    
+						    <td class="actions text-right">
+							<%= link_to 'Pay Order', {controller: "payment_records", action: "new", id: order.id}, :class => 'btn btn-small btn-primary' if !order.is_paid %>
+                                                        
+							<% if order.payment_records.count > 0 %>
+							    <div class="btn-group">
+								<button type="button" class="btn btn-small btn-white dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+								  Recepts <span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+								  <% order.all_payment_records.each do |recept| %>
+								    <li>
+									<%= link_to recept.created_at.strftime("%Y-%m-%d, %H:%M:%S"), recept, :class => 'fancybox.iframe ajax_iframe' %>
+								    </li>
+								  <% end %>
+								</ul>
+							    </div>
+                                                        <% end %>
+							
+							<div class="btn-group" style="height: 26px;">
+								<button class="btn btn-mini btn-white btn-demo-space">Print</button>
+								<button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown"> <span class="caret"></span> </button>
+								<ul class="dropdown-menu">							      
+								
+								      
+								     
+								      <%  if can? :read, order %>
+										
+										
+										<li><%= link_to 'Print Order (PDF)', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
+										<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
+								      <% end %>
+								
+								
+								</ul>
+							</div>
+							
+							
+						    </td>
+						</tr>
+					    <% end %>
+					</tbody>
+                                    </table>
+                            </div>
+                        </div>
+			
+                    </div>
+		    
+                </div>

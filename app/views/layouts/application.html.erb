@@ -108,7 +108,7 @@
 	//Seperates the components of the number
 	//var n= yourNumber.toString().split(".");
 	//Comma-fies the first part
-	yourNumber = yourNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+	yourNumber = yourNumber.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	//Combines the two sections
 	return yourNumber
     }
@@ -120,11 +120,11 @@
 	    sum = sum + parseFloat($(this).attr("rel"));
 	});
 	
-	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(0));
-	sum = ReplaceNumberWithDots(sum.toFixed(0));
+	sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(2));
+	sum = ReplaceNumberWithDots(sum.toFixed(2));
 	$('.product_order_list .footer.line1 .price_total').html(sum);
 	$('.product_order_list .footer.line2 .price_total').html(sumvat);
-	//alert($('select.tax-select option:selected').attr("rel"));
+	//alert($('select.tax-select option:selected').attr(sumvat));
 	//update tax name
 	$('.order_tax_name').html($('select.tax-select option:selected').html());
     }
@@ -339,7 +339,7 @@
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
 			    //format typping price
-			      $('input.price_input').number( true, 0 );
+			      $('input.price_input').number( true, 2 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -380,15 +380,15 @@
 			{
 			  $.fancybox.close();
 			  
-			  var success_box = $('<div/>').html(data).find("#ajax-success-result");
-			  var saved_id = success_box.find("ul").attr("rel");
-			  if ($('#product-line-items ul[rel="'+current_line_item_id+'"]').length) {
-			    $('#product-line-items ul[rel="'+current_line_item_id+'"]').replaceWith(success_box.html());
-			  }
-			  else
-			  {
-			    $('#product-line-items').append(success_box.html());
-			  }
+			    var success_box = $('<div/>').html(data).find("#ajax-success-result");
+			    var saved_id = success_box.find("ul").attr("rel");
+			    if ($('#product-line-items ul[rel="'+current_line_item_id+'"]').length) {
+				$('#product-line-items ul[rel="'+current_line_item_id+'"]').replaceWith(success_box.html());
+			    }
+			    else
+			    {
+				$('#product-line-items').append(success_box.html());
+			    }
 			}
 			else
 			{
@@ -431,7 +431,7 @@
 		if (product_id != "") {
 		    $.ajax(
 		    {
-			url : '<%= ajax_show_products_path %>',
+			url : '<%= ajax_show_products_path(:purchase => params[:purchase]) %>',
 			type: "GET",
 			data: "id="+product_id,
 			success:function(respone, textStatus, jqXHR)
@@ -444,7 +444,7 @@
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html(data.description);
 			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
-			    $('.ajax_outer input[name="order_detail[price]"]').val(data.price);
+			    $('.ajax_outer input[name="order_detail[price]"]').val(respone.price);
 			    $('.ajax_outer input[name="order_detail[quantity]"]').val(data.quantity);
 			    $('.ajax_outer input[name="order_detail[warranty]"]').val(data.warranty);
 
@@ -471,24 +471,20 @@
 	    //Delete agent in contact form
 	    $('#product-line-items .delete_product_order_detail').live("click", function(e) {
 		e.preventDefault(); //STOP default action
-    
-		var del_url = $(this).attr("href");
-		var box = $(this).parents("ul");
-		
+		var box = $(this).parents("ul[rel="+$(this).attr("rel")+"]");
+		var url = $(this).attr("href");		
 		$.ajax(
 		{
-		    url : del_url,
-		    type: "GET",
-		    success:function(data, textStatus, jqXHR)
+		    url : url,
+		    type: "DELETE",
+		    success:function(respone, textStatus, jqXHR)
 		    {
-			    box.remove();
-			    updateOrderPrices();
-		    },
-		    error: function(jqXHR, textStatus, errorThrown)
-		    {
-			    alert("error");
+			var success_box = $('<div/>').html(respone).find("#ajax-success-result");
+			box.replaceWith(success_box.html());
+			box.addClass("hidden");
+			updateOrderPrices();
 		    }
-		});	    
+		});
 	    });	    
 	    
 	    
@@ -505,7 +501,7 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
-			    $('input.price_input').number( true, 0 );
+			    $('input.price_input').number( true, 2 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -535,7 +531,7 @@
 	    });
 	    
 	    //format typping price
-	    $('input.price_input').number( true, 0 );
+	    $('input.price_input').number( true, 2 );
 	    
 	    //show order
 	    //action for add agent button
@@ -704,7 +700,7 @@
 			    $('.ajax_outer input[name="supplier_order_detail[product_name]"]').val(respone.display_name);
 			    $('.ajax_outer textarea[name="supplier_order_detail[product_description]"]').html(data.description);
 			    $('.ajax_outer input[name="supplier_order_detail[unit]"]').val(data.unit);
-			    $('.ajax_outer input[name="supplier_order_detail[price]"]').val(data.price);
+			    $('.ajax_outer input[name="supplier_order_detail[price]"]').val(respone.price);
 			    $('.ajax_outer input[name="supplier_order_detail[quantity]"]').val(data.quantity);
 			    $('.ajax_outer input[name="supplier_order_detail[warranty]"]').val(data.warranty);
 
@@ -844,6 +840,22 @@
 		$('#accounting-statistics-filters-form').submit();
 	    });
 	    
+	    $('.select2-ajax-users').select2({
+		placeholder: "Search for a user",
+		minimumInputLength: 1,
+		ajax: {
+		  url: $('.select2-ajax-users').attr("url"),
+		  dataType: 'json',
+		  data: function (term, page) { // page is the one-based page number tracked by Select2
+		    return {
+		      q: term, //search term
+		    };
+		  },
+		  results: function (data, page) {
+		    return {results: data};
+		  }
+		},
+	    });
 	    
       });
 </script>
@@ -1063,7 +1075,7 @@
    <!-- BEGIN SIDEBAR MENU -->	
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
-	<% if can? :read, Order %>
+	<% if current_user.has_role? "accountant" %>
 	    <li class="start<% if ["accounting"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-list-alt"></i>
@@ -1071,12 +1083,15 @@
 		  <span class="arrow<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && params[:action] != "purchase_orders" %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">
-		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', {controller: "accounting"} %></li>	      
+		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', {controller: "accounting"} %></li>
+		  
+		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>><%= link_to 'Sales Orders', {controller: "accounting", action: "orders"} %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>><%= link_to 'Purchase Orders', {controller: "accounting", action: "orders", purchase: true} %></li>
 		</ul>
 	    </li>
 	<% end %>
 	
-	<% if can? :read, Order %>
+	<% if current_user.has_role? "salesperson" %>
 	    <li class="start<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && ["index"].include?(params[:action]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-signout"></i>
@@ -1089,20 +1104,25 @@
 	    </li>
 	<% end %>
 	
-	<% if can? :read, Order %>
-	    <li class="start<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> active open<% end %>">
+	<% if current_user.has_role? "purchase_manager" %>
+	    <li class="start<% if params[:purchase] == "1" || ["purchase_orders","pricing_orders"].include?(params[:action]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-reorder"></i>
 		  <span class="title" onclick="">Purchase</span>
 		  <span class="arrow<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> open<% end %>"></span>
 		<% end %>
-		<ul class="sub-menu">	      
-		  <li<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Orders', purchase_orders_orders_path %></li>
+		<ul class="sub-menu">
+		    
+		    <li<% if ["pricing_orders"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Pricing Orders', {controller: "orders", action: "pricing_orders"} %>
+		    </li>
+		    
+		    <li<% if params[:purchase] == "1" || ["purchase_orders"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Orders', purchase_orders_orders_path %></li>
 		</ul>
 	    </li>
 	<% end %>
 	
-	<% if can? :read, Product %>
+	<% if current_user.has_role?("storage_manager") || current_user.has_role?("salesperson") || current_user.has_role?("purchase_manager") %>
 	    <li class="start<% if ["products", "categories", "manufacturers", "deliveries"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
 		  <i class="icon-archive"></i>
@@ -1110,13 +1130,15 @@
 		  <span class="arrow<% if ["products", "categories", "manufacturers"].include?(params[:controller]) %> open<% end %>"></span>
 		<% end %>
 		<ul class="sub-menu">
-		    <li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
-			<%= link_to 'Sales Delivery', deliveries_url %>
-		    </li>
 		    
-		    <li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
-			<%= link_to 'Purchase Delivery', deliveries_url(purchase: true) %>
-		    </li>
+		    <% if current_user.has_role?("storage_manager") %>
+			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
+			    <%= link_to 'Sales Delivery', deliveries_url %>
+			</li>		    
+			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
+			    <%= link_to 'Purchase Delivery', deliveries_url(purchase: true) %>
+			</li>
+		    <% end %>
 		    
 		    <li<% if ["products"].include?(params[:controller]) %> class="active"<% end %>><%= link_to 'Product list', products_url %></li>
 		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
@@ -1153,9 +1175,11 @@
 		  <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
 		      <%= link_to 'Attendance Requests', checkinout_requests_url %>
 		  </li>
-		  <li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
-		      <%= link_to 'Import', import_checkinouts_url %>
-		  </li>
+		    <% if can? :import, Checkinout %>
+			<li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
+			    <%= link_to 'Import', import_checkinouts_url %>
+			</li>
+		    <% end %>
 	      </ul>
 	    </li>
 	<% end %>

@@ -1,0 +1,117 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>Delivery</li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>Accounting - <span class="semi-bold"> <%= @order.is_purchase ? "Purchase" : "Sales" %> Orders</span></h3>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">			
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Order:  <span class="semi-bold"><%= @order.quotation_code %></span></h4>
+				<h4><%= @order.is_purchase ? "Supplier" : "Customer" %>:
+				    <span class="semi-bold">
+					<%= @order.is_purchase ? @order.supplier.name : @order.customer.name %>
+				    </span>
+				</h4>
+                                <h4>Total(+VAT):  <span class="semi-bold"><%= @order.formated_total_vat %></span></h4>
+                                <h4>Paid:  <span class="semi-bold"><%= @order.paid_amount_formated %></span></h4>
+                                <h4>Remain:  <span class="semi-bold"><%= @order.remain_amount_formated %></span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+				
+				<% if @payment_record.errors.any? %>
+				    <div class="alert alert-error">
+				      <button data-dismiss="alert" class="close"></button>
+				      <div id="error_explanation">
+					<h5><%= pluralize(@payment_record.errors.count, "error") %> prohibited this payment record from being saved:</h5>
+				  
+					<ul>
+					<% @payment_record.errors.full_messages.each do |msg| %>
+					  <li><%= msg %></li>
+					<% end %>
+					</ul>
+				      </div>
+				    </div>
+				<% end %>
+				
+				
+                                <%= form_for(@payment_record) do |f| %>
+				    <%= f.hidden_field :order_id, {value: @order.id} %>
+				    
+                                    
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :amount %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :amount, :class => "form-control price_input", value: @order.remain_amount_formated %>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :debt_days %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :debt_days, :class => "form-control price_input", value: "7" %>
+                                            </div>
+                                        </div>
+					<div class="form-group">
+                                            <label class="form-label"><%= f.label :note %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_area :note, :class => "form-control" %>
+                                            </div>
+                                        </div>
+					<div class="form-group">
+                                            <label class="form-label"><%= f.label :paid_person %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :paid_person, :class => "form-control" %>
+                                            </div>
+                                        </div>
+					<div class="form-group">
+                                            <label class="form-label"><%= f.label :paid_address %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :paid_address, :class => "form-control" %>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="text-right">
+                                            <input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                      
+				<% end %>
+                            </div>
+                        </div>
+			
+                    </div>
+		    
+                </div>
+                

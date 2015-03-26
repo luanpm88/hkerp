@@ -1,13 +1,14 @@
 class DeliveriesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_delivery, only: [:show, :edit, :update, :destroy, :download_pdf]
 
   # GET /deliveries
   # GET /deliveries.json
   def index
     if params[:purchase]
-      @orders = Order.get_purchase_orders_with_delivery
+      @orders = Order.get_confirmed_purchase_orders
     else
-      @orders = Order.get_sales_orders_with_delivery
+      @orders = Order.get_confirmed_sales_orders
     end
     
     
@@ -16,7 +17,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1
   # GET /deliveries/1.json
   def deliver
-    @order = Order.find(params[:id])
+    @order = Order.find(params[:order_id])
     @delivery = Delivery.new
   end
 
@@ -62,16 +63,23 @@ class DeliveriesController < ApplicationController
   def create
     @order = Order.find(delivery_params[:order_id])
     @delivery = Delivery.new(delivery_params)
+    @delivery.creator = current_user
     
     # Update sales delivery details
     if !params[:delivery_lines].nil?
       params[:delivery_lines].each do |item|
-        if item[1][:quantity].to_i > 0
+        if item[1][:quantity].to_i != 0
           detail = DeliveryDetail.new(item[1])
           @delivery.delivery_details << detail
         end
       end
     end
+    
+    #p @delivery.valid?
+    #p @delivery.save
+    
+    #render nothing: true
+    
     
     list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
     
@@ -119,6 +127,6 @@ class DeliveriesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def delivery_params
-      params.require(:delivery).permit(:order_id, :user_id)
+      params.require(:delivery).permit(:is_return, :delivery_person_id, :order_id, :user_id)
     end
 end

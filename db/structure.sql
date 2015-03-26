@@ -104,7 +104,8 @@ CREATE TABLE categories (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     tmpcat integer,
-    level integer
+    level integer,
+    user_id integer
 );
 
 
@@ -295,7 +296,10 @@ CREATE TABLE deliveries (
     order_id integer,
     user_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    creator_id integer,
+    delivery_person_id integer,
+    is_return integer DEFAULT 0
 );
 
 
@@ -362,7 +366,8 @@ CREATE TABLE manufacturers (
     description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    tmpmenu integer
+    tmpmenu integer,
+    user_id integer
 );
 
 
@@ -560,7 +565,9 @@ CREATE TABLE orders (
     older_id integer,
     watermark text,
     order_status_id integer,
-    newer_id integer
+    newer_id integer,
+    parent_id integer,
+    purchase_manager_id integer
 );
 
 
@@ -672,6 +679,77 @@ CREATE SEQUENCE payment_methods_id_seq
 --
 
 ALTER SEQUENCE payment_methods_id_seq OWNED BY payment_methods.id;
+
+
+--
+-- Name: payment_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE payment_records (
+    id integer NOT NULL,
+    order_id integer,
+    accountant_id integer,
+    amount numeric,
+    debt_days integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    note text,
+    paid_person text,
+    paid_address text
+);
+
+
+--
+-- Name: payment_records_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE payment_records_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payment_records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE payment_records_id_seq OWNED BY payment_records.id;
+
+
+--
+-- Name: product_prices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE product_prices (
+    id integer NOT NULL,
+    product_id integer,
+    price numeric,
+    supplier_price numeric,
+    supplier_id integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: product_prices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE product_prices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: product_prices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE product_prices_id_seq OWNED BY product_prices.id;
 
 
 --
@@ -1310,6 +1388,20 @@ ALTER TABLE ONLY payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_me
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY payment_records ALTER COLUMN id SET DEFAULT nextval('payment_records_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY product_prices ALTER COLUMN id SET DEFAULT nextval('product_prices_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
 
 
@@ -1532,6 +1624,22 @@ ALTER TABLE ONLY parent_contacts
 
 ALTER TABLE ONLY payment_methods
     ADD CONSTRAINT payment_methods_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: payment_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY payment_records
+    ADD CONSTRAINT payment_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY product_prices
+    ADD CONSTRAINT product_prices_pkey PRIMARY KEY (id);
 
 
 --
@@ -1842,4 +1950,28 @@ INSERT INTO schema_migrations (version) VALUES ('20150316094602');
 INSERT INTO schema_migrations (version) VALUES ('20150317071952');
 
 INSERT INTO schema_migrations (version) VALUES ('20150317083912');
+
+INSERT INTO schema_migrations (version) VALUES ('20150318061926');
+
+INSERT INTO schema_migrations (version) VALUES ('20150318063306');
+
+INSERT INTO schema_migrations (version) VALUES ('20150318072611');
+
+INSERT INTO schema_migrations (version) VALUES ('20150320040238');
+
+INSERT INTO schema_migrations (version) VALUES ('20150320040805');
+
+INSERT INTO schema_migrations (version) VALUES ('20150320040824');
+
+INSERT INTO schema_migrations (version) VALUES ('20150320092026');
+
+INSERT INTO schema_migrations (version) VALUES ('20150323064242');
+
+INSERT INTO schema_migrations (version) VALUES ('20150324063209');
+
+INSERT INTO schema_migrations (version) VALUES ('20150324063654');
+
+INSERT INTO schema_migrations (version) VALUES ('20150324094732');
+
+INSERT INTO schema_migrations (version) VALUES ('20150325074310');
 

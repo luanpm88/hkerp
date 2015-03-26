@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -51,7 +51,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.save
-        @order.set_status('quotation')
+        @order.set_status('new')
         if !@order.is_purchase
           format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
@@ -70,61 +70,49 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1.json
   def update
     
-    if !params[:dup].nil?
-      new_params = order_params
-      new_params[:order_detail_ids] = []
-      @dup_order = Order.new(new_params)
+    #if !params[:dup].nil?
+      
+      # duplicate order to save
+      @dup_order = @order.save_as_new(order_params)
       @dup_order.salesperson = current_user
-      @dup_order.create_quotation_code
-      
-      @dup_order.older = @order
-      
-      if !params[:order][:order_detail_ids].nil?        
-        params[:order][:order_detail_ids].each do |id|
-          if @order.order_details.map(&:id).include?(id.to_i)
-            od = @order.order_details.find_by_id(id.to_i).dup
-            od.save
-            @dup_order.order_details << od
-          else
-            @dup_order.order_details << OrderDetail.find_by_id(id.to_i)
-          end
-        end
-      end
+      @dup_order.save
         
       respond_to do |format|
         if @dup_order.save
-          @dup_order.set_status('quotation')
-          if !@order.is_purchase
-            format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-            format.json { render action: 'show', status: :created, location: @order }
+          @dup_order.set_status('new')
+          if !params[:confirm_items].nil?
+            format.html { redirect_to confirm_items_orders_url(id: @dup_order.id) }
+            format.json { head :no_content }
           else
-            format.html { redirect_to purchase_orders_orders_path, notice: 'Order was successfully updated.' }
+            list_path = @dup_order.is_purchase ? purchase_orders_orders_path : orders_path
+            format.html { redirect_to list_path, notice: 'Order was successfully updated.' }
             format.json { render action: 'show', status: :created, location: @order }
-          end
+          end          
         else
           @order = @dup_order
           format.html { render action: 'edit' }
           format.json { render json: @order.errors, status: :unprocessable_entity }
         end
       end
-    else
-      respond_to do |format|
-        if @order.update(order_params)
-          if !params[:confirm].nil?
-            format.html { redirect_to confirm_order_orders_url(id: @order.id) }
-            format.json { head :no_content }
-          else
-            format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-            format.json { head :no_content }
-          end          
-        else
-          format.html { render action: 'edit' }
-          format.json { render json: @order.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-    
-    
+      
+      
+    #else
+    #  respond_to do |format|
+    #    if @order.update(order_params)
+    #      if !params[:confirm].nil?
+    #        format.html { redirect_to confirm_order_orders_url(id: @order.id) }
+    #        format.json { head :no_content }
+    #      else
+    #        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+    #        format.json { head :no_content }
+    #      end          
+    #    else
+    #      format.html { render action: 'edit' }
+    #      format.json { render json: @order.errors, status: :unprocessable_entity }
+    #    end
+    #  end
+    #end
+
   end
 
   # DELETE /orders/1
@@ -140,7 +128,7 @@ class OrdersController < ApplicationController
   def download_pdf
     @hk = @order.supplier
     
-    render  :pdf => "quotation_"+@order.quotation_code,
+    render  :pdf => "order_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
             :layout => nil,
             :footer => {
@@ -193,7 +181,33 @@ class OrdersController < ApplicationController
         format.html { redirect_to list_path, notice: 'Order was successfully confimed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to list_path, alert: 'Order was unsuccessfully confimed. Check the order again.' }
+        format.html { redirect_to edit_order_path(@order), alert: 'Order was unsuccessfully confimed. Check the order again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def confirm_items
+    list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
+    
+    respond_to do |format|
+      if @order.confirm_items  
+        format.html { redirect_to list_path, notice: 'Order Items was successfully confimed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to edit_order_path(@order), alert: 'Order Items was unsuccessfully confimed. Check the order again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def confirm_price    
+    respond_to do |format|
+      if @order.confirm_price
+        format.html { redirect_to pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to update_price_orders_url(id: @order.id), alert: 'Order Price was unsuccessfully confimed. Check the prices again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -208,12 +222,22 @@ class OrdersController < ApplicationController
       
       
       actions = '<div class="text-right"><div class="btn-group" style="height: 26px;">
-                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">More <span class="caret"></span></button>'
+                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
       
+      if can? :confirm_items, item
+        actions += '<li>'+view_context.link_to("Confirm Items", confirm_items_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
+      end
       if can? :confirm_order, item
-        actions += '<li>'+view_context.link_to("Confirm", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
-      end      
+        actions += '<li>'+view_context.link_to("Confirm Order", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
+      end
+      if can? :change, item
+        actions += '<li>'+view_context.link_to("Change", change_orders_path(:id => item.id))+'</li>'
+      end
+      actions += '<li class="divider"></li>'
+      if can? :show, item
+        actions += '<li>'+view_context.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
+      end
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_order_path(item), title: "Edit Order")+'</li>'
       end      
@@ -226,13 +250,58 @@ class OrdersController < ApplicationController
       if can? :print_order, item       
         actions += '<li>'+view_context.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end
+     
       
       actions += '</ul></div></div>'
       
-      result[:result]["data"][index][7] = actions
+      result[:result]["data"][index][8] = actions
     end
     
     render json: result[:result]
+  end
+  
+  def change    
+  end
+  
+  def do_change
+    # duplicate order to save
+    @dup_order = @order.save_as_new(order_params)
+    @dup_order.salesperson = current_user
+    @dup_order.save
+    
+    @dup_order.set_status('items_confirmed')
+    @order.set_status("outdated")
+      
+    respond_to do |format|
+      format.html { redirect_to orders_path, notice: 'Order was successfully changed.' }
+      format.json { render action: 'show', status: :created, location: @order }          
+    end
+      
+  end
+  
+  def pricing_orders
+    @orders = Order.pricing_orders(current_user)
+  end
+  
+  def update_price
+  end
+  
+  def do_update_price
+    @order.update_attributes(purchase_manager_id: current_user.id)    
+    
+    params[:order_details].each do |line|
+      od = @order.order_details.find(line[0])
+      od.product.update_price(line[1][:product])
+      od.update_attributes(price: od.product.product_price.price)
+    end
+    
+    respond_to do |format|
+      if !params[:confirm].nil?
+        format.html { redirect_to confirm_price_orders_url(id: @order.id) }
+      end
+      format.html { redirect_to pricing_orders_orders_url, notice: 'The prices was successfully updated.' }
+      format.json { render action: 'show', status: :created, location: @order }          
+    end
   end
 
   private
@@ -244,6 +313,10 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
+      if params[:order][:order_detail_ids].nil?
+        params[:order][:order_detail_ids] = []
+      end
+      
       params.require(:order).permit(:customer_id, :supplier_id, :agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id, :order_date,
                                     :order_deadline,
                                     :deposit,

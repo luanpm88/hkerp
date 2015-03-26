@@ -1,7 +1,10 @@
 <div class="wrapper page delivery-page" style="">
 
 
+<%
+  header_com = Contact.HK
 
+%>
 
 <table class="cominfo">
   <tr>
@@ -13,9 +16,11 @@
     </td>
   </tr>
   <tr>
-    <td>
+    <td width="55%">
       <p><%= @order.supplier.address %></p>
-      <p><label style="font-weight: normal">VPGD: </label><strong><% if !@order.supplier.children.empty? %><%= @order.supplier.children.first.address %><% end %></strong></p>
+      <% if !@order.supplier.children.empty? %>
+        <p><label style="font-weight: normal">VPGD: </label><strong><%= @order.supplier.children.first.address %></strong></p>
+      <% end %>
       <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
     </td>
     <td class="top-left" valign="top">
@@ -58,31 +63,31 @@
     <td colspan="7"><br /></td>    
   </tr>  
   <tr>
-    <td align=""><strong>Bên giao hàng <div class="point2">:</div> </strong></td>
+    <td align="" valign="top"><strong>Bên giao hàng <div class="point2">:</div> </strong></td>
     <td colspan="6"><strong><%= @order.supplier.name %></strong></td>
   </tr>
   <tr>
-    <td align="">Địa chỉ <div class="point2">:</div> </td>
+    <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
     <td colspan="6"><%= @order.supplier.address %></td>
   </tr>
   <tr>
-    <td align="">Điện thoại <div class="point2">:</div> </td>
+    <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
     <td colspan="2"><%= @order.supplier.phone %></td>    
     <td colspan="3">Fax: <%= @order.supplier.fax %></td>
   </tr>
   <tr>
-    <td colspan="7"><br /></td>    
+    <td colspan="7" valign="top"><br /></td>    
   </tr>  
   <tr>
-    <td align=""><strong>Bên nhận hàng <div class="point2">:</div> </strong></td>
+    <td align="" valign="top"><strong>Bên nhận hàng <div class="point2">:</div> </strong></td>
     <td colspan="6"><strong><%= @order.buyer_company %></strong></td>
   </tr>
   <tr>
-    <td align="">Địa chỉ <div class="point2">:</div> </td>
+    <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
     <td colspan="6"><%= @order.buyer_address %></td>
   </tr>
   <tr>
-    <td align="">Điện thoại <div class="point2">:</div> </td>
+    <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
     <td colspan="2"><%= @order.buyer_phone %></td>    
     <td colspan="3">Fax: <%= @order.buyer_fax %></td>
   </tr>

@@ -16,13 +16,18 @@ class Product < ActiveRecord::Base
   
   has_many :order_details
   
+  has_many :product_prices, :dependent => :destroy  
+  
   before_save :fix_serial_numbers
   
   def order_supplier_history
-    @list = order_details.where("order_id IS NOT NULL").order("created_at DESC").limit(10)
+    @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
+                        .where(orders: {customer_id: Contact.HK.id})
+                        .where(product_id: id)
+                        .order("created_at DESC").limit(10)
     @html = "<ul>"
     @list.each do |item|
-      @html += "<li>"+item.supplier.name+": <br />Price: <strong>"+item.formated_supplier_price+" VND</strong></li>";
+      @html += "<li>"+item.order.supplier.name+": <br />Price: <strong>"+item.formated_price+" VND</strong></li>";
     end
     @html += "</ul>";
     
@@ -30,11 +35,11 @@ class Product < ActiveRecord::Base
   end
   
   def formated_price
-    number_to_currency(price, precision: 0, unit: '', delimiter: ".")
+    Order.format_price(price)
   end
   
   def price=(new_price)
-    self[:price] = new_price.gsub(/\,/, '')
+    self[:price] = new_price.to_s.gsub(/[\,]/, '')
   end
   
   def display_name
@@ -77,6 +82,8 @@ class Product < ActiveRecord::Base
   end
   
   def self.datatable(params)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
     
     if !params["order"].nil?
       case params["order"]["0"]["column"]
@@ -105,12 +112,17 @@ class Product < ActiveRecord::Base
     @products = @products.limit(params[:length]).offset(params["start"])
     data = []
     @products.each do |product|
+      
+      edit_link = '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini">Edit</a> '
+      update_price_link = link_helper.link_to('Price', {controller: "products", action: "update_price", id: product.id}, class: "btn btn-info btn-xs btn-mini")
+      
       item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
               product.categories.first.name,
               product.manufacturer.name,
               product.name,
               product.formated_price,
-              '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini"><i class="icon-paste"></i></a>'+
+              edit_link+
+              update_price_link+
               ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
               #product.manufacturer_name,
               #product.name,
@@ -196,6 +208,32 @@ class Product < ActiveRecord::Base
     
     self.serial_numbers = new_arr.join("\r\n")
     self.save
+  end
+  
+  def product_price
+    price = product_prices.order("created_at DESC").first
+    
+    if price.nil?
+      return ProductPrice.new
+    else
+      return price
+    end    
+  end
+  
+  def update_price(params)
+    new_price = product_prices.new(price: params[:price],
+           supplier_price: params[:supplier_price],
+           supplier_id: params[:supplier_id],
+          )
+    
+    if new_price.price != product_price.price || new_price.supplier_price != product_price.supplier_price || new_price.supplier_id != product_price.supplier_id
+      new_price.save
+    end
+    
+  end
+  
+  def category
+    categories.order("created_at DESC").first
   end
   
 end
