@@ -1,38 +1,33 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Title:</strong>
-  <%= @notification.title %>
-</p>
-
-<p>
-  <strong>Description:</strong>
-  <%= @notification.description %>
-</p>
-
-<p>
-  <strong>Image:</strong>
-  <%= @notification.image %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @notification.url %>
-</p>
-
-<p>
-  <strong>Viewed:</strong>
-  <%= @notification.viewed %>
-</p>
-
-<p>
   <strong>User:</strong>
   <%= @notification.user_id %>
 </p>
 
 <p>
-  <strong>Type:</strong>
-  <%= @notification.type %>
+  <strong>Sender:</strong>
+  <%= @notification.sender_id %>
+</p>
+
+<p>
+  <strong>Sender:</strong>
+  <%= @notification.sender_id %>
+</p>
+
+<p>
+  <strong>Message:</strong>
+  <%= @notification.message %>
+</p>
+
+<p>
+  <strong>Read:</strong>
+  <%= @notification.read %>
+</p>
+
+<p>
+  <strong>Url:</strong>
+  <%= @notification.url %>
 </p>
 
 <%= link_to 'Edit', edit_notification_path(@notification) %> |

@@ -69,10 +69,6 @@ class OrderDetailsController < ApplicationController
     
     @order_detail = OrderDetail.new
     
-    if (!params[:order_id].nil?)
-      # @order_detail.order = Order.find_by_id(params[:order_id])
-    end
-    
     render :layout => nil
   end
   

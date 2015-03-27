@@ -18,7 +18,7 @@ class NotificationsControllerTest < ActionController::TestCase
 
   test "should create notification" do
     assert_difference('Notification.count') do
-      post :create, notification: { description: @notification.description, image: @notification.image, title: @notification.title, type: @notification.type, url: @notification.url, user_id: @notification.user_id, viewed: @notification.viewed }
+      post :create, notification: { message: @notification.message, read: @notification.read, sender_id: @notification.sender_id, sender_id: @notification.sender_id, url: @notification.url, user_id: @notification.user_id }
     end
 
     assert_redirected_to notification_path(assigns(:notification))
@@ -35,7 +35,7 @@ class NotificationsControllerTest < ActionController::TestCase
   end
 
   test "should update notification" do
-    patch :update, id: @notification, notification: { description: @notification.description, image: @notification.image, title: @notification.title, type: @notification.type, url: @notification.url, user_id: @notification.user_id, viewed: @notification.viewed }
+    patch :update, id: @notification, notification: { message: @notification.message, read: @notification.read, sender_id: @notification.sender_id, sender_id: @notification.sender_id, url: @notification.url, user_id: @notification.user_id }
     assert_redirected_to notification_path(assigns(:notification))
   end
 

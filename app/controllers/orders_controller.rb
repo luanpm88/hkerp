@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -18,10 +18,7 @@ class OrdersController < ApplicationController
   end
 
   # GET /orders/new
-  def new
-    if !params[:old_id].nil?
-      @order = Order.find_by_id(params[:old_id]).new_order_history
-    else    
+  def new   
       @order = Order.new
       @order.order_date = (Time.now).strftime("%Y-%m-%d")
       @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
@@ -36,8 +33,7 @@ class OrdersController < ApplicationController
       else
         @order.supplier = Contact.HK
       end
-      
-    end
+
   end
 
   # GET /orders/1/edit
@@ -199,7 +195,8 @@ class OrdersController < ApplicationController
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     
     respond_to do |format|
-      if @order.confirm_items  
+      if @order.confirm_items
+        Notification.send_notification(current_user, 'order_items_confirmed', @order)
         format.html { redirect_to list_path, notice: 'Order Items was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -212,6 +209,7 @@ class OrdersController < ApplicationController
   def confirm_price    
     respond_to do |format|
       if @order.confirm_price
+        Notification.send_notification(current_user, 'order_price_confirmed', @order)
         format.html { redirect_to pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -233,6 +231,10 @@ class OrdersController < ApplicationController
                     <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
       
+      
+      if can? :update_info, item
+        actions += '<li>'+view_context.link_to("Update Info", update_info_orders_path(:id => item.id))+'</li>'
+      end
       if can? :confirm_items, item
         actions += '<li>'+view_context.link_to("Confirm Items", confirm_items_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
       end
@@ -279,7 +281,7 @@ class OrdersController < ApplicationController
     
     @dup_order.set_status('items_confirmed')
     @order.set_status("outdated")
-      
+
     respond_to do |format|
       format.html { redirect_to orders_path, notice: 'Order was successfully changed.' }
       format.json { render action: 'show', status: :created, location: @order }          
@@ -311,6 +313,27 @@ class OrdersController < ApplicationController
       format.json { render action: 'show', status: :created, location: @order }          
     end
   end
+  
+  def update_info
+    @order.order_date = (@order.order_date).strftime("%Y-%m-%d")
+    @order.order_deadline = (@order.order_deadline).strftime("%Y-%m-%d")
+    @order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
+    @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d")
+    @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i
+    @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
+  end
+  
+  def do_update_info
+    respond_to do |format|
+      if @order.update(update_info_params)
+        format.html { redirect_to orders_url, notice: 'Order was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to update_info_orders_url(id: @order.id), alert: 'Order was unsuccessfully updated. Check the information again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -335,6 +358,19 @@ class OrdersController < ApplicationController
                                     :watermark,
                                     :debt_date,
                                     :order_detail_ids => []                                   
+                                  )
+    end
+    
+    def update_info_params
+      params.require(:order).permit(:agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id, :order_date,
+                                    :order_deadline,
+                                    :deposit,
+                                    :shipping_date,
+                                    :shipping_time,
+                                    :warranty_place,
+                                    :warranty_cost,
+                                    :watermark,
+                                    :debt_date,                     
                                   )
     end
 end

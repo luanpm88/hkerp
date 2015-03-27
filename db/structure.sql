@@ -396,13 +396,15 @@ ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
 
 CREATE TABLE notifications (
     id integer NOT NULL,
+    user_id integer,
+    sender_id integer,
     title text,
     description text,
-    image character varying(255),
-    url character varying(255),
-    viewed boolean DEFAULT false NOT NULL,
-    user_id integer,
-    type character varying(255),
+    viewed integer DEFAULT 0,
+    url text,
+    icon text,
+    type_name text,
+    item_id integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -1919,11 +1921,7 @@ INSERT INTO schema_migrations (version) VALUES ('20140802030357');
 
 INSERT INTO schema_migrations (version) VALUES ('20140807031530');
 
-INSERT INTO schema_migrations (version) VALUES ('20140807042511');
-
 INSERT INTO schema_migrations (version) VALUES ('20140811081940');
-
-INSERT INTO schema_migrations (version) VALUES ('20140815012457');
 
 INSERT INTO schema_migrations (version) VALUES ('20140815013938');
 
@@ -1950,8 +1948,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150316094333');
 INSERT INTO schema_migrations (version) VALUES ('20150316094602');
 
 INSERT INTO schema_migrations (version) VALUES ('20150317071952');
-
-INSERT INTO schema_migrations (version) VALUES ('20150317083912');
 
 INSERT INTO schema_migrations (version) VALUES ('20150318061926');
 
@@ -1980,4 +1976,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150325074310');
 INSERT INTO schema_migrations (version) VALUES ('20150326071123');
 
 INSERT INTO schema_migrations (version) VALUES ('20150326090135');
+
+INSERT INTO schema_migrations (version) VALUES ('20150327035733');
 

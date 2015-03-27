@@ -1,4 +1,4 @@
 json.array!(@notifications) do |notification|
-  json.extract! notification, :id, :title, :description, :image, :url, :viewed, :user_id, :type
+  json.extract! notification, :id, :user_id, :sender_id, :sender_id, :message, :read, :url
   json.url notification_url(notification, format: :json)
 end

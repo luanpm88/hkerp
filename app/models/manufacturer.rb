@@ -16,7 +16,7 @@ class Manufacturer < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    rows = self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
     
     new_rows = []
     new_rows << {id: "", text: "No manufacturer"}

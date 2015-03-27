@@ -31,35 +31,52 @@
                                         </div>
                                       </div>
                                       <div class="col-md-6">
-                                        <div class="row">
-                                          <div class="col-md-6">
-                                              <div class="form-group">
-                                                  <label class="form-label"><%= f.label :debt_days %></label>
-                                                  <span class="help">(required)</span>
-                                                  <div class="input-with-icon  right">                                       
-                                                          <i class=""></i>
-                                                          <%= f.text_field :debt_days, value: @order.debt_days, class: "form-control number_input", id: "order_debt_days" %>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="col-md-6">
-                                              <div class="form-group">
-                                                  <label class="form-label"><%= f.label :debt_date %></label>
-                                                  <span class="help">(required)</span>
-                                                  <div class="input-with-icon  right">                                       
-                                                          <i class=""></i>
-                                                          <div class="input-append success date col-md-10 no-padding">
-                                                            <%= f.text_field :debt_date, value: @order.debt_date_formated, class: "form-control", id: "order_debt_date" %>
-                                                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-                                                          </div>
-                                                          <br style="clear: both" />
-                                                  </div>
-                                              </div>
-                                          </div>
-                                        </div>
+                                        
+										
+										<% if @order.is_deposited %>
+										
+													<div class="row">
+														<div class="col-md-3">
+														  <div class="form-group">
+															  <label class="form-label"><%= f.label :order_date %></label>
+															  <div class="input-with-icon  right">                                       
+																	<i class=""></i>
+																	<strong><%= @order.order_date.to_date %></strong>
+															  </div>
+														  </div>
+														</div>
+														<div class="col-md-4">
+														  <div class="form-group">
+															  <label class="form-label"><%= f.label :debt_days %></label>
+															  <span class="help">(required)</span>
+															  <div class="input-with-icon  right">                                       
+																	  <i class=""></i>
+																	  <%= f.text_field :debt_days, value: @order.debt_days, class: "form-control number_input", id: "order_debt_days" %>
+															  </div>
+														  </div>
+														</div>
+														<div class="col-md-5">
+														  <div class="form-group">
+															  <label class="form-label"><%= f.label :debt_date %></label>
+															  <span class="help">(required)</span>
+															  <div class="input-with-icon  right">                                       
+																	  <i class=""></i>
+																	  <div class="input-append success date col-md-10 no-padding">
+																		<%= f.text_field :debt_date, value: @order.debt_date_formated, class: "form-control", id: "order_debt_date" %>
+																		<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+																	  </div>
+																	  <br style="clear: both" />
+															  </div>
+														  </div>
+														</div>
+													</div>
+										
+										<% end %>
+											
+											
                                         
                                         
-					<div class="form-group">
+										<div class="form-group">
                                             <label class="form-label"><%= f.label :note %></label>
                                             <span class="help">(required)</span>
                                             <div class="input-with-icon  right">                                       

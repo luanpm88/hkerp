@@ -51,8 +51,13 @@ class PaymentRecordsController < ApplicationController
   # POST /payment_records.json
   def create
     @order = Order.find(payment_record_params[:order_id])
-    @payment_record = PaymentRecord.new(payment_record_params)
-    @payment_record.accountant = current_user    
+    @payment_record = @order.payment_records.new(payment_record_params)
+    @payment_record.accountant = current_user
+    
+    if @order.is_payback
+        @payment_record.amount = -@payment_record.amount
+    end
+    
     
     list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
     

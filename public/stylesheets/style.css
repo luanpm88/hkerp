@@ -7610,3 +7610,6 @@ ul.filter {
 .product_order_list .warranty, .product_order_list .quantity {
     text-align: center;
 }
+.top_notification {
+    display: inline;
+}

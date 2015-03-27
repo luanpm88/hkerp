@@ -1,19 +1,17 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  title: MyText
-  description: MyText
-  image: MyString
-  url: MyString
-  viewed: false
   user_id: 1
-  type: 
+  sender_id: 
+  sender_id: 1
+  message: MyText
+  read: 1
+  url: MyText
 
 two:
-  title: MyText
-  description: MyText
-  image: MyString
-  url: MyString
-  viewed: false
   user_id: 1
-  type: 
+  sender_id: 
+  sender_id: 1
+  message: MyText
+  read: 1
+  url: MyText

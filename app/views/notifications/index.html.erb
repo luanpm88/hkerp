@@ -3,13 +3,12 @@
 <table>
   <thead>
     <tr>
-      <th>Title</th>
-      <th>Description</th>
-      <th>Image</th>
-      <th>Url</th>
-      <th>Viewed</th>
       <th>User</th>
-      <th>Type</th>
+      <th>Sender</th>
+      <th>Sender</th>
+      <th>Message</th>
+      <th>Read</th>
+      <th>Url</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -17,13 +16,12 @@
   <tbody>
     <% @notifications.each do |notification| %>
       <tr>
-        <td><%= notification.title %></td>
-        <td><%= notification.description %></td>
-        <td><%= notification.image %></td>
-        <td><%= notification.url %></td>
-        <td><%= notification.viewed %></td>
         <td><%= notification.user_id %></td>
-        <td><%= notification.type %></td>
+        <td><%= notification.sender_id %></td>
+        <td><%= notification.sender_id %></td>
+        <td><%= notification.message %></td>
+        <td><%= notification.read %></td>
+        <td><%= notification.url %></td>
         <td><%= link_to 'Show', notification %></td>
         <td><%= link_to 'Edit', edit_notification_path(notification) %></td>
         <td><%= link_to 'Destroy', notification, method: :delete, data: { confirm: 'Are you sure?' } %></td>

@@ -1,0 +1,31 @@
+                        <% current_user.notification_top.each do |notification| %>
+                            <div style="display: none" class="notification_count">
+                              <%= current_user.notification_unread_count if current_user.notification_unread_count > 0 %>
+                            </div>
+							<div class="notification-messages info" onclick="window.location='<%= notification.display_url %>'">
+									<% if !notification.icon.nil? %>
+										<div class="iconholder">
+											<i class="<%= notification.icon %>"></i>
+										</div>
+									<% elsif !notification.sender.nil? %>
+										<div class="user-profile">
+											<img title="<%= notification.sender.name %>" width="35" height="35" imgd2x.jpg"="" data-src-retina="" data-src="<%= notification.sender.avatar(:thumb) %>" alt="" src="<%= notification.sender.avatar(:thumb) %>">
+										</div>
+									<% end %>
+									<!--<div class="user-profile">
+										<img src="<%= url_for("/img") %>/d.jpg"  alt="" data-src="<%= url_for("/img") %>/d.jpg" data-src-retina<%= url_for("/img") %>d2x.jpg" width="35" height="35">
+									</div>-->
+									<div class="message-wrapper">
+										<div class="heading">
+											<%= notification.display_title %>
+										</div>
+										<div class="description">
+											<%= notification.display_description %>
+										</div>
+										<div class="date pull-left">
+										<%= time_ago_in_words(notification.created_at) %>
+										</div>										
+									</div>
+									<div class="clearfix"></div>									
+							</div>
+						<% end %>

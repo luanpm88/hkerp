@@ -20,6 +20,8 @@ class User < ActiveRecord::Base
   has_many :checkinout_requests
   has_many :manage_checkinout_requests, :class_name => "CheckinoutRequest", :foreign_key => "manager_id"
   
+  has_many :notifications, :dependent => :destroy, :foreign_key => "user_id"
+  
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, :presence => true, :uniqueness => true
@@ -102,6 +104,14 @@ class User < ActiveRecord::Base
   
   def self.full_text_search(q)
     self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+  end
+  
+  def notification_unread_count
+    notifications.where(viewed: 0).count
+  end
+  
+  def notification_top
+    notifications.order("created_at DESC").limit(20)
   end
   
 end

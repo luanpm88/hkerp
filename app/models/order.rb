@@ -5,6 +5,7 @@ class Order < ActiveRecord::Base
   validates :customer_id, presence: true
   validates :order_date, presence: true
   validates :order_deadline, presence: true
+  validate :valid_debt_date
   
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
@@ -37,6 +38,15 @@ class Order < ActiveRecord::Base
   has_many :deliveries, :dependent => :destroy
   
   has_many :payment_records, :dependent => :destroy
+  
+  def valid_debt_date
+    if !deposit.nil? && deposit < 100
+        if debt_date <= order_date
+            errors.add(:debt_date, "can't be smaller than order date")
+        end
+        
+    end    
+  end
   
   def total
     total = 0;
@@ -499,7 +509,8 @@ class Order < ActiveRecord::Base
   end
   
   def paid_amount
-    total = payment_records.sum :amount
+    total = 0
+    total += payment_records.sum :amount
     
     get_outdated_orders.each do |o|
       total += o.payment_records.sum :amount
@@ -524,8 +535,12 @@ class Order < ActiveRecord::Base
     total_vat == paid_amount
   end
   
+  def is_payback
+    paid_amount > total_vat
+  end
+  
   def paid_status
-    if paid_amount > total_vat
+    if is_payback
       return '<div class="orange">payback</div>'
     elsif paid_amount == total_vat
       return '<div class="green">paid</div>'
@@ -697,9 +712,6 @@ class Order < ActiveRecord::Base
     purchase_manager.nil? ? "" : purchase_manager.name
   end
   
-  def deposit=(value)
-    self[:deposit] = value.to_s.gsub(/\,/, '')
-  end 
   
   def debt_days
     if !debt_date.nil?
@@ -715,6 +727,15 @@ class Order < ActiveRecord::Base
     else
       Time.now.to_date
     end
+  end
+  
+  def paid_percent
+    ((paid_amount/total_vat)*100).round(2)
+  end
+  
+  def is_deposited
+    d = !deposit.nil? ? deposit : 100
+    paid_percent >= d
   end
   
 end

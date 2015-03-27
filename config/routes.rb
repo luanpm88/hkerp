@@ -26,7 +26,12 @@ Hkerp::Application.routes.draw do
     end
   end
 
-  resources :notifications
+  resources :notifications do
+    collection do
+      get :read_notification
+      get :update_notification
+    end
+  end
 
   resources :order_statuses
 
@@ -94,6 +99,9 @@ Hkerp::Application.routes.draw do
       get :update_price
       patch :do_update_price
       get :confirm_price
+      
+      get :update_info
+      patch :do_update_info
     end
   end
 

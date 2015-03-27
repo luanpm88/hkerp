@@ -81,34 +81,58 @@
 
  	
 <script>
-    
-    function updateDebt_days() {
-	date1 = new Date($('#order_order_date').val());
-	date2 = new Date($('#order_debt_date').val());
 	
-	//$.datepicker.formatDate('yy-mm-dd', date);
-	
-	var oneDay  = 24*60*60*1000;
-	var diffDays = (date2.getTime() - date1.getTime())/oneDay;
-	
-	$('#order_debt_days').val(diffDays);
-    }
-    
-    function updateDebt_date() {
-	
-	date1 = new Date($('#order_order_date').val());
-	days = parseInt($('#order_debt_days').val());
-	
-	if ($('#order_debt_days').val() == "") {
-	    days = 0;
+	function read_notification() {
+		$.ajax({
+			url : '<%= read_notification_notifications_url %>',
+			type: "GET",
+			success:function(data, textStatus, jqXHR)
+			{		    
+				update_notification();
+			}
+		});
 	}
 	
-	//$.datepicker.formatDate('yy-mm-dd', date);
+	function update_notification() {
+		$.ajax({
+			url : '<%= update_notification_notifications_url %>',
+			type: "GET",
+			success:function(data, textStatus, jqXHR)
+			{		    
+				$('.top_notification').html(data);
+				
+				$('.notification_count').html($('<div>').html(data).find('.notification_count').html().trim());
+			}
+		});
+	}
 	
-	var oneDay  = 24*60*60*1000;
-	var time = date1.getTime() + (oneDay*days);
-	
-	$('#order_debt_date').val($.datepicker.formatDate('yy-mm-dd', new Date(time)));
+    
+    function updateDebt_days() {
+		date1 = new Date($('#order_order_date').val());
+		date2 = new Date($('#order_debt_date').val());
+		
+		//$.datepicker.formatDate('yy-mm-dd', date);
+		
+		var oneDay  = 24*60*60*1000;
+		var diffDays = (date2.getTime() - date1.getTime())/oneDay;
+		
+		$('#order_debt_days').val(diffDays);
+    }
+    
+    function updateDebt_date() {	
+		date1 = new Date($('#order_order_date').val());
+		days = parseInt($('#order_debt_days').val());
+		
+		if ($('#order_debt_days').val() == "") {
+			days = 0;
+		}
+		
+		//$.datepicker.formatDate('yy-mm-dd', date);
+		
+		var oneDay  = 24*60*60*1000;
+		var time = date1.getTime() + (oneDay*days);
+		
+		$('#order_debt_date').val($.datepicker.formatDate('yy-mm-dd', new Date(time)));
     }
     
     function OrderDataTable(table, url) {
@@ -116,14 +140,14 @@
 	    "processing": true,
 	    "serverSide": true,
 	    "ajax": {
-		"url": url,
-		"data": function ( d ) {
-		    d.customer_id = $('.select2-ajax-customers').val();
-		    d.supplier_id = $('.select2-ajax-suppliers').val();
-		    d.year = $('#filter_date_1i').val();
-		    d.month = $('#filter_date_2i').val();
-		    d.day = $('#filter_date_3i').val();
-		}
+			"url": url,
+			"data": function ( d ) {
+				d.customer_id = $('.select2-ajax-customers').val();
+				d.supplier_id = $('.select2-ajax-suppliers').val();
+				d.year = $('#filter_date_1i').val();
+				d.month = $('#filter_date_2i').val();
+				d.day = $('#filter_date_3i').val();
+			}
 	    },
 	    "columnDefs": [ { "targets": [0,1,2,3,4,5,6,7], "orderable": false } ],
 	    "order": [],
@@ -405,47 +429,47 @@
 		    data : postData,
 		    success:function(data, textStatus, jqXHR)
 		    {
-			if($('<div/>').html(data).find("#ajax-success-result").length)
-			{
-			  $.fancybox.close();
-			  
-			    var success_box = $('<div/>').html(data).find("#ajax-success-result");
-			    var saved_id = success_box.find("ul").attr("rel");
-			    if ($('#product-line-items ul[rel="'+current_line_item_id+'"]').length) {
-				$('#product-line-items ul[rel="'+current_line_item_id+'"]').replaceWith(success_box.html());
-			    }
-			    else
-			    {
-				$('#product-line-items').append(success_box.html());
-			    }
-			}
-			else
-			{
-			    $('.fancybox-inner').html(data);
-			    $('.fancybox-inner').scrollTop(0);
-			    $(".ajax_outer .modern_select").select2();
-			    $('.select2-ajax-products').select2({
-			      placeholder: "Search for a product",
-			      minimumInputLength: 1,
-			      ajax: {
-				url: $('.select2-ajax-products').attr("url"),
-				dataType: 'json',
-				data: function (term, page) { // page is the one-based page number tracked by Select2
-				  return {
-				    q: term, //search term
-				  };
-				},
-				results: function (data, page) {
-				  return {results: data};
+				if($('<div/>').html(data).find("#ajax-success-result").length)
+				{
+					$.fancybox.close();
+				  
+					var success_box = $('<div/>').html(data).find("#ajax-success-result");
+					var saved_id = success_box.find("ul").attr("rel");
+					if ($('#product-line-items ul[rel="'+current_line_item_id+'"]').length) {
+						$('#product-line-items ul[rel="'+current_line_item_id+'"]').replaceWith(success_box.html());
+					}
+					else
+					{
+						$('#product-line-items').append(success_box.html());
+					}
 				}
-			      },
-			      initSelection: function (element, callback) {				      
-				callback({ id: $('.select2-ajax-products').val, text: $('.select2-ajax-products').attr('text') });
-			      }
-			    });
-			}
-			
-			updateOrderPrices();			
+				else
+				{
+					$('.fancybox-inner').html(data);
+					$('.fancybox-inner').scrollTop(0);
+					$(".ajax_outer .modern_select").select2();
+					$('.select2-ajax-products').select2({
+					  placeholder: "Search for a product",
+					  minimumInputLength: 1,
+					  ajax: {
+							url: $('.select2-ajax-products').attr("url"),
+							dataType: 'json',
+							data: function (term, page) { // page is the one-based page number tracked by Select2
+							  return {
+								q: term, //search term
+							  };
+							},
+							results: function (data, page) {
+							  return {results: data};
+							}
+					  },
+					  initSelection: function (element, callback) {				      
+							callback({ id: $('.select2-ajax-products').val, text: $('.select2-ajax-products').attr('text') });
+					  }
+					});
+				}
+				
+				updateOrderPrices();			
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {
@@ -586,20 +610,37 @@
 			    //format typping price
 			    //$('input.price_input').number( true, 0 );
 			    $('.select2-ajax-categories').select2({
-			      placeholder: "Search for a category",
-			      minimumInputLength: 1,
-			      ajax: {
-				url: $('.select2-ajax-categories').attr("url"),
-				dataType: 'json',
-				data: function (term, page) { // page is the one-based page number tracked by Select2
-				  return {
-				    q: term, //search term
-				  };
-				},
-				results: function (data, page) {
-				  return {results: data};
-				}
-			      },
+					placeholder: "Search for a category",
+					minimumInputLength: 1,
+					ajax: {
+					  url: $('.select2-ajax-categories').attr("url"),
+					  dataType: 'json',
+					  data: function (term, page) { // page is the one-based page number tracked by Select2
+							return {
+								q: term, //search term
+							};
+						},
+						results: function (data, page) {
+						  return {results: data};
+						}
+					},
+			    });
+				
+				$('.select2-ajax-suppliers').select2({
+					placeholder: "Search for a category",
+					minimumInputLength: 1,
+					ajax: {
+					  url: $('.select2-ajax-suppliers').attr("url"),
+					  dataType: 'json',
+					  data: function (term, page) { // page is the one-based page number tracked by Select2
+							return {
+								q: term, //search term
+							};
+						},
+						results: function (data, page) {
+						  return {results: data};
+						}
+					},
 			    });
 			    
 			    $('.select2-ajax-manufacturers').select2({
@@ -896,6 +937,15 @@
 	    });
 	    
 	    $('input.number_input').number(true, 0);
+		
+		
+		
+		//notification
+		update_notification();
+		setInterval('update_notification()', 10000);
+		$('.notification_button').on("click", function() {
+			read_notification();
+		});
 	    
       });
 </script>
@@ -973,11 +1023,11 @@
 	 <!-- END TOP NAVIGATION MENU -->
 	 <!-- BEGIN CHAT TOGGLER -->
       <div class="pull-right"> 
-		<div class="chat-toggler">	
+		<div class="chat-toggler notification_button">	
 				<a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom"  data-content='' data-toggle="dropdown" data-original-title="Notifications">
 					<div class="user-details"> 
 						<div class="username">
-						      <span class="badge badge-important">3</span> 
+						    <span class="badge badge-important notification_count"></span> 
 							Logged in as <span class="bold">
 							<%= current_user.name %>
 						      </span>
@@ -986,59 +1036,39 @@
 					<div class="iconset top-down-arrow"></div>
 				</a>	
 				<div id="notification-list" style="display:none">
-					<div style="width:300px">
-						  <div class="notification-messages info">
-									<div class="user-profile">
+					<div style="width:300px" class="top_notification">
+						
+						
+						<% current_user.notification_top.each do |notification| %>
+							<div class="notification-messages info" onclick="window.location='<%= notification.url %>'">
+									<% if !notification.icon.nil? %>
+										<div class="iconholder">
+											<i class="<%= notification.icon %>"></i>
+										</div>
+									<% elsif !notification.sender.nil? %>
+										<div class="user-profile">
+											<img width="35" height="35" imgd2x.jpg"="" data-src-retina="" data-src="<%= notification.sender.avatar(:thumb) %>" alt="" src="<%= notification.sender.avatar(:thumb) %>">
+										</div>
+									<% end %>
+									<!--<div class="user-profile">
 										<img src="<%= url_for("/img") %>/d.jpg"  alt="" data-src="<%= url_for("/img") %>/d.jpg" data-src-retina<%= url_for("/img") %>d2x.jpg" width="35" height="35">
-									</div>
+									</div>-->
 									<div class="message-wrapper">
 										<div class="heading">
-											David Nester - Commented on your wall
+											<%= notification.display_title %>
 										</div>
 										<div class="description">
-											Meeting postponed to tomorrow
+											<%= notification.display_description %>
 										</div>
 										<div class="date pull-left">
-										A min ago
+										<%= time_ago_in_words(notification.created_at) %>
 										</div>										
 									</div>
 									<div class="clearfix"></div>									
-								</div>	
-							<div class="notification-messages danger">
-								<div class="iconholder">
-									<i class="icon-warning-sign"></i>
-								</div>
-								<div class="message-wrapper">
-									<div class="heading">
-										Server load limited
-									</div>
-									<div class="description">
-										Database server has reached its daily capicity
-									</div>
-									<div class="date pull-left">
-									2 mins ago
-									</div>
-								</div>
-								<div class="clearfix"></div>
-							</div>	
-							<div class="notification-messages success">
-								<div class="user-profile">
-									<img src="<%= url_for("/img") %>/h.jpg"  alt="" data-src="<%= url_for("/img") %>/h.jpg" data-src-retina<%= url_for("/img") %>h2x.jpg" width="35" height="35">
-								</div>
-								<div class="message-wrapper">
-									<div class="heading">
-										You haveve got 150 messages
-									</div>
-									<div class="description">
-										150 newly unread messages in your inbox
-									</div>
-									<div class="date pull-left">
-									An hour ago
-									</div>									
-								</div>
-								<div class="clearfix"></div>
-							</div>							
-						</div>				
+							</div>
+						<% end %>
+						
+					</div>				
 				</div>
 				<div class="profile-pic"> 
 					<img src="<%= current_user.avatar(:thumb) %>"  alt="" data-src="<%= current_user.avatar(:thumb) %>" data-src-retina="<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 

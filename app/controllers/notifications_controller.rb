@@ -60,6 +60,16 @@ class NotificationsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def read_notification
+    current_user.notifications.update_all(viewed: 1)
+    
+    render nothing: true
+  end
+  
+  def update_notification
+    render layout: nil
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -69,6 +79,6 @@ class NotificationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def notification_params
-      params.require(:notification).permit(:title, :description, :image, :url, :viewed, :user_id, :type)
+      params.require(:notification).permit(:user_id, :sender_id, :sender_id, :message, :read, :url)
     end
 end

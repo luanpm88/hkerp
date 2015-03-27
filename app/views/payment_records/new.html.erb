@@ -18,9 +18,10 @@
 					<%= @order.is_purchase ? @order.supplier.name : @order.customer.name %>
 				    </span>
 				</h4>
-                                <h4>Total(+VAT):  <span class="semi-bold"><%= @order.formated_total_vat %></span></h4>
-                                <h4>Paid:  <span class="semi-bold"><%= @order.paid_amount_formated %></span></h4>
-                                <h4>Remain:  <span class="semi-bold"><%= @order.remain_amount_formated %></span></h4>
+                                <h4>Total (+VAT):  <span class="semi-bold"><%= @order.formated_total_vat %> VND</span></h4>
+								<h4>Deposit:  <span class="semi-bold"><%= @order.deposit %>%</span></h4>
+                                <h4>Paid:  <span class="semi-bold"><%= @order.paid_amount_formated %> VND (<%= @order.paid_percent %>%)</span></h4>
+                                <h4>Remain:  <span class="semi-bold"><%= @order.remain_amount_formated %> VND</span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>

@@ -3,6 +3,7 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :accountant, :class_name => "User"
   
   validate :valid_amount
+  validate :valid_debt_date
   validate :note, presence: true
   
   def valid_amount
@@ -14,8 +15,17 @@ class PaymentRecord < ActiveRecord::Base
     end
   end
   
+  def valid_debt_date
+    if order.is_deposited
+      if debt_date <= order.order_date
+        errors.add(:debt_date, "can't be smaller than order date")
+      end
+    end
+    
+  end
+  
   def amount=(new_price)
-    self[:amount] = new_price.to_s.gsub(/[\,]/, '')
+    self[:amount] = new_price.to_s.gsub(/[\,]/, '').to_f
   end
   
   def amount_formated
