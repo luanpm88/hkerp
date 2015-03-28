@@ -178,6 +178,7 @@ class Notification < ActiveRecord::Base
     count = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "items_confirmed"}).count
     count += Order.customer_orders
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"}).count
                   .where("delivery_status_name LIKE ?", '%out_of_stock%').where(parent_id: nil).count
     return count > 0 ? count : ""
   end
