@@ -208,6 +208,7 @@ class Notification < ActiveRecord::Base
   end
   
   def self.accounting_alert
-    self.purchase_payment_alert.to_i + self.sales_payment_alert.to_i
+    count = self.purchase_payment_alert.to_i + self.sales_payment_alert.to_i
+    return count > 0 ? count : ""
   end
 end
