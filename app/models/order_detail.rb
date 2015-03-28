@@ -36,6 +36,9 @@ class OrderDetail < ActiveRecord::Base
   def price=(new_price)
     self[:price] = new_price.to_s.gsub(/\,/, '')
   end
+  def quantity=(number)
+    self[:quantity] = number.to_s.gsub(/\,/, '')
+  end
   
   def supplier_price=(new_price)
     self[:supplier_price] = new_price.to_s.gsub(/\,/, '')
@@ -68,8 +71,9 @@ class OrderDetail < ActiveRecord::Base
       end
     end
     
-    
-    if remain_count == 0
+    if quantity == 0
+      return '<div class="grey">canceled</div>' 
+    elsif remain_count == 0
       return '<div class="blue">delivered</div>'    
     elsif remain_count < 0
       return '<div class="orange">waiting for return</div>'
@@ -83,34 +87,17 @@ class OrderDetail < ActiveRecord::Base
   def is_out_of_stock
     stock = product.stock
     
-    return (stock.nil? || stock == 0 || stock < remain_count) && !order.is_purchase
+    return (stock.nil? || stock < remain_count) && !order.is_purchase
   end
   
   def delivered_count
-    total = delivery_details.sum :quantity
-    
-    find_related_order_details.each do |od|
-      od.delivery_details.each do |dd|
-        total += dd.quantity
-      end
-    end
-    
-    return total
+    delivery_details.sum :quantity
   end
   
   def remain_count
     quantity - delivered_count
-  end
-  
-  def find_related_order_details
-    arr = []
-    order.get_outdated_orders.each do |o|
-      arr << o.order_details.where(product_id: self.product_id).first if !o.order_details.where(product_id: self.product_id).empty?
-    end
+  end  
     
-    return arr
-  end
-  
   def return_count
     return delivered_count - quantity
   end

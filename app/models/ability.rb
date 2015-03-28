@@ -120,22 +120,22 @@ class Ability
         end
         
         can :update_info, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && !["new","confirmed"].include?(order.status.name)
+          !order.is_purchase && order.salesperson_id == user.id && !["new"].include?(order.status.name)
         end
         can :do_update_info, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && !["new","confirmed"].include?(order.status.name)
+          !order.is_purchase && order.salesperson_id == user.id && !["new"].include?(order.status.name)
         end
-        
+
         #can :print_order, Order do |order|
         #  order.salesperson_id == user.id && order.status.name == 'confirmed'
         #end
-        #can :download_pdf, Order do |order|
-        #  order.salesperson_id == user.id
-        #end        
+        can :download_pdf, Order do |order|
+          order.salesperson_id == user.id
+        end        
         #can :purchase_orders, Order do |order|
         #  order.salesperson_id == user.id
         #end
-       
+
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id
@@ -143,11 +143,11 @@ class Ability
         can :update, OrderDetail do |order_detail|
           order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
         end
-        can :destroy, OrderDetail do |order_detail|
+        can :ajax_destroy, OrderDetail do |order_detail|
           order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
         end        
       end
-      
+
       if user.has_role? "purchase_manager"        
         can :show, Order
         can :pricing_orders, Order do |order|
@@ -159,11 +159,11 @@ class Ability
         can :do_update_price, Order do |order|
           !order.is_purchase && order.status.name == 'items_confirmed'
         end
-        
+
         can :update_price, Product
         can :do_update_price, Product
         can :confirm_price, Order
-        
+
         can :purchase_orders, Order do |order|
           order.salesperson_id == user.id
         end
@@ -177,7 +177,7 @@ class Ability
         can :update, Order do |order|
           order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
         end
-        
+
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
           order_detail.order.salesperson_id == user.id
@@ -189,7 +189,7 @@ class Ability
           order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
         end   
       end
-      
+
       if user.has_role? "accountant"
         can :read, Order
         can :print_order, Order
@@ -198,13 +198,17 @@ class Ability
         can :create, PaymentRecord
         can :read, PaymentRecord do |item|
           item.accountant.id == user.id
-        end        
+        end
+        
+        can :download_pdf, PaymentRecord
       end
-      
+
       if user.has_role? "storage_manager"
         can :create, Delivery
         can :read, Delivery
         can :deliver, Delivery
+        
+        can :download_pdf, Delivery
       end
 
     end

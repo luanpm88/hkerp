@@ -7441,7 +7441,7 @@ ul.my-friends li .profile-pic{
     display: block;
     float: left;
     list-style: none outside none;
-    width: 10%;
+    width: 11%;
     padding: 15px;
 }
 .product_order_list ul li.price, .product_order_list ul li.supplier_price, .product_order_list ul li.price_total{
@@ -7456,7 +7456,12 @@ ul.my-friends li .profile-pic{
 }
 .product_order_list ul.footer li.sum
 {
-    width: 20%;
+    width: 22%;
+    text-align: right;
+}
+.product_order_list ul.footer li.sumz
+{
+    width: 22%;
     text-align: right;
 }
 .tmp_hide
@@ -7600,7 +7605,7 @@ ul.filter {
 }
 .price_input {
     text-align: right;
-    min-width: 95px;
+    min-width: 105px;
 }
 .hidden, .quantity-0 {
     position: absolute;
@@ -7612,4 +7617,60 @@ ul.filter {
 }
 .top_notification {
     display: inline;
+}
+.number_input {
+    text-align: center;
+}
+.notification-messages.info-1 {
+    background-color: #f8f8f8;
+}
+.popover-content {
+    max-height: 330px;
+    overflow: auto;
+}
+.logo-text {
+    color: #fff;
+    display: inline-block;
+    font-size: 30px;
+    line-height: 56px;
+    text-align: center;
+    width: 160px;
+}
+.delivered {
+    color: #3c763d;
+}
+.out_of_stock {
+    color: #ce4844;
+}
+.return_back {
+    color: #aa6708;
+}
+.not_delivered {
+    color: #aa6708;
+}
+.alert-level1 {
+    margin: 0 10px 0 0;
+}
+.alert-level2 {
+    margin: 6px 6px 0 0;
+    background: #fff;
+    color: #000;
+}
+.pay_back {
+    color: #aa6708;
+}
+.paid {
+    color: #3c763d;
+}
+.debt {
+    color: #1b809e;
+}
+.waiting {
+    color: #aa6708;
+}
+.not_deposited {
+    color: #aa6708;
+}
+.btn-group.actions > .dropdown-menu {
+    margin-left: -90px;
 }

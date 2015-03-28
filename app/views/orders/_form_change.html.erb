@@ -1,4 +1,4 @@
-       <div class="row">
+     <div class="row">
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
@@ -79,7 +79,7 @@
                                 </div>
                               
                     
-                              <div class="form-group">
+                              <!--<div class="form-group">
                                 <label class="form-label"><%= f.label :payment_deadline %></label>
                                 <span class="help">(default: + 3 days)</span>
                                   <div class="input-with-icon  right">                                       
@@ -90,54 +90,134 @@
                                     </div>
                                     <br style="clear: both" />
                                   </div>
-                              </div>
+                              </div>-->
+                              
+                              
+                              
+                              
                               
                               
                             </div>
                             <div class="col-md-6">
                               
-                              <div class="form-group">
-                                <label class="form-label"><%= f.label :order_date %></label>
-                                <span class="help"></span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <div class="input-append success date col-md-10 no-padding">
-                                      <%= f.text_field :order_date, :class => "form-control" %>
-                                      <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-                                    </div>
-                                    <br style="clear: both" />
-                                  </div>
-                              </div>
-                              
-                              <div class="form-group">
-                                <label class="form-label"><%= f.label :order_deadline %></label>
-                                <span class="help">(default: + 7 days)</span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <div class="input-append success date col-md-10 no-padding">
-                                      <%= f.text_field :order_deadline, :class => "form-control" %>
-                                      <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-                                    </div>
-                                    <br style="clear: both" />
-                                  </div>
-                              </div>
                               
                               
-                              <div class="form-group">
-                                <label class="form-label"><%= f.label :payment_method %></label>
-                                <span class="help"></span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <select name="order[payment_method_id]" class="modern_select" style="min-width: 400px;">
-                                    <option value="">Select Method</option>
-                                    <% PaymentMethod.all.each do |payment| %>
-                                        <option value="<%= payment.id %>" <% if !@order.payment_method_id.nil? && @order.payment_method_id == payment.id %>selected="selected"<% end %>>
-                                          <%= payment.name %>
-                                        </option>
-                                    <% end %>
-                                  </select>
-                                  </div>
+                              <div class="row">
+                                          <div class="col-md-6">
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :order_date %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :order_date, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                          <div class="col-md-6">                              
+                              
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :order_deadline %></label>
+                                                   <span class="help">(default: + 7 days)</span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :order_deadline, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+                                                 
+                                          </div>
                               </div>
+                              
+                              
+                              
+                              
+                              <div class="row">
+                                          <div class="col-md-6">
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :payment_method %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <select name="order[payment_method_id]" class="modern_select" style="width: 100%">
+                                                               <option value="">Select Method</option>
+                                                               <% PaymentMethod.all.each do |payment| %>
+                                                                   <option value="<%= payment.id %>" <% if !@order.payment_method_id.nil? && @order.payment_method_id == payment.id %>selected="selected"<% end %>>
+                                                                     <%= payment.name %>
+                                                                   </option>
+                                                               <% end %>
+                                                        </select>
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                               
+                                               <div class="form-group">
+                                                   <label class="form-label"><%= f.label :payment_deadline %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                                        <%= f.text_field :payment_deadline, :class => "form-control" %>
+                                                                        <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                                      </div>
+                                                                      <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                               
+                                   </div>
+                              
+                              
+                              
+                              
+                              
+                              <div class="row">
+                                   <div class="col-md-4">
+                                        <div class="form-group datetime">
+                                             <label class="form-label"><%= f.label :deposit %></label>
+                                             <span class="help">(%)</span>
+                                               <div class="input-with-icon  right">                                       
+                                                 <i class=""></i>
+                                                 <%= f.select :deposit, options_for_select(100.downto(0).map { |u| [u, u] },@order.deposit), :class => "form-control number_input" %>
+                                               </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-md-3">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_days %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <%= text_field_tag "order_debt_days", @order.debt_days, {:class => "form-control number_input"} %>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-5">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_date %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <div class="input-append success date col-md-10 no-padding">
+                                                     <%= f.text_field :debt_date, :class => "form-control" %>
+                                                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                   </div>
+                                                   <br style="clear: both" />
+                                           </div>
+                                       </div>
+                                   </div>
+                              </div>
+                              
+                              
+                                    
+                                               
                             
                             </div>
                         
@@ -183,14 +263,7 @@
                           </div>
                         </div>
                         
-                        <div class="form-group datetime">
-                                <label class="form-label"><%= f.label :deposit %></label>
-                                <span class="help">(%)</span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <%= f.text_field :deposit, :class => "form-control" %>
-                                  </div>
-                        </div>
+                        
                         
                          <div class="form-group datetime">
                                 <label class="form-label"><%= f.label :shipping_date %></label>
@@ -310,13 +383,12 @@
                             <li class="name">
                               Product
                             </li>
-                            <li class="unit">Unit</li>
-                            <li class="supplier_price">Sup. Price</li>
+                            <li class="unit text-center">Unit</li>
                             <li class="price">Price</li>
-                            <li class="quantity">Quantity</li>
+                            <li class="quantity text-center">Quantity</li>
                             <li class="price_total">Total</li>
-                            <li class="warranty">Warranty</li>
-                            <li class="action">Action</li>
+                            <li class="warranty text-center">Warranty</li>
+                            <li class="action text-center">Action</li>
                           </ul>
                           <div id="product-line-items">
                             <% if !@order.order_details.nil? %>
@@ -329,7 +401,7 @@
                             <li class="name">
                             </li>
                             <li class="unit"></li>
-                            <li class="supplier_price"></li>
+                            <!--<li class="supplier_price"></li>-->
                             <li class="sum">Tổng cộng</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
@@ -339,13 +411,14 @@
                             <li class="name">
                             </li>
                             <li class="unit"></li>
-                            <li class="supplier_price"></li>
+                            <!--<li class="supplier_price"></li>-->
                             <li class="sum">Tổng cộng (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
                             <li class="action"></li>
                           </ul>
                         </div>
+
                         
                         <div class="controls">
 			      <%= link_to 'Add Product Line', ajax_new_order_details_path(:order_id => @order.id, :purchase => params[:purchase]), :class => "btn btn-white btn-cons fancybox.ajax", :id => "add-product-order-line-button" %>
@@ -354,14 +427,12 @@
                     </div>
                     
                       
-                      <div class="form-actions">  
-                        <div class="pull-right">
-                            <input name="save" type="submit" class="btn btn-primary btn-cons" value="Save" />
-                            <%= link_to 'Change', orders_path, :class => "btn btn-white btn-cons" %>
+                        <div class="form-actions">  
+                          <div class="pull-right">
+                              <input type="Submit" class="btn btn-success btn-cons" value="Change" />
+                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                          </div>
                         </div>
-                      </div>
-                        
-                        
                   <% end %>
                 </div>
               </div>

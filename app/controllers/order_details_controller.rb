@@ -1,7 +1,7 @@
 class OrderDetailsController < ApplicationController
-  load_and_authorize_resource :except => [:ajax_new, :ajax_edit, :ajax_create, :ajax_update, :ajax_destroy]
+  load_and_authorize_resource :except => [:ajax_new, :ajax_edit, :ajax_create, :ajax_update]
   
-  before_action :set_order_detail, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_edit, :ajax_update]
+  before_action :set_order_detail, only: [:show, :edit, :update, :destroy, :ajax_edit, :ajax_update]
 
   # GET /order_details
   # GET /order_details.json
@@ -88,7 +88,7 @@ class OrderDetailsController < ApplicationController
     @order_detail = OrderDetail.new(order_detail_params)
 
     respond_to do |format|
-      if @order_detail.save
+      if @order_detail.valid?
         format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
         format.json { render action: 'show', status: :created, location: @order_detail }
       else
@@ -112,15 +112,12 @@ class OrderDetailsController < ApplicationController
     end
   end
   
-  # DELETE /contacts/1
   def ajax_destroy
-    authorize! :destroy, @order_detail
-    
     @order_detail.update_attributes(quantity: 0)
     
     respond_to do |format|
-        format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
-        format.json { head :no_content }
+      format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
+      format.json { head :no_content }
     end
   end
 

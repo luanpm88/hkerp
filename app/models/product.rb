@@ -120,7 +120,8 @@ class Product < ActiveRecord::Base
               product.categories.first.name,
               product.manufacturer.name,
               product.name,
-              product.formated_price,
+              '<div class="text-right">'+product.product_price.price_formated+'</div>',
+              '<div class="text-center">'+product.stock.to_s+'</div>',
               edit_link+
               update_price_link+
               ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
@@ -144,7 +145,7 @@ class Product < ActiveRecord::Base
     }
     result["data"] = data
     
-    return result
+    return {result: result, items: @products}
   end
   
   def serial_numbers_extracted

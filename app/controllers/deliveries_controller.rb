@@ -33,8 +33,10 @@ class DeliveriesController < ApplicationController
   def download_pdf
     @order = @delivery.order
     
+    filename = @order.is_purchase ? "purchase_delivery" : "sale_delivery"
+    
     @hk = @order.supplier
-    render  :pdf => "quotation_"+@order.quotation_code,
+    render  :pdf => filename+"_"+@order.quotation_code,
             :template => 'deliveries/show.pdf.erb',
             :layout => nil,
             :footer => {

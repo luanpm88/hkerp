@@ -19,8 +19,30 @@ class ProductsController < ApplicationController
     authorize! :read, Product
     
     result = Product.datatable(params)
+   
+    result[:items].each_with_index do |item, index|
+      
+      
+      actions = '<div class="text-right"><div class="btn-group actions">
+                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
+      actions += '<ul class="dropdown-menu">'
+      
+      
+      if can? :update, item
+        actions += '<li>'+view_context.link_to("Edit", edit_product_path(item))+'</li>'
+      end
+      if can? :update_price, item
+        actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id})+'</li>'
+      end
+      
+     
+      
+      actions += '</ul></div></div>'
+      
+      result[:result]["data"][index][6] = actions
+    end
     
-    render json: result
+    render json: result[:result]
   end
 
   # GET /products/1

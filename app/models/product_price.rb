@@ -13,4 +13,8 @@ class ProductPrice < ActiveRecord::Base
   def supplier_price=(new_price)
     self[:supplier_price] = new_price.gsub(/[\,]/, '')
   end
+  
+  def price_formated
+    Order.format_price(price)
+  end
 end

@@ -8,7 +8,7 @@
 </div>
 
 <div class="order_histories" style="float: left; max-width: 640px">
-  <% @order.all_payment_records.each do |d| %>
+  <% @order.payment_records.order("created_at DESC").each do |d| %>
     <%
       active = d.id == @payment_record.id ? "success" : "white"      
     %>

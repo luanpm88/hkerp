@@ -2,7 +2,7 @@
                             <div style="display: none" class="notification_count">
                               <%= current_user.notification_unread_count if current_user.notification_unread_count > 0 %>
                             </div>
-							<div class="notification-messages info" onclick="window.location='<%= notification.display_url %>'">
+							<div class="notification-messages info info-<%= notification.viewed %>" onclick="window.location='<%= notification.display_url %>'">
 									<% if !notification.icon.nil? %>
 										<div class="iconholder">
 											<i class="<%= notification.icon %>"></i>

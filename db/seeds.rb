@@ -113,6 +113,7 @@ User.all.each do |user|
         user.add_role Role.where(name: "user").first
 end
 
+OrderStatus.create(name: "draft", description: "Draft")
 OrderStatus.create(name: "new", description: "New")
 OrderStatus.create(name: "items_confirmed", description: "Items Confirmed")
 OrderStatus.create(name: "price_confirmed", description: "Price Confirmed")

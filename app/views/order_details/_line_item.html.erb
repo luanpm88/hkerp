@@ -1,15 +1,27 @@
-                                  <ul class="quantity-<%= order_detail.quantity %>" rel="<%= order_detail.id %>">
+                                  <ul class="quantity-<%= order_detail.quantity %>" order_id="<%= order_detail.id %>" rel="<%= order_detail.product_id %>">
                                       <li class="name">
-                                        <input type="hidden" name="order[order_detail_ids][]" value="<%= order_detail.id %>" />
-                                        <%= order_detail.product_name %>
+                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
+                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
+                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
+                                          <%= order_detail.product_name %>
                                       </li>
-                                      <li class="unit"><%= order_detail.unit %></li>                                    
-                                      <li class="price" rel="<%= order_detail.price %>"><%= order_detail.formated_price %></li>
-                                      <li class="quantity"><%= order_detail.quantity %></li>
-                                      <li class="price_total" rel="<%= order_detail.total %>"><%= order_detail.formated_total %></li>
-                                      <li class="warranty"><%= order_detail.warranty %></li>
-                                      <li class="action">                                      
-                                        <%= link_to '<i class="icon-paste"></i>'.html_safe, ajax_edit_order_details_path(:id => order_detail.id), :class => "btn btn-info btn-xs btn-mini edit-order-detail fancybox.ajax" %>
-                                        <%= link_to 'X', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
+                                      <li class="unit">
+                                        <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
+                                      </li>                                    
+                                      <li class="">
+                                        <input class="form-control price_input price" type="text" name="order_details[<%= order_detail.product_id %>][price]" value="<%= order_detail.price %>" />
+                                      </li>
+                                      <li class="">
+                                        <input class="form-control number_input quantity" type="text" name="order_details[<%= order_detail.product_id %>][quantity]" value="<%= order_detail.quantity %>" />
+                                      </li>
+                                      <li class="total text-right">
+                                        <%= order_detail.total %>
+                                      </li>
+                                        <li class="warranty">
+                                            <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][warranty]" value="<%= order_detail.warranty %>" />
+                                        </li>
+                                      <li class="action">
+                                          <%= link_to 'Delete', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.product_id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
                                       </li>
                                   </ul>

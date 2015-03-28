@@ -18,14 +18,6 @@ class Order < ActiveRecord::Base
   
   accepts_nested_attributes_for :order_details
   
-  #before_create :create_quotation_code
-  
-  #has_one :older, :class_name => "Order", :foreign_key => "id"
-  #belongs_to :newer, :class_name => "Order", :foreign_key => "id"
-  
-  belongs_to :newer, class_name: "Order"
-  has_one :older, class_name: "Order", foreign_key: "newer_id", :dependent => :destroy
-  
   has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
   belongs_to :parent, class_name: "Order"
   
@@ -38,9 +30,11 @@ class Order < ActiveRecord::Base
   has_many :deliveries, :dependent => :destroy
   
   has_many :payment_records, :dependent => :destroy
+
+  #before_update :save_draft
   
   def valid_debt_date
-    if !deposit.nil? && deposit < 100
+    if !deposit.nil? && deposit < 100 && !debt_date.nil?
         if debt_date <= order_date
             errors.add(:debt_date, "can't be smaller than order date")
         end
@@ -282,6 +276,8 @@ class Order < ActiveRecord::Base
     end
     
     self.set_status('confirmed')
+    Notification.send_notification(salesperson, 'order_confirmed', self)
+    
     return true
   end
   
@@ -291,6 +287,8 @@ class Order < ActiveRecord::Base
     end
     
     self.set_status('items_confirmed')
+    Notification.send_notification(salesperson, 'order_items_confirmed', self)
+    
     return true
   end
   
@@ -317,6 +315,12 @@ class Order < ActiveRecord::Base
     total_sell_with_vat = 0.00
     total_vat_buy = 0.00
     total_vat_sell = 0.00
+    payment_paid = 0.00
+    payment_paid_vat = 0.00
+    payment_recieved = 0.00
+    payment_recieved_vat = 0.00
+    payment_vat_paid = 0.00
+    payment_vat_recieved = 0.00
     
     sell_orders = Order.customer_orders                  
                   .where('extract(year from order_date) = ?', year)
@@ -326,10 +330,14 @@ class Order < ActiveRecord::Base
                   
         
     sell_orders.each do |order|
-      if order.newer.nil?
+      if order.parent.nil?
         total_sell += order.total
         total_sell_with_vat += order.total_vat
         total_vat_sell += order.vat_amount
+        
+        payment_recieved_vat += order.paid_amount
+        payment_recieved += order.paid_amount/(order.tax.rate/100+1)
+        payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
       end      
     end
     
@@ -340,10 +348,14 @@ class Order < ActiveRecord::Base
     end
         
     buy_orders.each do |order|
-      if order.newer.nil?
+      if order.parent.nil?
         total_buy += order.total
         total_buy_with_vat += order.total_vat
         total_vat_buy += order.vat_amount
+        
+        payment_paid_vat += order.paid_amount
+        payment_paid += order.paid_amount/(order.tax.rate/100+1)
+        payment_vat_paid += order.paid_amount*(order.tax.rate/100)
       end      
     end
     
@@ -353,7 +365,14 @@ class Order < ActiveRecord::Base
       total_buy_with_vat: format_price(total_buy_with_vat),
       total_sell_with_vat: format_price(total_sell_with_vat),
       total_vat_buy: format_price(total_vat_buy),
-      total_vat_sell: format_price(total_vat_sell)
+      total_vat_sell: format_price(total_vat_sell),
+      
+      payment_paid_vat: format_price(payment_paid_vat),
+      payment_paid: format_price(payment_paid),
+      payment_vat_paid: format_price(payment_vat_paid),
+      payment_recieved_vat: format_price(payment_recieved_vat),
+      payment_recieved: format_price(payment_recieved),
+      payment_vat_recieved: format_price(payment_vat_recieved),
     }
   end
   
@@ -368,16 +387,11 @@ class Order < ActiveRecord::Base
   
   def self.get_confirmed_purchase_orders
     status = OrderStatus.get("confirmed")
-    
+
     orders = Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
-    
+
     return orders
-  end
-  
-  def get_outdated_orders
-    orders = Order.where(parent_id: self.id)
-                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
   end
   
   def self.datatable(params, user)
@@ -433,9 +447,7 @@ class Order < ActiveRecord::Base
       end
       
       puts User.current_user
-      
-      
-      
+
       row = [
               item.quotation_code,              
               link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
@@ -479,44 +491,38 @@ class Order < ActiveRecord::Base
   end
   
   def delivery_status
-    
+    status_arr = []
     if status.name != 'confirmed'
-      str = ""
-      
       if is_out_of_stock
-        str += '<div class="red">out_of_stock</div> '
+        status_arr << 'out_of_stock'
       end
-      
-      return str
-    end 
-    
-    if is_delivered?
-      return '<div class="green">delivered</div> '
     else
-      str = ""
-      if has_return_items
-        str += '<div class="orange">returnback</div> '
+      if is_delivered?
+        status_arr << 'delivered'
+      else
+        if has_return_items
+          status_arr << 'return_back'
+        end
+        if has_delvery_items
+          status_arr << 'not_delivered'
+        end
+        if is_out_of_stock
+          status_arr << 'out_of_stock'
+        end
       end
-      if has_delvery_items
-        str += '<div class="orange">not_delivered</div> '
-      end
-      if is_out_of_stock
-        str += '<div class="red">out_of_stock</div> '
-      end
-      
-      return str
     end
+    
+    update_attributes(delivery_status_name: status_arr.join(","))
+    
+    str = ""
+    status_arr.each do |s|
+      str += "<div class=\"#{s}\">#{s}</div>"
+    end
+    return str
   end
   
   def paid_amount
-    total = 0
-    total += payment_records.sum :amount
-    
-    get_outdated_orders.each do |o|
-      total += o.payment_records.sum :amount
-    end
-    
-    return total
+    total = payment_records.sum :amount
   end
   
   def remain_amount
@@ -539,16 +545,25 @@ class Order < ActiveRecord::Base
     paid_amount > total_vat
   end
   
-  def paid_status
+  def payment_status
+    status = ""
     if is_payback
-      return '<div class="orange">payback</div>'
+      status = "pay_back"
     elsif paid_amount == total_vat
-      return '<div class="green">paid</div>'
-    elsif !debt_date.nil? && debt_date > order_date
-      return '<div class="blue">debt</div>'
+      status = "paid"
+    elsif !is_deposited
+      status = "not_deposited"
+    elsif is_deposited && !debt_date.nil? && debt_date >= order_date
+      status = "debt"
+    elsif is_deposited && !debt_date.nil? && debt_date < order_date
+      status = "out_of_date"
     else
-      return '<div class="orange">waiting</div>'      
-    end    
+      status = "out_of_date"
+    end
+    
+    update_attributes(payment_status_name: status)
+    
+    return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
   
   def save_as_new(order_params)
@@ -630,36 +645,6 @@ class Order < ActiveRecord::Base
     return false
   end
   
-  def all_deliveries
-    parent = self.parent.nil? ? self : self.parent
-    
-    orders = Order.select("id").where(parent_id: parent.id)
-                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
-    
-    ids = [parent.id]
-    
-    orders.each do |order|
-      ids << order.id
-    end
-    
-    deliveries = Delivery.where(order_id: ids).order("created_at DESC")
-  end
-  
-  def all_payment_records
-    parent = self.parent.nil? ? self : self.parent
-    
-    orders = Order.select("id").where(parent_id: parent.id)
-                  .joins(:order_status).where(order_statuses: {name: "outdated"}) # orders confirmed
-    
-    ids = [parent.id]
-    
-    orders.each do |order|
-      ids << order.id
-    end
-    
-    payment_records = PaymentRecord.where(order_id: ids).order("created_at DESC")
-  end
-  
   def display_status
     if self.status.nil?
     else
@@ -704,6 +689,7 @@ class Order < ActiveRecord::Base
     end
     
     set_status("price_confirmed")
+    Notification.send_notification(purchase_manager, 'order_price_confirmed', self)
     
     return true
   end
@@ -733,9 +719,63 @@ class Order < ActiveRecord::Base
     ((paid_amount/total_vat)*100).round(2)
   end
   
+  def payment_out_of_date
+    is_deposited && !debt_date.nil? && debt_date < order_date
+  end
+  
   def is_deposited
     d = !deposit.nil? ? deposit : 100
     paid_percent >= d
+  end
+  
+  def update_order_details(order_details_params)
+    # Update current order details
+    self.order_details.each do |od|        
+      order_details_params.each do |line|
+        if line[1][:product_id].to_i == od.product_id
+          od.update_attributes(
+            unit: line[1][:unit],
+            price: line[1][:price],
+            quantity: line[1][:quantity],
+            warranty: line[1][:warranty]
+          )
+        end
+      end
+    end
+    
+    # Insert new order details
+    od_pids = []
+    self.order_details.each do |od|
+      od_pids << od.product_id
+    end
+    order_details_params.each do |line|
+      if !od_pids.include?(line[1][:product_id].to_i)
+        self.order_details.create(line[1])
+      end
+    end
+  end
+  
+  def all_deliveries
+    deliveries.order("created_at DESC")
+  end
+  
+  def save_draft
+    draft = self.dup
+    draft.parent_id = self.id
+
+    draft.save
+    self.order_details.each do |od|
+      draft_od = od.dup
+      draft_od.order_id = draft.id
+      draft_od.save
+    end
+
+    draft.parent = self
+    draft.set_status("draft")
+  end
+  
+  def all_payment_records
+    payment_records.order("created_at DESC")
   end
   
 end

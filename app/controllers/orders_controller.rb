@@ -53,6 +53,14 @@ class OrdersController < ApplicationController
     @order.salesperson = current_user
     @order.create_quotation_code
     
+    order_details_params = params[:order_details]
+    order_details_params.each do |line|
+      od = OrderDetail.new(line[1])      
+      @order.order_details << od
+    end
+    
+    p @order.order_details    
+    
     respond_to do |format|
       if @order.save
         @order.set_status('new')
@@ -73,50 +81,24 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1
   # PATCH/PUT /orders/1.json
   def update
-    
-    #if !params[:dup].nil?
-      
-      # duplicate order to save
-      @dup_order = @order.save_as_new(order_params)
-      @dup_order.salesperson = current_user
-      @dup_order.save
-        
+    list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
+    @order.save_draft
       respond_to do |format|
-        if @dup_order.save
-          @dup_order.set_status('new')
-          if !params[:confirm_items].nil?
-            format.html { redirect_to confirm_items_orders_url(id: @dup_order.id) }
+        if @order.update(order_params)          
+          @order.update_order_details(params[:order_details])
+          
+          if !params[:confirm].nil?
+            format.html { redirect_to confirm_order_orders_url(id: @order.id) }
             format.json { head :no_content }
           else
-            list_path = @dup_order.is_purchase ? purchase_orders_orders_path : orders_path
             format.html { redirect_to list_path, notice: 'Order was successfully updated.' }
-            format.json { render action: 'show', status: :created, location: @order }
+            format.json { head :no_content }
           end          
         else
-          @order = @dup_order
           format.html { render action: 'edit' }
           format.json { render json: @order.errors, status: :unprocessable_entity }
         end
       end
-      
-      
-    #else
-    #  respond_to do |format|
-    #    if @order.update(order_params)
-    #      if !params[:confirm].nil?
-    #        format.html { redirect_to confirm_order_orders_url(id: @order.id) }
-    #        format.json { head :no_content }
-    #      else
-    #        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
-    #        format.json { head :no_content }
-    #      end          
-    #    else
-    #      format.html { render action: 'edit' }
-    #      format.json { render json: @order.errors, status: :unprocessable_entity }
-    #    end
-    #  end
-    #end
-
   end
 
   # DELETE /orders/1
@@ -181,7 +163,7 @@ class OrdersController < ApplicationController
   def confirm_order
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
-      if @order.confirm_order  
+      if @order.confirm_order        
         format.html { redirect_to list_path, notice: 'Order was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -195,8 +177,7 @@ class OrdersController < ApplicationController
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     
     respond_to do |format|
-      if @order.confirm_items
-        Notification.send_notification(current_user, 'order_items_confirmed', @order)
+      if @order.confirm_items        
         format.html { redirect_to list_path, notice: 'Order Items was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -208,8 +189,7 @@ class OrdersController < ApplicationController
   
   def confirm_price    
     respond_to do |format|
-      if @order.confirm_price
-        Notification.send_notification(current_user, 'order_price_confirmed', @order)
+      if @order.confirm_price        
         format.html { redirect_to pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -227,7 +207,7 @@ class OrdersController < ApplicationController
     result[:items].each_with_index do |item, index|
       
       
-      actions = '<div class="text-right"><div class="btn-group" style="height: 26px;">
+      actions = '<div class="text-right"><div class="btn-group actions">
                     <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
       
@@ -242,15 +222,15 @@ class OrdersController < ApplicationController
         actions += '<li>'+view_context.link_to("Confirm Order", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
       end
       if can? :change, item
-        actions += '<li>'+view_context.link_to("Change", change_orders_path(:id => item.id))+'</li>'
-      end
-      actions += '<li class="divider"></li>'
-      if can? :show, item
-        actions += '<li>'+view_context.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
+        actions += '<li>'+view_context.link_to("Change Items", change_orders_path(:id => item.id))+'</li>'
       end
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_order_path(item), title: "Edit Order")+'</li>'
-      end      
+      end   
+      actions += '<li class="divider"></li>'
+      if can? :show, item
+        actions += '<li>'+view_context.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
+      end         
       if can? :destroy, item
         actions += '<li>'+view_context.link_to("Delete", item, method: :delete, data: { confirm: 'Are you sure?' })+'</li>'
       end
@@ -274,17 +254,24 @@ class OrdersController < ApplicationController
   end
   
   def do_change
-    # duplicate order to save
-    @dup_order = @order.save_as_new(order_params)
-    @dup_order.salesperson = current_user
-    @dup_order.save
-    
-    @dup_order.set_status('items_confirmed')
-    @order.set_status("outdated")
-
+    @order.save_draft
     respond_to do |format|
-      format.html { redirect_to orders_path, notice: 'Order was successfully changed.' }
-      format.json { render action: 'show', status: :created, location: @order }          
+      if @order.update(order_params)
+        
+        if @order.is_purchase
+          @order.confirm_price
+        else
+          @order.confirm_items
+        end
+        
+        @order.update_order_details(params[:order_details])       
+        
+        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'edit' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
     end
       
   end
@@ -344,10 +331,6 @@ class OrdersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_params
-      if params[:order][:order_detail_ids].nil?
-        params[:order][:order_detail_ids] = []
-      end
-      
       params.require(:order).permit(:customer_id, :supplier_id, :agent_id, :shipping_place, :payment_method_id, :payment_deadline, :buyer_name, :buyer_name, :buyer_company, :buyer_address, :buyer_tax_code, :buyer_phone, :buyer_fax, :buyer_email, :tax_id, :order_date,
                                     :order_deadline,
                                     :deposit,
@@ -356,8 +339,7 @@ class OrdersController < ApplicationController
                                     :warranty_place,
                                     :warranty_cost,
                                     :watermark,
-                                    :debt_date,
-                                    :order_detail_ids => []                                   
+                                    :debt_date,                         
                                   )
     end
     
