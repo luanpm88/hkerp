@@ -150,17 +150,23 @@ class Notification < ActiveRecord::Base
   end
   
   def self.sales_delivery_alert
-    count = Order.customer_orders.where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+    count = Order.customer_orders
+                              .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                              .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
   def self.purchase_delivery_alert
-    count = Order.purchase_orders.where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+    count = Order.purchase_orders
+                              .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                              .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
   def self.delivery_alert
-    count = Order.where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+    count = Order
+                .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
