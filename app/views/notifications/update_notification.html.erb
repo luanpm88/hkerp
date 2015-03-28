@@ -1,7 +1,9 @@
-                        <% current_user.notification_top.each do |notification| %>
-                            <div style="display: none" class="notification_count">
-                              <%= current_user.notification_unread_count if current_user.notification_unread_count > 0 %>
-                            </div>
+                        <div style="display: none" class="notification_count">
+							<%= current_user.notification_unread_count if current_user.notification_unread_count > 0 %>
+						</div>
+						
+						<% current_user.notification_top.each do |notification| %>
+                            
 							<div class="notification-messages info info-<%= notification.viewed %>" onclick="window.location='<%= notification.display_url %>'">
 									<% if !notification.icon.nil? %>
 										<div class="iconholder">

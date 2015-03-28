@@ -99,8 +99,7 @@
 			type: "GET",
 			success:function(data, textStatus, jqXHR)
 			{		    
-				$('.top_notification').html(data);
-				
+				$('.top_notification').html(data);				
 				$('.notification_count').html($('<div>').html(data).find('.notification_count').html().trim());
 			}
 		});
