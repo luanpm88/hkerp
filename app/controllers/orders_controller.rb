@@ -41,8 +41,8 @@ class OrdersController < ApplicationController
       @order.order_date = (@order.order_date).strftime("%Y-%m-%d")
       @order.order_deadline = (@order.order_deadline).strftime("%Y-%m-%d")
       @order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
-      @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d")
-      @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i
+      @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d") if !@order.debt_date.nil?
+      @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil?
       @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
   end
 
@@ -305,8 +305,8 @@ class OrdersController < ApplicationController
     @order.order_date = (@order.order_date).strftime("%Y-%m-%d")
     @order.order_deadline = (@order.order_deadline).strftime("%Y-%m-%d")
     @order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
-    @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d")
-    @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i
+    @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d") if !@order.debt_date.nil?
+    @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil?
     @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
   end
   

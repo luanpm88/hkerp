@@ -134,16 +134,16 @@ class Notification < ActiveRecord::Base
     
     case type_name
     when 'order_items_confirmed'
-      link_helper.url_for({controller: "orders", action: "pricing_orders"})
+      link_helper.url_for({controller: "orders", action: "pricing_orders", only_path: false})
     when 'order_price_confirmed'
-      link_helper.url_for({controller: "orders"})
+      link_helper.url_for({controller: "orders", only_path: false})
     when 'order_confirmed'
       order = Order.find(item_id)
-      order.is_purchase ? link_helper.url_for({controller: "deliveries", purchase: 1}) : link_helper.url_for({controller: "deliveries", only_path: false})
+      order.is_purchase ? link_helper.url_for({controller: "deliveries", purchase: 1, only_path: false}) : link_helper.url_for({controller: "deliveries", only_path: false})
     when 'order_out_of_stock'
-      link_helper.url_for({controller: "orders", action: "pricing_orders"})
+      link_helper.url_for({controller: "orders", action: "pricing_orders", only_path: false})
     when 'order_not_deposited'
-      link_helper.url_for({controller: "accounting", action: "orders"})
+      link_helper.url_for({controller: "accounting", action: "orders", only_path: false})
     else
     end
   end
