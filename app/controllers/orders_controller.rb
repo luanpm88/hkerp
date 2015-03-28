@@ -296,7 +296,7 @@ class OrdersController < ApplicationController
       if !params[:confirm].nil?
         format.html { redirect_to confirm_price_orders_url(id: @order.id) }
       end
-      format.html { redirect_to update_price_orders_url(id: @order.id) }, notice: 'The prices was successfully updated.' }
+      format.html { redirect_to update_price_orders_url(id: @order.id), notice: 'The prices was successfully updated.' }
       format.json { render action: 'show', status: :created, location: @order }          
     end
   end
