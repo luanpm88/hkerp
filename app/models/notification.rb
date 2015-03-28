@@ -208,6 +208,6 @@ class Notification < ActiveRecord::Base
   end
   
   def self.accounting_alert
-    self.purchase_payment_alert + self.sales_payment_alert
+    self.purchase_payment_alert.to_i + self.sales_payment_alert.to_i
   end
 end
