@@ -15,6 +15,6 @@ class ProductPrice < ActiveRecord::Base
   end
   
   def price_formated
-    Order.format_price(price)
+    price.nil? ? "" : Order.format_price(price)
   end
 end
