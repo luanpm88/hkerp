@@ -193,13 +193,17 @@ class Notification < ActiveRecord::Base
   end
   
   def self.sales_payment_alert
-    count = Order.customer_orders.where("payment_status_name IN (?,?,?)", 'out_of_date', 'not_deposited', 'pay_back').where(parent_id: nil).count
+    count = Order.customer_orders
+                .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                .where("payment_status_name IN (?,?,?)", 'out_of_date', 'not_deposited', 'pay_back').where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
   
   def self.purchase_payment_alert
-    count = Order.purchase_orders.where("payment_status_name IN (?,?)", 'out_of_date', 'not_deposited').where(parent_id: nil).count
+    count = Order.purchase_orders
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .where("payment_status_name IN (?,?)", 'out_of_date', 'not_deposited').where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
