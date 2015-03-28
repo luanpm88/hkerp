@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Hi <%= @user.name %>,</h1>
+    <h3>This is a notification from HK-ERP:</h3>
+    <p>
+      <%= @notification.display_title %>
+    </p>
+    <p>
+      <%= @notification.display_description %>
+    </p>
+    <p>
+      <% if !@notification.display_url.nil? %>
+        <a href="<%= @notification.display_url %>">Click here for more details</a>
+      <% end %>
+    </p>
+  </body>
+</html>

@@ -1,4 +1,5 @@
 Hkerp::Application.routes.draw do
+  default_url_options :host => "27.0.15.181:3000"
   
   resources :product_prices
 

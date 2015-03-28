@@ -5,7 +5,9 @@ class Notification < ActiveRecord::Base
   def normal
   end
   
-  def self.send_notification(current_user, type, item)   
+  def self.send_notification(current_user, type, item)
+    n = Notification.new
+    
     case type
     when 'order_items_confirmed'
       users = User.joins(:roles)
@@ -15,8 +17,7 @@ class Notification < ActiveRecord::Base
         users = users.where(id: item.purchase_manager.id)
       end      
       
-      users.each do |user|
-        n = Notification.new
+      users.each do |user|        
         n.type_name = type
         n.user = user
         n.sender = current_user
@@ -28,7 +29,6 @@ class Notification < ActiveRecord::Base
       users = User.where(id: item.salesperson_id)
       
       users.each do |user|
-        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
@@ -41,7 +41,6 @@ class Notification < ActiveRecord::Base
                   .where(roles: {name: 'storage_manager'})
       
       users.each do |user|
-        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
@@ -63,7 +62,6 @@ class Notification < ActiveRecord::Base
                   .where(roles: {name: 'purchase_manager'})
       
       users.each do |user|
-        n = Notification.new
         n.type_name = type
         n.user = user
         n.icon = 'icon-warning-sign'
@@ -78,7 +76,6 @@ class Notification < ActiveRecord::Base
                   .where(roles: {name: 'accountant'})
       
       users.each do |user|
-        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
@@ -90,6 +87,8 @@ class Notification < ActiveRecord::Base
       
     else
     end
+    
+    UserMailer.send_notification(n).deliver
   end
   
   def display_title
@@ -140,7 +139,7 @@ class Notification < ActiveRecord::Base
       link_helper.url_for({controller: "orders"})
     when 'order_confirmed'
       order = Order.find(item_id)
-      order.is_purchase ? link_helper.url_for({controller: "deliveries", purchase: 1}) : link_helper.url_for({controller: "deliveries"})
+      order.is_purchase ? link_helper.url_for({controller: "deliveries", purchase: 1}) : link_helper.url_for({controller: "deliveries", only_path: false})
     when 'order_out_of_stock'
       link_helper.url_for({controller: "orders", action: "pricing_orders"})
     when 'order_not_deposited'
