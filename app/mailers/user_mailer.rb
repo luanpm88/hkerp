@@ -11,6 +11,6 @@ class UserMailer < ActionMailer::Base
     @notification = notification
     @user = notification.user
     
-    mail(to: "luanpm@hoangkhang.com.vn", subject: notification.display_title)
+    mail(to: @user.email, subject: notification.display_title)
   end
 end

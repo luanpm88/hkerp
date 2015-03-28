@@ -5,8 +5,7 @@ class Notification < ActiveRecord::Base
   def normal
   end
   
-  def self.send_notification(current_user, type, item)
-    n = Notification.new
+  def self.send_notification(current_user, type, item)    
     
     case type
     when 'order_items_confirmed'
@@ -17,36 +16,45 @@ class Notification < ActiveRecord::Base
         users = users.where(id: item.purchase_manager.id)
       end      
       
-      users.each do |user|        
+      users.each do |user|
+        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
         n.item_id = item.id
         
         n.save
+        
+        UserMailer.send_notification(n).deliver
       end
     when 'order_price_confirmed'
       users = User.where(id: item.salesperson_id)
       
       users.each do |user|
+        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
         n.item_id = item.id
         
         n.save
+        
+        UserMailer.send_notification(n).deliver
       end
     when 'order_confirmed'
       users = User.joins(:roles)
                   .where(roles: {name: 'storage_manager'})
       
       users.each do |user|
+        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
         n.item_id = item.id
         
         n.save
+        
+        UserMailer.send_notification(n).deliver
       end
       
       if !item.is_deposited
@@ -62,12 +70,15 @@ class Notification < ActiveRecord::Base
                   .where(roles: {name: 'purchase_manager'})
       
       users.each do |user|
+        n = Notification.new
         n.type_name = type
         n.user = user
         n.icon = 'icon-warning-sign'
         n.item_id = item.id
         
         n.save
+        
+        UserMailer.send_notification(n).deliver
       end
     
     
@@ -76,19 +87,22 @@ class Notification < ActiveRecord::Base
                   .where(roles: {name: 'accountant'})
       
       users.each do |user|
+        n = Notification.new
         n.type_name = type
         n.user = user
         n.sender = current_user
         n.item_id = item.id
         
         n.save
+        
+        UserMailer.send_notification(n).deliver
       end
       
       
     else
     end
     
-    UserMailer.send_notification(n).deliver
+    
   end
   
   def display_title
