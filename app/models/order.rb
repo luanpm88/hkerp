@@ -493,9 +493,9 @@ class Order < ActiveRecord::Base
   def delivery_status
     status_arr = []
     if status.name != 'confirmed'
-      if is_out_of_stock
-        status_arr << 'out_of_stock'
-      end
+      #if is_out_of_stock
+      #  status_arr << 'out_of_stock'
+      #end
     else
       if is_delivered?
         status_arr << 'delivered'
