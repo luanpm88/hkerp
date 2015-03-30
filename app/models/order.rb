@@ -14,20 +14,14 @@ class Order < ActiveRecord::Base
   belongs_to :salesperson, :class_name => "User"
   belongs_to :purchase_manager, :class_name => "User"
   
+  has_many :order_details, :dependent => :destroy
   
-  
-  accepts_nested_attributes_for :order_details
-  
-  
+  has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
   belongs_to :parent, class_name: "Order"
   
   has_and_belongs_to_many :order_statuses
   
   belongs_to :order_status
-  
-  has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
-  
-  has_many :order_details, :dependent => :destroy
   
   has_many :sales_deliveries, :dependent => :destroy
   
