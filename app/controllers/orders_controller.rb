@@ -54,9 +54,11 @@ class OrdersController < ApplicationController
     @order.create_quotation_code
     
     order_details_params = params[:order_details]
-    order_details_params.each do |line|
-      od = OrderDetail.new(line[1])      
-      @order.order_details << od
+    if !order_details_params.nil?
+        order_details_params.each do |line|
+        od = OrderDetail.new(line[1])      
+        @order.order_details << od
+      end
     end
     
     p @order.order_details    

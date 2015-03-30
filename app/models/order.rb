@@ -727,6 +727,7 @@ class Order < ActiveRecord::Base
   end
   
   def update_order_details(order_details_params)
+    
     # Update current order details
     self.order_details.each do |od|        
       order_details_params.each do |line|
