@@ -154,6 +154,8 @@ class OrdersController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+    
+    #render layout: false
   end
   
   def purchase_orders
@@ -341,7 +343,8 @@ class OrdersController < ApplicationController
                                     :warranty_place,
                                     :warranty_cost,
                                     :watermark,
-                                    :debt_date,                         
+                                    :debt_date,
+                                    :customer_po
                                   )
     end
     
@@ -354,7 +357,8 @@ class OrdersController < ApplicationController
                                     :warranty_place,
                                     :warranty_cost,
                                     :watermark,
-                                    :debt_date,                     
+                                    :debt_date,
+                                    :customer_po
                                   )
     end
 end

@@ -572,7 +572,8 @@ CREATE TABLE orders (
     purchase_manager_id integer,
     debt_date timestamp without time zone,
     delivery_status_name character varying(255),
-    payment_status_name character varying(255)
+    payment_status_name character varying(255),
+    customer_po character varying(255)
 );
 
 
@@ -1987,4 +1988,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150327153102');
 INSERT INTO schema_migrations (version) VALUES ('20150328012949');
 
 INSERT INTO schema_migrations (version) VALUES ('20150330060446');
+
+INSERT INTO schema_migrations (version) VALUES ('20150330070035');
 

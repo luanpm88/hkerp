@@ -728,6 +728,10 @@ class Order < ActiveRecord::Base
   
   def update_order_details(order_details_params)
     
+    if order_details_params.nil?
+      return false
+    end
+    
     # Update current order details
     self.order_details.each do |od|        
       order_details_params.each do |line|
