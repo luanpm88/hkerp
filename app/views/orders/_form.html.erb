@@ -30,41 +30,63 @@
                   
                   
                   <%= form_for(@order) do |f| %>
+                    <% if !params[:purchase].nil? %>
+                        <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
+                    <% end %>
 
                     <div class="row column-seperation">
                            
                             <div class="col-md-6">
-                              
-                              <div class="form-group">
-                                   <label class="form-label"><%= f.label :supplier %></label>
-                                   <span class="help">(required)</span>
-                                   <div class="input-with-icon  right">                                       
-                                     <i class=""></i>
-                                      <% if !params[:purchase].nil? %>
-                                           <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
-                                      <% end %>
-                                      
-                                      <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
-                                      <br />
-                                      <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                            
-                                   </div>
-                              </div>
-                              
-                              <div class="form-group">
-                                <label class="form-label"><%= f.label :customer %></label>
-                                <span class="help">(required)</span>
-                                <div class="input-with-icon  right">                                       
-                                  <i class=""></i>
+                                
+                                <% if params[:purchase] == '1' %>
+                                    <div class="form-group">
+                                         <label class="form-label"><%= f.label :supplier %></label>
+                                         <span class="help">(required)</span>
+                                         <div class="input-with-icon  right">                                       
+                                           <i class=""></i>
+                                            <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
+                                            <br />
+                                            <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
                                   
-                                  <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
-                                  <br />
-                                   <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.customer), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                                  
-                                  
-                                </div>
-                              </div>
-                              
+                                         </div>
+                                    </div>
+                                <% else %>
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :supplier %></label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon  right">                                       
+                                          <i class=""></i>
+                                            <input type="hidden" name="order[supplier_id]" value="<%= @order.supplier_id %>">
+                                            <strong><%= @order.supplier.name %></strong>                                 
+                                        </div>
+                                    </div>
+                                <% end %>
+                                
+                                <% if params[:purchase] == '1' %>
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :customer %></label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon  right">                                       
+                                          <i class=""></i>
+                                            <input type="hidden" name="order[customer_id]" value="<%= @order.customer_id %>">
+                                            <strong><%= @order.customer.name %></strong>                                 
+                                        </div>
+                                    </div>
+                                <% else %>
+                                    <div class="form-group">
+                                      <label class="form-label"><%= f.label :customer %></label>
+                                      <span class="help">(required)</span>
+                                      <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        
+                                        <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
+                                        <br />
+                                         <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.customer), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                        
+                                        
+                                      </div>
+                                    </div>
+                                <% end %>
                               
                                 <div class="form-group order-form-agent-select">
                                   <label class="form-label"><%= f.label :agent %></label>

@@ -369,11 +369,11 @@
 	});
 	
 	    $('input[name="order[customer_id]"]').live("change", function() {
-		updateOrderCustomerFormInfo($(this).val());
+			updateOrderCustomerFormInfo($(this).val());
 	    });
 		
 		$('input[name="order[supplier_id]"]').live("change", function() {
-		updateOrderCustomerFormInfo($(this).val());
+			updateOrderCustomerFormInfo($('input[name="order[customer_id]"]').val());
 	    });
 	    
 	    
