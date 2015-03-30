@@ -701,7 +701,8 @@ CREATE TABLE payment_records (
     note text,
     paid_person text,
     paid_address text,
-    debt_date timestamp without time zone
+    debt_date timestamp without time zone,
+    payment_method_id integer
 );
 
 
@@ -1925,8 +1926,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140807031530');
 
 INSERT INTO schema_migrations (version) VALUES ('20140811081940');
 
-INSERT INTO schema_migrations (version) VALUES ('20140815012457');
-
 INSERT INTO schema_migrations (version) VALUES ('20140815013938');
 
 INSERT INTO schema_migrations (version) VALUES ('20150116023630');
@@ -1986,4 +1985,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150327035733');
 INSERT INTO schema_migrations (version) VALUES ('20150327153102');
 
 INSERT INTO schema_migrations (version) VALUES ('20150328012949');
+
+INSERT INTO schema_migrations (version) VALUES ('20150330060446');
 

@@ -1,16 +1,23 @@
 class PaymentRecord < ActiveRecord::Base
   belongs_to :order
   belongs_to :accountant, :class_name => "User"
+  belongs_to :payment_method
+  
+  validates :note, presence: true
+  validates :payment_method_id, presence: true
   
   validate :valid_amount
   validate :valid_debt_date
-  validate :note, presence: true
+  
   
   def valid_amount
     if false
       errors.add(:amount, "too small")
-    elsif amount.to_f > order.remain_amount.to_f
-      puts amount.to_s+"dddddd"+order.remain_amount.to_s
+    end
+    if !order.is_payback && amount.to_f > order.remain_amount.to_f
+      errors.add(:amount, "can't be greater than remain amount")
+    end
+    if order.is_payback && amount.to_f > order.remain_amount.to_f.abs
       errors.add(:amount, "can't be greater than remain amount")
     end
   end

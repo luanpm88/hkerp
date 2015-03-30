@@ -21,14 +21,35 @@
                                     
                                     <div class="row">
                                       <div class="col-md-6">
-                                        <div class="form-group">
-                                            <label class="form-label"><%= f.label :amount %></label>
-                                            <span class="help">(required)</span>
-                                            <div class="input-with-icon  right">                                       
-                                                    <i class=""></i>
-                                                    <%= f.text_field :amount, :class => "form-control price_input", value: @order.remain_amount_formated %>
-                                            </div>
-                                        </div>
+										<div class="row">
+											<div class="col-md-6">
+													<div class="form-group">
+														<label class="form-label"><%= f.label :amount %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon  right">                                       
+																<i class=""></i>
+																<%= f.text_field :amount, :class => "form-control price_input", value: @order.remain_amount_formated %>
+														</div>
+													</div>
+											</div>
+											<div class="col-md-6">
+													 <div class="form-group">
+													   <label class="form-label"><%= f.label :payment_method %></label>
+													   <span class="help"></span>
+														 <div class="input-with-icon  right">                                       
+														   <i class=""></i>
+														   <select name="payment_record[payment_method_id]" class="modern_select" style="width: 100%">
+																   <option value="">Select Method</option>
+																   <% PaymentMethod.all.each do |payment| %>
+																	   <option value="<%= payment.id %>" <% if !@payment_record.payment_method_id.nil? && @payment_record.payment_method_id == payment.id %>selected="selected"<% end %>>
+																		 <%= payment.name %>
+																	   </option>
+																   <% end %>
+															</select>
+														 </div>
+													 </div>
+											  </div>
+										</div>
                                       </div>
                                       <div class="col-md-6">
                                         
