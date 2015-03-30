@@ -22,7 +22,7 @@ class PaymentRecordsController < ApplicationController
     @order = @payment_record.order
     
     @hk = @order.supplier
-    render  :pdf => "payment_"+@order.quotation_code,
+    render  :pdf => "payment_"+@order.quotation_code+"-"+@payment_record.id.to_s,
             :template => 'payment_records/show.pdf.erb',
             :layout => nil,
             :footer => {
