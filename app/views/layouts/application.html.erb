@@ -406,7 +406,7 @@
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
 			    //format typping price
-			      $('input.price_input').number( true, 2 );
+			      $('input.price_input').number( true, 0 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -457,7 +457,7 @@
 						$('#product-line-items').append(success_box.html());
 					}
 					
-					$('input.price_input').number( true, 2 );
+					$('input.price_input').number( true, 0 );
 					$('input.number_input').number( true, 0 );
 				}
 				else
@@ -577,7 +577,7 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
-			    $('input.price_input').number( true, 2 );
+			    $('input.price_input').number( true, 0 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -607,7 +607,7 @@
 	    });
 	    
 	    //format typping price
-	    $('input.price_input').number( true, 2 );
+	    $('input.price_input').number( true, 0 );
 	    
 	    //show order
 	    //action for add agent button
@@ -1187,15 +1187,15 @@
 		  <span class="badge badge-important pull-right alert-level1"><%= Notification.accounting_alert %></span>
 		<% end %>
 		<ul class="sub-menu">
-		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "accounting_url" %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accounting" %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
-			<%= link_to 'Sales Orders', {controller: "accounting", action: "orders"} %>			
+			<%= link_to 'Sales Orders', "/accounting/orders" %>			
 		  </li>
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
-			<%= link_to 'Purchase Orders', {controller: "accounting", action: "orders", purchase: true} %>
+			<%= link_to 'Purchase Orders', "/accounting/orders?purchase=1" %>
 		  </li>
 		</ul>
 	    </li>

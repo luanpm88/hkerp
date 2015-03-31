@@ -159,6 +159,8 @@ Hkerp::Application.routes.draw do
     end
   end
 
+  get '/accounting', to: 'accounting#index', as: 'accounting'
+  get '/accounting/orders', to: 'accounting#orders', as: 'orders_accounting'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
