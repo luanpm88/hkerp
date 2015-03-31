@@ -4,7 +4,7 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :payment_method
   
   validates :note, presence: true
-  #validates :payment_method, presence: true
+  validates :payment_method, presence: true
   
   validate :valid_amount
   validate :valid_debt_date
