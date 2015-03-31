@@ -1205,7 +1205,7 @@
 	    <li class="start<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && ["index"].include?(params[:action]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-signout"></i>
-		  <span class="title" onclick="">Sale</span>
+		  <span class="title" onclick="">Sales</span>
 		  <span class="arrow<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && params[:action] != "purchase_orders" %> open<% end %>"></span>
 		  <span class="badge badge-important pull-right alert-level1"><%= Notification.sales_alert %></span>
 		<% end %>
