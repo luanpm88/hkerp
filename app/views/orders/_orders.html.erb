@@ -1,21 +1,21 @@
 					<table class="table table-striped no-more-tables datatable-<%= "purchase-" if params[:action] == "purchase_orders" %>orders no-filter">
                                         <thead>
                                             <tr>
-                                                <th style="width:1%" >
+                                                <th>
                                                     Code
                                                 </th>
                                                 <% if params[:action] != "purchase_orders" %>
-													<th width="25%">Customer</th>
+													<th>Customer</th>
                                                 <% else %>
-													<th width="25%">Supplier</th>
+													<th>Supplier</th>
                                                 <% end %>
                                                 <th width="10%" style="text-align: right">Total Price</th>                                             
-						<th style="text-align: center" width="9%">Salesperson</th>
-						<th style="text-align: center" width="9%">Purchase Manager</th>
-						<th style="text-align: center" width="13%">Order Date</th>
-						<th style="text-align: center" width="13%">Delivery</th>
-						<th style="text-align: center" width="13%">Status</th>
-                                                <th style="width:160px;text-align: center">Action</th>   
+						<th style="text-align: center">Salesperson</th>
+						<th style="text-align: center">Purchase Manager</th>
+						<th style="text-align: center">Order Date</th>
+						<th style="text-align: center">Delivery</th>
+						<th style="text-align: center">Status</th>
+                                                <th style="text-align: center">Actions</th>   
                                             </tr>
                                         </thead>
                                         <tbody>

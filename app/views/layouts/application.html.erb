@@ -1187,16 +1187,15 @@
 		  <span class="badge badge-important pull-right alert-level1"><%= Notification.accounting_alert %></span>
 		<% end %>
 		<ul class="sub-menu">
-		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', {controller: "accounting"} %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "accounting_url" %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
-			<%= link_to 'Sales Orders', {controller: "accounting", action: "orders"} %>			
+			<%= link_to 'Sales Orders', url: {controller: "accounting", action: "orders"} %>			
 		  </li>
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
-			<%= link_to 'Purchase Orders', {controller: "accounting", action: "orders", purchase: true} %>
-			
+			<%= link_to 'Purchase Orders', url: {controller: "accounting", action: "orders", purchase: true} %>
 		  </li>
 		</ul>
 	    </li>
@@ -1231,7 +1230,7 @@
 		    
 		    <li<% if ["pricing_orders"].include?(params[:action]) %> class="active"<% end %>>
 				<span class="badge badge-important pull-right alert-level2"><%= Notification.items_confirmed_sales_order_alert %></span>
-				<%= link_to 'Pricing Orders', {controller: "orders", action: "pricing_orders"} %>
+				<%= link_to 'Pricing Orders', pricing_orders_orders_url %>
 				
 		    </li>
 		    
