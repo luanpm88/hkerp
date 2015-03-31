@@ -1191,11 +1191,11 @@
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
-			<%= link_to 'Sales Orders', url: {controller: "accounting", action: "orders"} %>			
+			<%= link_to 'Sales Orders', {controller: "accounting", action: "orders"} %>			
 		  </li>
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
-			<%= link_to 'Purchase Orders', url: {controller: "accounting", action: "orders", purchase: true} %>
+			<%= link_to 'Purchase Orders', {controller: "accounting", action: "orders", purchase: true} %>
 		  </li>
 		</ul>
 	    </li>
