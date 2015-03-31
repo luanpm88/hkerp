@@ -47,9 +47,9 @@ class Ability
       
       can :read, Contact
       can :create, Contact
-      can :update, Contact do |contact|
-        contact.user_id == user.id
-      end
+      can :update, Contact #do |contact|
+      #  contact.user_id == user.id
+      #end
       can :ajax_show, Contact
       can :ajax_new, Contact
       can :ajax_create, Contact
@@ -60,9 +60,9 @@ class Ability
       
       can :read, Product
       can :create, Product
-      can :update, Product do |product|
-        product.user_id == user.id
-      end
+      can :update, Product #do |product|
+      #  product.user_id == user.id
+      #end
       
       can :read, Category
       can :create, Category

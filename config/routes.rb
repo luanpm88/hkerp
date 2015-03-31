@@ -148,6 +148,7 @@ Hkerp::Application.routes.draw do
       get :sales_delivery
       get :update_price
       patch :do_update_price
+
     end
   end
   
