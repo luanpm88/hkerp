@@ -675,8 +675,9 @@ class Order < ActiveRecord::Base
   
   def self.pricing_orders(user)
     orders = Order.customer_orders
-                  #.where('purchase_manager_id=? OR purchase_manager_id IS NULL', user.id)
                   .joins(:order_status).where(order_statuses: {name: ["confirmed","items_confirmed","price_confirmed"]})
+                  #.where('purchase_manager_id=? OR purchase_manager_id IS NULL', user.id)
+                  
   end
   
   def confirm_price
