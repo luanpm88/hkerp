@@ -96,44 +96,44 @@ class Ability
       
       if user.has_role? "salesperson"
         can :create, Order do |order|
-          !order.is_purchase || order.id.nil?
+          order.is_sales || order.id.nil?
         end
         can :view_list, Order
         can :read, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id
+          order.is_sales && order.salesperson_id == user.id
         end
         can :update, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && ["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
         end
         can :destroy, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && ["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
         end
         can :confirm_items, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && ["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
         end
         can :confirm_order, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && !["confirmed"].include?(order.status.name)))
+          order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && !["confirmed"].include?(order.status.name)))
                             
         end        
         can :change, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'confirmed'
+          order.is_sales && order.salesperson_id == user.id && order.status.name == 'confirmed'
         end
         can :do_change, Order do |order|
-          order.salesperson_id == user.id && order.status.name == 'confirmed'
+          order.is_sales && order.salesperson_id == user.id && order.status.name == 'confirmed'
         end
         
         can :update_info, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && !["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && !["new"].include?(order.status.name)
         end
         can :do_update_info, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && !["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && !["new"].include?(order.status.name)
         end
 
         #can :print_order, Order do |order|
         #  order.salesperson_id == user.id && order.status.name == 'confirmed'
         #end
         can :download_pdf, Order do |order|
-          order.salesperson_id == user.id
+          order.is_sales && order.salesperson_id == user.id
         end        
         #can :purchase_orders, Order do |order|
         #  order.salesperson_id == user.id
@@ -154,13 +154,13 @@ class Ability
       if user.has_role? "purchase_manager"        
         can :show, Order
         can :pricing_orders, Order do |order|
-          !order.is_purchase && order.status.name == 'items_confirmed'
+          order.is_sales && order.status.name == 'items_confirmed'
         end
         can :update_price, Order do |order|
-          !order.is_purchase && order.status.name == 'items_confirmed'
+          order.is_sales && order.status.name == 'items_confirmed'
         end
         can :do_update_price, Order do |order|
-          !order.is_purchase && order.status.name == 'items_confirmed'
+          order.is_sales && order.status.name == 'items_confirmed'
         end
 
         can :update_price, Product
