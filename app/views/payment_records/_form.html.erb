@@ -54,7 +54,7 @@
                                       <div class="col-md-6">
                                         
 										
-										<% if @order.is_deposited %>
+										<% if @order.deposit.nil? ||  @order.deposit != 100 %>
 										
 													<div class="row">
 														<div class="col-md-3">
