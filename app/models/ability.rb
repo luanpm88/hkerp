@@ -45,6 +45,8 @@ class Ability
     else
       can :read_notification, Notification
       
+      can :read, User
+      
       can :read, Contact
       can :create, Contact
       can :update, Contact #do |contact|
