@@ -91,7 +91,7 @@
 											<%= link_to 'Pay Order', {controller: "payment_records", action: "new", id: order.id} if !order.is_paid %>
 										</li>
 										<%  if can? :update_info, order %>
-											<li><%= link_to 'Update Info', update_info_orders_path(:id => order.id) %></li>											
+											<li><%= link_to 'Update Info', update_info_orders_path(:id => order.id, accounting: true) %></li>											
 										<% end %>
 										<li class="divider"></li>
 										

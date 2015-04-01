@@ -31,6 +31,9 @@
                   
                   <%= form_for(@order, url: do_update_info_orders_url) do |f| %>
                      <%= hidden_field_tag :id, @order.id %>
+                     <% if params[:accounting] %>
+                            <%= hidden_field_tag :accounting, params[:accounting] %>
+                     <% end %>
                     <div class="row column-seperation">
                            
                             <div class="col-md-6">

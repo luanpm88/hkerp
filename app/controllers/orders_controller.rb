@@ -315,9 +315,15 @@ class OrdersController < ApplicationController
   end
   
   def do_update_info
+    if params[:accounting]
+      redirect_url = {controller: "accounting", action: "orders"}
+    else    
+      redirect_url = orders_url
+    end
+    
     respond_to do |format|
       if @order.update(update_info_params)
-        format.html { redirect_to orders_url, notice: 'Order was successfully updated.' }
+        format.html { redirect_to redirect_url, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { redirect_to update_info_orders_url(id: @order.id), alert: 'Order was unsuccessfully updated. Check the information again.' }
