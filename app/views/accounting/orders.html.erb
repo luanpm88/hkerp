@@ -49,7 +49,7 @@
 								<td>
 									<%= link_to order.customer.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
 								</td>
-							<% elsif !order.supplier.nil? %>
+							<% else %>
 								<td>
 									<%= link_to order.supplier.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
 								</td>
