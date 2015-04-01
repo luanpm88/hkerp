@@ -237,4 +237,23 @@ class Product < ActiveRecord::Base
     categories.order("created_at DESC").first
   end
   
+  def is_out_of_stock
+    stock.nil? || stock == 0
+  end
+  
+  def is_price_outdated
+    #stock.nil? || stock == 0
+  end
+  
+  def stock_status
+    status = ""
+    if is_out_of_stock
+      status = "out_of_stock"
+    end
+    
+    #update_attributes(payment_status_name: status)
+    
+    return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+  
 end

@@ -201,6 +201,9 @@ class Ability
         end
         
         can :download_pdf, PaymentRecord
+        
+        can :update_info, Order
+        can :do_update_info, Order
       end
 
       if user.has_role? "storage_manager"

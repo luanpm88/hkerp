@@ -90,6 +90,9 @@
 										<li>
 											<%= link_to 'Pay Order', {controller: "payment_records", action: "new", id: order.id} if !order.is_paid %>
 										</li>
+										<%  if can? :update_info, order %>
+											<li><%= link_to 'Update Info', update_info_orders_path(:id => order.id) %></li>											
+										<% end %>
 										<li class="divider"></li>
 										
 										<% if order.all_payment_records.count > 0 %>
@@ -105,6 +108,7 @@
 											<li><%= link_to 'Print Order (PDF)', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
 											<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
 										<% end %>
+										
 									</ul>
 							    </div>
 							
