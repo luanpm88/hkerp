@@ -173,10 +173,17 @@ class Ability
           order.is_purchase || order.id.nil?
         end
         can :confirm_order, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+          order.is_purchase && order.salesperson_id == user.id && !['confirmed'].include?(order.status.name)
         end
         can :update, Order do |order|
           order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+        end
+        
+        can :change, Order do |order|
+          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
+        end
+        can :do_change, Order do |order|
+          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
         end
 
         can :create, OrderDetail
@@ -188,7 +195,7 @@ class Ability
         end
         can :destroy, OrderDetail do |order_detail|
           order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
-        end   
+        end
       end
 
       if user.has_role? "accountant"
