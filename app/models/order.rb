@@ -454,8 +454,7 @@ class Order < ActiveRecord::Base
               '<div class="text-center">'+item.salesperson.name+'</div>',
               '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
-              '<div class="text-center">'+item.delivery_status.html_safe+'</div>',
-              '<div class="text-center">'+item.display_status.html_safe+'</div>',
+              '<div class="text-center"><strong>'+item.display_status.html_safe+'</strong></div><div class="text-center">-----</div>'+'<div class="text-center">'+item.price_status+'</div>'+'<div class="text-center">'+item.delivery_status.html_safe+'</div>',
               ''
             ]
       data << row
@@ -780,6 +779,29 @@ class Order < ActiveRecord::Base
   
   def all_payment_records
     payment_records.order("created_at DESC")
+  end
+  
+  def is_prices_oudated
+    order_details.each do |od|
+      if od.product.is_price_outdated
+        return true
+      end
+    end
+    
+    return false
+  end
+  
+  def price_status
+    status = ""
+    if is_prices_oudated
+      status = "price_outdated"
+    else
+      status = "price_updated"
+    end
+    
+    #update_attributes(payment_status_name: status)
+    
+    return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
   
 end

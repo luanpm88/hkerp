@@ -7674,3 +7674,9 @@ ul.filter {
 .btn-group.actions > .dropdown-menu {
     margin-left: -90px;
 }
+.price_outdated {
+    color: #aa6708;
+}
+.price_updated {
+    color: #3c763d;
+}

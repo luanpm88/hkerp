@@ -110,7 +110,8 @@ class Ability
           !order.is_purchase && order.salesperson_id == user.id && ["new"].include?(order.status.name)
         end
         can :confirm_order, Order do |order|
-          !order.is_purchase && order.salesperson_id == user.id && ["price_confirmed"].include?(order.status.name)
+          !order.is_purchase && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && !["confirmed"].include?(order.status.name)))
+                            
         end        
         can :change, Order do |order|
           order.salesperson_id == user.id && order.status.name == 'confirmed'

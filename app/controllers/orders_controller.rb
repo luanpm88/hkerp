@@ -248,7 +248,7 @@ class OrdersController < ApplicationController
       
       actions += '</ul></div></div>'
       
-      result[:result]["data"][index][8] = actions
+      result[:result]["data"][index][7] = actions
     end
     
     render json: result[:result]
@@ -262,7 +262,7 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.update(order_params)
         
-        if @order.is_purchase
+        if @order.is_purchase || !@order.is_prices_oudated
           @order.confirm_price
         else
           @order.confirm_items

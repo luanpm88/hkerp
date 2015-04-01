@@ -33,7 +33,6 @@
                                                 </th>
 						<th class="text-center">Paid</th>
                                                 <th class="text-center">Date</th>
-						<th class="text-center">Delivery</th>
                                                 <th class="text-center">Status</th>
 						<th class="text-center">Debt Date</th>
                                                 <th class="text-right">Action</th>   
@@ -65,13 +64,12 @@
 						    <td class="text-center">
 							<%= order.order_date.strftime("%Y-%m-%d") %>
 						    </td>
-						    
-						    <td class="text-center">
-							<%= order.delivery_status.html_safe %>
-						    </td>
+
 						    
 						    <td class="text-center">
 						      <%= order.payment_status %>
+							  <div>-----</div>
+							  <%= order.delivery_status.html_safe %>
 						      
 						    </td>
 						    

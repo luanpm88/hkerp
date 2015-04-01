@@ -242,18 +242,22 @@ class Product < ActiveRecord::Base
   end
   
   def is_price_outdated
-    #stock.nil? || stock == 0
+    # if empty stock for 30 days
+    (is_out_of_stock && (Time.now.to_date - updated_at.to_date).to_i >= 30) || product_price.nil? || product_price.price.nil?
   end
   
-  def stock_status
+  def price_status
     status = ""
-    if is_out_of_stock
-      status = "out_of_stock"
+    if is_price_outdated
+      status = "price_outdated"
+    else
+      status = "price_updated"
     end
     
     #update_attributes(payment_status_name: status)
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
+  
   
 end

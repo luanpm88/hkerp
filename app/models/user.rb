@@ -111,7 +111,7 @@ class User < ActiveRecord::Base
   end
   
   def notification_top
-    notifications.order("created_at DESC").limit(20)
+    notifications.where(viewed: 0).order("created_at DESC").limit(20)
   end
   
 end

@@ -5,6 +5,10 @@ class Notification < ActiveRecord::Base
   def normal
   end
   
+  def self.send_email(n)
+    #UserMailer.send_notification(n).deliver
+  end
+  
   def self.send_notification(current_user, type, item)    
     
     case type
@@ -25,7 +29,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        UserMailer.send_notification(n).deliver
+        send_email(n)
       end
     when 'order_price_confirmed'
       users = User.where(id: item.salesperson_id)
@@ -39,7 +43,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        UserMailer.send_notification(n).deliver
+        send_email(n)
       end
     when 'order_confirmed'
       users = User.joins(:roles)
@@ -54,15 +58,15 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        UserMailer.send_notification(n).deliver
+        send_email(n)
       end
       
       if !item.is_deposited
-        Notification.send_notification(current_user, 'order_not_deposited', item)
+        send_notification(current_user, 'order_not_deposited', item)
       end
       
       if item.is_out_of_stock
-        Notification.send_notification(current_user, 'order_out_of_stock', item)
+        send_notification(current_user, 'order_out_of_stock', item)
       end      
       
     when 'order_out_of_stock'
@@ -78,7 +82,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        UserMailer.send_notification(n).deliver
+        send_email(n)
       end
     
     
@@ -95,7 +99,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        UserMailer.send_notification(n).deliver
+        send_email(n)
       end
       
       
@@ -110,7 +114,7 @@ class Notification < ActiveRecord::Base
     when 'order_items_confirmed'
       "Order waiting for price"
     when 'order_price_confirmed'
-      "Order price was updated"
+      "Price Confirmed! Order's ready for confirmed"
     when 'order_confirmed'
       "Order waiting for delivery"
     when 'order_out_of_stock'
