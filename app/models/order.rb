@@ -296,12 +296,16 @@ class Order < ActiveRecord::Base
   end
   
   def self.purchase_orders
-    order("order_date DESC").where("supplier_id!="+Contact.HK.id.to_s)
+    order("order_date DESC").where("customer_id="+Contact.HK.id.to_s)
       .where(parent_id: nil)
   end
   
   def is_purchase
     return self.customer == Contact.HK
+  end
+  
+  def is_sales
+    return self.supplier == Contact.HK
   end
   
   def self.statistics(year, month=nil)
