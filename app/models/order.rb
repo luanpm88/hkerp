@@ -454,7 +454,7 @@ class Order < ActiveRecord::Base
               '<div class="text-center">'+item.salesperson.name+'</div>',
               '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
-              '<div class="text-center"><strong>'+item.display_status.html_safe+'</strong></div><div class="text-center">-----</div>'+'<div class="text-center">'+item.price_status+'</div>'+'<div class="text-center">'+item.delivery_status.html_safe+'</div>',
+              '<div class="text-center">'+item.display_status.html_safe+'</div><div class="text-center">-----</div>'+'<div class="text-center">'+item.price_status+'</div>'+'<div class="text-center">'+item.delivery_status.html_safe+'</div>',
               ''
             ]
       data << row
