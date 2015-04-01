@@ -6,7 +6,7 @@ class Notification < ActiveRecord::Base
   end
   
   def self.send_email(n)
-    #UserMailer.send_notification(n).deliver
+    UserMailer.send_notification(n).deliver
   end
   
   def self.send_notification(current_user, type, item)    

@@ -131,6 +131,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
+        @product.update_price(params["product_prices"])
         format.html { render action: 'ajax_show', :layout => nil, :id => @product.id }
         format.json { render action: 'show', status: :created, location: @product }
       else
