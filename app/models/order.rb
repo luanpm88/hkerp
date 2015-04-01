@@ -546,7 +546,7 @@ class Order < ActiveRecord::Base
     status = ""
     if is_payback
       status = "pay_back"
-    elsif paid_amount == total_vat
+    elsif paid_amount == total_vat.round(0)
       status = "paid"
     elsif !is_deposited
       status = "not_deposited"
