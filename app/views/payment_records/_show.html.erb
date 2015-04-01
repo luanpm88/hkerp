@@ -60,7 +60,7 @@
       <p><label>Lý do: </label> <%= @payment_record.note %></p>
       <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong></p>
       <p><label>Viết bằng chữ: </label><%= @order.docso(@payment_record.amount.abs) %></p>
-      <p><label>Kèm theo: </label> Hóa đơn với mã số <strong><%= @order.quotation_code %></strong></p>
+      <p><label>Kèm theo: </label> Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p>
       
     </td>    
   </tr>

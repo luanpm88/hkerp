@@ -48,7 +48,7 @@
     <td width="15%"><strong>Ngày <div class="point2">:</div> </strong></td>
     <td><%= @delivery.created_at.strftime("%d/%m/%Y") %></td>
     <td><strong>PO <div class="point2">:</div> </strong></td>
-    <td>OHCM -1503-0065</td>
+    <td><%= @order.customer_po %></td>
   </tr>
   <tr>
     <td></td>

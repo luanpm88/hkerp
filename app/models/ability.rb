@@ -179,12 +179,12 @@ class Ability
           order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
         end
         
-        can :change, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
-        end
-        can :do_change, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
-        end
+        #can :change, Order do |order|
+        #  order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
+        #end
+        #can :do_change, Order do |order|
+        #  order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
+        #end
 
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
