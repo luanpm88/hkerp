@@ -127,14 +127,55 @@
 			      
 			      
 			      
-			      <div class="form-group" style="display: none">
+			      <!--<div class="form-group" style="display: none">
 				   <label class="form-label"><%= f.label :supplier_price %></label>
 				   <span class="help"></span>
 				     <div class="input-with-icon  right">                                       
 				       <i class=""></i>
 				       <%= f.text_field :supplier_price, :class => "form-control price_input" %>
 				     </div>
-			      </div>
+			      </div>-->
+				  
+				  
+				  
+				  
+				  <%= fields_for :product_prices do |builder| %>
+					<div class="form-group">
+					     <label class="form-label"><%= builder.label :price %></label>
+					     <span class="help"></span>
+					     <div class="input-with-icon  right">                                       
+						     <i class=""></i>
+						     <%= builder.text_field :price, value: "", :class => "form-control price_input" %>
+					     </div>
+					</div>
+					
+					<div class="form-group">
+					     <label class="form-label"><%= builder.label :supplier_price %></label>
+					     <span class="help"></span>
+					     <div class="input-with-icon  right">                                       
+						     <i class=""></i>
+						     <%= builder.text_field :supplier_price, value: "", :class => "form-control price_input" %>
+					     </div>
+					</div>
+					
+					<div class="form-group">
+					     <label class="form-label"><%= builder.label :suppiler_id %></label>
+					     <span class="help"></span>
+					     <div class="input-with-icon  right">                                       
+						       <i class=""></i>
+						       <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="" text="" />
+						       <br />
+						       <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+					     </div>
+					</div>	
+				   <% end %>
+				  
+				  
+				  
+				  
+				  
+				  
+				  
 			      <div class="form-group">
 				   <label class="form-label"><%= f.label :price %></label>
 				   <span class="help">(required)</span>
@@ -159,6 +200,8 @@
 				       <%= f.text_field :warranty, :class => "form-control" %>
 				     </div>
 			      </div>
+				  
+				  
                               
 			      
                                                         

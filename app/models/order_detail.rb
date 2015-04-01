@@ -29,6 +29,14 @@ class OrderDetail < ActiveRecord::Base
     Order.format_price(price)
   end
   
+  def total_vat
+    total*(order.tax.rate/100+1)
+  end
+  
+  def total_vat_formated
+    Order.format_price(total_vat)
+  end
+  
   def formated_supplier_price
     Order.format_price(supplier_price)
   end
@@ -104,5 +112,40 @@ class OrderDetail < ActiveRecord::Base
   
   def out_of_stock_count
     remain_count - product.stock
+  end
+  
+  def cost
+    !product.product_price.supplier_price.nil? ? product.product_price.supplier_price : 0
+  end
+  def cost_formated
+    Order.format_price(cost)
+  end
+  
+  def cost_vat
+    cost*(order.tax.rate/100+1)
+  end
+  def cost_vat_formated
+    Order.format_price(cost_vat)
+  end
+  
+  def cost_total
+    cost*quantity
+  end
+  def cost_total_formated
+    Order.format_price(cost_total)
+  end
+  
+  def cost_total_vat
+    cost_total*(order.tax.rate/100+1)
+  end
+  def cost_total_vat_formated
+    Order.format_price(cost_total_vat)
+  end
+  
+  def fare
+    total_vat - cost_total_vat
+  end
+  def fare_formated
+    Order.format_price(fare)
   end
 end

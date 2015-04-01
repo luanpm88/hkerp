@@ -2,9 +2,11 @@
                                       <li class="name">
                                           <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
                                           <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
-                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+                                          
                                           <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
-                                          <%= order_detail.product.display_name %>
+                                          
+                                          <input type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+
                                       </li>
                                       <li class="unit">
                                         <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />

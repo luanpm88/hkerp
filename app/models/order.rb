@@ -375,6 +375,9 @@ class Order < ActiveRecord::Base
       payment_recieved_vat: format_price(payment_recieved_vat),
       payment_recieved: format_price(payment_recieved),
       payment_vat_recieved: format_price(payment_vat_recieved),
+      
+      sell_orders: sell_orders,
+      buy_orders: buy_orders
     }
   end
   

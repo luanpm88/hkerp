@@ -411,17 +411,34 @@
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-products').attr("url"),
-				dataType: 'json',
-				data: function (term, page) { // page is the one-based page number tracked by Select2
-				  return {
-				    q: term, //search term
-				  };
-				},
-				results: function (data, page) {
-				  return {results: data};
-				}
+						url: $('.select2-ajax-products').attr("url"),
+						dataType: 'json',
+						data: function (term, page) { // page is the one-based page number tracked by Select2
+						  return {
+							q: term, //search term
+						  };
+						},
+						results: function (data, page) {
+						  return {results: data};
+						}
 			      },
+			    });
+				
+				$('.select2-ajax-suppliers').select2({
+					placeholder: "Search for a category",
+					minimumInputLength: 1,
+					ajax: {
+					  url: $('.select2-ajax-suppliers').attr("url"),
+					  dataType: 'json',
+					  data: function (term, page) { // page is the one-based page number tracked by Select2
+							return {
+								q: term, //search term
+							};
+						},
+						results: function (data, page) {
+						  return {results: data};
+						}
+					},
 			    });
 			}
 		    }
@@ -486,7 +503,8 @@
 					});
 				}
 				
-				updateOrderPrices();			
+				updateOrderPrices();
+				
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {

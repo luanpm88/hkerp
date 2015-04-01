@@ -108,7 +108,94 @@
 			    </div>
 			</div>
 			
-                    </div>
+                    
+			
+			
+			
+			<div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Sales Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+					
+					
+					<table class="table">
+						<tr>
+							<th>STT</th>
+							<th>Order No</th>
+							<th>Order Date</th>
+							<th>Delivery</th>
+							<th>Customer</th>
+							<th>Item</th>
+							<th>Unit</th>
+							<th>Quantity</th>
+							<th>Price</th>
+							<th>Paid</th>
+							<th>Tax</th>
+							<th>Staff</th>
+							<th>Cost</th>
+							<th>Cost Total</th>
+							<th>Fare</th>
+						</tr>
+						
+						<%
+						count = 1
+						@statistics[:sell_orders].each do |order| %>
+							<% order.order_details.each do |od| %>
+								<tr>
+									<td><%= count %></td>
+									<td>
+										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
+									</td>
+									<td><%= order.order_date_formatted %></td>
+									<td>										
+										<% od.delivery_details.each do |dd| %>
+											<%= link_to dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
+										<% end %>
+									</td>
+									<td>
+										<%= order.customer.name %>
+									</td>
+									<td>
+										<%= od.product.display_name %>
+									</td>
+									<td>
+										<%= od.unit %>
+									</td>
+									<td>
+										<%= od.quantity %>
+									</td>
+									<td>
+										<%= od.total_vat_formated %>
+									</td>
+									<td>
+										<%= order.is_paid %>
+									</td>
+									<td>
+										<%= order.tax.rate.round(0).to_i.to_s+"%" %>
+									</td>
+									<td>
+										<%= order.salesperson.name %>
+									</td>
+									<td>
+										<%= od.cost_vat_formated %>
+									</td>
+									<td>
+										<%= od.cost_total_vat_formated %>
+									</td>
+									<td>
+										<%= od.fare_formated %>
+									</td>
+								</tr>
+								<% count += 1 %>
+							<% end %>
+						<% end %>
+						
+						
+					</table>
+				</div>
+			</div>
+			
+			
+			</div>
                 </div>
 
 <script>
