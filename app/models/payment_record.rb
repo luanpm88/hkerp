@@ -14,10 +14,10 @@ class PaymentRecord < ActiveRecord::Base
     if false
       errors.add(:amount, "too small")
     end
-    if !order.is_payback && amount.to_f > order.remain_amount.to_f
+    if !order.is_payback && amount.to_f > order.remain_amount.to_f.round(0)
       errors.add(:amount, "can't be greater than remain amount")
     end
-    if order.is_payback && amount.to_f > order.remain_amount.to_f.abs
+    if order.is_payback && amount.to_f > order.remain_amount.to_f.abs.round(0)
       errors.add(:amount, "can't be greater than remain amount")
     end
   end
