@@ -1305,7 +1305,7 @@
 	    </li>
 	<% end %>
 	
-	<% if can? :read, User %>
+	<% if current_user.has_role? "admin" %>
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
 		<%= link_to contacts_url do %>
 		  <i class="icon-user"></i>

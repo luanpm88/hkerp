@@ -94,7 +94,7 @@
         <% @count = @count + 1 %>
             <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 15px">
                 <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 17px;text-align: center"><%= @count %></div>
-                <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px"><%= order_detail.product_name %><br />
+                <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px"><%= order_detail.product.display_name %><br />
                 <%= order_detail.product_description %></div>
                 <div style="border: solid 0px #aaa;float: left;width:50px;margin-right: 15px;text-align: center"><%= order_detail.unit %></div>
                 <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 15px;text-align: center"><%= order_detail.quantity %></div>

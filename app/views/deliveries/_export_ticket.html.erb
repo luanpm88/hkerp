@@ -113,7 +113,7 @@
           <tr>
             <td><%= @count %></td>
             <td style="text-align: left;">
-              <%= detail.order_detail.product_name %><br />
+              <%= detail.product.display_name %><br />
               <%= detail.order_detail.product_description %>
             </td>
             <td><%= detail.quantity.abs %> (<%= detail.order_detail.unit %>)</td>
@@ -172,13 +172,29 @@
 <br />
 <table>
   <tr>
-    <td align="center">
+    <td align="center" valign="top">
       <strong>NGƯỜI GIAO</strong>
+      <br />
+      <br />
+      <br />
+      <% if !@delivery.delivery_person.nil? && !@order.is_purchase %>
+        <%
+          #@delivery.delivery_person.name
+        %>
+      <% end %>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <strong>NGƯỜI NHẬN</strong>
+      <br />
+      <br />
+      <br />
+      <% if !@delivery.delivery_person.nil? && @order.is_purchase %>
+        <%
+          #@delivery.delivery_person.name
+        %>
+      <% end %>
     </td>
-    <td align="center">
+    <td align="center" valign="top">
       <strong>THỦ KHO</strong>
     </td>
   </tr>
