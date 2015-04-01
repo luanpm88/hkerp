@@ -425,7 +425,7 @@
                               <% if can? :confirm_items, @order %>
                                    <input name="confirm_items" type="submit" class="btn btn-info btn-cons" value="Save and Confirm Items" />
                               <% end %>
-                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                              <%= link_to 'Cancel', url_for(:back), :class => "btn btn-white btn-cons" %>
                           </div>
                         </div>
                   <% end %>
