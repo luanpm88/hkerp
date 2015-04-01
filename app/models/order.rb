@@ -539,7 +539,7 @@ class Order < ActiveRecord::Base
   end
   
   def is_payback
-    paid_amount > total_vat
+    paid_amount > total_vat.round(0)
   end
   
   def payment_status
