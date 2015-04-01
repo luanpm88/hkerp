@@ -86,7 +86,7 @@
           <tr class="quantity-<%= order_detail.quantity %>">
             <td><%= @count %></td>
             <td style="text-align: left;">
-              <%= order_detail.product_name %><br />
+              <%= order_detail.product.display_name %><br />
               <%= order_detail.product_description %>
             </td>
             <td><%= order_detail.warranty %> (tháng)</td>
