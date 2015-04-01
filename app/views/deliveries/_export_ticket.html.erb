@@ -16,12 +16,11 @@
     </td>
   </tr>
   <tr>
-    <td width="55%">
-      <p><%= header_com.address %></p>
-      <% if !header_com.children.empty? %>
-        <p><label style="font-weight: normal">VPGD: </label><strong><%= header_com.children.first.address %></strong></p>
-      <% end %>
-      <p><label>ĐT: </label><%= header_com.phone %> - <label>Fax: </label><%= header_com.fax %> - <label>Hotline: </label><%= header_com.hotline %></p>
+    <td>
+      <p><%= @order.supplier.address %></p>
+      <% if !@order.supplier.children.empty? %><p><label style="font-weight: normal">VPGD: </label><strong><%= @order.supplier.children.first.address %></strong></p><% end %>
+      <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
+      <p><label>STK: </label><%= @order.supplier.account_number %> <%= @order.supplier.bank %></p>
     </td>
     <td class="top-left" valign="top">
       <p><label>MST: </label><%= header_com.tax_code %></p>
