@@ -533,6 +533,7 @@
 			    $('.ajax_outer input[name="order_detail[unit]"]').val(data.unit);
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val(data.supplier_price);
 			    $('.ajax_outer input[name="order_detail[price]"]').val(respone.price);
+				$('.ajax_outer input[name="order_detail[product_price_id]"]').val(respone.product_price_id);
 			    $('.ajax_outer input[name="order_detail[quantity]"]').val(data.quantity);
 			    $('.ajax_outer input[name="order_detail[warranty]"]').val(data.warranty);
 
@@ -544,7 +545,8 @@
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
 			    $('.ajax_outer input[name="order_detail[unit]"]').val("");
 			    $('.ajax_outer input[name="order_detail[supplier_price]"]').val("");
-			    $('.ajax_outer input[name="order_detail[price]"]').val("");
+				$('.ajax_outer input[name="order_detail[price]"]').val("");
+			    $('.ajax_outer input[name="order_detail[product_price_id]"]').val("");
 			    $('.ajax_outer input[name="order_detail[quantity]"]').val("");
 			    $('.ajax_outer input[name="order_detail[warranty]"]').val("");
 			}

@@ -11,6 +11,7 @@ class OrderDetail < ActiveRecord::Base
   
   belongs_to :order
   belongs_to :product
+  belongs_to :product_price
   belongs_to :supplier, :class_name => "Contact"
   
   has_many :sales_delivery_details

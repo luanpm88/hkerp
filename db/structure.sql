@@ -446,7 +446,8 @@ CREATE TABLE order_details (
     updated_at timestamp without time zone,
     unit character varying(255),
     supplier_id integer,
-    product_description text
+    product_description text,
+    product_price_id integer
 );
 
 
@@ -1993,4 +1994,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150330060446');
 INSERT INTO schema_migrations (version) VALUES ('20150330070035');
 
 INSERT INTO schema_migrations (version) VALUES ('20150401052148');
+
+INSERT INTO schema_migrations (version) VALUES ('20150401094819');
 
