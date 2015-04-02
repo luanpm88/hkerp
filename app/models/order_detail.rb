@@ -38,6 +38,14 @@ class OrderDetail < ActiveRecord::Base
     Order.format_price(total_vat)
   end
   
+  def vat_amount
+    price*(order.tax.rate/100+1)
+  end
+  
+  def vat_amount_formated
+    Order.format_price(price)
+  end
+  
   def formated_supplier_price
     Order.format_price(supplier_price)
   end
@@ -148,5 +156,16 @@ class OrderDetail < ActiveRecord::Base
   end
   def fare_formated
     Order.format_price(fare)
+  end
+  
+  def paid_status
+    status = ""
+    if order.is_paid
+      status = "paid"
+    else
+      status = "not_paid"
+    end
+    
+    return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
 end

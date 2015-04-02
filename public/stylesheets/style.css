@@ -7662,6 +7662,9 @@ ul.filter {
 .paid {
     color: #3c763d;
 }
+.not_paid {
+    color: #aa6708;
+}
 .debt {
     color: #1b809e;
 }
