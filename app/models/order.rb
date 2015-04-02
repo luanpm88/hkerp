@@ -440,7 +440,7 @@ class Order < ActiveRecord::Base
         when "4"
           order = "products.price"
         else
-          order = "products.name"
+          order = "orders.order_date"
       end
       order += " "+params["order"]["0"]["dir"]
     end
