@@ -365,7 +365,8 @@ class OrdersController < ApplicationController
                                     :watermark,
                                     :debt_date,
                                     :customer_po,
-                                    :printed_order_number
+                                    :printed_order_number,
+                                    :supplier_agent_id
                                   )
     end
     
@@ -380,7 +381,8 @@ class OrdersController < ApplicationController
                                     :watermark,
                                     :debt_date,
                                     :customer_po,
-                                    :printed_order_number
+                                    :printed_order_number,
+                                    :supplier_agent_id
                                   )
     end
 end

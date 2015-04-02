@@ -575,7 +575,8 @@ CREATE TABLE orders (
     delivery_status_name character varying(255),
     payment_status_name character varying(255),
     customer_po character varying(255),
-    printed_order_number text
+    printed_order_number text,
+    supplier_agent_id integer
 );
 
 
@@ -1996,4 +1997,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150330070035');
 INSERT INTO schema_migrations (version) VALUES ('20150401052148');
 
 INSERT INTO schema_migrations (version) VALUES ('20150401094819');
+
+INSERT INTO schema_migrations (version) VALUES ('20150402065427');
 

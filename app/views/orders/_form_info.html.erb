@@ -80,6 +80,29 @@
                                     </div>
                                   </div>
                                 </div>
+                            
+                            
+                            <div class="form-group order-form-supplier-agent-select">
+                                  <label class="form-label"><%= f.label :supplier_agent %></label>
+                                  <span class="help">(required)</span>
+                                  <div class="input-with-icon  right">                                       
+                                    <i class=""></i>
+                                    <div class="select_inner">
+                                      <select name="order[supplier_agent_id]" class="modern_select" style="min-width: 400px;">
+                                        <option value="">Select Agent</option>
+                                        <% if !@order.supplier.nil? && !@order.supplier.agents.nil? %>
+                                          <% @order.supplier.agents.all.each do |contact| %>
+                                            <% if contact.is_agent %>
+                                                <option value="<%= contact.id %>" <% if !@order.supplier_agent_id.nil? && @order.supplier_agent_id == contact.id %>selected="selected"<% end %>>
+                                                  <%= contact.name %>
+                                                </option>
+                                            <% end %>
+                                          <% end %>
+                                        <% end %>
+                                      </select>
+                                    </div>
+                                  </div>
+                                </div>
                               
                     
                             <div class="form-group">

@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
   load_and_authorize_resource
-  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent]
+  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
 
   # GET /contacts
   # GET /contacts.json
@@ -122,6 +122,10 @@ class ContactsController < ApplicationController
   end
   
   def ajax_list_agent
+    render :layout => nil
+  end
+  
+  def ajax_list_supplier_agent
     render :layout => nil
   end
 

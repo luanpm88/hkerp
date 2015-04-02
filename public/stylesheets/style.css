@@ -7421,7 +7421,7 @@ ul.my-friends li .profile-pic{
 }
 .order-form-agent-select
 {
-    display: none;
+    /*display: none;*/
 }
 .product_order_list {
     float: left;

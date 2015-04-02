@@ -194,39 +194,71 @@
     
     function updateOrderAgentFormInfo(customer_id)
     {
-	if (customer_id != "") {
-	    $.ajax(
-	    {
-		url : '<%= ajax_list_agent_contacts_path %>',
-		type: "GET",
-		data: "id="+customer_id,
-		success:function(data, textStatus, jqXHR)
-		{		    
-		    $('.order-form-agent-select .select_inner').html(data);
-		    $('select[name="order[agent_id]"]').select2();
-		    if($('.order-form-agent-select select option').length > 1)
-		    {
-			$('.order-form-agent-select').show();
-		    }
-		    else
-		    {
-			$('.order-form-agent-select').val("");
-			$('.order-form-agent-select').hide();
-		    }
-		    
-		    $('input[name="order[buyer_name]"]').val("");
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-		    alert("error");
-		},
-		//formatResult: movieFormatResult, // omitted for brevity, see the source of this page
-		//formatSelection: movieFormatSelection, // omitted for brevity, see the source of this page
-		//dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-		//escapeMarkup: function (m) { return m; }
-	    });
-	}
+		if (customer_id != "") {
+			$.ajax(
+				{
+				url : '<%= ajax_list_agent_contacts_path %>',
+				type: "GET",
+				data: "id="+customer_id,
+				success:function(data, textStatus, jqXHR)
+				{		    
+					$('.order-form-agent-select .select_inner').html(data);
+					$('select[name="order[agent_id]"]').select2();
+					if($('.order-form-agent-select select option').length > 1)
+					{
+						$('.order-form-agent-select').show();
+					}
+					else
+					{
+						$('.order-form-agent-select').val("");
+						//$('.order-form-agent-select').hide();
+					}
+					
+					$('input[name="order[buyer_name]"]').val("");
+				},
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					alert("error");
+				},
+			//formatResult: movieFormatResult, // omitted for brevity, see the source of this page
+			//formatSelection: movieFormatSelection, // omitted for brevity, see the source of this page
+			//dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+			//escapeMarkup: function (m) { return m; }
+			});
+		}
     }
+	
+	
+	function updateOrderSupplierAgentFormInfo(supplier_id)
+    {
+		if (supplier_id != "") {
+			$.ajax(
+				{
+				url : '<%= ajax_list_supplier_agent_contacts_path %>',
+				type: "GET",
+				data: "id="+supplier_id,
+				success:function(data, textStatus, jqXHR)
+				{		    
+					$('.order-form-supplier-agent-select .select_inner').html(data);
+					$('select[name="order[supplier_agent_id]"]').select2();
+					if($('.order-form-supplier-agent-select select option').length > 1)
+					{
+						$('.order-form-supplier-agent-select').show();
+					}
+					else
+					{
+						$('.order-form-supplier-agent-select').val("");
+						//$('.order-form-supplier-agent-select').hide();
+					}				
+				},
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					alert("error");
+				},
+			});
+		}
+    }
+	
       
       function updateOrderCustomerFormInfo(customer_id)
       {
@@ -257,8 +289,8 @@
 	}
 	else
 	{
-	    $('.order-form-agent-select').val("");
-	    $('.order-form-agent-select').hide();
+	    //$('.order-form-agent-select').val("");
+	    //$('.order-form-agent-select').hide();
 	    $('input[name="order[buyer_company]"]').val("");
 	    $('input[name="order[buyer_tax_code]"]').val("");
 	    $('input[name="order[buyer_phone]"]').val("");
@@ -374,26 +406,27 @@
 		
 		$('input[name="order[supplier_id]"]').live("change", function() {
 			updateOrderCustomerFormInfo($('input[name="order[customer_id]"]').val());
+			updateOrderSupplierAgentFormInfo($(this).val());
 	    });
 	    
 	    
-	    if($('.order-form-agent-select select option').length > 1)
-	    {
-		$('.order-form-agent-select').show();
-	    }
-	    else
-	    {
-		$('.order-form-agent-select').val("");
-		$('.order-form-agent-select').hide();
-	    }
+	//    if($('.order-form-agent-select select option').length > 1)
+	//    {
+	//		$('.order-form-agent-select').show();
+	//    }
+	//    else
+	//    {
+	//		$('.order-form-agent-select').val("");
+	//		$('.order-form-agent-select').hide();
+	//    }
 	    $('select[name="order[agent_id]"]').live("change", function() {
-		if ($(this).val() != "") {
-		    $('input[name="order[buyer_name]"]').val($(this).find(":selected").text());
-		}
-		else
-		{
-		    $('input[name="order[buyer_name]"]').val("");
-		}
+			if ($(this).val() != "") {
+				$('input[name="order[buyer_name]"]').val($(this).find(":selected").text());
+			}
+			else
+			{
+				$('input[name="order[buyer_name]"]').val("");
+			}
 	    });
 	    
 	    

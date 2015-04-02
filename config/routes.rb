@@ -126,6 +126,7 @@ Hkerp::Application.routes.draw do
       get :ajax_destroy
       get :ajax_show
       get :ajax_list_agent
+      get :ajax_list_supplier_agent
     end
   end
 

@@ -56,6 +56,7 @@ class Ability
       can :ajax_new, Contact
       can :ajax_create, Contact
       can :ajax_list_agent, Contact
+      can :ajax_list_supplier_agent, Contact
       can :ajax_destroy, Contact do |c|
         c.user_id == user.id && c.contact_type.name == 'Agent'
       end
