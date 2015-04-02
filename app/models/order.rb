@@ -483,7 +483,7 @@ class Order < ActiveRecord::Base
               item.quotation_code,              
               link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
               '<div class="text-right">'+item.formated_total_vat+'</div>',
-              #'<div class="text-center">'+item.order_details.count.to_s+'</div>',
+              '<div class="text-center">'+item.order_details.count.to_s+'</div>',
               '<div class="text-center">'+item.salesperson.name+'</div>',
               '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
