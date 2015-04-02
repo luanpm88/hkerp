@@ -872,9 +872,12 @@ class Order < ActiveRecord::Base
   
   def display_description
     str = ""
-    items = order_details.map {|a| "["+a.quantity.to_s+"] "+a.product.display_name.strip}
-    str = items.join("; ")[0..100]
-    str += "..." if items.join("; ").length > 100
+    arr = []
+    order_details.each do |od|
+      arr << "["+od.quantity.to_s+"] "+od.product.display_name.strip if od.quantity > 0
+    end
+    str = arr.join("; ")[0..100]
+    str += "..." if arr.join("; ").length > 100
     str = "<div>"+str+"</div>"
     return str.html_safe
   end
