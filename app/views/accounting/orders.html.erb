@@ -47,11 +47,11 @@
 						    
 							<% if !params[:purchase] %>
 								<td>
-									<%= link_to order.customer.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+									<%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
 								</td>
 							<% else %>
 								<td>
-									<%= link_to order.supplier.name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+									<%= link_to order.supplier.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
 								</td>
 							<% end %>
 							

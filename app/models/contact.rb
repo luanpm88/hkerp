@@ -192,7 +192,11 @@ class Contact < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.short_name} }
+  end
+  
+  def short_name
+    name.gsub(/công ty /i,'').gsub(/TNHH /i,'').gsub(/cổ phần /i,'')
   end
   
 end

@@ -446,9 +446,9 @@ class Order < ActiveRecord::Base
     @items.each do |item|
       
       if params[:purchase]
-        name_col = item.supplier.name
+        name_col = item.supplier.short_name
       else
-        name_col = item.customer.name
+        name_col = item.customer.short_name
       end
       
       puts User.current_user

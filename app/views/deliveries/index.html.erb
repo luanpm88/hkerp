@@ -45,7 +45,7 @@
 							<%= order.quotation_code %>
 						    </td>
 						    <td>
-							<%= params[:purchase] ? order.supplier.name : order.customer.name %>
+							<%= params[:purchase] ? order.supplier.short_name : order.customer.short_name %>
 						    </td>
 						    
 						    <td class="text-center">
