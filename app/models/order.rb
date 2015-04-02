@@ -448,7 +448,7 @@ class Order < ActiveRecord::Base
     where = {}    
     where[:customer_id] = params["customer_id"] if params["customer_id"].present?
     where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
-    where[:salesperson_id] = user.id
+    #where[:salesperson_id] = user.id
     
     if params[:purchase]
       @items = self.purchase_orders
