@@ -38,7 +38,7 @@
 		    <% end %>
 		<%= form_for(@order_detail, :url => {:action => @action,}, :html => {:id => "ajax-order-detail-form"}) do |f| %>
                          
-						 <%= f.hidden_field :product_price_id %>
+						 <input type="hidden" name="order_detail[product_price_id]" value="" />
 			 
 						 
 			 <% if !@order_detail.order.nil? %>
