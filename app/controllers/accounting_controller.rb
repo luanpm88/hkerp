@@ -11,6 +11,7 @@ class AccountingController < ApplicationController
       
       @order = Order.new(:order_date => date)
     else
+      @month_val = DateTime.now.month
       @order = Order.new(:order_date => DateTime.now)
     end
     
