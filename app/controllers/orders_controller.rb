@@ -337,6 +337,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.update(update_info_params)
+        @order.update_order_details_info(params[:order_details])
         format.html { redirect_to redirect_url, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else

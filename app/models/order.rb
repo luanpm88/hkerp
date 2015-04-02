@@ -758,6 +758,8 @@ class Order < ActiveRecord::Base
       order_details_params.each do |line|
         if line[1][:product_id].to_i == od.product_id
           od.update_attributes(
+            product_name: line[1][:product_name],
+            product_description: line[1][:product_description],
             unit: line[1][:unit],
             price: line[1][:price],
             quantity: line[1][:quantity],
@@ -777,6 +779,29 @@ class Order < ActiveRecord::Base
         self.order_details.create(line[1])
       end
     end
+  end
+  
+  def update_order_details_info(order_details_params)
+    
+    if order_details_params.nil?
+      return false
+    end
+    
+    
+    
+    # Update current order details
+    self.order_details.each do |od|      
+      order_details_params.each do |line|
+        if line[1][:product_id].to_i == od.product_id
+          
+          od.update_attributes(
+            product_name: line[1][:product_name],
+            product_description: line[1][:product_description],
+            unit: line[1][:unit],
+          )
+        end
+      end
+    end    
   end
   
   def all_deliveries

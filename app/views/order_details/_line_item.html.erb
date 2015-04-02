@@ -5,9 +5,10 @@
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_price_id]" value="<%= order_detail.product_price_id %>" />
 
                                           
-                                          <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
                                           
-                                          <input type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+                                          
+                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
 
                                       </li>
                                       <li class="unit">
