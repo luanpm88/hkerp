@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -53,10 +53,17 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
+    
+    (1..10).each do |i|
+      @product.product_parts.build
+    end
   end
 
   # GET /products/1/edit
   def edit
+    (1..(10-@product.product_parts.count)).each do |i|
+      @product.product_parts.build
+    end
   end
 
   # POST /products
@@ -162,6 +169,22 @@ class ProductsController < ApplicationController
     end
   end
   
+  def combine_parts
+    
+  end
+  
+  def do_combine_parts
+    respond_to do |format|
+      if @product.combine_parts(params[:quantity])
+        format.html { redirect_to products_url, notice: 'Product was successfully combined.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      else
+        format.html { redirect_to combine_parts_products_url(id: @product.id), alert: 'Product was unsuccessfully combined.' }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -171,6 +194,10 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty, :category_ids => [], :product_prices => [:price, :supplier_price, :supplier_id])
+      params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
+                                      :category_ids => [],
+                                      :product_prices => [:price, :supplier_price, :supplier_id],
+                                      product_parts_attributes: [:part_id, :quantity]
+                                    )
     end
 end

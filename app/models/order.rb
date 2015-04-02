@@ -681,7 +681,6 @@ class Order < ActiveRecord::Base
   end
   
   def out_of_stock_details
-    # out of stock details
     str = ""
     
     if is_out_of_stock    
@@ -691,6 +690,18 @@ class Order < ActiveRecord::Base
     end
       
     return str.html_safe
+  end
+  
+  def out_of_stock_order_details
+    arr = []
+    
+    if is_out_of_stock    
+      order_details.each do |od|
+        arr << od if od.is_out_of_stock
+      end
+    end
+      
+    return arr
   end
   
   def self.pricing_orders(user)

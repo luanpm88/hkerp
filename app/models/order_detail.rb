@@ -79,32 +79,39 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def stock_status  
+    str = ""
     
     if order.is_purchase
       if remain_count <= 0
-        return '<div class="blue">delivered</div>'      
+        str ='delivered'      
       else
-        return '<div class="green">available</div>'
+        str ='available'
       end
     end
     
     if quantity == 0
-      return '<div class="grey">canceled</div>' 
+      str ='canceled'
     elsif remain_count == 0
-      return '<div class="blue">delivered</div>'    
+      str ='delivered'
     elsif remain_count < 0
-      return '<div class="orange">waiting for return</div>'
+      str ='waiting_for_return'
     elsif is_out_of_stock
-      return '<div class="red">out_of_stock</div>'
+      str ='out_of_stock'
     else
-      return '<div class="green">not_delivered</div>'
+      str ='not_delivered'
     end
+    
+    return "<div class=\"#{str}\">#{str}</div>"
   end
   
   def is_out_of_stock
     stock = product.stock
     
     return (stock.nil? || stock < remain_count) && !order.is_purchase
+  end
+  
+  def is_combinable
+    product.is_combinable
   end
   
   def delivered_count

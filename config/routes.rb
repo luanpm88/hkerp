@@ -1,4 +1,6 @@
 Hkerp::Application.routes.draw do
+  resources :product_parts
+
   default_url_options :host => "27.0.15.181:3000"
   
   resources :product_prices
@@ -151,7 +153,9 @@ Hkerp::Application.routes.draw do
       get :sales_delivery
       get :update_price
       patch :do_update_price
-
+      
+      get :combine_parts
+      patch :do_combine_parts
     end
   end
   

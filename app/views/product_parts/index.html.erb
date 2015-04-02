@@ -1,0 +1,29 @@
+<h1>Listing product_parts</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Part</th>
+      <th>Quantity</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @product_parts.each do |product_part| %>
+      <tr>
+        <td><%= product_part.product_id %></td>
+        <td><%= product_part.part_id %></td>
+        <td><%= product_part.quantity %></td>
+        <td><%= link_to 'Show', product_part %></td>
+        <td><%= link_to 'Edit', edit_product_part_path(product_part) %></td>
+        <td><%= link_to 'Destroy', product_part, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Product part', new_product_part_path %>

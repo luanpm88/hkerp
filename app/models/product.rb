@@ -16,7 +16,16 @@ class Product < ActiveRecord::Base
   
   has_many :order_details
   
-  has_many :product_prices, :dependent => :destroy  
+  has_many :product_prices, :dependent => :destroy
+  
+  
+  has_many :product_parts
+  has_many :parts, :through => :product_parts, :source => :part
+  
+  accepts_nested_attributes_for :product_parts, :reject_if => lambda { |c| c[:part_id].blank? }
+
+  has_many :parent_parts, :class_name => "ProductPart", :foreign_key => "part_id"
+  has_many :parent, :through => :parent_parts, :source => :part
   
   before_save :fix_serial_numbers
   
@@ -257,6 +266,42 @@ class Product < ActiveRecord::Base
     #update_attributes(payment_status_name: status)
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+  
+  def is_combinable
+    max_combinable > 0
+  end
+  
+  def max_combinable
+    if parts.count == 0
+        return 0
+    end
+    
+    count = 10000000000
+    parts.each do |p|
+      i = p.stock/(self.product_parts.where(part_id: p.id).first.quantity).to_i
+      if count > i
+        count = i
+      end      
+    end
+    return count
+  end
+  
+  def combine_parts(quantity)
+    if quantity.to_i <= max_combinable && quantity.to_i != 0
+      parts.each do |p|
+        num = self.product_parts.where(part_id: p.id).first.quantity.to_i*quantity.to_i
+        new_stock = p.stock - num
+        p.update_attributes(stock: new_stock)
+      end
+      
+      n_stock = self.stock+quantity.to_i
+      self.update_attributes(stock: n_stock)
+      
+      return true
+    else
+      return false
+    end
   end
   
   

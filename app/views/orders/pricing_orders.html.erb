@@ -114,11 +114,29 @@
                                         </tr>
                                         <% if order.is_out_of_stock %>
 					    <tr>
-						<td></td>
-						<td class="text-right">
-						    <strong class="red">Out Of Stock Items:</strong>
-						</td>
-						<td colspan="7"><%= order.out_of_stock_details %></td>
+							<td></td>
+							<td class="text-right">
+								<strong class="red">Out Of Stock Items:</strong>
+							</td>
+							<td colspan="7">
+									<% order.out_of_stock_order_details.each do |od| %>
+										<div>
+											<%= od.product_name %>
+											( <strong class="red">-<%= od.out_of_stock_count.to_s %></strong> )
+										</div>
+										<% od.product.parts.each do |p| %>
+											<div class="part_details">
+												----> <%= p.display_name %> (
+													<% if p.stock-od.quantity >= 0 %>
+														<strong class="green">+<%= p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count %> - available</strong>
+													<% else %>
+														<strong class="red"><%= p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count %> - not_enough</strong>
+													<% end %>
+												)						
+											</div>
+										<% end %>
+									<% end %>
+							</td>
 					    </tr>
 					    
 					<% end %>

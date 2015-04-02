@@ -53,7 +53,7 @@
                                                             </div>
                                   </div>
 				  
-				  <div class="form-group">
+								   <div class="form-group">
                                     <label class="form-label"><%= f.label :unit %></label>
                                     <span class="help">(required)</span>
                                                             <div class="input-with-icon  right">                                       
@@ -107,6 +107,33 @@
 							  <%= f.text_field :stock, :class => "form-control" %>
 						  </div>
 				   </div>-->
+										
+
+											 <div class="form-group">
+												  <label class="form-label"><%= f.label :parts %></label>
+												  <div class="input-with-icon  right">                                       
+														  <i class=""></i>
+															<% @product.product_parts.each_with_index do |part,index| %>
+																 <%= f.fields_for :product_parts, part do |p| %>
+																 
+																   <div class="row">                           
+																		<div class="col-sm-10 col-md-10">
+																			 <%= p.text_field :part_id, :class => "width100 select2-ajax-products", url: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.name : "" %>
+																		</div>
+																		<div class="col-sm-2 col-md-2">
+																			 <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
+																		</div>
+																   </div>
+																 <% end %>
+															<% end %>
+												  </div>
+											 </div>
+
+										
+											 
+								   
+											 
+											 
 				       
 			      </div>
                             
@@ -175,7 +202,7 @@
                                                             </div>
                                   </div>
 				  
-				  <!--<div class="form-group">
+								   <!--<div class="form-group">
                                     <label class="form-label"><%= f.label :serial_numbers %></label>
                                     <span class="help"></span>
                                                             <div class="input-with-icon  right">                                       

@@ -233,6 +233,9 @@ class Ability
         can :deliver, Delivery
         
         can :download_pdf, Delivery
+        
+        can :combine_parts, Product
+        can :do_combine_parts, Product
       end
 
     end

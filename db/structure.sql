@@ -730,6 +730,39 @@ ALTER SEQUENCE payment_records_id_seq OWNED BY payment_records.id;
 
 
 --
+-- Name: product_parts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE product_parts (
+    id integer NOT NULL,
+    product_id integer,
+    part_id integer,
+    quantity integer DEFAULT 1,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: product_parts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE product_parts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: product_parts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE product_parts_id_seq OWNED BY product_parts.id;
+
+
+--
 -- Name: product_prices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1406,6 +1439,13 @@ ALTER TABLE ONLY payment_records ALTER COLUMN id SET DEFAULT nextval('payment_re
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY product_parts ALTER COLUMN id SET DEFAULT nextval('product_parts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY product_prices ALTER COLUMN id SET DEFAULT nextval('product_prices_id_seq'::regclass);
 
 
@@ -1643,6 +1683,14 @@ ALTER TABLE ONLY payment_methods
 
 ALTER TABLE ONLY payment_records
     ADD CONSTRAINT payment_records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_parts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY product_parts
+    ADD CONSTRAINT product_parts_pkey PRIMARY KEY (id);
 
 
 --
@@ -1999,4 +2047,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150401052148');
 INSERT INTO schema_migrations (version) VALUES ('20150401094819');
 
 INSERT INTO schema_migrations (version) VALUES ('20150402065427');
+
+INSERT INTO schema_migrations (version) VALUES ('20150402130957');
 

@@ -7711,3 +7711,9 @@ ul.filter {
 .finished {
     color: #337ab7;
 }
+.width100 {
+ width: 100%;   
+}
+.part_details {
+    padding-left: 40px;
+}

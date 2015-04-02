@@ -1,0 +1,62 @@
+<ul class="breadcrumb">
+        <li>
+          <p>YOU ARE HERE</p>
+        </li>
+        <li><%= link_to 'Products', products_url, :class => "active" %></li>
+      </ul>
+      <div class="page-title"> <i class="icon-edit"></i>
+        <h3>Combine Parts - <span class="semi-bold"><%= @product.display_name %></span></h3>
+      </div>
+      
+
+	  
+      <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Parts <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                <div class="grid-body no-border">
+                    <%= form_for(@product, url: do_combine_parts_products_url) do |f| %>
+                      <%= hidden_field_tag :id, @product.id %>
+                      <div class="row column-seperation">
+                            <div class="col-md-6">
+                                <% @product.parts.each do |part| %>
+                                  <div class="form-group">
+                                    
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= part.display_name %>
+                                                ( <%= @product.max_combinable*ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %> / <%= part.stock %> )
+                                        </div>
+                                  </div>
+                                <% end %>
+                            </div>
+                            <div class="col-md-6">                           
+                                  <div class="form-group">
+                                    <label class="form-label"><%= f.label :quantity %></label>
+                                    <span class="help">(required)</span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= select_tag :quantity, options_for_select(@product.max_combinable.downto(1).map { |u| [u, u] }), {:class => "width100 modern_select"} %>
+                                        </div>
+                                  </div>
+                            </div>
+                      </div>
+                    
+                    <div class="form-actions">  
+                      <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-cons" name="combine" value="Combine" />
+                        <%= link_to 'Cancel', url_for(:back), :class => "btn btn-white btn-cons" %>
+                      </div>
+                  </div>
+                    <% end %>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+      </div>
