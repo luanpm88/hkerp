@@ -43,11 +43,11 @@
   <tr>
     <td width="16%"></td>
     <td width="10%"><strong>Số <div class="point2">:</div> </strong></td>
-    <td><%= @order.quotation_code %>-<%= @delivery.id %></td>
+    <td width="20%"><%= @order.quotation_code %>-<%= @delivery.id %></td>
     <td width="16%"><strong>Ngày <div class="point2">:</div> </strong></td>
     <td><%= @delivery.created_at.strftime("%d/%m/%Y") %></td>
-    <td width="10%"><strong>PO <div class="point2">:</div> </strong></td>
-    <td><%= @order.customer_po %></td>
+    <td width="4%"><strong>PO <div class="point2">:</div> </strong></td>
+    <td width="18%"><%= @order.customer_po %></td>
   </tr>
   <tr>
     <td></td>
