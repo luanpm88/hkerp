@@ -324,7 +324,8 @@ class Order < ActiveRecord::Base
     payment_vat_paid = 0.00
     payment_vat_recieved = 0.00
     
-    sell_orders = Order.customer_orders                  
+    sell_orders = Order.customer_orders
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
                   .where('extract(year from order_date) = ?', year)
     if month.present?
       sell_orders = sell_orders.where('extract(month from order_date) = ?', month) 
@@ -343,7 +344,8 @@ class Order < ActiveRecord::Base
       end      
     end
     
-    buy_orders = Order.purchase_orders                  
+    buy_orders = Order.purchase_orders
+                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
                   .where('extract(year from order_date) = ?', year)
     if month.present?
       buy_orders = buy_orders.where('extract(month from order_date) = ?', month) 
@@ -809,6 +811,15 @@ class Order < ActiveRecord::Base
     #update_attributes(payment_status_name: status)
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+  
+  def display_title
+    if ['confirmed'].include?(status.name)
+      return "ĐƠN HÀNG"
+    else
+      return "BẢNG BÁO GIÁ"
+    end
+    
   end
   
 end
