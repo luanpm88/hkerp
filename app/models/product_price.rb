@@ -6,6 +6,7 @@ class ProductPrice < ActiveRecord::Base
   belongs_to :product
   belongs_to :supplier, :class_name => "Contact"
   
+  has_many :product_prices
   
   def price=(new_price)
     self[:price] = new_price.gsub(/[\,]/, '')
