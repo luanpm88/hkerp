@@ -119,7 +119,7 @@
 					
 					<table class="table">
 						<tr>
-							<th>STT</th>
+							<th class="text-center">STT</th>
 							<th>Order</th>
 							<th>Delivery</th>
 							<th>Item</th>
@@ -139,7 +139,7 @@
 						@statistics[:sell_orders].each do |order| %>
 							<% order.order_details.each do |od| %>
 								<tr>
-									<td><%= count %></td>
+									<td class="text-center"><%= count %></td>
 									<td>
 										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 										<br />
@@ -200,7 +200,7 @@
 					
 					<table class="table">
 						<tr>
-							<th>STT</th>
+							<th class="text-center">STT</th>
 							<th>Order</th>
 							<th>Delivery</th>
 							<th>Item</th>
@@ -220,7 +220,7 @@
 						@statistics[:buy_orders].each do |order| %>
 							<% order.order_details.each do |od| %>
 								<tr>
-									<td><%= count %></td>
+									<td class="text-center"><%= count %></td>
 									<td>
 										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 										<br />
