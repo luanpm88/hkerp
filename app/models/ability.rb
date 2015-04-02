@@ -203,7 +203,7 @@ class Ability
       if user.has_role? "accountant"
         can :read, Order
         can :print_order, Order do |order|
-          ['finished'].include?(order.status.name)
+          ['confirmed'].include?(order.status.name)
         end
         can :download_pdf, Order
         
