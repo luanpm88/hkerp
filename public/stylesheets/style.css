@@ -7666,7 +7666,7 @@ ul.filter {
     color: #aa6708;
 }
 .debt {
-    color: #1b809e;
+    color: violet;
 }
 .waiting {
     color: #aa6708;
@@ -7682,4 +7682,32 @@ ul.filter {
 }
 .price_updated {
     color: #3c763d;
+}
+
+.draft {
+    color: #bbb;
+}
+.new {
+    color: #bbb;
+}
+.items_confirmed {
+    color: #aa6708;
+}
+.price_confirmed {
+    color: #aa6708;
+}
+.quotation {
+    color: #bbb;
+}
+.confirmed {
+    color: #3c763d;
+}
+.outdated {
+    color: #aa6708;
+}
+.canceled {
+    color: #bbb;
+}
+.finished {
+    color: #337ab7;
 }

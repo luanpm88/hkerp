@@ -112,7 +112,7 @@ class Ability
           order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
         end
         can :confirm_order, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && !["confirmed"].include?(order.status.name)))
+          order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
                             
         end        
         can :change, Order do |order|
@@ -123,10 +123,10 @@ class Ability
         end
         
         can :update_info, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && !["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
         end
         can :do_update_info, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && !["new"].include?(order.status.name)
+          order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
         end
 
         #can :print_order, Order do |order|
@@ -175,7 +175,7 @@ class Ability
           order.is_purchase || order.id.nil?
         end
         can :confirm_order, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && !['confirmed'].include?(order.status.name)
+          order.is_purchase && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
         end
         can :update, Order do |order|
           order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
@@ -202,7 +202,9 @@ class Ability
 
       if user.has_role? "accountant"
         can :read, Order
-        can :print_order, Order
+        can :print_order, Order do |order|
+          ['finished'].include?(order.status.name)
+        end
         can :download_pdf, Order
         
         can :create, PaymentRecord
@@ -212,8 +214,16 @@ class Ability
         
         can :download_pdf, PaymentRecord
         
-        can :update_info, Order
-        can :do_update_info, Order
+        can :update_info, Order do |order|
+          ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
+        end
+        can :do_update_info, Order do |order|
+          ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
+        end
+        
+        can :finish_order, Order do |order|
+          ['confirmed'].include?(order.status.name)
+        end
       end
 
       if user.has_role? "storage_manager"

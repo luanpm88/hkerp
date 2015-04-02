@@ -279,6 +279,16 @@ class Order < ActiveRecord::Base
     return true
   end
   
+  def finish_order
+    if !['confirmed'].include?(status.name)
+      return false
+    end
+    
+    self.set_status('finished')
+    
+    return true
+  end
+  
   def confirm_items
     if order_details.count == 0
       return false
@@ -325,7 +335,7 @@ class Order < ActiveRecord::Base
     payment_vat_recieved = 0.00
     
     sell_orders = Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .joins(:order_status).where(order_statuses: {name: "finished"})
                   .where('extract(year from order_date) = ?', year)
     if month.present?
       sell_orders = sell_orders.where('extract(month from order_date) = ?', month) 
@@ -345,7 +355,7 @@ class Order < ActiveRecord::Base
     end
     
     buy_orders = Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .joins(:order_status).where(order_statuses: {name: "finished"})
                   .where('extract(year from order_date) = ?', year)
     if month.present?
       buy_orders = buy_orders.where('extract(month from order_date) = ?', month) 
@@ -397,6 +407,20 @@ class Order < ActiveRecord::Base
 
     orders = Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
+
+    return orders
+  end
+  
+  def self.get_accounting_sales_orders
+    orders = Order.customer_orders
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+    
+    return orders
+  end
+  
+  def self.get_accounting_purchase_orders
+    orders = Order.purchase_orders
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
 
     return orders
   end
@@ -498,11 +522,7 @@ class Order < ActiveRecord::Base
   
   def delivery_status
     status_arr = []
-    if status.name != 'confirmed'
-      #if is_out_of_stock
-      #  status_arr << 'out_of_stock'
-      #end
-    else
+    if ['confirmed','finished'].include?(status.name)      
       if is_delivered?
         status_arr << 'delivered'
       else
@@ -550,6 +570,7 @@ class Order < ActiveRecord::Base
   def is_payback
     paid_amount > total_vat.round(0)
   end
+  
   
   def payment_status
     status = ""
@@ -652,19 +673,10 @@ class Order < ActiveRecord::Base
   end
   
   def display_status
+    str = "" 
     if self.status.nil?
     else
-      if status.name == 'new'
-        return "<div class=\"grey\">#{status.name}</div>".html_safe
-      elsif status.name == 'confirmed'
-        return "<div class=\"green\">#{status.name}</div>".html_safe
-      elsif status.name == 'items_confirmed'
-        return "<div class=\"orange\">#{status.name}</div>".html_safe
-      elsif status.name == 'price_confirmed'
-        return "<div class=\"orange\">#{status.name}</div>".html_safe
-      else
-        return status.name
-      end
+      "<div class=\"#{status.name}\">#{status.name}</div>".html_safe
     end
   end
   

@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -198,6 +198,19 @@ class OrdersController < ApplicationController
         format.json { head :no_content }
       else
         format.html { redirect_to update_price_orders_url(id: @order.id), alert: 'Order Price was unsuccessfully confimed. Check the prices again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
+  def finish_order
+    return_url = {controller: "accounting", action: "orders"}
+    respond_to do |format|
+      if @order.finish_order        
+        format.html { redirect_to return_url, notice: 'Order was successfully finished.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to return_url, alert: 'Order was unsuccessfully finished. Check the order again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end

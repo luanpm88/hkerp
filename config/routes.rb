@@ -103,6 +103,8 @@ Hkerp::Application.routes.draw do
       
       get :update_info
       patch :do_update_info
+      
+      get :finish_order
     end
   end
 
