@@ -520,6 +520,15 @@ class Order < ActiveRecord::Base
     items_total - items_delivered
   end
   
+  def is_combinable
+    order_details.each do |od|
+      if od.is_combinable
+        return true
+      end      
+    end
+    return false
+  end
+  
   def delivery_status
     status_arr = []
     if ['confirmed','finished'].include?(status.name)      
@@ -534,6 +543,9 @@ class Order < ActiveRecord::Base
         end
         if is_out_of_stock
           status_arr << 'out_of_stock'
+        end
+        if is_combinable
+          status_arr << 'combinable'
         end
       end
     end

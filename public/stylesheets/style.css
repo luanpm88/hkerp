@@ -7717,3 +7717,6 @@ ul.filter {
 .part_details {
     padding-left: 40px;
 }
+.combinable {
+    color: #337ab7;
+}
