@@ -481,9 +481,9 @@ class Order < ActiveRecord::Base
 
       row = [
               item.quotation_code,              
-              link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order"),              
+              link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
               '<div class="text-right">'+item.formated_total_vat+'</div>',
-              '<div class="text-center">'+item.order_details.count.to_s+'</div>',
+              #'<div class="text-center">'+item.order_details.count.to_s+'</div>',
               '<div class="text-center">'+item.salesperson.name+'</div>',
               '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -868,6 +868,15 @@ class Order < ActiveRecord::Base
       return "BẢNG BÁO GIÁ"
     end
     
+  end
+  
+  def display_description
+    str = ""
+    items = order_details.map {|a| "["+a.quantity.to_s+"] "+a.product.display_name.strip}
+    str = items.join("; ")[0..100]
+    str += "..." if items.join("; ").length > 100
+    str = "<div>"+str+"</div>"
+    return str.html_safe
   end
   
 end

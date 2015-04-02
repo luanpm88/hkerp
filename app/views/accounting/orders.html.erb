@@ -49,17 +49,20 @@
 							<% if !params[:purchase] %>
 								<td>
 									<%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+									<%= order.display_description %>
 								</td>
 							<% else %>
 								<td>
 									<%= link_to order.supplier.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
+									<%= order.display_description %>
 								</td>
 							<% end %>
 							
 						    
 						    
-						    <td class="text-center">
-						      <%= order.paid_amount_formated %>/<%= order.formated_total_vat %>
+						    <td class="text-right">
+						      <strong><%= order.paid_amount_formated %></strong><br />
+							  /<%= order.formated_total_vat %>
 						    </td>
 						    
 						    <td class="text-center">
@@ -68,7 +71,7 @@
 
 						    
 						    <td class="text-center">
-						      <%= order.payment_status %>
+						      <strong><%= order.payment_status %></strong>
 							  <div>-----</div>
 							  <%= order.delivery_status.html_safe %>						      
 						    </td>

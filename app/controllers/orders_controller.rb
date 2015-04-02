@@ -262,7 +262,7 @@ class OrdersController < ApplicationController
       
       actions += '</ul></div></div>'
       
-      result[:result]["data"][index][8] = actions
+      result[:result]["data"][index][7] = actions
     end
     
     render json: result[:result]

@@ -56,6 +56,7 @@
                                           </td>
                                           <td width="25%">
                                             <%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" %>
+											<%= order.display_description %>
                                           </td>
                                           <td align="right">
                                                 <%= order.formated_total_vat %>
