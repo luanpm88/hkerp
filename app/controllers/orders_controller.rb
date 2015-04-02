@@ -204,13 +204,14 @@ class OrdersController < ApplicationController
   end
   
   def finish_order
-    return_url = {controller: "accounting", action: "orders"}
+    
     respond_to do |format|
-      if @order.finish_order        
+      if @order.finish_order
+        return_url = {controller: "accounting", action: "orders"}        
         format.html { redirect_to return_url, notice: 'Order was successfully finished.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to return_url, alert: 'Order was unsuccessfully finished. Check the order again.' }
+        format.html { redirect_to update_info_orders_path(:id => @order.id, accounting: true), alert: 'Order was unsuccessfully finished. You must update printed order number.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end

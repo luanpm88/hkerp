@@ -280,7 +280,7 @@ class Order < ActiveRecord::Base
   end
   
   def finish_order
-    if !['confirmed'].include?(status.name)
+    if !printed_order_number.present?
       return false
     end
     
