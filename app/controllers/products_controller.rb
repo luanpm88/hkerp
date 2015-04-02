@@ -110,7 +110,7 @@ class ProductsController < ApplicationController
     price = params[:purchase].present? ? @product.product_price.supplier_price : @product.product_price.price
     
     @data = Hash[display_name: @product.display_name,
-                 product_price_id: @product.product_prices.count? ? @product.product_price.id : 0,
+                 product_price_id: @product.product_prices.count > 0 ? @product.product_price.id : 0,
                  price: price,
                  product: @product,
                  order_supplier_history: @product.order_supplier_history]
