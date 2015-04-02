@@ -113,6 +113,8 @@
 										
 										<%  if can? :read, order %>
 											<li><%= link_to 'Print Order (PDF)', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
+										<% end %>
+										<% if can? :print_order, order %>
 											<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
 										<% end %>
 										
