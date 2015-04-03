@@ -323,7 +323,18 @@ class Product < ActiveRecord::Base
   end
   
   def calculated_stock
-    delivery_details.sum(:quantity)+combinations.sum(:quantity)-combination_details.sum(:quantity)
+    count = 0
+    #count for combinations
+    count += combinations.sum(:quantity)-combination_details.sum(:quantity)
+    
+    #count for sales delivery
+    count -= delivery_details.joins(:order_detail => :order)
+                            .where(orders: {supplier_id: Contact.HK.id})
+                            .sum(:quantity)
+    #count for purchase delivery
+    count += delivery_details.joins(:order_detail => :order)
+                            .where(orders: {customer_id: Contact.HK.id})
+                            .sum(:quantity)
   end
   
 end
