@@ -128,10 +128,12 @@
 										<% od.product.parts.each do |p| %>
 											<div class="part_details">
 												----> <%= p.display_name %> (
-													<% if p.stock-od.quantity >= 0 %>
-														<strong class="green">+<%= p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count %> - available</strong>
+													<%
+														num = p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count
+														if num >= 0 %>
+														<strong class="green">+<%= num %> - available</strong>
 													<% else %>
-														<strong class="red"><%= p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count %> - not_enough</strong>
+														<strong class="red"><%= num %> - not_enough</strong>
 													<% end %>
 												)						
 											</div>
