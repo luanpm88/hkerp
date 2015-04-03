@@ -31,7 +31,7 @@ class ProductStockUpdatesController < ApplicationController
     
     respond_to do |format|
       if @product_stock_update.save
-        format.html { redirect_to products_urls, notice: 'Product stock update was successfully created.' }
+        format.html { redirect_to products_url, notice: 'Product stock update was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product_stock_update }
       else
         format.html { render action: 'new' }
