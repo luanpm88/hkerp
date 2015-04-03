@@ -124,6 +124,8 @@
             <td>
               <% if detail.serial_numbers.present? %>
                 <%= detail.serial_numbers_html.html_safe %>
+              <% elsif detail.order_detail.order.tax.rate == 0 %>
+                -
               <% else %>
                 Bảo hành theo tem
               <% end %>

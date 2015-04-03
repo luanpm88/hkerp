@@ -233,6 +233,7 @@ class Ability
         can :create, Delivery
         can :read, Delivery
         can :deliver, Delivery
+        can :update, Delivery
         
         can :download_pdf, Delivery
         

@@ -58,6 +58,7 @@ class DeliveriesController < ApplicationController
 
   # GET /deliveries/1/edit
   def edit
+    @order = Order.find(@delivery.order_id)
   end
 
   # POST /deliveries
