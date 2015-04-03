@@ -238,6 +238,8 @@ class Ability
         can :download_pdf, Delivery
         
         can :create, Combination
+        
+        can :create, ProductStockUpdate
       end
 
     end

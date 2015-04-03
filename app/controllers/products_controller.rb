@@ -169,21 +169,7 @@ class ProductsController < ApplicationController
     end
   end
   
-  def combine_parts
-    
-  end
   
-  def do_combine_parts
-    respond_to do |format|
-      if @product.combine_parts(params[:quantity])
-        format.html { redirect_to products_url, notice: 'Product was successfully combined.' }
-        format.json { render action: 'show', status: :created, location: @product }
-      else
-        format.html { redirect_to combine_parts_products_url(id: @product.id), alert: 'Product was unsuccessfully combined.' }
-        format.json { render json: @product.errors, status: :unprocessable_entity }
-      end
-    end
-  end
   
   
   private

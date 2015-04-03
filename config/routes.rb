@@ -1,4 +1,6 @@
 Hkerp::Application.routes.draw do
+  resources :product_stock_updates
+
   resources :combination_details
 
   resources :combinations
@@ -157,9 +159,6 @@ Hkerp::Application.routes.draw do
       get :sales_delivery
       get :update_price
       patch :do_update_price
-      
-      get :combine_parts
-      patch :do_combine_parts
     end
   end
   

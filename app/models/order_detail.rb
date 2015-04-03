@@ -62,7 +62,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def max_delivery
-    stock = product.stock
+    stock = product.calculated_stock
     
     if order.is_purchase
       return remain_count
@@ -105,7 +105,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def is_out_of_stock
-    stock = product.stock
+    stock = product.calculated_stock
     
     return (stock.nil? || stock < remain_count) && !order.is_purchase
   end
@@ -127,7 +127,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def out_of_stock_count
-    remain_count - product.stock
+    remain_count - product.calculated_stock
   end
   
   def cost

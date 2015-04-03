@@ -869,6 +869,39 @@ ALTER SEQUENCE product_prices_id_seq OWNED BY product_prices.id;
 
 
 --
+-- Name: product_stock_updates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE product_stock_updates (
+    id integer NOT NULL,
+    product_id integer,
+    quantity integer,
+    serial_numbers text,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: product_stock_updates_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE product_stock_updates_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: product_stock_updates_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE product_stock_updates_id_seq OWNED BY product_stock_updates.id;
+
+
+--
 -- Name: products; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1539,6 +1572,13 @@ ALTER TABLE ONLY product_prices ALTER COLUMN id SET DEFAULT nextval('product_pri
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY product_stock_updates ALTER COLUMN id SET DEFAULT nextval('product_stock_updates_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq'::regclass);
 
 
@@ -1801,6 +1841,14 @@ ALTER TABLE ONLY product_parts
 
 ALTER TABLE ONLY product_prices
     ADD CONSTRAINT product_prices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_stock_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY product_stock_updates
+    ADD CONSTRAINT product_stock_updates_pkey PRIMARY KEY (id);
 
 
 --
@@ -2161,4 +2209,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150403072850');
 INSERT INTO schema_migrations (version) VALUES ('20150403072907');
 
 INSERT INTO schema_migrations (version) VALUES ('20150403110105');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403121428');
 

@@ -133,7 +133,7 @@ class Product < ActiveRecord::Base
               product.manufacturer.name,
               product.name,
               '<div class="text-right">'+product.product_price.price_formated+'</div>',
-              '<div class="text-center">'+product.stock.to_s+'</div>',
+              '<div class="text-center">'+product.calculated_stock.to_s+'</div>',
               edit_link+
               update_price_link+
               ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
@@ -180,11 +180,7 @@ class Product < ActiveRecord::Base
   end
   
   def valid_serial_numbers
-    if stock.present?
-      return serial_numbers_extracted.count <= stock
-    else
-      return true
-    end
+    return serial_numbers_extracted.count <= calculated_stock
   end
   
   def fix_serial_numbers
@@ -254,7 +250,7 @@ class Product < ActiveRecord::Base
   end
   
   def is_out_of_stock
-    stock.nil? || stock == 0
+    calculated_stock == 0
   end
   
   def is_price_outdated
@@ -286,7 +282,7 @@ class Product < ActiveRecord::Base
     
     count = 10000000000
     parts.each do |p|
-      i = p.stock/(self.product_parts.where(part_id: p.id).first.quantity).to_i
+      i = p.calculated_stock/(self.product_parts.where(part_id: p.id).first.quantity).to_i
       if count > i
         count = i
       end      
@@ -294,33 +290,7 @@ class Product < ActiveRecord::Base
     return count
   end
   
-  def combine_parts(quantity)
-    if quantity.to_i <= max_combinable && quantity.to_i != 0
-      com = Combination.new(product_id: self.id, stock_before: self.stock, quantity: quantity.to_i)
-      
-      parts.each do |p|
-        num = self.product_parts.where(part_id: p.id).first.quantity.to_i*quantity.to_i
-        new_stock = p.stock - num
-        
-        com_detail = com.combination_details.new(product_id: p.id, stock_before: p.stock, quantity: num)
-        
-        p.update_attributes(stock: new_stock)
-        
-        com_detail.stock_after = Product.find(p.id).stock
-      end
-      
-      n_stock = self.stock+quantity.to_i
-      self.update_attributes(stock: n_stock)
-      
-      com.stock_after = Product.find(self.id).stock
-      
-      com.save
-      
-      return true
-    else
-      return false
-    end
-  end
+  
   
   def calculated_stock
     count = 0

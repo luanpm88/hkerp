@@ -1,4 +1,5 @@
 class CombinationDetailsController < ApplicationController
+  load_and_authorize_resource
   before_action :set_combination_detail, only: [:show, :edit, :update, :destroy]
 
   # GET /combination_details
