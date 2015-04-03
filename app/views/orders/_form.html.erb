@@ -262,7 +262,7 @@
                                              <span class="help">(%)</span>
                                                <div class="input-with-icon  right">                                       
                                                  <i class=""></i>
-                                                 <%= f.select :deposit, options_for_select(100.downto(0).map { |u| [u, u] },@order.deposit), :class => "form-control number_input" %>
+                                                 <%= f.select :deposit, options_for_select(0.upto(100).map { |u| [u, u] },@order.deposit), :class => "form-control number_input" %>
                                                </div>
                                         </div>
                                    </div>

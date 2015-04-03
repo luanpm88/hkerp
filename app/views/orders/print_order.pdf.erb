@@ -128,7 +128,7 @@
 </div>
 
 <div style="position: absolute;top:<%= pos12 %>px;left: 165px;width:500px;line-height: 31px;">
-    <%= @order.docso(@order.total_vat.to_i) %>
+    <%= @order.docso(@order.total_vat.to_i.to_i) %>
 </div>
 
 <!--<img src="http://marketonline.vn/img011.png" width="100%" style="position:absolute;left:0;top:5px;z-index:-1;" valign="top" />-->
