@@ -10,6 +10,7 @@ class ProductStockUpdate < ActiveRecord::Base
   belongs_to :user
   
   before_validation :update_quantity
+  before_validation :fix_serial_numbers
   
   def quantity=(num)
     self[:quantity] = num.to_s.gsub(",","")
@@ -25,6 +26,10 @@ class ProductStockUpdate < ActiveRecord::Base
     if self.is_import == 0 && !self.quantity.nil?
         self.quantity = -self.quantity
     end
+  end
+  
+  def fix_serial_numbers
+    self.serial_numbers = Product.extract_serial_numbers(serial_numbers).join("\r\n")
   end
 
 end
