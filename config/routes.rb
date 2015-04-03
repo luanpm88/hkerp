@@ -1,4 +1,8 @@
 Hkerp::Application.routes.draw do
+  resources :combination_details
+
+  resources :combinations
+
   resources :product_parts
 
   default_url_options :host => "27.0.15.181:3000"

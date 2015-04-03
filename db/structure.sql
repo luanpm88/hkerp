@@ -209,6 +209,75 @@ ALTER SEQUENCE checkinouts_id_seq OWNED BY checkinouts.id;
 
 
 --
+-- Name: combination_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE combination_details (
+    id integer NOT NULL,
+    combination_id integer,
+    product_id integer,
+    stock_before integer,
+    quantity integer,
+    stock_after integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: combination_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE combination_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: combination_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE combination_details_id_seq OWNED BY combination_details.id;
+
+
+--
+-- Name: combinations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE combinations (
+    id integer NOT NULL,
+    product_id integer,
+    stock_before integer,
+    quantity integer,
+    stock_after integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: combinations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE combinations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: combinations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE combinations_id_seq OWNED BY combinations.id;
+
+
+--
 -- Name: contact_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1341,6 +1410,20 @@ ALTER TABLE ONLY checkinouts ALTER COLUMN id SET DEFAULT nextval('checkinouts_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY combination_details ALTER COLUMN id SET DEFAULT nextval('combination_details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY combinations ALTER COLUMN id SET DEFAULT nextval('combinations_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY contact_types ALTER COLUMN id SET DEFAULT nextval('contact_types_id_seq'::regclass);
 
 
@@ -1571,6 +1654,22 @@ ALTER TABLE ONLY checkinout_requests
 
 ALTER TABLE ONLY checkinouts
     ADD CONSTRAINT checkinouts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: combination_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY combination_details
+    ADD CONSTRAINT combination_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: combinations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY combinations
+    ADD CONSTRAINT combinations_pkey PRIMARY KEY (id);
 
 
 --
@@ -2049,4 +2148,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150401094819');
 INSERT INTO schema_migrations (version) VALUES ('20150402065427');
 
 INSERT INTO schema_migrations (version) VALUES ('20150402130957');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403024049');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403024601');
 

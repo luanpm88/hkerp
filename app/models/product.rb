@@ -289,14 +289,25 @@ class Product < ActiveRecord::Base
   
   def combine_parts(quantity)
     if quantity.to_i <= max_combinable && quantity.to_i != 0
+      com = Combination.new(product_id: self.id, stock_before: self.stock, quantity: quantity.to_i)
+      
       parts.each do |p|
         num = self.product_parts.where(part_id: p.id).first.quantity.to_i*quantity.to_i
         new_stock = p.stock - num
+        
+        com_detail = com.combination_details.new(product_id: p.id, stock_before: p.stock, quantity: new_stock)
+        
         p.update_attributes(stock: new_stock)
+        
+        com_detail.stock_after = Product.find(p.id).stock
       end
       
       n_stock = self.stock+quantity.to_i
       self.update_attributes(stock: n_stock)
+      
+      com.stock_after = Product.find(self.id).stock
+      
+      com.save
       
       return true
     else
