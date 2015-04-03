@@ -322,5 +322,8 @@ class Product < ActiveRecord::Base
     end
   end
   
+  def calculated_stock
+    delivery_details.sum(:quantity)+combinations.sum(:quantity)-combination_details.sum(:quantity)
+  end
   
 end
