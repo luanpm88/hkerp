@@ -29,7 +29,14 @@
                                         <div class="input-with-icon  right">                                       
                                                 <i class=""></i>
                                                 <%= part.display_name %>
-                                                ( <%= @product.max_combinable*ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %> / <%= part.stock %> )
+                                                (
+												<span class="part_line" stock="<%= part.stock %>" quantity="<%= ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>">
+														<%= @product.max_combinable*ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>
+												</span> /
+												<span>
+														<%= part.stock %>
+												</span>
+												)
                                         </div>
                                   </div>
                                 <% end %>
@@ -40,7 +47,7 @@
                                     <span class="help">(required)</span>
                                         <div class="input-with-icon  right">                                       
                                                 <i class=""></i>
-                                                <%= select_tag :quantity, options_for_select(@product.max_combinable.downto(1).map { |u| [u, u] }), {:class => "width100 modern_select"} %>
+                                                <%= select_tag :quantity, options_for_select(@product.max_combinable.downto(1).map { |u| [u, u] }), {:class => "width100 modern_select combined_product_quantity"} %>
                                         </div>
                                   </div>
                             </div>

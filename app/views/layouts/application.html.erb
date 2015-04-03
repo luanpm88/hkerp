@@ -1031,6 +1031,18 @@
 		$('#product-line-items input').live("keyup", function() {
 			updateOrderPrices();
 		})
+		
+		$('.combined_product_quantity').change(function() {
+			var num = $(this).val();
+			$('.part_line').each(function() {
+				var stock = parseInt($(this).attr("stock"));
+				var quantity = parseInt($(this).attr("quantity"));
+				
+				var cost = quantity*num
+				
+				$(this).html(cost);
+			});
+		});
 	    
       });
 </script>
