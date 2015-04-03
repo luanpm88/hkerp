@@ -220,7 +220,8 @@ CREATE TABLE combination_details (
     quantity integer,
     stock_after integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    serial_numbers text
 );
 
 
@@ -254,7 +255,8 @@ CREATE TABLE combinations (
     quantity integer,
     stock_after integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    serial_numbers text
 );
 
 
@@ -2152,4 +2154,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150402130957');
 INSERT INTO schema_migrations (version) VALUES ('20150403024049');
 
 INSERT INTO schema_migrations (version) VALUES ('20150403024601');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403072850');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403072907');
 

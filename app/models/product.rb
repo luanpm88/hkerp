@@ -157,11 +157,11 @@ class Product < ActiveRecord::Base
     return {result: result, items: @products}
   end
   
-  def serial_numbers_extracted
+  def self.extract_serial_numbers(string)
     arr = []
     
-    if !serial_numbers.nil?
-      serial_numbers.split("\r\n").each do |line|
+    if !string.nil?
+      string.split("\r\n").each do |line|
         item = line.strip
         if item.length < 40 && item.length > 4
           arr << item
@@ -170,6 +170,10 @@ class Product < ActiveRecord::Base
     end
       
     return arr
+  end
+  
+  def serial_numbers_extracted
+    Product.extract_serial_numbers(serial_numbers)
   end
   
   def valid_serial_numbers
@@ -295,7 +299,7 @@ class Product < ActiveRecord::Base
         num = self.product_parts.where(part_id: p.id).first.quantity.to_i*quantity.to_i
         new_stock = p.stock - num
         
-        com_detail = com.combination_details.new(product_id: p.id, stock_before: p.stock, quantity: new_stock)
+        com_detail = com.combination_details.new(product_id: p.id, stock_before: p.stock, quantity: num)
         
         p.update_attributes(stock: new_stock)
         

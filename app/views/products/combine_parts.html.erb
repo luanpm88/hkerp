@@ -26,7 +26,7 @@
                                 <% @product.parts.each do |part| %>
                                   <div class="form-group">
                                     
-                                        <div class="input-with-icon  right">                                       
+                                        <div class="input-with-icon  right" style="font-weight: 700">                                       
                                                 <i class=""></i>
                                                 <%= part.display_name %>
                                                 (
@@ -39,6 +39,17 @@
 												)
                                         </div>
                                   </div>
+								  
+								  <div class="form-group">
+                                    <label class="form-label"><%= f.label :serial_numbers %></label>
+                                    <span class="help"></span>
+										<div class="input-with-icon  right">                                       
+												<i class=""></i>
+												<%= text_area_tag "serial_numbers_"+part.id.to_s, "", {:class => "form-control"} %>
+										</div>
+                                  </div>
+								  <br />
+								  <br />
                                 <% end %>
                             </div>
                             <div class="col-md-6">                           
