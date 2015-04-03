@@ -58,7 +58,7 @@
                                                 <th>Check-in Time</th>
                                                 <th>Total Work Time</th>
                                                 <th>Result</th>
-                                                <th width="8%">Note</th>
+                                                <!--<th width="8%">Note</th>-->
                                                 <th style="text-align:right">Action</th>
                                             </tr>
                                         </thead>
@@ -70,7 +70,7 @@
                                                     <td><%= check.check_time_formatted.html_safe %></td>
                                                     <td><%= check.work_time_formatted.html_safe %></td>
                                                     <td><%= check.get_result.html_safe %></td>
-                                                    <td><%= check.note.html_safe %></td>
+                                                    <!--<td><%= check.note.html_safe %></td>-->
                                                     <td style="text-align:right">
 							<a href="<%= new_checkinout_request_path(check_time: check.check_time) %>" class="btn btn-info btn-sm btn-mini" type="button">Request</a>
 							
