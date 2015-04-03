@@ -158,6 +158,7 @@
 						<tr class="quantity-<%= line.quantity %>">
 						    <td>
 							<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
+							<%= hidden_field_tag "delivery_lines[#{line.id}][product_id]", line.product_id %>
 							<%= line.product_name %><br />
 							<%= line.product_description %>
 						    </td>

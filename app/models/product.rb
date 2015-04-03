@@ -15,6 +15,7 @@ class Product < ActiveRecord::Base
   belongs_to :user
   
   has_many :order_details
+  has_many :delivery_details
   
   has_many :product_prices, :dependent => :destroy
   

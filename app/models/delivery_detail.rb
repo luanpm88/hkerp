@@ -3,6 +3,7 @@ class DeliveryDetail < ActiveRecord::Base
   
   belongs_to :delivery
   belongs_to :order_detail
+  belongs_to :product
   
   before_save :fix_serial_numbers
   

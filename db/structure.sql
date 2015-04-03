@@ -404,7 +404,8 @@ CREATE TABLE delivery_details (
     quantity integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    serial_numbers text
+    serial_numbers text,
+    product_id integer
 );
 
 
@@ -2158,4 +2159,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150403024601');
 INSERT INTO schema_migrations (version) VALUES ('20150403072850');
 
 INSERT INTO schema_migrations (version) VALUES ('20150403072907');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403110105');
 
