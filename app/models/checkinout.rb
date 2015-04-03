@@ -40,7 +40,7 @@ class Checkinout < ActiveRecord::Base
         raw = line.split(",")[1]
         date_a = raw.split(" ")
         day_string = date_a[0]
-        time_string = date_a[1]
+        time_string = date_a[1]+" "+date_a[2]
         
         day_string = day_string.split("/")[2]+"-"+day_string.split("/")[0]+"-"+day_string.split("/")[1]
         
