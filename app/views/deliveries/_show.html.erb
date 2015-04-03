@@ -130,7 +130,7 @@
               <span style="color: #fff">.</span></td>
             <td><%= detail.quantity %> (<%= detail.order_detail.unit %>)</td>
             <td>
-              <% if %>
+              <% if detail.order_detail.warranty > 0 %>
                 <%= detail.order_detail.warranty %> (tháng)
               <% else %>
                 -
