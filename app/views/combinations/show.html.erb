@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @combination.product_id %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @combination.quantity %>
+</p>
+
+<%= link_to 'Edit', edit_combination_path(@combination) %> |
+<%= link_to 'Back', combinations_path %>

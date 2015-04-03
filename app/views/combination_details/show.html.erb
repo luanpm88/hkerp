@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Combination:</strong>
+  <%= @combination_detail.combination_id %>
+</p>
+
+<p>
+  <strong>Product:</strong>
+  <%= @combination_detail.product_id %>
+</p>
+
+<p>
+  <strong>Stock before:</strong>
+  <%= @combination_detail.stock_before %>
+</p>
+
+<p>
+  <strong>Quantity:</strong>
+  <%= @combination_detail.quantity %>
+</p>
+
+<p>
+  <strong>Stock after:</strong>
+  <%= @combination_detail.stock_after %>
+</p>
+
+<%= link_to 'Edit', edit_combination_detail_path(@combination_detail) %> |
+<%= link_to 'Back', combination_details_path %>

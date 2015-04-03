@@ -1,0 +1,33 @@
+<h1>Listing combination_details</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Combination</th>
+      <th>Product</th>
+      <th>Stock before</th>
+      <th>Quantity</th>
+      <th>Stock after</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @combination_details.each do |combination_detail| %>
+      <tr>
+        <td><%= combination_detail.combination_id %></td>
+        <td><%= combination_detail.product_id %></td>
+        <td><%= combination_detail.stock_before %></td>
+        <td><%= combination_detail.quantity %></td>
+        <td><%= combination_detail.stock_after %></td>
+        <td><%= link_to 'Show', combination_detail %></td>
+        <td><%= link_to 'Edit', edit_combination_detail_path(combination_detail) %></td>
+        <td><%= link_to 'Destroy', combination_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Combination detail', new_combination_detail_path %>

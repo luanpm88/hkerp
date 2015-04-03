@@ -1,0 +1,27 @@
+<h1>Listing combinations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @combinations.each do |combination| %>
+      <tr>
+        <td><%= combination.product_id %></td>
+        <td><%= combination.quantity %></td>
+        <td><%= link_to 'Show', combination %></td>
+        <td><%= link_to 'Edit', edit_combination_path(combination) %></td>
+        <td><%= link_to 'Destroy', combination, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Combination', new_combination_path %>
