@@ -221,6 +221,9 @@ class Order < ActiveRecord::Base
       hauto = " tỷ"
     end while so>0
     
+    chuoi = chuoi.strip.capitalize
+    chuoi = (chuoi =~ /Triệu /) == 0 ? "Một " + chuoi : chuoi
+    
     return chuoi.strip.capitalize + " đồng"
   end
   
