@@ -2,7 +2,7 @@ class Combination < ActiveRecord::Base
   has_many :combination_details
   belongs_to :product
   
-  validate :valid_quantity
+  #validate :valid_quantity
   
   
   #validate :prevent_save

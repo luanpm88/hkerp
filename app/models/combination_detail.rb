@@ -2,8 +2,8 @@ class CombinationDetail < ActiveRecord::Base
   belongs_to :combination
   belongs_to :product
   
-  validate :valid_serial_numbers
-  validate :serial_numbers_remain_can_not_greater_than_stock_remain
+  #validate :valid_serial_numbers
+  #validate :serial_numbers_remain_can_not_greater_than_stock_remain
   
   def valid_serial_numbers
     if Product.extract_serial_numbers(serial_numbers).count > quantity
