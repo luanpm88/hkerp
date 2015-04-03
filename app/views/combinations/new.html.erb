@@ -1,5 +1,115 @@
-<h1>New combination</h1>
+<ul class="breadcrumb">
+        <li>
+          <p>YOU ARE HERE</p>
+        </li>
+        <li><%= link_to 'Products', products_url, :class => "active" %></li>
+      </ul>
+      <div class="page-title"> <i class="icon-edit"></i>
+        <h3>Combine Parts - <span class="semi-bold"><%= @product.display_name %></span></h3>
+      </div>
+      
 
-<%= render 'form' %>
-
-<%= link_to 'Back', combinations_path %>
+	  
+      <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Parts <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                <div class="grid-body no-border">
+                    
+                    <% if @combination.errors.any? %>
+                    <div class="alert alert-error">
+                      <button data-dismiss="alert" class="close"></button>
+                      <div id="error_explanation">
+                        <h5><%= pluralize(@combination.errors.count, "error") %> prohibited this order from being saved:</h5>
+                  
+                        <ul>
+                        <% @combination.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                  
+				  <% @combination.combination_details.each do |cd| %>
+						<% if cd.errors.any? %>
+						  <div class="alert alert-error">
+							<button data-dismiss="alert" class="close"></button>
+							<div id="error_explanation">
+							  <h5><%= pluralize(cd.errors.count, "error") %> prohibited [<%= cd.product.display_name %>] from being combined:</h5>
+						
+							  <ul>
+							  <% cd.errors.full_messages.each do |msg| %>
+								<li><%= msg %></li>
+							  <% end %>
+							  </ul>
+							</div>
+						  </div>
+						<% end %>
+                    <% end %>
+                    
+                    
+                    
+                    <%= form_for(@combination) do |f| %>
+                      <%= f.hidden_field :product_id %>
+                      <div class="row column-seperation">
+                            <div class="col-md-6">
+                                <% @product.parts.each do |part| %>
+                                  <div class="form-group">
+                                    
+                                        <div class="input-with-icon  right" style="font-weight: 700">                                       
+                                                <i class=""></i>
+                                                <%= part.display_name %>
+                                                (
+												<span class="part_line" stock="<%= part.stock %>" quantity="<%= ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>">
+														<%= @product.max_combinable*ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>
+												</span> /
+												<span>
+														<%= part.stock %>
+												</span>
+												)
+                                        </div>
+                                  </div>
+								  
+								  <div class="form-group">
+                                    <label class="form-label"><%= f.label :serial_numbers %></label>
+                                    <span class="help"></span>
+										<div class="input-with-icon  right">                                       
+												<i class=""></i>
+												<%= text_area_tag "serial_numbers_"+part.id.to_s, params["serial_numbers_"+part.id.to_s], {:class => "form-control"} %>
+										</div>
+                                  </div>
+								  <br />
+								  <br />
+                                <% end %>
+                            </div>
+                            <div class="col-md-6">                           
+                                  <div class="form-group">
+                                    <label class="form-label"><%= f.label :quantity %></label>
+                                    <span class="help">(required)</span>
+                                        <div class="input-with-icon  right">                                       
+                                                <i class=""></i>
+                                                <%= f.select :quantity, options_for_select(@product.max_combinable.downto(1).map { |u| [u, u] }), {}, {:class => "width100 modern_select combined_product_quantity"} %>
+                                        </div>
+                                  </div>
+                            </div>
+                      </div>
+                    
+                    <div class="form-actions">  
+                      <div class="pull-right">
+                        <input type="submit" class="btn btn-success btn-cons" name="combine" value="Combine" />
+                        <%= link_to 'Cancel', url_for(:back), :class => "btn btn-white btn-cons" %>
+                      </div>
+                  </div>
+                    <% end %>
+                </div>
+                
+                
+                
+              </div>
+            </div>
+      </div>

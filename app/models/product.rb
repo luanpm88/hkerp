@@ -65,7 +65,7 @@ class Product < ActiveRecord::Base
     result += name
     result += " " + product_code if !product_code.nil?
     
-    return result
+    return result.strip
   end
   
   #def self.search(q)

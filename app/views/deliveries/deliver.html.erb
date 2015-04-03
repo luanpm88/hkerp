@@ -185,7 +185,7 @@
 								<%= line.stock_status.html_safe %>
 								
 								<% if line.product.is_combinable %>
-									<%= link_to 'Combine Parts', combine_parts_products_url(id: line.product_id), :target => "_blank", :class => "btn btn-small btn-primary btn-cons" %>
+									<%= link_to 'Combine Parts', new_combination_path(product_id: line.product_id), :target => "_blank", :class => "btn btn-small btn-primary btn-cons" %>
 								<% end %>
 						    </td>
 						</tr>
