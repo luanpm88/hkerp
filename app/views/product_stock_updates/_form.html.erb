@@ -47,6 +47,18 @@
                                 </div>
                                 
                                 <div class="form-group">
+                                    <label class="form-label"><%= f.label :type %></label>
+                                    <span class="help">(required)</span>
+                                    <div class="input-with-icon  right">                                       
+                                        <i class=""></i>
+                                        <select class="modern_select" name="product_stock_update[is_import]">
+                                          <option <% if @product_stock_update.is_import == 1 %>selected="selected"<% end %> value="1">Import</option>
+                                          <option <% if @product_stock_update.is_import == 0 %>selected="selected"<% end %> value="0">Export</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
                                     <label class="form-label"><%= f.label :import_quantity %></label>
                                     <span class="help">(required)</span>
                                     <div class="input-with-icon  right">                                       

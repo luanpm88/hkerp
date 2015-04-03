@@ -878,7 +878,9 @@ CREATE TABLE product_stock_updates (
     quantity integer,
     serial_numbers text,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    is_import integer,
+    user_id integer
 );
 
 
@@ -2211,4 +2213,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150403072907');
 INSERT INTO schema_migrations (version) VALUES ('20150403110105');
 
 INSERT INTO schema_migrations (version) VALUES ('20150403121428');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403125715');
+
+INSERT INTO schema_migrations (version) VALUES ('20150403125725');
 
