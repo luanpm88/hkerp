@@ -190,6 +190,7 @@ class Order < ActiveRecord::Base
     trieu = (so/1000000).floor
     so = so%1000000
     if trieu>0
+      
       chuoi = docblock(trieu,daydu) + " triệu"
       daydu = true
     end
@@ -209,7 +210,6 @@ class Order < ActiveRecord::Base
     return @@mangso[0] if so==0 
     chuoi = ""
     hauto = ""
-    
     begin
       ty = so%1000000000
       so = (so/1000000000).floor
