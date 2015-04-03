@@ -118,6 +118,7 @@
 																 
 																   <div class="row">                           
 																		<div class="col-sm-10 col-md-10">
+																		   <%= p.hidden_field :id %>
 																			 <%= p.text_field :part_id, :class => "width100 select2-ajax-products", url: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
 																		</div>
 																		<div class="col-sm-2 col-md-2">
