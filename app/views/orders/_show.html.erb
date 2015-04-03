@@ -92,9 +92,9 @@
               <%= order_detail.product_description %>
             </td>
             <td><%= order_detail.warranty %> (tháng)</td>
-            <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
-            <td style="text-align: right"><%= order_detail.formated_price %></td>
-            <td style="text-align: right"><%= order_detail.formated_total %></td>
+            <td><%= order_detail.quantity.gsub(",",".") %> (<%= order_detail.unit %>)</td>
+            <td style="text-align: right"><%= order_detail.formated_price.gsub(",",".") %></td>
+            <td style="text-align: right"><%= order_detail.formated_total.gsub(",",".") %></td>
             
           </tr>
       <% end %>
