@@ -31,6 +31,9 @@ class ProductsController < ApplicationController
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_product_path(item))+'</li>'
       end
+      if can? :create, ProductStockUpdate
+        actions += '<li>'+view_context.link_to("Update Stock (Nhập Kho)", new_product_stock_update_path(product_id: item.id))+'</li>'
+      end
       if can? :update_price, item
         actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id})+'</li>'
       end

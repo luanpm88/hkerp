@@ -18,6 +18,7 @@ class Product < ActiveRecord::Base
   has_many :delivery_details
   has_many :combination_details
   has_many :combinations
+  has_many :product_stock_updates
   
   has_many :product_prices, :dependent => :destroy
   
@@ -127,6 +128,7 @@ class Product < ActiveRecord::Base
       
       edit_link = '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini">Edit</a> '
       update_price_link = link_helper.link_to('Price', {controller: "products", action: "update_price", id: product.id}, class: "btn btn-info btn-xs btn-mini")
+      update_stock_link = link_helper.link_to('Update Stock', {controller: "product_stock_updates", action: "new", product_id: product.id}, class: "btn btn-info btn-xs btn-mini")
       
       item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
               product.categories.first.name,
@@ -136,6 +138,7 @@ class Product < ActiveRecord::Base
               '<div class="text-center">'+product.calculated_stock.to_s+'</div>',
               edit_link+
               update_price_link+
+              update_stock_link+"ddd"+
               ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
               #product.manufacturer_name,
               #product.name,
@@ -305,6 +308,9 @@ class Product < ActiveRecord::Base
     count += delivery_details.joins(:order_detail => :order)
                             .where(orders: {customer_id: Contact.HK.id})
                             .sum(:quantity)
+    
+    #count for stock update
+    count += product_stock_updates.sum(:quantity)
   end
   
 end

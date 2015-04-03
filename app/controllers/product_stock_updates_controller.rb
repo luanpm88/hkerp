@@ -15,7 +15,8 @@ class ProductStockUpdatesController < ApplicationController
 
   # GET /product_stock_updates/new
   def new
-    @product_stock_update = ProductStockUpdate.new
+    @product_stock_update = ProductStockUpdate.new(product_id: params[:product_id])
+    @product = Product.find(params[:product_id])
   end
 
   # GET /product_stock_updates/1/edit
@@ -26,10 +27,11 @@ class ProductStockUpdatesController < ApplicationController
   # POST /product_stock_updates.json
   def create
     @product_stock_update = ProductStockUpdate.new(product_stock_update_params)
-
+    @product = Product.find(@product_stock_update.product_id)
+    
     respond_to do |format|
       if @product_stock_update.save
-        format.html { redirect_to @product_stock_update, notice: 'Product stock update was successfully created.' }
+        format.html { redirect_to products_urls, notice: 'Product stock update was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product_stock_update }
       else
         format.html { render action: 'new' }
