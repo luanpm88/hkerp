@@ -16,7 +16,8 @@ class Product < ActiveRecord::Base
   
   has_many :order_details
   has_many :delivery_details
-  has_many :combination_details 
+  has_many :combination_details
+  has_many :combinations
   
   has_many :product_prices, :dependent => :destroy
   
