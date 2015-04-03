@@ -725,7 +725,7 @@ class Order < ActiveRecord::Base
   
   def confirm_price
     order_details.each do |od|
-      if od.product.product_prices.count == 0 || od.product.product_price.price != od.price
+      if (od.product.product_prices.count == 0 || od.product.product_price.price != od.price) && od.quantity > 0
         return false
       end
     end
