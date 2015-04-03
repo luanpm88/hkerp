@@ -69,58 +69,58 @@
 					    </div>
 					    
 					    <table class="table table-striped no-more-tables no-filter">
-						<thead>
-						    <tr>                                                
-							<th>Item</th>
-							<th class="text-center">Delivered / Quantity</th>
-							<th class="text-center">Return Quantity</th>
-							<th>Serial Numbers</th>
-							<th class="text-center">Stock</th>
-							<th class="text-center">Status</th>
-						    </tr>
-						</thead>
-						<tbody>
-						    <% @order.order_details.each do |line| %>
-							<tr class="quantity-<%= line.quantity %>">
-							    <td>
-								<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
-								<%= line.product_name %><br />
-								<%= line.product_description %>
-							    </td>
-							    
-							    <td class="text-center">
-								<%= line.delivered_count %> / <%= line.quantity %>
-							    </td>
-							    
-							    <td class="text-center">
-								<% if line.delivered_count > line.quantity %>
-								    <%= select_tag "delivery_lines[#{line.id}][quantity]", options_for_select((-line.return_count).upto(0)), class: "form-control text-center select2" %>
+							<thead>
+								<tr>                                                
+								<th>Item</th>
+								<th class="text-center">Delivered / Quantity</th>
+								<th class="text-center">Return Quantity</th>
+								<th>Serial Numbers</th>
+								<th class="text-center">Stock</th>
+								<th class="text-center">Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% @order.order_details.each do |line| %>
+								<tr class="quantity-<%= line.quantity %>">
+									<td>
+									<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
+									<%= line.product_name %><br />
+									<%= line.product_description %>
+									</td>
+									
+									<td class="text-center">
+									<%= line.delivered_count %> / <%= line.quantity %>
+									</td>
+									
+									<td class="text-center">
+									<% if line.delivered_count > line.quantity %>
+										<%= select_tag "delivery_lines[#{line.id}][quantity]", options_for_select((-line.return_count).upto(0)), class: "form-control text-center select2" %>
+									<% end %>
+									</td>
+									<td>
+									<% if line.delivered_count > line.quantity %>
+										<%= text_area_tag "delivery_lines[#{line.id}][serial_numbers]" %>
+									<% end %>
+									</td>
+									
+									<td class="text-center">
+									<%= line.product.stock %>
+									</td>
+									
+									<td class="text-center">
+									<%= line.stock_status.html_safe %>
+									</td>
+								</tr>
 								<% end %>
-							    </td>
-							    <td>
-								<% if line.delivered_count > line.quantity %>
-								    <%= text_area_tag "delivery_lines[#{line.id}][serial_numbers]" %>
-								<% end %>
-							    </td>
-							    
-							    <td class="text-center">
-								<%= line.product.stock %>
-							    </td>
-							    
-							    <td class="text-center">
-								<%= line.stock_status.html_safe %>
-							    </td>
-							</tr>
-						    <% end %>
-						    
-						    
-						    
-						</tbody>
+								
+								
+								
+							</tbody>
 					    </table>
 					    <br />
 					    <br />
 					    <div class="text-right">
-						<input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
+							<input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
 					    </div>
 				    <% end %>
 				<% end %>
