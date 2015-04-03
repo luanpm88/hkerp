@@ -92,9 +92,9 @@
               <%= order_detail.product_description %>
             </td>
             <td><%= order_detail.warranty %> (tháng)</td>
-            <td><%= order_detail.quantity.gsub(",",".") %> (<%= order_detail.unit %>)</td>
-            <td style="text-align: right"><%= order_detail.formated_price.gsub(",",".") %></td>
-            <td style="text-align: right"><%= order_detail.formated_total.gsub(",",".") %></td>
+            <td><%= order_detail.quantity.to_s.gsub(",",".") %> (<%= order_detail.unit %>)</td>
+            <td style="text-align: right"><%= order_detail.formated_price.to_s.gsub(",",".") %></td>
+            <td style="text-align: right"><%= order_detail.formated_total.to_s.gsub(",",".") %></td>
             
           </tr>
       <% end %>
@@ -102,17 +102,17 @@
   
   <tr>
     <td colspan="5" style="text-align: right">Cộng tiền hàng</td>
-    <td style="text-align: right"><%= @order.formated_total %></td>
+    <td style="text-align: right"><%= @order.formated_total.to_s.gsub(",",".") %></td>
 
   </tr>
   <tr>
     <td colspan="5" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
-    <td style="text-align: right"><%= @order.formated_vat_amount %></td>
+    <td style="text-align: right"><%= @order.formated_vat_amount.to_s.gsub(",",".") %></td>
 
   </tr>
   <tr>
     <td colspan="5" style="text-align: right">Tổng cộng tiền thanh toán</td>
-    <td style="text-align: right"><%= @order.formated_total_vat %></td>
+    <td style="text-align: right"><%= @order.formated_total_vat.to_s.gsub(",",".") %></td>
 
   </tr>
 </table>
