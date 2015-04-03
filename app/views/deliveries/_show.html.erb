@@ -127,9 +127,12 @@
               <% elsif detail.order_detail.order.tax.rate == 0 %>
                 -
               <% else %>
-                <span style="color: #fff">Bảo hành theo tem</span>
+                <% (1..detail.quantity).each do |i| %>
+                  <span style="color: #fff">Bảo hành theo tem</span><br />
+                <% end %>
+                <br />
               <% end %>
-              <span style="color: #fff">.</span></td>
+            </td>
             <td><%= detail.quantity %> (<%= detail.order_detail.unit %>)</td>
             <td>
               <% if detail.order_detail.warranty > 0 %>
