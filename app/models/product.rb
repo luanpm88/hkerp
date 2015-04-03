@@ -19,7 +19,7 @@ class Product < ActiveRecord::Base
   has_many :product_prices, :dependent => :destroy
   
   
-  has_many :product_parts
+  has_many :product_parts, :dependent => :destroy
   has_many :parts, :through => :product_parts, :source => :part
   
   accepts_nested_attributes_for :product_parts, :reject_if => lambda { |c| c[:part_id].blank? || c[:id].present? }
