@@ -17,8 +17,7 @@
   </tr>
   <tr>
     <td>
-      <p><%= @order.supplier.address %></p>
-      <% if !@order.supplier.children.empty? %><p><label style="font-weight: normal">VPGD: </label><strong><%= @order.supplier.children.first.address %></strong></p><% end %>
+      <p><%= @order.supplier.address %></p>      
       <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
       <p><label>STK: </label><%= @order.supplier.account_number %> <%= @order.supplier.bank %></p>
     </td>
