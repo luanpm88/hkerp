@@ -41,4 +41,8 @@ class DeliveryDetail < ActiveRecord::Base
   def serial_numbers_html
     serial_numbers.gsub("\r\n","<br />")
   end
+  
+  def serial_numbers_extracted
+    Product.extract_serial_numbers(serial_numbers)
+  end
 end

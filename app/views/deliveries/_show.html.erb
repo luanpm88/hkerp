@@ -104,7 +104,7 @@
   <tr>
     <th>STT</th>
     <th width="55%" style="max-width: 50%;">TÊN THIẾT BỊ- CẤU HÌNH</th>
-    <th>S/N</th>
+    <th width="30%">S/N</th>
     <th>Số lượng</th>
     <th>Bảo hành</th>
     
@@ -120,9 +120,12 @@
               <%= detail.order_detail.product_name %><br />
               <%= detail.order_detail.product_description %>
             </td>
-            <td valign="top">
+            <td valign="top" style="text-align: left">
               <% if detail.serial_numbers.present? %>
-                <%= detail.serial_numbers_html.html_safe %>
+                <% detail.serial_numbers_extracted.each_with_index do |serial_number,index| %>
+                      <%= serial_number %>,
+                      <% if index%2 == 1 %><br /><% end %>
+                <% end %>
               <% elsif detail.order_detail.order.tax.rate == 0 %>
                 -
               <% else %>
