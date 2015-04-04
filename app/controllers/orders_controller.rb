@@ -22,7 +22,7 @@ class OrdersController < ApplicationController
       @order = Order.new
       @order.order_date = (Time.now).strftime("%Y-%m-%d")
       @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
-      @order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
+      #@order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
       @order.debt_date = (Time.now + 14.days).strftime("%Y-%m-%d")
       @order.debt_days = ((Time.now + 14.days).to_date - Time.now.to_date).to_i
       @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
@@ -40,7 +40,7 @@ class OrdersController < ApplicationController
   def edit
       @order.order_date = (@order.order_date).strftime("%Y-%m-%d")
       @order.order_deadline = (@order.order_deadline).strftime("%Y-%m-%d")
-      @order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
+      #@order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
       @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d") if !@order.debt_date.nil?
       @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil?
       @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
@@ -327,7 +327,7 @@ class OrdersController < ApplicationController
   def update_info
     @order.order_date = (@order.order_date).strftime("%Y-%m-%d")
     @order.order_deadline = (@order.order_deadline).strftime("%Y-%m-%d")
-    @order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
+    #@order.payment_deadline = (@order.payment_deadline).strftime("%Y-%m-%d")
     @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d") if !@order.debt_date.nil?
     @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil?
     @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
