@@ -1077,6 +1077,11 @@
 				$(this).parent().find('.destroy_tag').val("");
 			}
 		});
+		
+		update_update_price_form();
+		$('.update-price-form input').keyup(function() {
+			update_update_price_form();
+		});
 	    
       });
 </script>

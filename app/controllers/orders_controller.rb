@@ -310,6 +310,11 @@ class OrdersController < ApplicationController
       od.update_attributes(price: od.product.product_price.price)
     end
     
+    params[:product_parts].each do |line|
+      p = Product.find(line[0])
+      p.update_price(line[1][:product])
+    end
+    
     respond_to do |format|
       if !params[:confirm].nil?
         format.html { redirect_to confirm_price_orders_url(id: @order.id) }
