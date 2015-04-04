@@ -487,7 +487,7 @@ class Order < ActiveRecord::Base
               link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
               '<div class="text-right">'+item.formated_total_vat+'</div>',
               #'<div class="text-center">'+item.order_details.count.to_s+'</div>',
-              '<div class="text-center">'+item.salesperson.name+'</div>',
+              '<div class="text-center">'+item.salesperson_name+'</div>',
               '<div class="text-center">'+item.purchase_manager_name+'</div>',
               '<div class="text-center">'+item.order_date_formatted+'</div>',
               '<div class="text-center">'+item.display_status.html_safe+'</div><div class="text-center">-----</div>'+'<div class="text-center">'+item.price_status+'</div>'+'<div class="text-center">'+item.delivery_status.html_safe+'</div>',
@@ -743,6 +743,9 @@ class Order < ActiveRecord::Base
     purchase_manager.nil? ? "" : purchase_manager.name
   end
   
+  def salesperson_name
+    salesperson.nil? ? "" : salesperson.name
+  end
   
   def debt_days
     if !debt_date.nil?
