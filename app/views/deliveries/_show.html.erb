@@ -120,7 +120,7 @@
               <%= detail.order_detail.product_name %><br />
               <%= detail.order_detail.product_description %>
             </td>
-            <td valign="top" style="text-align: left">
+            <td valign="top" style="text-align: center">
               <% if detail.serial_numbers.present? %>
                 <% detail.serial_numbers_extracted.each_with_index do |serial_number,index| %>
                       <div style="display: inline-block; text-align: center; margin-right: 20px;"><%= serial_number %>
