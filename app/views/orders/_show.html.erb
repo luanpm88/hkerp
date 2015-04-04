@@ -154,7 +154,13 @@
   Mọi thông tin chi tiết xin Quý khách hàng vui lòng liên hệ: 3984 7690; Ext: 102 (phòng kinh doanh)						
 </p>
 <p>
-  Email:	<%= @order.salesperson.email %><% if !@order.salesperson.mobile.nil? %>; ĐT Di Động:	<%= @order.salesperson.mobile %><% end %>		
+  
+  <% if @order.is_purchase %>
+    Email:	<%= @order.purchase_manager.email %><% if !@order.purchase_manager.mobile.nil? %>; ĐT Di Động:	<%= @order.purchase_manager.mobile %><% end %>		
+  <% else %>
+    Email:	<%= @order.salesperson.email %><% if !@order.salesperson.mobile.nil? %>; ĐT Di Động:	<%= @order.salesperson.mobile %><% end %>		
+  <% end %>
+  
 </p>
 <p></p>
 <p>
