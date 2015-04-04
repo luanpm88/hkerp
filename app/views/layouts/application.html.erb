@@ -432,7 +432,7 @@
 	    });
 		
 		
-		updateOrderSupplierAgentFormInfo($('input[name="order[supplier_id]"]').val());
+		//updateOrderSupplierAgentFormInfo($('input[name="order[supplier_id]"]').val());
 		$('input[name="order[supplier_id]"]').live("change", function() {
 			updateOrderCustomerFormInfo($('input[name="order[customer_id]"]').val());
 			updateOrderSupplierAgentFormInfo($(this).val());
