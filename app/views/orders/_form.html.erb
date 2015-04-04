@@ -38,122 +38,144 @@
                            
                             <div class="col-md-6">
                                 
-                                <% if params[:purchase] == '1' %>
-                                    <div class="form-group">
-                                         <label class="form-label"><%= f.label :supplier %></label>
-                                         <span class="help">(required)</span>
-                                         <div class="input-with-icon  right">                                       
-                                           <i class=""></i>
-                                            <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
-                                            <br />
-                                            <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                                  
-                                         </div>
-                                    </div>
-                                <% else %>
-                                    <div class="form-group">
-                                        <label class="form-label"><%= f.label :supplier %></label>
-                                        <span class="help">(required)</span>
-                                        <div class="input-with-icon  right">                                       
-                                          <i class=""></i>
-                                            <input type="hidden" name="order[supplier_id]" value="<%= @order.supplier_id %>">
-                                            <strong><%= @order.supplier.name %></strong>                                 
-                                        </div>
-                                    </div>
-                                <% end %>
                                 
-                                <div class="form-group order-form-supplier-agent-select">
-                                  <label class="form-label"><%= f.label :supplier_agent %></label>
-                                  <span class="help">(required)</span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <div class="select_inner">
-                                      <select name="order[supplier_agent_id]" class="modern_select" style="min-width: 400px;">
-                                        <option value="">Select Agent</option>
-                                        <% if !@order.supplier.nil? && !@order.supplier.agents.nil? %>
-                                          <% @order.supplier.agents.all.each do |contact| %>
-                                            <% if contact.is_agent %>
-                                                <option value="<%= contact.id %>" <% if !@order.supplier_agent_id.nil? && @order.supplier_agent_id == contact.id %>selected="selected"<% end %>>
-                                                  <%= contact.name %>
-                                                </option>
-                                            <% end %>
-                                          <% end %>
-                                        <% end %>
-                                      </select>
-                                    </div>
-                                  </div>
+                                <div class="row">
+                                          <div class="col-md-8">
+                                                        <% if params[:purchase] == '1' %>
+                                                            <div class="form-group">
+                                                                 <label class="form-label"><%= f.label :supplier %></label>
+                                                               <span class="help">(required)</span>
+                                                                 <div class="input-with-icon  right">                                       
+                                                                   <i class=""></i>
+                                                                    <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
+                                                                    <br />
+                                                                    <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                          
+                                                                 </div>
+                                                            </div>
+                                                        <% else %>
+                                                            <div class="form-group">
+                                                                <label class="form-label"><%= f.label :supplier %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div class="input-with-icon  right">                                       
+                                                                  <i class=""></i>
+                                                                    <input type="hidden" name="order[supplier_id]" value="<%= @order.supplier_id %>">
+                                                                    <strong><%= @order.supplier.name %></strong>                                 
+                                                                </div>
+                                                            </div>
+                                                        <% end %>
+                                                        
+                                          </div>
+                                          <div class="col-md-4">
+                                                        
+                                                        <div class="form-group order-form-supplier-agent-select">
+                                                          <label class="form-label"><%= f.label :supplier_agent %></label>
+                                                          
+                                                          <div class="input-with-icon  right">                                       
+                                                            <i class=""></i>
+                                                            <div class="select_inner">
+                                                              <select name="order[supplier_agent_id]" class="modern_select">
+                                                                <option value="">Select Agent</option>
+                                                                <% if !@order.supplier.nil? && !@order.supplier.agents.nil? %>
+                                                                  <% @order.supplier.agents.all.each do |contact| %>
+                                                                    <% if contact.is_agent %>
+                                                                        <option value="<%= contact.id %>" <% if !@order.supplier_agent_id.nil? && @order.supplier_agent_id == contact.id %>selected="selected"<% end %>>
+                                                                          <%= contact.name %>
+                                                                        </option>
+                                                                    <% end %>
+                                                                  <% end %>
+                                                                <% end %>
+                                                              </select>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                          </div>
                                 </div>
                                 
-                                <% if params[:purchase] == '1' %>
-                                    <div class="form-group">
-                                        <label class="form-label"><%= f.label :customer %></label>
-                                        <span class="help">(required)</span>
-                                        <div class="input-with-icon  right">                                       
-                                          <i class=""></i>
-                                            <input type="hidden" name="order[customer_id]" value="<%= @order.customer_id %>">
-                                            <strong><%= @order.customer.name %></strong>                                 
-                                        </div>
-                                    </div>
-                                <% else %>
-                                    <div class="form-group">
-                                      <label class="form-label"><%= f.label :customer %></label>
-                                      <span class="help">(required)</span>
-                                      <div class="input-with-icon  right">                                       
-                                        <i class=""></i>
-                                        
-                                        <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
-                                        <br />
-                                         <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.customer), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                                        
-                                        
-                                      </div>
-                                    </div>
-                                <% end %>
                                 
+                                <div class="row">
+                                          <div class="col-md-8">
                                 
-                                
-                              
-                                <div class="form-group order-form-agent-select">
-                                  <label class="form-label"><%= f.label :agent %></label>
-                                  <span class="help">(required)</span>
-                                  <div class="input-with-icon  right">                                       
-                                    <i class=""></i>
-                                    <div class="select_inner">
-                                      <select name="order[agent_id]" class="modern_select" style="min-width: 400px;">
-                                        <option value="">Select Agent</option>
-                                        <% if !@order.customer.nil? && !@order.customer.agents.nil? %>
-                                          <% @order.customer.agents.all.each do |contact| %>
-                                            <% if contact.is_agent %>
-                                                <option value="<%= contact.id %>" <% if !@order.agent_id.nil? && @order.agent_id == contact.id %>selected="selected"<% end %>>
-                                                  <%= contact.name %>
-                                                </option>
-                                            <% end %>
-                                          <% end %>
-                                        <% end %>
-                                      </select>
-                                    </div>
-                                  </div>
-                                </div>
+                                                        <% if params[:purchase] == '1' %>
+                                                            <div class="form-group">
+                                                                <label class="form-label"><%= f.label :customer %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div class="input-with-icon  right">                                       
+                                                                  <i class=""></i>
+                                                                    <input type="hidden" name="order[customer_id]" value="<%= @order.customer_id %>">
+                                                                    <strong><%= @order.customer.name %></strong>                                 
+                                                                </div>
+                                                            </div>
+                                                        <% else %>
+                                                            <div class="form-group">
+                                                              <label class="form-label"><%= f.label :customer %></label>
+                                                             <span class="help">(required)</span>
+                                                              <div class="input-with-icon  right">                                       
+                                                                <i class=""></i>
+                                                                
+                                                                <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
+                                                                <br />
+                                                                 <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.customer), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                
+                                                                
+                                                              </div>
+                                                            </div>
+                                                        <% end %>
+                                                        
+                                                        
+                                          </div>
+                                          <div class="col-md-4">
+                                                      
+                                                        <div class="form-group order-form-agent-select">
+                                                          <label class="form-label"><%= f.label :agent %></label>
+                                                          
+                                                          <div class="input-with-icon  right">                                       
+                                                            <i class=""></i>
+                                                            <div class="select_inner">
+                                                              <select name="order[agent_id]" class="modern_select">
+                                                                <option value="">Select Agent</option>
+                                                                <% if !@order.customer.nil? && !@order.customer.agents.nil? %>
+                                                                  <% @order.customer.agents.all.each do |contact| %>
+                                                                    <% if contact.is_agent %>
+                                                                        <option value="<%= contact.id %>" <% if !@order.agent_id.nil? && @order.agent_id == contact.id %>selected="selected"<% end %>>
+                                                                          <%= contact.name %>
+                                                                        </option>
+                                                                    <% end %>
+                                                                  <% end %>
+                                                                <% end %>
+                                                              </select>
+                                                            </div>
+                                                          </div>
+                                                        </div>
                                     
                                 
-                                    
-                                <div class="form-group">
-                                    <label class="form-label"><%= f.label :customer_po %></label>
-                                    <span class="help"></span>
-                                    <div class="input-with-icon  right">                                       
-                                        <i class=""></i>
-                                        <%= f.text_field :customer_po, :class => "form-control" %>
-                                    </div>
+                                          </div>
                                 </div>
                                 
-                                <div class="form-group">
-                                    <label class="form-label"><%= f.label :printed_order_number %></label>
-                                    <span class="help"></span>
-                                    <div class="input-with-icon right">                                       
-                                        <i class=""></i>
-                                        <%= f.text_field :printed_order_number, :class => "form-control" %>
-                                    </div>
-                                </div>
+                                
+                                    
+                                <div class="row">
+                                          <div class="col-md-6">
+                                                 <div class="form-group">
+                                                         <label class="form-label"><%= f.label :customer_po %></label>
+                                                         <span class="help"></span>
+                                                         <div class="input-with-icon  right">                                       
+                                                             <i class=""></i>
+                                                             <%= f.text_field :customer_po, :class => "form-control" %>
+                                                         </div>
+                                                     </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                                   <div class="form-group">
+                                                         <label class="form-label"><%= f.label :printed_order_number %></label>
+                                                         <span class="help"></span>
+                                                         <div class="input-with-icon  right">                                       
+                                                             <i class=""></i>
+                                                             <%= f.text_field :printed_order_number, :class => "form-control" %>
+                                                         </div>
+                                                     </div>
+                                          </div>
+                                   </div>
                               
                     
                               <!--<div class="form-group">
@@ -256,17 +278,26 @@
                               
                               
                               <div class="row">
-                                   <div class="col-md-4">
-                                        <div class="form-group datetime">
+                                   <div class="col-md-6">
+                                          <div class="form-group">
+                                                 <label class="form-label"><%= f.label :discount %></label>
+                                                 <span class="help"></span>
+                                                 <div class="input-with-icon  right">                                       
+                                                         <i class=""></i>
+                                                         <%= f.select :discount, options_for_select(0.upto(100).map { |u| [u, u] },@order.discount), {},  {:class => "modern_select width100"} %>
+                                                 </div>
+                                          </div>
+                                   </div>
+                                   <div class="col-md-6">
+                                        <div class="form-group">
                                              <label class="form-label"><%= f.label :deposit %></label>
-                                             <span class="help">(%)</span>
                                                <div class="input-with-icon  right">                                       
                                                  <i class=""></i>
-                                                 <%= f.select :deposit, options_for_select(0.upto(100).map { |u| [u, u] },@order.deposit), :class => "form-control number_input" %>
+                                                 <%= f.select :deposit, options_for_select(0.upto(100).map { |u| [u, u] },@order.deposit), {},  {:class => "modern_select width100"} %>
                                                </div>
                                         </div>
                                    </div>
-                                   <div class="col-md-3">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label class="form-label"><%= f.label :debt_days %></label>
                                            <span class="help"></span>
@@ -276,7 +307,7 @@
                                            </div>
                                        </div>
                                    </div>
-                                   <div class="col-md-5">
+                                   <div class="col-md-6">
                                        <div class="form-group">
                                            <label class="form-label"><%= f.label :debt_date %></label>
                                            <span class="help"></span>

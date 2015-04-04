@@ -372,7 +372,8 @@ class OrdersController < ApplicationController
                                     :debt_date,
                                     :customer_po,
                                     :printed_order_number,
-                                    :supplier_agent_id
+                                    :supplier_agent_id,
+                                    :discount
                                   )
     end
     
@@ -388,7 +389,8 @@ class OrdersController < ApplicationController
                                     :debt_date,
                                     :customer_po,
                                     :printed_order_number,
-                                    :supplier_agent_id
+                                    :supplier_agent_id,
+                                    :discount
                                   )
     end
 end
