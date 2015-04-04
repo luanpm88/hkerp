@@ -6,9 +6,9 @@ class DeliveriesController < ApplicationController
   # GET /deliveries.json
   def index
     if params[:purchase]
-      @orders = Order.get_confirmed_purchase_orders
+      @orders = Order.delivery_purchase_orders
     else
-      @orders = Order.get_confirmed_sales_orders
+      @orders = Order.delivery_sales_orders
     end
     
     

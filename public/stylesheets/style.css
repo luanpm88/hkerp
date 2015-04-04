@@ -7737,3 +7737,6 @@ ul.filter {
 .modern_select {
     max-width: 100%;
 }
+.dataTables_filter input {
+    width: 300px;
+}

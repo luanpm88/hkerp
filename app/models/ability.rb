@@ -209,6 +209,9 @@ class Ability
           ['confirmed'].include?(order.status.name)
         end
         can :download_pdf, Order
+        can :pay_order, Order  do |order|
+          ['confirmed'].include?(order.status.name) && !order.is_paid
+        end
         
         can :create, PaymentRecord
         can :read, PaymentRecord do |item|
@@ -240,6 +243,10 @@ class Ability
         can :create, Combination
         
         can :create, ProductStockUpdate
+        
+        can :deliver, Order  do |order|
+          ['confirmed'].include?(order.status.name) && !order.is_delivered?
+        end
       end
 
     end

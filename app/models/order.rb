@@ -1,4 +1,6 @@
 class Order < ActiveRecord::Base
+  include PgSearch
+  
   attr_accessor :debt_days
 
   validates :supplier_id, presence: true
@@ -396,37 +398,42 @@ class Order < ActiveRecord::Base
     }
   end
   
-  def self.get_confirmed_sales_orders
-    status = OrderStatus.get("confirmed")
-    
-    orders = Order.customer_orders
+  def self.delivery_sales_orders
+    Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
-    
-    return orders
   end
   
-  def self.get_confirmed_purchase_orders
-    status = OrderStatus.get("confirmed")
-
-    orders = Order.purchase_orders
+  def self.delivery_purchase_orders
+    Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
-
-    return orders
   end
   
-  def self.get_accounting_sales_orders
-    orders = Order.customer_orders
+  def self.accounting_sales_orders
+    Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
-    
-    return orders
   end
   
-  def self.get_accounting_purchase_orders
-    orders = Order.purchase_orders
+  def self.accounting_purchase_orders
+    Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
-
-    return orders
   end
+  
+  pg_search_scope :search,
+                against: [:delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
+                associated_against: {
+                  salesperson: [:first_name],
+                  purchase_manager: [:first_name],
+                  supplier: [:name, :tax_code, :address, :email],
+                  order_details: [:product_name, :product_description],
+                  order_status: [:name]
+                },
+                using: {
+                  tsearch: {
+                    dictionary: 'english',
+                    any_word: true,
+                    prefix: true
+                  }
+                }
   
   def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
@@ -446,6 +453,8 @@ class Order < ActiveRecord::Base
           order = "orders.created_at"
       end
       order += " "+params["order"]["0"]["dir"]
+    else
+      order = "created_at DESC"
     end
     
     where = {}    
@@ -453,12 +462,27 @@ class Order < ActiveRecord::Base
     where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
     #where[:salesperson_id] = user.id
     
-    if params[:purchase]
-      @items = self.purchase_orders
+    if params[:page].present? && params[:page] == "accounting"
+      if params[:purchase]
+        @items = self.accounting_purchase_orders
+      else
+        @items = self.accounting_sales_orders
+      end
+    elsif params[:page].present? && params[:page] == "delivery"
+      if params[:purchase]
+        @items = self.delivery_purchase_orders
+      else
+        @items = self.delivery_sales_orders
+      end
     else
-      @items = self.customer_orders
+      if params[:purchase]
+        @items = self.purchase_orders
+      else
+        @items = self.customer_orders
+      end
     end
     
+    @items = @items.joins(:order_status).where(order_statuses: {name: params["order_status"]}) if params["order_status"].present?
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
     @items = @items.where('extract(month from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["month"]) if params["month"].present?
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?
@@ -467,11 +491,12 @@ class Order < ActiveRecord::Base
     @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?    
     @items = @items.order(order) if !order.nil?
     
-    total = @items.count
+    total = @items.count(:all)
     
     @items = @items.limit(params[:length]).offset(params["start"])
     data = []
     
+    actions_col = 7
     @items.each do |item|
       
       if params[:purchase]
@@ -481,20 +506,51 @@ class Order < ActiveRecord::Base
       end
       
       puts User.current_user
-
-      row = [
-              item.quotation_code,              
-              link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
-              '<div class="text-right">'+item.formated_total_vat+'</div>',
-              #'<div class="text-center">'+item.order_details.count.to_s+'</div>',
-              '<div class="text-center">'+item.salesperson_name+'</div>',
-              '<div class="text-center">'+item.purchase_manager_name+'</div>',
-              '<div class="text-center">'+item.order_date_formatted+'</div>',
-              '<div class="text-center">'+item.display_status.html_safe+'</div><div class="text-center">-----</div>'+'<div class="text-center">'+item.price_status+'</div>'+'<div class="text-center">'+item.delivery_status.html_safe+'</div>',
-              ''
-            ]
-      data << row
-    end 
+      
+      case params[:page]
+      when "delivery"
+          row = [
+                  item.quotation_code,              
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
+                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  '<div class="text-center">'+item.order_date_formatted+'</div>',
+                  '<div class="text-center">'+item.display_status+'</div>',
+                  "<div class=\"text-center\">#{item.payment_status}</div>",
+                  "<div class=\"text-center\">#{item.delivery_status}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
+                  ''
+                ]
+          data << row
+          actions_col = 7
+      when "accounting"
+          row = [
+                  item.quotation_code,              
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
+                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  '<div class="text-center">'+item.order_date_formatted+'</div>',
+                  '<div class="text-center">'+item.delivery_status+'</div>',
+                  '<div class="text-center">'+item.display_status+'</div>',
+                  "<div class=\"text-center\">#{item.payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}</div>",                                                      
+                  ''
+                ]
+          data << row
+          actions_col = 7
+      else
+          row = [
+                  item.quotation_code,              
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
+                  '<div class="text-right">'+item.formated_total_vat+'</div>',
+                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  '<div class="text-center">'+item.order_date_formatted+'</div>',
+                  "<div class=\"text-center\">#{item.price_status}#{item.delivery_status}</div>",                  
+                  '<div class="text-center">'+item.display_status+'</div>',
+                  ''
+                ]
+          data << row
+          actions_col = 7
+      end
+          
+    end
+    
     
     result = {
               "drawn" => params[:drawn],
@@ -503,7 +559,7 @@ class Order < ActiveRecord::Base
     }
     result["data"] = data
     
-    return {result: result, items: @items}
+    return {result: result, items: @items, actions_col: actions_col}
   end
   
   def items_total
@@ -559,7 +615,7 @@ class Order < ActiveRecord::Base
     status_arr.each do |s|
       str += "<div class=\"#{s}\">#{s}</div>"
     end
-    return str
+    return str.html_safe
   end
   
   def paid_amount

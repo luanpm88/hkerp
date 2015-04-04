@@ -23,9 +23,9 @@ class AccountingController < ApplicationController
     authorize! :read, Order
     
     if params[:purchase]
-      @orders = Order.get_accounting_purchase_orders
+      @orders = Order.accounting_purchase_orders
     else
-      @orders = Order.get_accounting_sales_orders
+      @orders = Order.accounting_sales_orders
     end
   end
   

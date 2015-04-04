@@ -8,6 +8,58 @@
                         <i class="icon-archive"></i>
                     	<h3>Accounting - <span class="semi-bold"> <%= params[:purchase] ? "Purchase" : "Sales" %> Orders</span></h3>	
                 </div>
+				
+				
+				
+				
+				
+				<div class="grid simple ">
+					<div class="grid-body no-border filters">
+					<div class="row order-filters">
+						<div class="col-md-4">
+						<h4>Order Date</h4>
+						<div class="date_select_filter">
+							<div class="input-with-icon  right">                                       
+							<%= date_select(:filter, :date, {include_blank: true, use_two_digit_numbers: true}) %>
+							</div>
+						</div>
+						</div>
+						<div class="col-md-4">
+							<h4>Order Status</h4>
+							<div class="">
+								<div class="input-with-icon  right">                                       
+									<i class=""></i>
+									<select name="order_status" class="modern_select width100">
+										<option value="">All</option>
+										<option value="new">New</option>
+										<option value="items_confirmed">Items Confirmed</option>
+										<option value="price_confirmed">Price Confirmed</option>
+										<option value="confirmed">Confirmed</option>
+										<option value="finished">Finished</option>
+										<option value="canceled">Canceled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<h4>Customer</h4>
+							<div class="">
+								<div class="input-with-icon  right">                                       
+								<i class=""></i>
+								<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="" text="" data-placeholder="All"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>		    
+				</div>
+				
+				
+				
+				
+				
+				
+				
                 <div class="row">
                     <div class="col-md-12">			
                         <div class="grid simple ">
@@ -15,126 +67,43 @@
                                 <h4>Listing  <span class="semi-bold">Orders</span></h4>
                                 <div class="tools">
 				    
-				    <a href="javascript:;" class="collapse"></a>
+									<a href="javascript:;" class="collapse"></a>
                                     <a href="#grid-config" data-toggle="modal" class="config"></a>
-				    <a href="javascript:;" class="reload"></a>
-				    <a href="javascript:;" class="remove"></a>
+									<a href="javascript:;" class="reload"></a>
+									<a href="javascript:;" class="remove"></a>
                                     
                                 </div>
                             </div>
                             <div class="grid-body no-border">
                                  
-                                    <table class="table table-striped no-more-tables no-filter">
+								 
+								 
+								 <table class="table table-striped no-more-tables datatable-accounting-<%= params[:purchase] ? "purchase-" : "salse-" %>orders no-filter">
                                         <thead>
                                             <tr>
-                                                <th>Order</th>
-						<th>
-                                                  <%= params[:purchase] ? "Supplier" : "Customer" %>
+                                                <th>
+                                                    Code
                                                 </th>
-						<th class="text-center">Paid</th>
-                                                <th class="text-center">Date</th>
-                                                <th class="text-center">Payment</th>
-												<th class="text-center">Status</th>
-						<th class="text-center">Debt Date</th>
-                                                <th class="text-right">Action</th>   
+                                                <th>
+													<%= params[:purchase] ? "Supplier" : "Customer" %>
+												</th>
+                                                <th class="text-center">Staff</th>
+												<th class="text-center">Order Date</th>												
+												<th class="text-center">Delivery</th>
+												<th class="text-center">Order Status</th>
+												<th class="text-center">Payment</th>
+                                                <th class="text-center">Actions</th>   
                                             </tr>
                                         </thead>
-					<tbody>
-					    <% @orders.each do |order| %>
-						<tr>
-                                                    <td>
-							<%= order.quotation_code %>
-						    </td>
-						    
-							<% if !params[:purchase] %>
-								<td>
-									<%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
-									<%= order.display_description %>
-								</td>
-							<% else %>
-								<td>
-									<%= link_to order.supplier.short_name, order, :class => "fancybox.iframe show_order" if can? :read, order %>
-									<%= order.display_description %>
-								</td>
-							<% end %>
-							
-						    
-						    
-						    <td class="text-right">
-						      <strong><%= order.paid_amount_formated %></strong><br />
-							  /<%= order.formated_total_vat %>
-						    </td>
-						    
-						    <td class="text-center">
-							<%= order.order_date.strftime("%Y-%m-%d") %>
-						    </td>
-
-						    
-						    <td class="text-center">
-						      <strong><%= order.payment_status %></strong>
-							  <div>-----</div>
-							  <%= order.delivery_status.html_safe %>						      
-						    </td>
-							
-							<td class="text-center">
-							  <%= order.display_status %>
-						    </td>
-						    
-						    <td class="text-center">
-							<%= order.debt_date.strftime("%Y-%m-%d") if !order.debt_date.nil? && !order.is_paid %>
-						    </td>
-						    
-						    <td class="actions text-right">
-								
-								
-								<div class="btn-group actions">
-									<button type="button" class="btn btn-small btn-white dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-									  Actions <span class="caret"></span>
-									</button>
-									<ul class="dropdown-menu" role="menu">
-										<%  if !order.is_paid %>
-											<li>
-												<%= link_to 'Pay Order', {controller: "payment_records", action: "new", id: order.id} if !order.is_paid %>
-											</li>
-										<% end %>
-										<%  if can? :update_info, order %>
-											<li><%= link_to 'Update Info', update_info_orders_path(:id => order.id, accounting: true) %></li>											
-										<% end %>
-										<%  if can? :finish_order, order %>
-											<li><%= link_to 'Finish Order', finish_order_orders_path(:id => order.id), data: { confirm: 'Are you sure?'} %></li>											
-										<% end %>
-										<li class="divider"></li>
-										
-										<% if order.all_payment_records.count > 0 %>
-											<% order.all_payment_records.each do |recept| %>
-												<li>
-												<%= link_to "Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe' %>
-												</li>
-											<% end %>										
-											<li class="divider"></li>
-										<% end %>
-										
-										<%  if can? :read, order %>
-											<li><%= link_to 'Print Order (PDF)', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
-										<% end %>
-										<% if can? :print_order, order %>
-											<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
-										<% end %>
-										
-									</ul>
-							    </div>
-							
-                                                        
-							
-							
-							
-							
-							
-						    </td>
-						</tr>
-					    <% end %>
-					</tbody>
+                                        <tbody>
+                                          
+                                            
+					    
+                                          </tbody>
                                     </table>
+								 
+								 
+                                    
                             </div>
                         </div>
 			

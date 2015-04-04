@@ -8,6 +8,52 @@
                         <i class="icon-archive"></i>
                     	<h3>Storage - <span class="semi-bold"> <%= params[:purchase] ? "Purchase" : "Sales" %> Delivery</span></h3>	
                 </div>
+				
+				
+				
+				<div class="grid simple ">
+					<div class="grid-body no-border filters">
+					<div class="row order-filters">
+						<div class="col-md-4">
+						<h4>Order Date</h4>
+						<div class="date_select_filter">
+							<div class="input-with-icon  right">                                       
+							<%= date_select(:filter, :date, {include_blank: true, use_two_digit_numbers: true}) %>
+							</div>
+						</div>
+						</div>
+						<div class="col-md-4">
+							<h4>Order Status</h4>
+							<div class="">
+								<div class="input-with-icon  right">                                       
+									<i class=""></i>
+									<select name="order_status" class="modern_select width100">
+										<option value="">All</option>
+										<option value="new">New</option>
+										<option value="items_confirmed">Items Confirmed</option>
+										<option value="price_confirmed">Price Confirmed</option>
+										<option value="confirmed">Confirmed</option>
+										<option value="finished">Finished</option>
+										<option value="canceled">Canceled</option>
+									</select>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-4">
+							<h4>Customer</h4>
+							<div class="">
+								<div class="input-with-icon  right">                                       
+								<i class=""></i>
+								<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="" text="" data-placeholder="All"/>
+								</div>
+							</div>
+						</div>
+					</div>
+					</div>		    
+				</div>
+				
+				
+				
                 <div class="row">
                     <div class="col-md-12">			
                         <div class="grid simple ">
@@ -24,72 +70,33 @@
                             </div>
                             <div class="grid-body no-border">
                                  
-                                    <table class="table table-striped no-more-tables no-filter">
+								 
+								 
+								 <table class="table table-striped no-more-tables datatable-deliver-<%= params[:purchase] ? "purchase-" : "salse-" %>orders no-filter">
                                         <thead>
                                             <tr>
-                                                <th>Order</th>
-						<th>
-                                                  <%= params[:purchase] ? "Supplier" : "Customer" %>
+                                                <th>
+                                                    Code
                                                 </th>
-						<th class="text-center">Delivered</th>
-                                                <th class="text-center">Date</th>
-												<!--<th class="text-center">Payment</th>-->
-                                                <th class="text-center">Status</th>
-                                                <th class="text-right">Action</th>   
+                                                <th>
+													<%= params[:purchase] ? "Supplier" : "Customer" %>
+												</th>
+                                                <th class="text-center">Staff</th>
+												<th class="text-center">Order Date</th>
+												<th class="text-center">Order Status</th>
+												<th class="text-center">Payment</th>
+												<th class="text-center">Delivery</th>
+                                                <th class="text-center">Actions</th>   
                                             </tr>
                                         </thead>
-					<tbody>
-					    <% @orders.each do |order| %>
-						<tr>
-                                                    <td>
-							<%= order.quotation_code %>
-						    </td>
-						    <td>
-							<strong><%= params[:purchase] ? order.supplier.short_name : order.customer.short_name %></strong>
-							<%= order.display_description %>
-						    </td>
-						    
-						    <td class="text-center">
-							<%= order.items_delivered %>/<%= order.items_total %>
-						    </td>
-						    
-						    <td class="text-center">
-							<%= order.created_at.strftime("%Y-%m-%d") %>
-						    </td>
-							
-							
-						    
-						    <td class="text-center">
-							<%= order.delivery_status.html_safe %>
-							<div>------</div>
-							<%= order.payment_status %>
-						    </td>
-						    
-						    <td class="actions text-right">
-							<%= link_to 'Deliver', {action: "deliver", order_id: order.id}, :class => 'btn btn-small btn-primary' if !order.is_delivered? %>
-                                                        
-                                                        
-                                                        
-                                                        <% if order.all_deliveries.count > 0 %>
-                                                          <div class="btn-group">
-                                                            <button type="button" class="btn btn-small btn-white dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                                              Deliveries <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu" role="menu">
-                                                              <% order.all_deliveries.each do |delivery| %>
-                                                                <li>
-								    <%= link_to delivery.created_at.strftime("%Y-%m-%d, %H:%M:%S"), {action: "show", id: delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
-                                                                </li>
-                                                              <% end %>
-                                                            </ul>
-                                                          </div>
-                                                        <% end %>
-                                                        
-						    </td>
-						</tr>
-					    <% end %>
-					</tbody>
+                                        <tbody>
+                                          
+                                            
+					    
+                                          </tbody>
                                     </table>
+								 
+								 
                             </div>
                         </div>
 			
