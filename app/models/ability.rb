@@ -168,7 +168,6 @@ class Ability
 
         can :update_price, Product
         can :do_update_price, Product
-        can :confirm_price, Order
 
         can :purchase_orders, Order do |order|
           order.purchase_manager_id == user.id

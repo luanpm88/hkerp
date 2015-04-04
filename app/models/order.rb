@@ -777,9 +777,12 @@ class Order < ActiveRecord::Base
   
   def self.pricing_orders(user)
     orders = Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","items_confirmed","price_confirmed"]})
-                  #.where('purchase_manager_id=? OR purchase_manager_id IS NULL', user.id)
-                  
+                  .joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+    
+    orders_2 = Order.customer_orders.where("delivery_status_name LIKE ?", '%out_of_stock%')
+    
+    orders_total = orders + orders_2
+    orders_total.sort{|a,b| b[:created_at] <=> a[:created_at]}   
   end
   
   def confirm_price
