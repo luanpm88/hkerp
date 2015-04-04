@@ -73,7 +73,7 @@
 												  
 												  <% line.product.parts.each do |part| %>
 													
-													  <tr class="child-<%= line.product.id %> quantity-<%= line.quantity %>">
+													  <tr class="children child-<%= line.product.id %> quantity-<%= line.quantity %>">
 														<td colspan="2" class="child-td">					      
 														  <span class="child-pointer">----></span> <%= part.display_name %><br /><%= part.description %>
 														</td>

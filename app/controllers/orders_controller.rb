@@ -310,10 +310,14 @@ class OrdersController < ApplicationController
       od.update_attributes(price: od.product.product_price.price)
     end
     
-    params[:product_parts].each do |line|
-      p = Product.find(line[0])
-      p.update_price(line[1][:product])
+    if !params[:product_parts].nil?
+      params[:product_parts].each do |line|
+        p = Product.find(line[0])
+        p.update_price(line[1][:product])
+      end
     end
+    
+      
     
     respond_to do |format|
       if !params[:confirm].nil?
