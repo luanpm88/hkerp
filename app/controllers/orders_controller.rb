@@ -50,8 +50,15 @@ class OrdersController < ApplicationController
   # POST /orders.json
   def create
     @order = Order.new(order_params)
-    @order.salesperson = current_user
+    
     @order.create_quotation_code
+    
+    if @order.is_purchase
+      @order.purchase_manager = current_user
+    end
+    if @order.is_sales
+      @order.salesperson = current_user
+    end
     
     order_details_params = params[:order_details]
     if !order_details_params.nil?

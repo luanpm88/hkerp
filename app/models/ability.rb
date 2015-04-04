@@ -171,35 +171,35 @@ class Ability
         can :confirm_price, Order
 
         can :purchase_orders, Order do |order|
-          order.salesperson_id == user.id
+          order.purchase_manager_id == user.id
         end
         can :view_list, Order
         can :create, Order do |order|
           order.is_purchase || order.id.nil?
         end
         can :confirm_order, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
+          order.is_purchase && order.purchase_manager_id == user.id && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
         end
         can :update, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && order.status.name == 'new'
+          order.is_purchase && order.purchase_manager_id == user.id && order.status.name == 'new'
         end
         
         can :change, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
+          order.is_purchase && order.purchase_manager_id == user.id && ['confirmed'].include?(order.status.name)
         end
         can :do_change, Order do |order|
-          order.is_purchase && order.salesperson_id == user.id && ['confirmed'].include?(order.status.name)
+          order.is_purchase && order.purchase_manager_id == user.id && ['confirmed'].include?(order.status.name)
         end
 
         can :create, OrderDetail
         can :read, OrderDetail do |order_detail|
-          order_detail.order.salesperson_id == user.id
+          order_detail.order.purchase_manager_id == user.id
         end
         can :update, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
+          order_detail.order.nil? || (order_detail.order.purchase_manager_id == user.id && order_detail.order.status.name == 'new')
         end
         can :destroy, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && order_detail.order.status.name == 'new')
+          order_detail.order.nil? || (order_detail.order.purchase_manager_id == user.id && order_detail.order.status.name == 'new')
         end
       end
 
