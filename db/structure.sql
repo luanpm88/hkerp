@@ -256,7 +256,8 @@ CREATE TABLE combinations (
     stock_after integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    serial_numbers text
+    serial_numbers text,
+    user_id integer
 );
 
 
@@ -2217,4 +2218,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150403121428');
 INSERT INTO schema_migrations (version) VALUES ('20150403125715');
 
 INSERT INTO schema_migrations (version) VALUES ('20150403125725');
+
+INSERT INTO schema_migrations (version) VALUES ('20150404013053');
 

@@ -1,6 +1,7 @@
 class Combination < ActiveRecord::Base
   has_many :combination_details
   belongs_to :product
+  belongs_to :user
   
   validate :valid_quantity
   

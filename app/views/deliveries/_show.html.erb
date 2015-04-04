@@ -115,12 +115,12 @@
       <% @delivery.delivery_details.each do |detail| %>
         <% @count = @count + 1 %>
           <tr>
-            <td><%= @count %></td>
-            <td style="text-align: left;">
+            <td valign="top"><%= @count %></td>
+            <td valign="top" style="text-align: left;">
               <%= detail.order_detail.product_name %><br />
               <%= detail.order_detail.product_description %>
             </td>
-            <td>
+            <td valign="top">
               <% if detail.serial_numbers.present? %>
                 <%= detail.serial_numbers_html.html_safe %>
               <% elsif detail.order_detail.order.tax.rate == 0 %>
@@ -132,8 +132,8 @@
                 <br />
               <% end %>
             </td>
-            <td><%= detail.quantity %> (<%= detail.order_detail.unit %>)</td>
-            <td>
+            <td valign="top"><%= detail.quantity %> (<%= detail.order_detail.unit %>)</td>
+            <td valign="top">
               <% if detail.order_detail.warranty > 0 %>
                 <%= detail.order_detail.warranty %> (tháng)
               <% else %>

@@ -82,6 +82,30 @@
  	
 <script>
 	
+	function update_update_price_form() {
+		$('.update-price-form .parent').each(function() {
+			var rel = $(this).attr("rel");
+			var parent = $(this)
+			
+			var total_price = 0
+			var total_s_price = 0
+			$('.update-price-form .child-'+rel).each(function(){
+			  var num = 0;
+			  var s_num = 0
+			  if($(this).find('.price').val() != "") {
+				num = parseFloat($(this).find('.price').val());
+			  }
+			  if($(this).find('.supplier_price').val() != "") {
+				s_num = parseFloat($(this).find('.supplier_price').val());
+			  }
+			  total_price += num;
+			  total_s_price += s_num;
+			});
+			$(this).find('.price').val(total_price);
+			$(this).find('.supplier_price').val(total_s_price);
+		})
+	}
+	
 	function read_notification() {
 		$.ajax({
 			url : '<%= read_notification_notifications_url %>',
@@ -442,7 +466,7 @@
 			      $('input.price_input').number( true, 0 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
-			      minimumInputLength: 1,
+			      minimumInputLength: 1,				  
 			      ajax: {
 						url: $('.select2-ajax-products').attr("url"),
 						dataType: 'json',
@@ -815,6 +839,7 @@
 	    });
 	    
 	    $('.select2-ajax-products').select2({
+			allowClear: true,
 	      placeholder: "Search for a product",
 	      minimumInputLength: 1,
 	      ajax: {
@@ -1042,6 +1067,15 @@
 				
 				$(this).html(cost);
 			});
+		});
+		
+		
+		$('.parts_select .select2-ajax-products').change(function() {
+			if($(this).val() == "") {
+				$(this).parent().find('.destroy_tag').val("1");
+			} else {
+				$(this).parent().find('.destroy_tag').val("");
+			}
 		});
 	    
       });

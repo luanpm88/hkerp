@@ -29,6 +29,7 @@ class CombinationsController < ApplicationController
     @combination = Combination.new(combination_params)
     @product = Product.find(@combination.product_id)
     
+    @combination.user = current_user
     
     @combination.stock_before = @product.stock
     serials = []

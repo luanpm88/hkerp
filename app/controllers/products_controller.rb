@@ -186,7 +186,7 @@ class ProductsController < ApplicationController
       params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
-                                      product_parts_attributes: [:id, :part_id, :quantity]
+                                      product_parts_attributes: [:_destroy, :id, :part_id, :quantity]
                                     )
     end
 end
