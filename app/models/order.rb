@@ -234,6 +234,8 @@ class Order < ActiveRecord::Base
       return self.set_status('new')      
     end
     
+    update_attributes(order_status_name: self.order_status.name) if self.order_status.name != self.order_status_name
+    
     return self.order_status
   end
   
@@ -419,13 +421,13 @@ class Order < ActiveRecord::Base
   end
   
   pg_search_scope :search,
-                against: [:delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
+                against: [:order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
                 associated_against: {
                   salesperson: [:first_name],
                   purchase_manager: [:first_name],
                   supplier: [:name, :tax_code, :address, :email],
                   order_details: [:product_name, :product_description],
-                  order_status: [:name]
+                  #order_status: [:name]
                 },
                 using: {
                   tsearch: {
@@ -609,7 +611,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    update_attributes(delivery_status_name: status_arr.join(","))
+    update_attributes(delivery_status_name: status_arr.join(",")) if status_arr.join(",") != delivery_status_name
     
     str = ""
     status_arr.each do |s|
