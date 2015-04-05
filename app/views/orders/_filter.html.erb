@@ -1,0 +1,40 @@
+          <div class="grid simple ">
+		    <div class="grid-body no-border filters">
+			<div class="row order-filters">
+			    <div class="col-md-4">
+				<h4>Order Date</h4>
+				<div class="date_select_filter">
+				    <div class="input-with-icon  right">                                       
+					<%= date_select(:filter, :date, {include_blank: true, use_two_digit_numbers: true}) %>
+				    </div>
+				</div>
+			    </div>
+				<div class="col-md-4">
+					<h4>Order Status</h4>
+					<div class="">
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+							<select name="order_status" class="modern_select width100">
+								<option value="">All</option>
+								<option value="new">New</option>
+								<option value="items_confirmed">Items Confirmed</option>
+								<option value="price_confirmed">Price Confirmed</option>
+								<option value="confirmed">Confirmed</option>
+								<option value="finished">Finished</option>
+								<option value="canceled">Canceled</option>
+							</select>
+						</div>
+					</div>
+			    </div>
+			    <div class="col-md-4">
+					<h4>Customer</h4>
+					<div class="">
+						<div class="input-with-icon  right">                                       
+						<i class=""></i>
+						<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="" text="" data-placeholder="All"/>
+						</div>
+					</div>
+			    </div>
+			</div>
+		    </div>		    
+		</div>
