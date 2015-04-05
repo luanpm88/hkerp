@@ -965,4 +965,8 @@ class Order < ActiveRecord::Base
     return str.html_safe
   end
   
+  def price=(new_price)
+    self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
+  end
+  
 end

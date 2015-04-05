@@ -7749,3 +7749,10 @@ ul.filter {
 }
 .order-desc-line-items .order-desc-line-item {
 }
+input.disabled {
+    background-color: #f4f4f4;
+    background-image: none;
+    border: 1px solid #ddd;
+    cursor: default;
+    color: rgba(0,0,0,0);
+}

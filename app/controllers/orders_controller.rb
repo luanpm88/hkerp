@@ -447,7 +447,8 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount
+                                    :discount,
+                                    :discount_amount
                                   )
     end
     
@@ -464,7 +465,8 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount
+                                    :discount,
+                                    :discount_amount
                                   )
     end
 end

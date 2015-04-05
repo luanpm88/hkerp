@@ -238,7 +238,7 @@
                               
                               
                               <div class="row">
-                                          <div class="col-md-6">
+                                          <div class="col-md-4">
                                                  <div class="form-group">
                                                    <label class="form-label"><%= f.label :payment_method %></label>
                                                    <span class="help"></span>
@@ -255,17 +255,26 @@
                                                      </div>
                                                  </div>
                                           </div>
-                                          <div class="col-md-6">
+                                          <div class="col-md-4">
                                                  <div class="form-group">
                                                         <label class="form-label"><%= f.label :discount %></label>
-                                                        <span class="help"></span>
+                                                        <span class="help">%</span>
                                                         <div class="input-with-icon  right">                                       
                                                                 <i class=""></i>
-                                                                <%= f.select :discount, options_for_select(0.upto(100).map { |u| [u, u] },@order.discount), {},  {:class => "modern_select width100"} %>
+                                                                <%= f.select :discount, options_for_select(0.upto(100).map { |u| [u, u] },@order.discount), {},  {:class => "modern_select width100  discount_percent"} %>
                                                         </div>
                                                  </div>
                                           </div>
-                                               
+                                          <div class="col-md-4">
+                                                 <div class="form-group">
+                                                        <label class="form-label"><%= f.label :discount %></label>
+                                                        <span class="help">VND</span>
+                                                        <div class="input-with-icon  right">                                       
+                                                                <i class=""></i>
+                                                                <%= f.text_field :discount_amount, :class => "form-control price_input  discount_amount" %>
+                                                        </div>
+                                                 </div>
+                                          </div>
                                    </div>
                               
                               

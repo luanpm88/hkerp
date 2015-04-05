@@ -82,6 +82,16 @@
  	
 <script>
 	
+	function checkDiscountInput() {
+		if($('.discount_percent').val() != "0") {
+			$('.discount_amount').addClass("disabled");
+			$('.discount_amount').addAttr("disabled");  
+		} else {
+			$('.discount_amount').removeClass("disabled");
+			$('.discount_amount').removeAttr("disabled");
+		}
+	}
+	
 	function update_update_price_form() {
 		$('.update-price-form .parent').each(function() {
 			var rel = $(this).attr("rel");
@@ -1096,6 +1106,11 @@
 		$('.update-price-form .children input').keyup(function() {
 			update_update_price_form();
 		});
+		
+		$('.discount_percent').change(function() {
+			checkDiscountInput()();
+		});
+		
 	    
       });
 </script>
