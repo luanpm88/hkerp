@@ -213,9 +213,7 @@ class Ability
         end
         
         can :create, PaymentRecord
-        can :read, PaymentRecord do |item|
-          item.accountant.id == user.id
-        end
+        can :read, PaymentRecord
         
         can :download_pdf, PaymentRecord
         
