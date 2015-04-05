@@ -950,14 +950,16 @@ class Order < ActiveRecord::Base
   end
   
   def display_description
-    str = ""
     arr = []
     order_details.each do |od|
-      arr << "["+od.quantity.to_s+"] "+od.product.display_name.strip if od.quantity > 0
+      p_str = "<div class=\"order-desc-line-item quantity-#{od.quantity}\">"
+      p_str += "<label>[#{od.quantity.to_s}]</label> " 
+      p_str += od.product.display_name.strip
+      p_str += "</div>"
+      arr << p_str
     end
-    str = arr.join("; ")[0..100]
-    str += "..." if arr.join("; ").length > 100
-    str = "<div>"+str+"</div>"
+
+    str = "<div class=\"order-desc-line-items\">"+arr.join(" ")+"</div>"
     return str.html_safe
   end
   

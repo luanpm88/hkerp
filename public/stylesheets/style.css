@@ -7740,3 +7740,11 @@ ul.filter {
 .dataTables_filter input {
     width: 300px;
 }
+.order-desc-line-items {
+    
+}
+.order-desc-line-items .order-desc-line-item label {
+    display: inline;
+}
+.order-desc-line-items .order-desc-line-item {
+}
