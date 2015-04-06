@@ -134,7 +134,7 @@
 											<div class="part_details">
 												----> <%= p.display_name %> (
 													<%
-														num = p.stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count
+														num = p.calculated_stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count
 														if num >= 0 %>
 														<strong class="green">+<%= num %> - available</strong>
 													<% else %>

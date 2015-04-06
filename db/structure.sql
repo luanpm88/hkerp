@@ -520,7 +520,9 @@ CREATE TABLE order_details (
     unit character varying(255),
     supplier_id integer,
     product_description text,
-    product_price_id integer
+    product_price_id integer,
+    discount integer,
+    discount_amount numeric
 );
 
 
@@ -2232,4 +2234,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150405111259');
 INSERT INTO schema_migrations (version) VALUES ('20150405112039');
 
 INSERT INTO schema_migrations (version) VALUES ('20150406032026');
+
+INSERT INTO schema_migrations (version) VALUES ('20150406042111');
+
+INSERT INTO schema_migrations (version) VALUES ('20150406042130');
 

@@ -97,6 +97,27 @@
 			$('.discount_amount').removeClass("disabled");
 			$('.discount_amount').removeAttr("disabled");
 		}
+		
+		$('.line_discount').each(function() {
+			var d_box = $(this).find('.line_discount_percent');
+			var da_box = $(this).find('.line_discount_amount');
+			var total_box = $(this).parent().find('.total');
+			
+			if(d_box.val() != "0") {
+				da_box.addClass("disabled");
+				da_box.attr("disabled","disabled");
+				
+				if(total_box.length > 0) {
+					var total = parseFloat(total_box.html().replace(/,/g,""))
+					var discount = parseFloat(d_box.val())
+					var discount_amount = total*(discount/100)
+					da_box.val(discount_amount)
+				}
+			} else {
+				da_box.removeClass("disabled");
+				da_box.removeAttr("disabled");
+			}
+		});
 	}
 	
 	function update_update_price_form() {
@@ -382,7 +403,7 @@
 		autoSize: false,
 		ajax: {
 		    complete: function(jqXHR, textStatus) {
-			$(".ajax_outer .modern_select").select2();
+				$(".ajax_outer .modern_select").select2();
 		    }
 		}
 	});
@@ -562,6 +583,7 @@
 					
 					$('input.price_input').number( true, 0 );
 					$('input.number_input').number( true, 0 );
+					
 				}
 				else
 				{
@@ -590,6 +612,7 @@
 				}
 				
 				updateOrderPrices();
+				$('.modern_select').select2();
 
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
@@ -1123,7 +1146,13 @@
 			update_update_price_form();
 		});
 		
-		$('.discount_percent').change(function() {
+		
+		checkDiscountInput();
+		$('.discount_percent').live("change",function() {
+			checkDiscountInput();
+		});
+		
+		$('.line_discount_percent').live("change",function() {
 			checkDiscountInput();
 		});
 		

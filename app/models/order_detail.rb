@@ -18,6 +18,8 @@ class OrderDetail < ActiveRecord::Base
   
   has_many :delivery_details
   
+  before_save :calculate_discount
+  
   def total
     price * quantity
   end
@@ -174,5 +176,23 @@ class OrderDetail < ActiveRecord::Base
     end
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+  
+  def calculate_discount
+    if discount > 0
+      self[:discount_amount] = total*(discount.to_f/100)
+    end    
+  end
+  
+  def calculated_discount_amount
+    if discount > 0
+      total*(discount.to_f/100)
+    else
+      discount_amount
+    end
+  end
+  
+  def calculated_discount_amount_formated
+    return Order.format_price(calculated_discount_amount)
   end
 end
