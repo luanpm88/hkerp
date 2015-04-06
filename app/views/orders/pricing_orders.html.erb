@@ -131,23 +131,23 @@
 											( <strong class="red">-<%= od.out_of_stock_count.to_s %></strong> )
 											
 											<% if od.product.wait_for_supply_count > 0 %>
-													/ <span class="delivered">Waiting for supply: <strong><%= od.product.wait_for_supply_count %></strong></span>
+													/ <span class="delivered">Waiting for supply (<strong><%= od.product.wait_for_supply_count %></strong>)</span>
 												<% end %>
 										</div>
 										<% od.product.parts.each do |p| %>
 											<div class="part_details">
-												----> <%= p.display_name %> (
+												----> <%= p.display_name %> 
 													<%
 														num = p.calculated_stock/(od.product.product_parts.where(part_id: p.id).first.quantity)-od.out_of_stock_count
 														if num >= 0 %>
-														<strong class="green">+<%= num %> - available</strong>
+														(<strong class="green">+<%= num %></strong>)
 													<% else %>
-														<strong class="red"><%= num %> - not_enough</strong>
+														(<strong class="red"><%= num %></strong>)
 														<% if p.wait_for_supply_count > 0 %>
-															/ <span class="delivered">Waiting for supply: <strong><%= p.wait_for_supply_count %></strong></span>
+															/ <span class="delivered">Waiting for supply (<strong><%= p.wait_for_supply_count %></strong>)</span>
 														<% end %>
 													<% end %>
-												)
+												
 												
 											</div>
 										<% end %>
