@@ -242,9 +242,13 @@ class Product < ActiveRecord::Base
            supplier_price: params[:supplier_price],
            supplier_id: params[:supplier_id],
           )
+    puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    p new_price.supplier_price.to_f
+    p self.product_price.price
     
-    if new_price.price != product_price.price || new_price.supplier_price != product_price.supplier_price || new_price.supplier_id != product_price.supplier_id
+    if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id
       new_price.save
+      puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     end
     
   end

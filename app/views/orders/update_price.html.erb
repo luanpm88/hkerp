@@ -64,7 +64,9 @@
 													  <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
 													  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
 													</td>
-													<td><%= text_field_tag "order_details[#{line.id}][product][supplier_price]",line.product.product_price.supplier_price, {:class => "form-control price_input supplier_price"} %></td>
+													<td>
+													  <%= text_field_tag "order_details[#{line.id}][product][supplier_price]",line.product.product_price.supplier_price, {:class => "form-control price_input supplier_price"} %>
+													</td>
 													<td>
 													  <%= text_field_tag "order_details[#{line.id}][product][price]",line.product.product_price.price, {:class => "form-control price_input price"} %>
 													</td>
