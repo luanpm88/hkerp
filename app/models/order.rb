@@ -789,7 +789,7 @@ class Order < ActiveRecord::Base
     
     orders_2 = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "confirmed"})
-                  .where("delivery_status_name LIKE ?", '%out_of_stock%')
+                  .where("delivery_status_name LIKE ? OR price_status_name LIKE ?", '%out_of_stock%', '%price_outdated%')
     
     orders_total = orders + orders_2
     orders_total.sort{|a,b| b[:created_at] <=> a[:created_at]}   
@@ -943,7 +943,7 @@ class Order < ActiveRecord::Base
       status = "price_updated"
     end
     
-    #update_attributes(payment_status_name: status)
+    update_attributes(price_status_name: status)
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
