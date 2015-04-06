@@ -546,7 +546,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  "<div class=\"text-center\">#{item.price_status}#{item.delivery_status}</div>",                  
+                  "<div class=\"text-center\">#{item.price_status}#{item.delivery_status}#{item.payment_status}</div>",                  
                   '<div class="text-center">'+item.display_status+'</div>',
                   ''
                 ]
@@ -595,7 +595,7 @@ class Order < ActiveRecord::Base
   
   def delivery_status
     status_arr = []
-    if ['confirmed','finished'].include?(status.name)      
+    if ["confirmed","finished"].include?(status.name)      
       if is_delivered?
         status_arr << 'delivered'
       else
@@ -650,18 +650,21 @@ class Order < ActiveRecord::Base
   
   def payment_status
     status = ""
-    if is_payback
-      status = "pay_back"
-    elsif paid_amount == total_vat.round(0)
-      status = "paid"
-    elsif !is_deposited
-      status = "not_deposited"
-    elsif is_deposited && !debt_date.nil? && debt_date >= order_date
-      status = "debt"
-    elsif is_deposited && !debt_date.nil? && debt_date < order_date
-      status = "out_of_date"
-    else
-      status = "out_of_date"
+    
+    if ["confirmed","finished"].include?(self.status.name)
+      if is_payback
+        status = "pay_back"
+      elsif paid_amount == total_vat.round(0)
+        status = "paid"
+      elsif !is_deposited
+        status = "not_deposited"
+      elsif is_deposited && !debt_date.nil? && debt_date >= order_date
+        status = "debt"
+      elsif is_deposited && !debt_date.nil? && debt_date < order_date
+        status = "out_of_date"
+      else
+        status = "out_of_date"
+      end
     end
     
     update_attributes(payment_status_name: status)

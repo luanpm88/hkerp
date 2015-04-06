@@ -1,7 +1,7 @@
           <div class="grid simple ">
 		    <div class="grid-body no-border filters">
 			<div class="row order-filters">
-			    <div class="col-md-3">
+			    <div class="col-md-4">
 				  <h4>Order Date</h4>
 				  <div class="date_select_filter">
 					  <div class="input-with-icon  right">                                       
@@ -11,7 +11,7 @@
 			    </div>
 				
 				<% if params[:purchase] || ["purchase_orders"].include?(params[:action]) %>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<h4>Supplier</h4>
 						<div class="">
 							<div class="input-with-icon  right">                                       
@@ -21,7 +21,7 @@
 						</div>
 					</div>
 				<% else %>
-					<div class="col-md-3">
+					<div class="col-md-4">
 						<h4>Customer</h4>
 						<div class="">
 							<div class="input-with-icon  right">                                       
@@ -32,7 +32,7 @@
 					</div>
 				<% end %>
 				
-				<% if ["orders","deliveries"].include?(params[:controller]) %>
+				<% if ["deliveries"].include?(params[:controller]) %>
 				  
 				  <div class="col-md-2">
 					  <h4>Delivery Status</h4>
@@ -53,7 +53,7 @@
 				  
 				<% end %>
 				
-				<% if ["orders","deliveries","accounting"].include?(params[:controller]) %>
+				<% if ["accounting"].include?(params[:controller]) %>
 				  
 				  <div class="col-md-2">
 					  <h4>Payment Status</h4>
