@@ -109,7 +109,7 @@ class OrderDetail < ActiveRecord::Base
   def is_out_of_stock
     stock = product.calculated_stock
     
-    return (stock.nil? || stock < remain_count) && !order.is_purchase
+    return (calculated_stock.nil? || calculated_stock < remain_count) && !order.is_purchase
   end
   
   def is_combinable
