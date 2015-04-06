@@ -652,7 +652,7 @@ CREATE TABLE orders (
     supplier_agent_id integer,
     discount integer DEFAULT 0,
     order_status_name character varying(255),
-    discount_amount numeric
+    discount_amount numeric DEFAULT 0
 );
 
 

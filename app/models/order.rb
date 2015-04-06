@@ -31,7 +31,7 @@ class Order < ActiveRecord::Base
   
   has_many :payment_records, :dependent => :destroy
 
-  #before_update :save_draft
+  before_save :calculate_discount
   
   def valid_debt_date
     if !deposit.nil? && deposit < 100 && !debt_date.nil?
@@ -967,6 +967,12 @@ class Order < ActiveRecord::Base
   
   def price=(new_price)
     self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
+  end
+  
+  def calculate_discount
+    if discount > 0
+      self[:discount_amount] = total*(discount.to_f/100)
+    end    
   end
   
 end

@@ -7754,5 +7754,5 @@ input.disabled {
     background-image: none;
     border: 1px solid #ddd;
     cursor: default;
-    color: rgba(0,0,0,0);
+    /*color: rgba(0,0,0,0);*/
 }

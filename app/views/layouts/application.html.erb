@@ -85,7 +85,12 @@
 	function checkDiscountInput() {
 		if($('.discount_percent').val() != "0") {
 			$('.discount_amount').addClass("disabled");
-			$('.discount_amount').addAttr("disabled");  
+			$('.discount_amount').attr("disabled","disabled");
+			
+			var total = parseFloat($('.total_without_vat').html().replace(/,/g,""));
+			var discount = parseFloat($('.discount_percent').val());
+			var discount_amount = total*(discount/100);
+			$('.discount_amount').val(discount_amount);
 		} else {
 			$('.discount_amount').removeClass("disabled");
 			$('.discount_amount').removeAttr("disabled");
@@ -219,12 +224,14 @@
 		});
 		
 		
-		sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(2));
-		sum = ReplaceNumberWithDots(sum.toFixed(2));
+		sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(0));
+		sum = ReplaceNumberWithDots(sum.toFixed(0));
 		$('.product_order_list .footer.line1 .price_total').html(sum);
 		$('.product_order_list .footer.line2 .price_total').html(sumvat);
 
 		$('.order_tax_name').html($('select.tax-select option:selected').html());
+		
+		checkDiscountInput();
     }
     
     function updateOrderAgentFormInfo(customer_id)
@@ -356,7 +363,9 @@
 	
 	//Multiselect for all
 	$(".multi_select").select2();
-	$(".modern_select").select2();
+	$(".modern_select").select2({
+		allowClear: true
+	});
 	$(".datetime select").select2();
 	
 	//filter table
@@ -577,7 +586,7 @@
 				}
 				
 				updateOrderPrices();
-				
+
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {
@@ -640,6 +649,7 @@
 			if (box.attr("order_id").trim() == "") {
 				box.remove();
 				updateOrderPrices();
+
 			} else {			
 				$.ajax(
 				{
@@ -651,6 +661,7 @@
 						box.replaceWith(success_box.html());
 						box.addClass("hidden");
 						updateOrderPrices();
+
 					}
 				});
 			}
@@ -696,7 +707,7 @@
 	    
 	    updateOrderPrices();
 	    $('select.tax-select').live("change", function(){
-		updateOrderPrices();
+			updateOrderPrices();
 	    });
 	    
 	    //format typping price
@@ -1079,6 +1090,7 @@
 		//update prices
 		$('#product-line-items input').live("keyup", function() {
 			updateOrderPrices();
+			
 		})
 		
 		$('.combined_product_quantity').change(function() {
@@ -1108,7 +1120,7 @@
 		});
 		
 		$('.discount_percent').change(function() {
-			checkDiscountInput()();
+			checkDiscountInput();
 		});
 		
 	    
