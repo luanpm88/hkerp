@@ -945,7 +945,19 @@ class Order < ActiveRecord::Base
     
     update_attributes(price_status_name: status)
     
-    return "<div class=\"#{status}\">#{status}</div>".html_safe
+    return status
+  end
+  
+  def display_price_status
+    return "<div class=\"#{price_status}\">#{price_status}</div>".html_safe
+  end
+  
+  def is_price_updated
+    if price_status == "price_updated"
+        return true
+    else
+      return false
+    end    
   end
   
   def display_title

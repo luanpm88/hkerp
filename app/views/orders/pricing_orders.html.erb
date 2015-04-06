@@ -33,13 +33,14 @@
                                                 <th style="width:1%" >
                                                     Code
                                                 </th>
-                                                <th width="25%">Customer</th>
-                                                <th width="10%" style="text-align: right">Total Price</th>
-                                                <th style="text-align: center" width="10%">Count</th>                                                
-						<th style="text-align: center" width="9%">Salesperson</th>
-						<th style="text-align: center" width="13%">Order Date</th>
-						<th style="text-align: center" width="13%">Status</th>
-                                                <th style="width:160px;text-align: center">Action</th>   
+                                                <th>Customer</th>
+                                                <th class="text-right">Total Price</th>
+                                                <th class="text-center">Count</th>                                                
+												<th class="text-center">Salesperson</th>
+												<th class="text-center">Order Date</th>
+												<th class="text-center">Status</th>
+												<th class="text-center">Price Status</th>
+                                                <th class="text-center">Action</th>   
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -54,31 +55,31 @@
                                                         <label for="checkbox1<%= order.id %>"></label>
                                                 </div>
                                           </td>
-                                          <td width="25%">
+                                          <td>
                                             <%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" %>
 											<%= order.display_description %>
                                           </td>
-                                          <td align="right">
+                                          <td class="text-right">
                                                 <%= order.formated_total_vat %>
                                           </td>
-                                          <td style="text-align: center">
+                                          <td class="text-center">
                                                 <%= order.order_details.count %>
                                           </td>
-                                          <td style="text-align: center">
+                                          <td class="text-center">
                                                 <%= order.salesperson_name %>
                                           </td>
-                                          <td style="text-align: center">
+                                          <td class="text-center">
                                                 <%= order.order_date_formatted %>
                                           </td>
 
-                                          <td style="text-align: center">
-												<%= order.price_status %>
+                                          <td class="text-center">
                                                 <%= order.display_status %>
 												<%= order.delivery_status.html_safe %>		
-						
-					    
                                           </td>
-                                          <td style="text-align: right;">
+										  <td class="text-center">
+												<%= order.display_price_status %>
+                                          </td>
+                                          <td class="text-center">
                                           
                                                   
                                                   
@@ -87,7 +88,10 @@
 	  
 							    <ul class="dropdown-menu">							      
 								<%  if can? :update_price, order %>
-								    <li><%= link_to "Update Price", {action: "update_price", :id => order.id} %></li>
+								    <li><%= link_to "Update Price", {action: "update_price", :id => order.id} %></li>									
+								<% end %>
+								<%  if can? :confirm_price, order %>
+									<li><%= link_to "Confirm Price", {action: "confirm_price", :id => order.id} %></li>
 								<% end %>
 								<%  if can? :create, Order %>
 								  <li>

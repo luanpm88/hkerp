@@ -165,6 +165,9 @@ class Ability
         can :do_update_price, Order do |order|
           order.is_sales && order.status.name == 'items_confirmed'
         end
+        can :confirm_price, Order do |order|
+          order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
+        end
 
         can :update_price, Product
         can :do_update_price, Product

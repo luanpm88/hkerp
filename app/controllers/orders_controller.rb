@@ -254,6 +254,10 @@ class OrdersController < ApplicationController
         actions += '<li>'+view_context.link_to("Confirm Items", confirm_items_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
         group_3 += 1
       end
+      if can? :update_price, item
+        actions += '<li>'+view_context.link_to("Confirm Price", confirm_price_orders_url(id: item.id), data: { confirm: 'Are you sure?' })+'</li>'
+        group_3 += 1
+      end
       if can? :confirm_order, item
         actions += '<li>'+view_context.link_to("Confirm Order", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
         group_3 += 1
