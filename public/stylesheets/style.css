@@ -7584,9 +7584,12 @@ ul.filter {
     top: 2px;
     right: 30px;
 }
-.date_select_filter .select2-container {
+/*#s2id_filter_date_1i {
     min-width: 80px;
 }
+#s2id_filter_date_2i {
+    width: 50px;
+}*/
 .accounting-statistics-filters select {
     font-size: 150%;
 }
@@ -7755,4 +7758,7 @@ input.disabled {
     border: 1px solid #ddd;
     cursor: default;
     /*color: rgba(0,0,0,0);*/
+}
+.select2-results li {
+    padding-left: 0;
 }
