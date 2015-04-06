@@ -114,7 +114,7 @@
                         <div class="form-actions">  
                           <div class="pull-right">
                               <input type="submit" class="btn btn-success btn-cons" value="Update" />
-							  <% if can? :confirm_price, @order %>
+							  <% if can? :update_price, @order %>
 								<input name="confirm" type="submit" class="btn btn-info btn-cons" value="Update and Confirm" />
 							  <% end %>
                               <%= link_to 'Cancel', {action: "pricing_orders"}, :class => "btn btn-white btn-cons" %>
