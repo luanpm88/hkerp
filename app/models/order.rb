@@ -975,4 +975,16 @@ class Order < ActiveRecord::Base
     end    
   end
   
+  def calculated_discount_amount
+    if discount > 0
+      total*(discount.to_f/100)
+    else
+      discount_amount
+    end
+  end
+  
+  def calculated_discount_amount_formated
+    return Order.format_price(calculated_discount_amount)
+  end
+  
 end

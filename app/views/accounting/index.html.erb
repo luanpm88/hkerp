@@ -129,7 +129,7 @@
 							<th class="text-right">Tax</th>
 							
 							<th class="text-center">Staff</th>
-							<!--<th class="text-right">Cost</th>-->
+							<!--<th class="text-right">Discount</th>-->
 							<th class="text-right">Cost Total</th>
 							<th class="text-right">Fare</th>
 						</tr>
@@ -173,7 +173,7 @@
 										<%= order.salesperson.name %>
 									</td>
 									<!--<td class="text-right">
-										<%= od.cost_vat_formated %>
+										<%= order.calculated_discount_amount_formated %>
 									</td>-->
 									<td class="text-right">
 										<%= od.cost_total_vat_formated %>
