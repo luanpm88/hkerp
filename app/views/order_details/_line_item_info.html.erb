@@ -20,7 +20,7 @@
                                         <li class="warranty text-center">
                                           <%= order_detail.warranty %>
                                         </li>
-                                      <li class="line_discount">
+                                      <li class="line_discount text-right">
                                             <%= select_tag "order_details[#{order_detail.product_id}][discount]", options_for_select(0.upto(100).map { |u| [u, u] },order_detail.discount), {:class => "modern_selectz line_discount_percent"} %>%
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount, {:class => "form-control price_input  line_discount_amount"} %>VND
                                         </li>

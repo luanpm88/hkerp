@@ -104,7 +104,7 @@
 									</td>
 									
 									<td class="text-center">
-									<%= line.product.stock %>
+									<%= line.product.calculated_stock %>
 									</td>
 									
 									<td class="text-center">
@@ -130,7 +130,7 @@
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
 				    <%= f.hidden_field :is_return, {value: 0} %>
 				    
-				    <h2>Receive Items</h2>
+					<h2>Deliver Items</h2>
 				    
 				    <div class="form-group">
 					<label class="form-label"><%= f.label :delivery_person %></label>
@@ -179,7 +179,7 @@
 						    </td>
 						    
 						    <td class="text-center">
-							<%= line.product.stock %>
+							<%= line.product.calculated_stock %>
 						    </td>
 						    
 						    <td class="text-center">

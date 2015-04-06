@@ -118,6 +118,13 @@
 				da_box.removeAttr("disabled");
 			}
 		});
+		
+		total = 0
+		$('.line_discount_amount').each(function() {
+					var num = parseFloat($(this).val().replace(/,/g,""));
+		  total += num
+		});
+		$('.footer.line1 .discount').html(ReplaceNumberWithDots(total.toFixed(0)));
 	}
 	
 	function update_update_price_form() {

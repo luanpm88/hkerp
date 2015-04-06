@@ -65,11 +65,11 @@
                                                 <i class=""></i>
                                                 <%= part.display_name %>
                                                 (
-												<span class="part_line" stock="<%= part.stock %>" quantity="<%= ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>">
+												<span class="part_line" stock="<%= part.calculated_stock %>" quantity="<%= ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>">
 														<%= @product.max_combinable*ProductPart.where(product_id: @product.id).where(part_id: part.id).first.quantity %>
 												</span> /
 												<span>
-														<%= part.stock %>
+														<%= part.calculated_stock %>
 												</span>
 												)
                                         </div>

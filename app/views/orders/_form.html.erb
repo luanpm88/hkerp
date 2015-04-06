@@ -492,7 +492,7 @@
                             <li class="price_total">Total</li>
                             <li class="warranty text-center">Warranty</li>
                             <li class="discount text-center">Discount</li>
-                            <li class="action text-center">Action</li>
+                            <li class="action text-right">Action</li>
                           </ul>
                           <div id="product-line-items">
                             <% if !@order.order_details.nil? %>
@@ -506,10 +506,10 @@
                             </li>
                             <li class="unit"></li>
                             <!--<li class="supplier_price"></li>-->
-                            <li class="sum">Tổng cộng</li>
+                            <li class="sum">Total</li>
                             <li class="price_total total_without_vat">0</li>
-                            <li class="warranty"></li>
-                            <li class="discount"></li>
+                            <li class="warranty text-right">Disc.Total:</li>
+                            <li class="discount text-right"></li>
                             <li class="action"></li>
                           </ul>
                           <ul class="footer line2">
@@ -517,10 +517,10 @@
                             </li>
                             <li class="unit"></li>
                             <!--<li class="supplier_price"></li>-->
-                            <li class="sum">Tổng cộng (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)</li>
+                            <li class="sum">Total (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)</li>
                             <li class="price_total">0</li>
                             <li class="warranty"></li>
-                            <li class="discount"></li>
+                            <li class="discount text-right"></li>
                             <li class="action"></li>
                           </ul>
                         </div>

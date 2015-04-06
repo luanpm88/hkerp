@@ -614,7 +614,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    update_attributes(delivery_status_name: status_arr.join(",")) if status_arr.join(",") != delivery_status_name
+    self.update_attributes(delivery_status_name: status_arr.join(",")) # if status_arr.join(",") != delivery_status_name
     
     return status_arr
   end

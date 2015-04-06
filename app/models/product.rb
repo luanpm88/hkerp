@@ -318,4 +318,20 @@ class Product < ActiveRecord::Base
     count += product_stock_updates.sum(:quantity)
   end
   
+  def wait_for_supply_count
+    count = OrderDetail.joins(:order)
+                .where(orders: {customer_id: Contact.HK.id})
+                .where(orders: {parent_id: nil})
+                .where("orders.delivery_status_name LIKE ?", "%not_delivered%")                
+                .where(product_id: self.id).sum(:quantity)
+    
+    count -= DeliveryDetail.joins(:delivery => :order)
+                .where(orders: {customer_id: Contact.HK.id})
+                .where(orders: {parent_id: nil})
+                .where("orders.delivery_status_name LIKE ?", "%not_delivered%")                
+                .where(product_id: self.id).sum(:quantity)
+    
+    return count
+  end
+  
 end

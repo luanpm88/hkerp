@@ -129,6 +129,10 @@
 										<div>
 											<%= od.product_name %>
 											( <strong class="red">-<%= od.out_of_stock_count.to_s %></strong> )
+											
+											<% if od.product.wait_for_supply_count > 0 %>
+													/ <span class="delivered">Waiting for supply: <strong><%= od.product.wait_for_supply_count %></strong></span>
+												<% end %>
 										</div>
 										<% od.product.parts.each do |p| %>
 											<div class="part_details">
@@ -139,8 +143,12 @@
 														<strong class="green">+<%= num %> - available</strong>
 													<% else %>
 														<strong class="red"><%= num %> - not_enough</strong>
+														<% if p.wait_for_supply_count > 0 %>
+															/ <span class="delivered">Waiting for supply: <strong><%= p.wait_for_supply_count %></strong></span>
+														<% end %>
 													<% end %>
-												)						
+												)
+												
 											</div>
 										<% end %>
 									<% end %>

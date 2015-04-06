@@ -25,21 +25,8 @@ class Delivery < ActiveRecord::Base
   end
   
   def valid_delivery_details
-    if order.is_purchase
+    #if order.is_purchase
       delivery_details.each do |item|
-        if self.is_return == 1
-            if item.order_detail.return_count + item.quantity < 0
-              errors.add(:quantity, "can't be greater than redundant items")
-            end
-        else
-            if item.order_detail.remain_count > item.quantity
-              errors.add(:quantity, "can't be greater than remain items")
-            end
-        end
-      end        
-    else
-      delivery_details.each do |item|
-        product = item.order_detail.product
         if self.is_return == 1
             if item.order_detail.return_count + item.quantity < 0
               errors.add(:quantity, "can't be greater than redundant items")
@@ -48,12 +35,30 @@ class Delivery < ActiveRecord::Base
             if item.order_detail.remain_count < item.quantity
               errors.add(:quantity, "can't be greater than remain items")
             end
-            if product.stock < item.quantity
+            
+            product = item.order_detail.product
+            if order.is_sales && product.calculated_stock < item.quantity
               errors.add(:quantity, "can't be greater than stock")
             end
         end
-      end       
-    end
+      end        
+    #else
+    #  delivery_details.each do |item|
+    #    product = item.order_detail.product
+    #    if self.is_return == 1
+    #        if item.order_detail.return_count + item.quantity < 0
+    #          errors.add(:quantity, "can't be greater than redundant items")
+    #        end
+    #    else
+    #        if item.order_detail.remain_count > item.quantity
+    #          errors.add(:quantity, "can't be greater than remain items")
+    #        end
+    #        if product.stock < item.quantity
+    #          errors.add(:quantity, "can't be greater than stock")
+    #        end
+    #    end
+    #  end       
+    #end
   end
   
   def update_stock
