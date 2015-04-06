@@ -788,7 +788,7 @@ class Order < ActiveRecord::Base
                   .joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
     
     orders_2 = Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                   .where("delivery_status_name LIKE ? OR price_status_name LIKE ?", '%out_of_stock%', '%price_outdated%')
     
     orders_total = orders + orders_2
