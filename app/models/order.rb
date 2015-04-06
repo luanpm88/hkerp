@@ -484,7 +484,10 @@ class Order < ActiveRecord::Base
       end
     end
     
-    @items = @items.joins(:order_status).where(order_statuses: {name: params["order_status"]}) if params["order_status"].present?
+    @items = @items.joins(:order_status)
+    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present?
+    @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?
+    @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
     @items = @items.where('extract(month from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["month"]) if params["month"].present?
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?

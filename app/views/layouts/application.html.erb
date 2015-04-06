@@ -182,6 +182,8 @@
 			"ajax": {
 				"url": url,
 				"data": function ( d ) {
+					d.payment_status = $('select[name="payment_status"]').val();
+					d.delivery_status = $('select[name="delivery_status"]').val();
 					d.order_status = $('select[name="order_status"]').val();
 					d.customer_id = $('.select2-ajax-customers').val();
 					d.supplier_id = $('.select2-ajax-suppliers').val();
