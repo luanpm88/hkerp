@@ -520,8 +520,8 @@ class Order < ActiveRecord::Base
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+item.display_status+'</div>',
-                  "<div class=\"text-center\">#{item.payment_status}</div>",
-                  "<div class=\"text-center\">#{item.delivery_status}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
+                  "<div class=\"text-center\">#{item.display_payment_status}</div>",
+                  "<div class=\"text-center\">#{item.display_delivery_status}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
                   ''
                 ]
           data << row
@@ -532,9 +532,9 @@ class Order < ActiveRecord::Base
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  '<div class="text-center">'+item.delivery_status+'</div>',
+                  '<div class="text-center">'+item.display_delivery_status+'</div>',
                   '<div class="text-center">'+item.display_status+'</div>',
-                  "<div class=\"text-center\">#{item.payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}</div>",                                                      
+                  "<div class=\"text-center\">#{item.display_payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}</div>",                                                      
                   ''
                 ]
           data << row
@@ -546,7 +546,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  "<div class=\"text-center\">#{item.price_status}#{item.delivery_status}#{item.payment_status}</div>",                  
+                  "<div class=\"text-center\">#{item.display_price_status}#{item.display_delivery_status}#{item.display_payment_status}</div>",                  
                   '<div class="text-center">'+item.display_status+'</div>',
                   ''
                 ]
@@ -616,8 +616,12 @@ class Order < ActiveRecord::Base
     
     update_attributes(delivery_status_name: status_arr.join(",")) if status_arr.join(",") != delivery_status_name
     
+    return status_arr
+  end
+  
+  def display_delivery_status
     str = ""
-    status_arr.each do |s|
+    delivery_status.each do |s|
       str += "<div class=\"#{s}\">#{s}</div>"
     end
     return str.html_safe
@@ -669,7 +673,11 @@ class Order < ActiveRecord::Base
     
     update_attributes(payment_status_name: status)
     
-    return "<div class=\"#{status}\">#{status}</div>".html_safe
+    return status
+  end
+  
+  def display_payment_status
+    return "<div class=\"#{payment_status}\">#{payment_status}</div>".html_safe
   end
   
   def save_as_new(order_params)
