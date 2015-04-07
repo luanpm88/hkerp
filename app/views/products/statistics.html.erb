@@ -1,0 +1,85 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+			<%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Product - <span class="semi-bold"> Statistics</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+			
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "statistics"})%>">
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-4">
+									<h4>Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">                                       
+										<%= date_select(:product, :created_at, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									</div>
+									</div>
+								</div>								
+							</div>
+						</form>
+						</div>		    
+					</div>
+			
+			
+                    
+                    
+                    <div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Stock Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @product.created_at.strftime('%Y') %></span></h4>
+					
+					
+					<table class="table">
+						<tr>
+							<th class="text-center">STT</th>
+							<th>Name</th>
+							<th>Import.No</th>
+							<th class="text-right">Import.Amount</th>
+							<th>Export.No</th>
+							<th class="text-right">Export.Amount</th>
+                            <th>Stock</th>
+						</tr>
+						
+						<%
+						count = 1
+						@products.each do |product| %>
+                          <tr>
+							<td class="text-center"><%= count %></td>
+                            <td class="text-left"><%= product.display_name %></td>
+                            <td class="text-center"><%= product.import_count(@year, @month) %></td>
+                            <td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
+                            <td class="text-center"><%= product.export_count(@year, @month) %></td>
+                            <td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
+                            <td class="text-center"><%= product.calculated_stock %></td>
+                            
+                          </tr>
+						  <% count += 1 %>
+						<% end %>
+						
+						
+					</table>
+				</div>
+			</div>
+                    
+                    
+			
+			</div>
+                </div>
+
+<script>
+    $(document).ready(function() {
+	<% if @month_val.nil? %>
+	    $("#order_order_date_2i").select2("val", "");
+	<% end %>
+    });
+</script>

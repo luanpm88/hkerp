@@ -201,6 +201,29 @@ class ProductsController < ApplicationController
     end
   end
   
+  def statistics
+    if params[:product].present?
+      @month = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : 1
+      @month_val  = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : nil
+      
+      date = Date.new params[:product]["created_at(1i)"].to_i, @month, params[:product]["created_at(3i)"].to_i
+      
+      @product = Product.new(:created_at => date)
+    else
+      @month = DateTime.now.month
+      @month_val = @month
+      
+      @product = Product.new(:created_at => DateTime.now)
+    end
+    
+    @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
+    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+    
+    @year = @product.created_at.year
+    
+    @products = Product.statistics(@product.created_at.year, @month_val)
+  end
+  
   
   private
     # Use callbacks to share common setup or constraints between actions.

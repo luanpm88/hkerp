@@ -257,6 +257,8 @@ class Ability
         can :deliver, Order  do |order|
           ['confirmed'].include?(order.status.name) && !order.is_delivered?
         end
+        
+        can :statistics, Product
       end
 
     end

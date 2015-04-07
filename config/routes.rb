@@ -162,6 +162,8 @@ Hkerp::Application.routes.draw do
       
       patch :trash
       patch :un_trash
+      
+      get :statistics
     end
   end
   

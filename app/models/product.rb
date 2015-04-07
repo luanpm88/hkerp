@@ -353,4 +353,66 @@ class Product < ActiveRecord::Base
     return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
   
+  def self.statistics(year, month=nil)
+    Product.all
+  end
+  
+  def import_count(year, month=nil)
+    products = delivery_details
+              .joins(:order_detail => :order)
+              .where(orders: {customer_id: Contact.HK.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    count = products.count
+  end
+  
+  def export_count(year, month=nil)
+    products = delivery_details
+              .joins(:order_detail => :order)
+              .where(orders: {supplier_id: Contact.HK.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    count = products.count
+  end
+  
+  def export_amount(year, month=nil)
+    products = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {supplier_id: Contact.HK.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    amount = products.sum(:price)
+  end
+  
+  def export_amount_formated(year, month=nil)
+    Order.format_price(export_amount(year, month))
+  end
+  
+  def import_amount(year, month=nil)
+    products = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {customer_id: Contact.HK.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    amount = products.sum(:price)
+  end
+  
+  def import_amount_formated(year, month=nil)
+    Order.format_price(import_amount(year, month))
+  end
+  
 end
