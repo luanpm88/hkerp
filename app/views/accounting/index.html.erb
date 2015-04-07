@@ -14,22 +14,43 @@
                 <div class="row">
                     <div class="col-md-12">
 			
-			<div class="grid simple ">
-			    <div class="grid-body no-border filters" method="get">
-				<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "index"})%>">
-				    <div class="row accounting-statistics-filters">
-					<div class="col-md-4">
-					    <h4>Order Date</h4>
-					    <div class="date_select_filter">
-						<div class="input-with-icon  right">                                       
-						    <%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
-						</div>
-					    </div>
-					</div>				    
-				    </div>
-				</form>
-			    </div>		    
-			</div>
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "index"})%>">
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-4">
+									<h4>Order Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">                                       
+										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									</div>
+									</div>
+								</div>
+								<% if params[:purchase] || ["purchase_orders"].include?(params[:action]) %>
+									<div class="col-md-4">
+										<h4>Supplier</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="supplier_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="" text="" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+								<% else %>
+									<div class="col-md-4">
+										<h4>Customer</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="" text="" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+								<% end %>
+							</div>
+						</form>
+						</div>		    
+					</div>
 			
 			<div class="grid simple ">
 			    <div class="grid-title no-border">
@@ -192,85 +213,7 @@
 			</div>
 			
 			
-			
-			<div class="grid simple ">
-			    <div class="grid-body no-border filters" method="get">
-					<h4>Purchase Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
-					
-					
-					<table class="table">
-						<tr>
-							<th class="text-center">STT</th>
-							<th>Order</th>
-							<th>Delivery</th>
-							<th>Item</th>
-							<th class="text-center">Quantity</th>
-							<th class="text-right">Price</th>
-							<th class="text-center">Paid</th>
-							<th class="text-right">Tax</th>
-							
-							<th class="text-center">Staff</th>
-							<!--<th class="text-right">Cost</th>-->
-							<th class="text-right">Cost Total</th>
-							<th class="text-right">Fare</th>
-						</tr>
-						
-						<%
-						count = 1
-						@statistics[:buy_orders].each do |order| %>
-							<% order.order_details.each do |od| %>
-								<tr>
-									<td class="text-center"><%= count %></td>
-									<td>
-										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
-										<br />
-										<%= order.supplier.short_name %>
-										<br />
-										(<%= order.order_date_formatted %>)
-									</td>
-									<td>										
-										<% od.delivery_details.each do |dd| %>
-											<%= link_to dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
-										<% end %>
-									</td>
-									<td>
-										<%= od.product.display_name %>
-									</td>
-									<td class="text-center">
-										<%= od.quantity %> <%= od.unit %>
-									</td>
-									<td class="text-right">
-										<%= od.total_vat_formated %>
-									</td>
-									<td class="text-center">
-										<%= od.paid_status %>
-									</td>
-									<td class="text-right">
-										<%= od.vat_amount_formated %>
-										<br />
-										(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
-									</td>
-									<td class="text-center">
-										<%= order.purchase_manager.name %>
-									</td>
-									<!--<td class="text-right">
-										<%= od.cost_vat_formated %>
-									</td>-->
-									<td class="text-right">
-										<%= od.cost_total_vat_formated %>
-									</td>
-									<td class="text-right">
-										<%= od.fare_formated %>
-									</td>
-								</tr>
-								<% count += 1 %>
-							<% end %>
-						<% end %>
-						
-						
-					</table>
-				</div>
-			</div>
+
 			
 			
 			</div>

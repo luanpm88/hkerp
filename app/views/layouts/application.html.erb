@@ -1003,24 +1003,24 @@
 	    
 	    //ajax select2 for contacts
 	    $('.select2-ajax-customers').select2({
-		placeholder: "Search for a contact",
-		minimumInputLength: 1,
-		allowClear: true,
-		ajax: {
-		  url: $('.select2-ajax-customers').attr("url"),
-		  dataType: 'json',
-		  data: function (term, page) { // page is the one-based page number tracked by Select2
-		    return {
-		      q: term, //search term
-		    };
-		  },
-		  results: function (data, page) {
-		    return {results: data};
-		  }
-		},
-		initSelection: function (element, callback) {				      
-		  callback({ id: $('.select2-ajax-customers').val, text: $('.select2-ajax-customers').attr('text') });
-		}
+			placeholder: "Search for a contact",
+			minimumInputLength: 1,
+			allowClear: true,
+			ajax: {
+			  url: $('.select2-ajax-customers').attr("url"),
+			  dataType: 'json',
+			  data: function (term, page) { // page is the one-based page number tracked by Select2
+				return {
+				  q: term, //search term
+				};
+			  },
+			  results: function (data, page) {
+				return {results: data};
+			  }
+			},
+			initSelection: function (element, callback) {				      
+			  callback({ id: $('.select2-ajax-customers').val(), text: $('.select2-ajax-customers').attr('text') });
+			}
 	    });
 	    
 	    //ajax select2 for contacts
@@ -1080,7 +1080,11 @@
 	    });
 	    
 	    $('.accounting-statistics-filters select').change(function() {
-		$('#accounting-statistics-filters-form').submit();
+			$('#accounting-statistics-filters-form').submit();
+	    });
+		
+		$('.accounting-statistics-filters input').change(function() {
+			setTimeout("$('#accounting-statistics-filters-form').submit();", 2000);
 	    });
 	    
 	    $('.select2-ajax-users').select2({
@@ -1376,6 +1380,10 @@
 		<% end %>
 		<ul class="sub-menu">
 		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings" %></li>
+		  
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', {controller: "accounting", action: "statistic_sales"} %></li>
+		  
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', {controller: "accounting", action: "statistic_purchase"} %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>

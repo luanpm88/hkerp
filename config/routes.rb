@@ -169,6 +169,9 @@ Hkerp::Application.routes.draw do
     collection do
       get :orders
       get :pay
+      
+      get :statistic_sales
+      get :statistic_purchase
     end
   end
 

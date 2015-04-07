@@ -237,6 +237,9 @@ class Ability
         can :finish_order, Order do |order|
           ['confirmed'].include?(order.status.name)
         end
+        
+        can :statistic_sales, Order
+        can :statistic_purchase, Order
       end
 
       if user.has_role? "storage_manager"
