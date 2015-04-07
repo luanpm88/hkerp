@@ -164,6 +164,7 @@ Hkerp::Application.routes.draw do
       patch :un_trash
       
       get :statistics
+      get :ajax_product_prices
     end
   end
   

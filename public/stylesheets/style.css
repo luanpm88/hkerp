@@ -7768,3 +7768,6 @@ input.disabled {
 .trashed {
     color: #ccc;
 }
+.price-history {
+    margin-top: 10px;
+}

@@ -1,0 +1,44 @@
+<div class="row">
+                    <div class="col-md-12">
+
+			
+			
+                    
+                    
+                    <div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Product Price - <span class="semi-bold">History</span></h4>
+					
+					<h3><%= @product.display_name %></h3>
+					<table class="table datatable-products-statistics">
+						<thead>
+							<tr>
+								<th>Supplier</th>
+								<th class="text-right">Supplier Price</th>
+								<th class="text-right">Sales Price</th>
+								<th class="text-center">Updated At</th>								
+							</tr>
+						</thead>
+						
+						<% @product.product_prices.order("created_at DESC").each do |price| %>
+                        
+                          <tbody>
+                              <tr>
+                                  <td><%= price.supplier.name %></td>
+                                  <td class="text-right"><%= price.supplier_price_formated %></td>
+                                  <td class="text-right"><%= price.price_formated %></td>
+                                  <td class="text-center"><%= price.created_at.strftime("%Y/%m/%d") %></td>								
+                              </tr>
+                          </tbody>
+                        
+                        <% end %>
+						
+						
+					</table>
+				</div>
+			</div>
+                    
+                    
+			
+			</div>
+                </div>

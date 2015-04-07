@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -34,6 +34,9 @@ class ProductsController < ApplicationController
       if can? :create, ProductStockUpdate
         actions += '<li>'+view_context.link_to("Update Stock (Nhập Kho)", new_product_stock_update_path(product_id: item.id))+'</li>'
       end
+      if can? :ajax_product_prices, item
+        actions += '<li>'+item.price_history_link(false)+'</li>'
+      end
       if can? :update_price, item
         actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id})+'</li>'
       end
@@ -47,7 +50,7 @@ class ProductsController < ApplicationController
       
       actions += '</ul></div></div>'
       
-      result[:result]["data"][index][7] = actions
+      result[:result]["data"][index][result[:actions_col]] = actions if result[:actions_col] != 0
     end
     
     render json: result[:result]
@@ -224,6 +227,10 @@ class ProductsController < ApplicationController
     @products = Product.statistics(@product.created_at.year, @month_val)
   end
   
+  
+  def ajax_product_prices
+    render layout: nil
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.

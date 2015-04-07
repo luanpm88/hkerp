@@ -39,16 +39,20 @@
 					<h4>Stock Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @product.created_at.strftime('%Y') %></span></h4>
 					
 					
-					<table class="table">
-						<tr>
-							<th class="text-center">STT</th>
-							<th>Name</th>
-							<th>Import.No</th>
-							<th class="text-right">Import.Amount</th>
-							<th>Export.No</th>
-							<th class="text-right">Export.Amount</th>
-                            <th>Stock</th>
-						</tr>
+					<table class="table datatable-products-statistics">
+						<thead>
+							<tr>
+								<th class="text-center">STT</th>
+								<th>Category</th>
+								<th>Manufacturer</th>
+								<th>Name</th>
+								<th>Import.No</th>
+								<th class="text-right">Import.Amount</th>
+								<th>Export.No</th>
+								<th class="text-right">Export.Amount</th>
+								<th>Stock</th>
+							</tr>
+						</thead>
 						
 						<%
 						count = 1
@@ -78,8 +82,27 @@
 
 <script>
     $(document).ready(function() {
-	<% if @month_val.nil? %>
-	    $("#order_order_date_2i").select2("val", "");
-	<% end %>
+		<% if @month_val.nil? %>
+			$("#order_order_date_2i").select2("val", "");
+		<% end %>
+		
+		//Datatable products statistics
+	    $('.datatable-products-statistics').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_products_path(page: "statistics", year: params[:year], month: params[:month]) %>",
+				"data": function ( d ) {
+					d.manufacturers = $("input[name='manufacturers[]']:checked").map(function () {return this.value;}).get().join(","),
+					d.category = $("select[name='category']").val()
+				}
+			},
+			"columnDefs": [ { "targets": [], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[50, 75, 100], [50, 75, 100]],
+			"iDisplayLength": 50
+	    });
+		
+		
     });
 </script>

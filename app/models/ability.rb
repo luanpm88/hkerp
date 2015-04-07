@@ -240,6 +240,8 @@ class Ability
         
         can :statistic_sales, Order
         can :statistic_purchase, Order
+        
+        can :ajax_product_prices, Product
       end
 
       if user.has_role? "storage_manager"

@@ -30,6 +30,7 @@
                             <div class="col-md-12">
                                 
                                 
+								
                                 <table class="table table-striped no-more-tables no-filter update-price-form">
                                     <thead>
                                         <tr>
@@ -40,6 +41,7 @@
 					    <th>Supplier</th>
 					    <th>Supplier Price</th>
                                             <th>New Price</th>
+											
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -55,10 +57,13 @@
 													</td>
 													<td>
 														<%= line.product.price_status %>
+														
+														<%= line.product.price_history_link %>
 													</td>
 													
 													<td class="text-right">
 													  <%= line.formated_price %>
+													  
 													</td>
 													<td>
 													  <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
@@ -82,6 +87,8 @@
 
 														<td>
 															<%= part.price_status %>
+															
+															<%= part.price_history_link %>
 														</td>
 														
 														<td class="text-right">

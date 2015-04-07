@@ -101,6 +101,8 @@ class Product < ActiveRecord::Base
     
     if !params["order"].nil?
       case params["order"]["0"]["column"]
+      when "0"
+        order = "products.id"
       when "1"
         order = "categories.name"
       when "2"
@@ -116,15 +118,17 @@ class Product < ActiveRecord::Base
     end
     
     where = "true"    
-    where += " AND products.manufacturer_id IN (#{params["manufacturers"]})" if !params["manufacturers"].empty?
-    where += " AND categories.id = #{params["category"]}" if !params["category"].empty?
+    where += " AND products.manufacturer_id IN (#{params["manufacturers"]})" if params["manufacturers"].present?
+    where += " AND categories.id = #{params["category"]}" if params["category"].present?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
-    @products = @products.search(params["search"]["value"]) if !params["search"]["value"].empty?    
+    @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?    
     @products = @products.order(order) if !order.nil?
 
     @products = @products.limit(params[:length]).offset(params["start"])
     data = []
+    
+    actions_col = 7
     @products.each do |product|
       
       edit_link = '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini">Edit</a> '
@@ -132,25 +136,42 @@ class Product < ActiveRecord::Base
       update_stock_link = link_helper.link_to('Update Stock', {controller: "product_stock_updates", action: "new", product_id: product.id}, class: "btn btn-info btn-xs btn-mini")
       trash_link = link_helper.link_to('Trash', {controller: "products", action: "trash", product_id: product.id}, method: :patch, class: "btn btn-info btn-xs btn-mini")
       
-      trashed_class =  product.status == 0 ? "trashed" : ""
-      item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-              "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
-              "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-              "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
-              "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
-              "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
-              "<div class=\"text-center #{trashed_class}\">"+product.display_status+'</div>',
-              edit_link+
-              update_price_link+
-              update_stock_link+
-              ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>'+
-              trash_link,
-              
-              #product.name,
-              #product.formated_price,
-              ''
-            ]
-      data << item
+      
+      
+      
+      case params[:page]
+      when "statistics"
+                trashed_class =  product.status == 0 ? "trashed" : ""
+                item = ["<div class=\"text-left\">#{product.id}</div>",
+                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+product.import_count(params[:year], params[:month]).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.import_amount_formated(params[:year], params[:month]).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.export_amount_formated(params[:year], params[:month]).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+                        ''
+
+                      ]
+                data << item
+                actions_col = 0
+      else
+                trashed_class =  product.status == 0 ? "trashed" : ""
+                item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.display_status+'</div>',
+                        ''
+                      ]
+                data << item
+                actions_col = 8
+      end
+                
     end    
     
     total = self.joins(:categories).joins(:manufacturer).where(where)
@@ -165,7 +186,7 @@ class Product < ActiveRecord::Base
     }
     result["data"] = data
     
-    return {result: result, items: @products}
+    return {result: result, items: @products, actions_col: actions_col}
   end
   
   def self.extract_serial_numbers(string)
@@ -417,6 +438,19 @@ class Product < ActiveRecord::Base
   
   def import_amount_formated(year, month=nil)
     Order.format_price(import_amount(year, month))
+  end
+  
+  def price_history_link(button=true)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    if button
+        link_helper.link_to '<i class="icon-time"></i> Price History'.html_safe, {controller: "products", action: "ajax_product_prices", id: self.id}, :class => "price-history btn btn-primary btn-mini fancybox.ajax"
+    else
+        link_helper.link_to '<i class="icon-time"></i> Price History'.html_safe, {controller: "products", action: "ajax_product_prices", id: self.id}, :class => "price-history fancybox.ajax"
+    end
+    
+    
   end
   
 end
