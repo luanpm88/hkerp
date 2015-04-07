@@ -358,9 +358,11 @@ class Product < ActiveRecord::Base
   end
   
   def import_count(year, month=nil)
+    status = OrderStatus.where(name: 'finished').first
+    
     products = delivery_details
               .joins(:order_detail => :order)
-              .where(orders: {customer_id: Contact.HK.id})
+              .where(orders: {customer_id: Contact.HK.id, order_status_id: status.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
@@ -370,9 +372,11 @@ class Product < ActiveRecord::Base
   end
   
   def export_count(year, month=nil)
+    status = OrderStatus.where(name: 'finished').first
+    
     products = delivery_details
               .joins(:order_detail => :order)
-              .where(orders: {supplier_id: Contact.HK.id})
+              .where(orders: {supplier_id: Contact.HK.id, order_status_id: status.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
