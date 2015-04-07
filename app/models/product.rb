@@ -99,23 +99,44 @@ class Product < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    if !params["order"].nil?
-      case params["order"]["0"]["column"]
-      when "0"
-        order = "products.id"
-      when "1"
-        order = "categories.name"
-      when "2"
-        order = "manufacturers.name"
-      when "3"
-        order = "products.name"
-      when "4"
-        order = "products.price"
+    
+    case params[:page]
+      when "statistics"
+                if !params["order"].nil?
+                  case params["order"]["0"]["column"]
+                  when "0"
+                    order = "products.id"
+                  when "1"
+                    order = "categories.name"
+                  when "2"
+                    order = "manufacturers.name"
+                  when "3"
+                    order = "products.name"
+                  else
+                    order = "products.name"
+                  end
+                  order += " "+params["order"]["0"]["dir"]
+                end
       else
-        order = "products.name"
+                if !params["order"].nil?
+                  case params["order"]["0"]["column"]
+                  when "0"
+                    order = "products.id"
+                  when "1"
+                    order = "categories.name"
+                  when "2"
+                    order = "manufacturers.name"
+                  when "3"
+                    order = "products.name"
+                  when "4"
+                    order = "products.price"
+                  else
+                    order = "products.name"
+                  end
+                  order += " "+params["order"]["0"]["dir"]
+                end
       end
-      order += " "+params["order"]["0"]["dir"]
-    end
+    
     
     where = "true"    
     where += " AND products.manufacturer_id IN (#{params["manufacturers"]})" if params["manufacturers"].present?
