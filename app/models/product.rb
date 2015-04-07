@@ -128,8 +128,6 @@ class Product < ActiveRecord::Base
                     order = "manufacturers.name"
                   when "3"
                     order = "products.name"
-                  when "4"
-                    order = "products.price"
                   else
                     order = "products.name"
                   end
