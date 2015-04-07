@@ -92,7 +92,7 @@ class Product < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
+    self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
   def self.datatable(params)
@@ -130,18 +130,22 @@ class Product < ActiveRecord::Base
       edit_link = '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini">Edit</a> '
       update_price_link = link_helper.link_to('Price', {controller: "products", action: "update_price", id: product.id}, class: "btn btn-info btn-xs btn-mini")
       update_stock_link = link_helper.link_to('Update Stock', {controller: "product_stock_updates", action: "new", product_id: product.id}, class: "btn btn-info btn-xs btn-mini")
+      trash_link = link_helper.link_to('Trash', {controller: "products", action: "trash", product_id: product.id}, method: :patch, class: "btn btn-info btn-xs btn-mini")
       
+      trashed_class =  product.status == 0 ? "trashed" : ""
       item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-              product.categories.first.name,
-              product.manufacturer.name,
-              product.name,
-              '<div class="text-right">'+product.product_price.price_formated+'</div>',
-              '<div class="text-center">'+product.calculated_stock.to_s+'</div>',
+              "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
+              "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
+              "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
+              "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
+              "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+              "<div class=\"text-center #{trashed_class}\">"+product.display_status+'</div>',
               edit_link+
               update_price_link+
-              update_stock_link+"ddd"+
-              ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>',
-              #product.manufacturer_name,
+              update_stock_link+
+              ' <a rel="nofollow" href="'+Rails.application.routes.url_helpers.product_path(product)+'" data-method="delete" data-confirm="Are you sure?" class="btn btn-danger btn-xs btn-mini">X</a>'+
+              trash_link,
+              
               #product.name,
               #product.formated_price,
               ''
@@ -239,18 +243,14 @@ class Product < ActiveRecord::Base
   
   def update_price(params)
     new_price = product_prices.new(price: params[:price],
-           supplier_price: params[:supplier_price],
-           supplier_id: params[:supplier_id],
-          )
-    puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-    p new_price.supplier_price.to_f
-    p self.product_price.price
-    
+      supplier_price: params[:supplier_price],
+      supplier_id: params[:supplier_id],
+    )
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id
       new_price.save
-      puts "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      return true
     end
-    
+    return true
   end
   
   def category
@@ -332,6 +332,25 @@ class Product < ActiveRecord::Base
                 .where(product_id: self.id).sum(:quantity)
     
     return count
+  end
+  
+  def trash
+    update_attributes(status: 0)
+  end
+  
+  def un_trash
+    update_attributes(status: 1)
+  end
+  
+  def display_status
+    status = ""
+    if self.status == 1
+      status = "active"
+    else
+      status = "trashed"
+    end
+    
+    return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
   
 end

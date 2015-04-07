@@ -928,7 +928,8 @@ CREATE TABLE products (
     user_id integer,
     tmpproduct integer,
     stock integer DEFAULT 0,
-    serial_numbers text
+    serial_numbers text,
+    status integer DEFAULT 1
 );
 
 
@@ -2238,4 +2239,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150406032026');
 INSERT INTO schema_migrations (version) VALUES ('20150406042111');
 
 INSERT INTO schema_migrations (version) VALUES ('20150406042130');
+
+INSERT INTO schema_migrations (version) VALUES ('20150407033111');
 

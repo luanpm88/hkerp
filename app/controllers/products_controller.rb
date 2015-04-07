@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -37,12 +37,17 @@ class ProductsController < ApplicationController
       if can? :update_price, item
         actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id})+'</li>'
       end
-      
+      if can? :trash, item
+        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Trash'.html_safe, {controller: "products", action: "trash", id: item.id}, method: :patch)+'</li>'
+      end
+      if can? :un_trash, item
+        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Un-Trash'.html_safe, {controller: "products", action: "un_trash", id: item.id}, method: :patch)+'</li>'
+      end
      
       
       actions += '</ul></div></div>'
       
-      result[:result]["data"][index][6] = actions
+      result[:result]["data"][index][7] = actions
     end
     
     render json: result[:result]
@@ -172,7 +177,29 @@ class ProductsController < ApplicationController
     end
   end
   
+  def trash
+    respond_to do |format|
+      if @product.trash       
+        format.html { redirect_to products_url, notice: 'Product was successfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      else
+        format.html { redirect_to products_url, alert: 'Product was unsuccessfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      end
+    end
+  end
   
+  def un_trash
+    respond_to do |format|
+      if @product.un_trash       
+        format.html { redirect_to products_url, notice: 'Product was successfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      else
+        format.html { redirect_to products_url, alert: 'Product was unsuccessfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @product }
+      end
+    end
+  end
   
   
   private

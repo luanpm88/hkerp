@@ -7762,3 +7762,9 @@ input.disabled {
 .product_order_list ul li.action {
     width: auto;
 }
+.active {
+    color: #3c763d;
+}
+.trashed {
+    color: #ccc;
+}

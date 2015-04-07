@@ -171,6 +171,13 @@ class Ability
 
         can :update_price, Product
         can :do_update_price, Product
+        
+        can :trash, Product do |product|
+          product.status == 1 && product.calculated_stock == 0
+        end        
+        can :un_trash, Product do |product|
+          product.status == 0
+        end
 
         can :purchase_orders, Order do |order|
           order.purchase_manager_id == user.id
