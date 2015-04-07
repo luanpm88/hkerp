@@ -60,7 +60,7 @@
 			
 			<div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">
-					<h4>Sales Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+					<h4>Purchase Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
 					
 					
 					<table class="table">
@@ -75,21 +75,21 @@
 							<th class="text-right">Tax</th>
 							
 							<th class="text-center">Staff</th>
-							<th class="text-right">Payment</th>
+							<!--<th class="text-right">Cost</th>-->
 							<th class="text-right">Cost Total</th>
 							<th class="text-right">Fare</th>
 						</tr>
 						
 						<%
 						count = 1
-						@statistics[:sell_orders].each do |order| %>
+						@statistics[:buy_orders].each do |order| %>
 							<% order.order_details.each do |od| %>
 								<tr>
 									<td class="text-center"><%= count %></td>
 									<td>
 										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 										<br />
-										<%= order.customer.short_name %>
+										<%= order.supplier.short_name %>
 										<br />
 										(<%= order.order_date_formatted %>)
 									</td>
@@ -116,11 +116,11 @@
 										(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
 									</td>
 									<td class="text-center">
-										<%= order.salesperson.name %>
+										<%= order.purchase_manager.name %>
 									</td>
-									<td class="text-center">
-										<%= order.display_payment_status %>
-									</td>
+									<!--<td class="text-right">
+										<%= od.cost_vat_formated %>
+									</td>-->
 									<td class="text-right">
 										<%= od.cost_total_vat_formated %>
 									</td>
