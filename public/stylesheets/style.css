@@ -7771,3 +7771,6 @@ input.disabled {
 .price-history {
     margin-top: 10px;
 }
+.page-content {
+    overflow-y: hidden;
+}
