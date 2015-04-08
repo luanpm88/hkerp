@@ -504,13 +504,13 @@ class Product < ActiveRecord::Base
       o = dd.order_detail.order
       d = dd.delivery
       if o.is_purchase
-        if dd.delivery.is_return
+        if dd.delivery.is_return == 1
           line = {date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
         else
           line = {date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
         end
       else
-        if dd.delivery.is_return
+        if dd.delivery.is_return == 1
           line = {date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
         else
           line = {date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
