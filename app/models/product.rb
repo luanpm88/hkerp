@@ -177,8 +177,12 @@ class Product < ActiveRecord::Base
                             "<br />("+product.export_amount_formated(params[:year], params[:month]).to_s+')'
                 col_5 = "-"+col_5 if ec > 0
                             
-                col_6 = product.combination_count_formated
-                col_7 = product.stock_update_count(params[:year], params[:month]).to_s
+                col_6 = product.combination_count_formated(params[:year], params[:month]).to_s
+                
+                su = product.stock_update_count(params[:year], params[:month])
+                col_7 = su.to_s
+                col_7 = "+"+col_7 if su > 0
+                
                 col_8 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s
                 
                 item = [
@@ -666,14 +670,32 @@ class Product < ActiveRecord::Base
     
   end
   
-  def combination_count
-    count = combinations.sum(:quantity)
-    count -= combination_details.sum(:quantity)
+  def combination_count(year=nil, month=nil)
+    in_c = combinations
+    if month.present?
+      in_c = in_c.where('extract(month from created_at) = ?', month) 
+    end
+    if year.present?
+      in_c = in_c.where('extract(year from created_at) = ?', year) 
+    end  
+    in_c = in_c.sum(:quantity)
+    
+    
+    out_c = combination_details
+    if month.present?
+      out_c = out_c.where('extract(month from created_at) = ?', month) 
+    end
+    if year.present?
+      out_c = out_c.where('extract(year from created_at) = ?', year) 
+    end  
+    out_c = out_c.sum(:quantity)
+    
+    count = in_c - out_c
     
     return count
   end
   
-  def combination_count_formated
+  def combination_count_formated(year=nil, month=nil)
     if combination_count > 0
         "+"+combination_count.to_s
     else

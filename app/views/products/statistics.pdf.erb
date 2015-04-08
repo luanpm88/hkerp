@@ -69,8 +69,8 @@
 									<td class="text-right"><%= product.import_amount_formated(@year, @month) %></td>
 									<td class="text-center"><%= "-" if product.export_count(@year, @month) > 0 %><%= product.export_count(@year, @month) %></td>
 									<td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
-									<td class="text-center"><%= product.combination_count_formated %></td>
-									<td class="text-center"><%= product.stock_update_count(@year, @month) %></td>
+									<td class="text-center"><%= product.combination_count_formated(@year, @month) %></td>
+									<td class="text-center"><%= "+" if product.stock_update_count(@year, @month) > 0 %><%= product.stock_update_count(@year, @month) %></td>
 									<td class="text-center"><%= product.statistic_stock("#{@year}-#{@month}-1".to_datetime) %></td>
 								</tr>
 							</tbody>
