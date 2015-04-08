@@ -74,12 +74,10 @@
 						count = 1
 						@statistics[:sell_orders].each do |order| %>
 							<% order.order_details.each do |od| %>
-								<tr>
+								<tr class="quantity-<%= od.quantity %>">
 									<td class="text-center"><%= count %></td>
 									<td>
-										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
-										<br />
-										[<%= order.printed_order_number %>]
+										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>[<%= order.printed_order_number %>]
 										<br />
 										<%= order.customer.short_name %>
 										<br />

@@ -113,7 +113,7 @@ class Product < ActiveRecord::Base
                   when "3"
                     order = "products.name"
                   else
-                    order = "products.name"
+                    order = "products.updated_at DESC"
                   end
                   order += " "+params["order"]["0"]["dir"]
                 end
@@ -129,7 +129,7 @@ class Product < ActiveRecord::Base
                   when "3"
                     order = "products.name"
                   else
-                    order = "products.name"
+                    order = "products.updated_at DESC"
                   end
                   order += " "+params["order"]["0"]["dir"]
                 end
