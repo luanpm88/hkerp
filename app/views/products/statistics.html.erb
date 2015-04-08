@@ -22,7 +22,7 @@
 									<h4>Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">                                       
-										<%= date_select(:product, :created_at, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
 									</div>
 									</div>
 								</div>								
@@ -36,7 +36,7 @@
                     
                     <div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">
-					<h4>Stock Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @product.created_at.strftime('%Y') %></span></h4>
+					<h4>Stock Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
 					
 					
 					<table class="table datatable-products-statistics">

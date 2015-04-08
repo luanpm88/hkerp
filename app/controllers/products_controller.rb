@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:product_activity_history, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -205,26 +205,26 @@ class ProductsController < ApplicationController
   end
   
   def statistics
-    if params[:product].present?
-      @month = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : 1
-      @month_val  = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : nil
+    if params[:order].present?
+      @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
+      @month_val  = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : nil
       
-      date = Date.new params[:product]["created_at(1i)"].to_i, @month, params[:product]["created_at(3i)"].to_i
+      date = Date.new params[:order]["order_date(1i)"].to_i, @month, params[:order]["order_date(3i)"].to_i
       
-      @product = Product.new(:created_at => date)
+      @order = Order.new(:order_date => date)
     else
       @month = DateTime.now.month
       @month_val = @month
       
-      @product = Product.new(:created_at => DateTime.now)
+      @order = Order.new(:order_date => DateTime.now)
     end
     
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
-    @year = @product.created_at.year
+    @year = @order.order_date.year
     
-    @products = Product.statistics(@product.created_at.year, @month_val)
+    @products = Product.statistics(@year, @month_val)
   end
   
   
@@ -233,25 +233,26 @@ class ProductsController < ApplicationController
   end
   
   def product_activity_history
-    if params[:product].present?
-      @month = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : 1
-      @month_val  = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : nil
+    if params[:order].present?
+      @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
+      @month_val  = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : nil
       
-      date = Date.new params[:product]["created_at(1i)"].to_i, @month, params[:product]["created_at(3i)"].to_i
+      date = Date.new params[:order]["order_date(1i)"].to_i, @month, params[:order]["order_date(3i)"].to_i
       
-      @product = Product.new(:created_at => date)
+      @order = Order.new(:order_date => date)
     else
       @month = DateTime.now.month
       @month_val = @month
       
-      @product = Product.new(:created_at => DateTime.now)
+      @order = Order.new(:order_date => DateTime.now)
     end
     
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
-    @prod = Product.find(params[:id])
-    @history = @prod.product_activity_history(@product.created_at.year, @month_val)
+    @year = @order.order_date.year
+    
+    @history = @product.product_activity_history(@year, @month_val)
   end
   
   private
