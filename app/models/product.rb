@@ -514,9 +514,9 @@ class Product < ActiveRecord::Base
     od_details.each do |od|
       o = od.order
       if o.is_purchase
-        line = {date: o.order_date.strftime("%Y-%m-%d"), note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
+        line = {date: o.order_date, note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
       else
-        line = {date: o.order_date.strftime("%Y-%m-%d"), note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
+        line = {date: o.order_date, note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
       end
       history << line
     end
@@ -526,15 +526,15 @@ class Product < ActiveRecord::Base
       d = dd.delivery
       if o.is_purchase
         if dd.delivery.is_return == 1
-          line = {date: dd.created_at.strftime("%Y-%m-%d"), note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
+          line = {date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
         else
-          line = {date: dd.created_at.strftime("%Y-%m-%d"), note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
         end
       else
         if dd.delivery.is_return == 1
-          line = {date: dd.created_at.strftime("%Y-%m-%d"), note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
         else
-          line = {date: dd.created_at.strftime("%Y-%m-%d"), note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
+          line = {date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
         end
       end
       history << line
@@ -554,7 +554,7 @@ class Product < ActiveRecord::Base
         c_str += "----- #{cd.product.name} [<strong>#{cd.quantity}</strong>]"
       end
       
-      line = {date: c.created_at.strftime("%Y-%m-%d"), note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
+      line = {date: c.created_at, note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
       
       history << line
     end
@@ -568,7 +568,21 @@ class Product < ActiveRecord::Base
     
     com_ds.each do |cd|
       
-      line = {date: cd.created_at.strftime("%Y-%m-%d"), note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      line = {date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      
+      history << line
+    end
+    
+    #stock update
+    stocks = product_stock_updates
+              .where('extract(year from created_at) = ?', year)
+    if month.present?
+      stocks = stocks.where('extract(month from created_at) = ?', month) 
+    end
+    
+    stocks.each do |s|      
+      
+      line = {date: s.created_at, note: "Import to stock", link: "", quantity: s.quantity.to_s}
       
       history << line
     end
