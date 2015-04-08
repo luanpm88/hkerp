@@ -53,7 +53,7 @@
                         <% @history.each do |line| %>
                         
                           <tr>
-                            <td><%= line[:date] %></td>
+                            <td><%= line[:date].strftime("%Y-%m-%d") %></td>
                             <td><%= line[:note].html_safe %></td>
                             <td><%= line[:link].html_safe %></td>
                             <td class="text-center"><%= line[:quantity] %></td>
