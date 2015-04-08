@@ -232,6 +232,10 @@ class ProductsController < ApplicationController
     render layout: nil
   end
   
+  def product_activity_history()
+    history = Product.product_activity_history()
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product

@@ -398,31 +398,28 @@ class Product < ActiveRecord::Base
   end
   
   def import_count(year, month=nil)
-    status = OrderStatus.where(name: 'finished').first
-    
-    products = delivery_details
-              .joins(:order_detail => :order)
-              .where(orders: {customer_id: Contact.HK.id, order_status_id: status.id})
+    products = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {customer_id: Contact.HK.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    count = products.count
+    count = products.sum("order_details.quantity")
   end
   
   def export_count(year, month=nil)
-    status = OrderStatus.where(name: 'finished').first
-    
-    products = delivery_details
-              .joins(:order_detail => :order)
-              .where(orders: {supplier_id: Contact.HK.id, order_status_id: status.id})
-              .where('extract(year from orders.order_date) = ?', year)
+    products = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {supplier_id: Contact.HK.id})
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    count = products.count
+    count = products.sum("order_details.quantity")
   end
   
   def export_amount(year, month=nil)
@@ -468,6 +465,21 @@ class Product < ActiveRecord::Base
     else
         link_helper.link_to '<i class="icon-time"></i> Price History'.html_safe, {controller: "products", action: "ajax_product_prices", id: self.id}, :class => "price-history fancybox.ajax"
     end
+    
+    
+  end
+  
+  def product_activity_history
+    #Order details, sales and purchases
+    order_details = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+    
+    #Delivery details, sales and purchases
+    delivery_details = delivery_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {supplier_id: Contact.HK.id})
     
     
   end
