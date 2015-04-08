@@ -54,7 +54,7 @@
                         <% @history.each do |line| %>
                         
                           <tr class="quantity-<%= line[:quantity]%>">
-                            <td><%= line[:date].strftime("%Y-%m-%d") %></td>
+                            <td><%= line[:date].strftime("%Y-%m-%d, %H:%M") %></td>
                             <td><%= line[:note].html_safe %></td>
                             <td><%= line[:link].html_safe %></td>
 							<td><%= line[:user].name if line[:user].present? %></td>
