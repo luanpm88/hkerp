@@ -1,0 +1,72 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+			<%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Product - <span class="semi-bold"> Statistics</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+			
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "statistics"})%>">
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-4">
+									<h4>Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">                                       
+										<%= date_select(:product, :created_at, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									</div>
+									</div>
+								</div>								
+							</div>
+						</form>
+						</div>		    
+					</div>
+			
+			
+                    
+                    
+                    <div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Product History - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @product.created_at.strftime('%Y') %></span></h4>
+					
+					<h3><%= @prod.display_name %></h3>
+					<table class="table datatable-products-statistics">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Note</th>
+                                <th>link</th>
+								<th class="text-center">Quantity</th>								
+							</tr>
+						</thead>
+                        
+                        <% @history.each do |line| %>
+                        
+                          <tr>
+                            <td><%= line[:date] %></td>
+                            <td><%= line[:note].html_safe %></td>
+                            <td><%= line[:link].html_safe %></td>
+                            <td class="text-center"><%= line[:quantity] %></td>
+                          </tr>
+                        
+                        <% end %>
+						
+						
+						
+					</table>
+				</div>
+			</div>
+                    
+                    
+			
+			</div>
+                </div>
