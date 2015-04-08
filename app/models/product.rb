@@ -161,19 +161,37 @@ class Product < ActiveRecord::Base
       case params[:page]
       when "statistics"
                 trashed_class =  product.status == 0 ? "trashed" : ""
+                
+                col_0 = product.categories.first.name
+                col_1 = product.manufacturer.name
+                col_2 = product.name
+                col_3 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s
+                
+                ic = product.import_count(params[:year], params[:month])
+                col_4 = ic.to_s+
+                            "<br />("+product.import_amount_formated(params[:year], params[:month]).to_s+')'
+                col_4 = "+"+col_4 if ic > 0
+                
+                ec = product.export_count(params[:year], params[:month])
+                col_5 = ec.to_s+
+                            "<br />("+product.export_amount_formated(params[:year], params[:month]).to_s+')'
+                col_5 = "-"+col_5 if ec > 0
+                            
+                col_6 = product.combination_count_formated
+                col_7 = product.stock_update_count(params[:year], params[:month]).to_s
+                col_8 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s
+                
                 item = [
-                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.name+"<br />"+product.product_activity_history_link+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.import_count(params[:year], params[:month]).to_s+
-                            "<br />("+product.import_amount_formated(params[:year], params[:month]).to_s+')</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+
-                            "<br />("+product.export_amount_formated(params[:year], params[:month]).to_s+')</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+col_0+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+col_1+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+col_2+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+col_3+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+col_4+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+col_5+'</div>',
                         
-                        "<div class=\"text-center #{trashed_class}\">"+product.combination_count_formated+'</div>',
-                        "<div class=\"text-right #{trashed_class}\">"+product.stock_update_count(params[:year], params[:month]).to_s+'</div>',                        
-                        "<div class=\"text-center #{trashed_class}\">"+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s+'</div>',                 
+                        "<div class=\"text-center #{trashed_class}\">"+col_6+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+col_7+'</div>',                        
+                        "<div class=\"text-center #{trashed_class}\">"+col_8+'</div>',                 
                         ''
 
                       ]

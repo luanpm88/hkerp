@@ -65,7 +65,7 @@
 									<th class="text-center"><%= count %></th>
 									<td class="text-left" width="50%"><%= product.display_name %></td>
 									<td class="text-center"><%= product.statistic_stock("#{@year}-#{@month}-1".to_datetime.at_beginning_of_month.next_month) %></td>
-									<td class="text-center"><%= product.import_count(@year, @month) %></td>
+									<td class="text-center"><%= "+" if product.import_count(@year, @month) > 0 %><%= product.import_count(@year, @month) %></td>
 									<td class="text-right"><%= product.import_amount_formated(@year, @month) %></td>
 									<td class="text-center"><%= "-" if product.export_count(@year, @month) > 0 %><%= product.export_count(@year, @month) %></td>
 									<td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
