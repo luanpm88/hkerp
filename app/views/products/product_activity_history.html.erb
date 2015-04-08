@@ -45,7 +45,8 @@
 							<tr>
 								<th>Date</th>
 								<th>Note</th>
-                                <th>link</th>
+                                <th>Link</th>
+								<th>User</th>
 								<th class="text-center">Quantity</th>								
 							</tr>
 						</thead>
@@ -56,6 +57,7 @@
                             <td><%= line[:date].strftime("%Y-%m-%d") %></td>
                             <td><%= line[:note].html_safe %></td>
                             <td><%= line[:link].html_safe %></td>
+							<td><%= line[:user].name if line[:user].present? %></td>
                             <td class="text-center"><%= line[:quantity] %></td>
                           </tr>
                         

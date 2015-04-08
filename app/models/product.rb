@@ -307,10 +307,11 @@ class Product < ActiveRecord::Base
     end    
   end
   
-  def update_price(params)
+  def update_price(params, user)
     new_price = product_prices.new(price: params[:price],
       supplier_price: params[:supplier_price],
       supplier_id: params[:supplier_id],
+      user_id: user.id,
     )
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id
       new_price.save
@@ -578,9 +579,9 @@ class Product < ActiveRecord::Base
     od_details.each do |od|
       o = od.order
       if o.is_purchase
-        line = {date: o.order_date, note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
+        line = {user: o.purchase_manager, date: o.order_date, note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
       else
-        line = {date: o.order_date, note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
+        line = {user: o.salesperson, date: o.order_date, note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
       end
       history << line
     end
@@ -590,15 +591,15 @@ class Product < ActiveRecord::Base
       d = dd.delivery
       if o.is_purchase
         if dd.delivery.is_return == 1
-          line = {date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
+          line = {user: d.creator, date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
         else
-          line = {date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
         end
       else
         if dd.delivery.is_return == 1
-          line = {date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
         else
-          line = {date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
+          line = {user: d.creator, date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
         end
       end
       history << line
@@ -618,7 +619,7 @@ class Product < ActiveRecord::Base
         c_str += "----- #{cd.product.name} [<strong>#{cd.quantity}</strong>]"
       end
       
-      line = {date: c.created_at, note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
+      line = {user: c.user, date: c.created_at, note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
       
       history << line
     end
@@ -632,7 +633,7 @@ class Product < ActiveRecord::Base
     
     com_ds.each do |cd|
       
-      line = {date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
       
       history << line
     end
@@ -642,20 +643,30 @@ class Product < ActiveRecord::Base
               .where('extract(year from created_at) = ?', year)
     if month.present?
       stocks = stocks.where('extract(month from created_at) = ?', month) 
-    end
-    
+    end    
     stocks.each do |s|      
-      
       if s.quantity > 0
-        line = {date: s.created_at, note: "Custom Imported", link: "", quantity: s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Imported", link: "", quantity: s.quantity.to_s}
       else
-        line = {date: s.created_at, note: "Custom Exported", link: "", quantity: s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Exported", link: "", quantity: s.quantity.to_s}
       end
-      
-        
-      
       history << line
     end
+    
+    #price updated
+    prices = product_prices
+              .where('extract(year from created_at) = ?', year)
+    if month.present?
+      prices = prices.where('extract(month from created_at) = ?', month) 
+    end    
+    prices.each do |s|      
+      line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier.name}; Sup.Price: #{s.supplier_price_formated}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
+      history << line
+    end
+    
+    #addes
+    line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
+    history << line
     
     
     return history.sort {|a,b| a[:date] <=> b[:date]}

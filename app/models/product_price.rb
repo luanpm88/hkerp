@@ -6,6 +6,8 @@ class ProductPrice < ActiveRecord::Base
   belongs_to :product
   belongs_to :supplier, :class_name => "Contact"
   
+  belongs_to :user
+  
   has_many :product_prices
   
   def price=(new_price)
