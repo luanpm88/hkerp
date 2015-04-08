@@ -581,7 +581,7 @@ class Product < ActiveRecord::Base
       if o.is_purchase
         line = {user: o.purchase_manager, date: o.created_at, note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
       else
-        line = {user: o.salesperson, date: o.created_at, note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
+        line = {user: o.salesperson, date: o.created_at, note: "Ordered from [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
       end
       history << line
     end
