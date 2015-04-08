@@ -168,6 +168,11 @@ class Ability
         can :confirm_price, Order do |order|
           order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
         end
+        
+        
+        
+        
+        
 
         can :update_price, Product
         can :do_update_price, Product
@@ -191,6 +196,9 @@ class Ability
         end
         can :update, Order do |order|
           order.is_purchase && order.purchase_manager_id == user.id && order.status.name == 'new'
+        end
+        can :destroy, Order do |order|
+          order.is_purchase && order.purchase_manager_id == user.id && ["new"].include?(order.status.name)
         end
         
         can :change, Order do |order|
