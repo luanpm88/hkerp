@@ -169,7 +169,8 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-center #{trashed_class}\">"+product.import_amount_formated(params[:year], params[:month]).to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.export_amount_formated(params[:year], params[:month]).to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',                        
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.combination_count.to_s+'</div>',                        
                         ''
 
                       ]
@@ -542,6 +543,13 @@ class Product < ActiveRecord::Base
     link_helper.link_to '<i class="icon-time"></i> Product Activities'.html_safe, {controller: "products", action: "product_activity_history", id: self.id},target: "blank", :class => "btn btn-primary btn-mini"
     
     
+  end
+  
+  def combination_count
+    count = combinations.sum(:quantity).count
+    count -= combination_details.sum(:quantity).count
+    
+    return count
   end
   
 end
