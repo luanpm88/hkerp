@@ -476,7 +476,7 @@ class Product < ActiveRecord::Base
                       .where(order_statuses: {name: ["finished"]})
                       .where('extract(year from orders.order_date) = ?', year)
     if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
+      od_details = od_details.where('extract(month from orders.order_date) = ?', month) 
     end
     
     #Delivery details, sales and purchases
@@ -486,7 +486,7 @@ class Product < ActiveRecord::Base
               .where(orders: {order_status_id: status.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
+      d_details = d_details.where('extract(month from orders.order_date) = ?', month) 
     end
     
     history = []    
