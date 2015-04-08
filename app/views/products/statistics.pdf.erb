@@ -49,6 +49,7 @@
 								<th class="text-right">Im.Amount</th>
 								<th class="text-center" width="1%">Ex.No</th>
 								<th class="text-right">Ex.Amount</th>
+								<th class="text-center" width="1%">Combi.</th>
 								<th class="text-center" width="1%">Stock</th>
 							</tr>
 						</thead>
@@ -65,6 +66,7 @@
 									<td class="text-right"><%= product.import_amount_formated(@year, @month) %></td>
 									<td class="text-center"><%= product.export_count(@year, @month) %></td>
 									<td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
+									<td class="text-center"><%= product.combination_count_formated %></td>
 									<td class="text-center"><%= product.calculated_stock %></td>
 								</tr>
 							</tbody>
