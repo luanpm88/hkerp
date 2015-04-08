@@ -105,12 +105,10 @@ class Product < ActiveRecord::Base
                 if !params["order"].nil?
                   case params["order"]["0"]["column"]
                   when "0"
-                    order = "products.id"
-                  when "1"
                     order = "categories.name"
-                  when "2"
+                  when "1"
                     order = "manufacturers.name"
-                  when "3"
+                  when "2"
                     order = "products.name"
                   else
                     order = "products.updated_at DESC"
@@ -161,7 +159,7 @@ class Product < ActiveRecord::Base
       case params[:page]
       when "statistics"
                 trashed_class =  product.status == 0 ? "trashed" : ""
-                item = ["<div class=\"text-left\">#{product.id}</div>",
+                item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+"<br />"+product.product_activity_history_link+'</div>',
