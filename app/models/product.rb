@@ -374,14 +374,14 @@ class Product < ActiveRecord::Base
   def statistic_stock(datetime)
     count = 0
     #count for combinations
-    count += combinations.where("created_at <= ?", datetime).sum(:quantity)-combination_details.where("created_at <= ?", datetime).sum(:quantity)
+    count += combinations.where("created_at < ?", datetime).sum(:quantity)-combination_details.where("created_at < ?", datetime).sum(:quantity)
     
     #count for sales delivery
     count -= order_details
                       .joins(:order => :order_status)
                       .where(order_statuses: {name: ["finished"]})
                       .where(orders: {supplier_id: Contact.HK.id})
-                      .where("orders.order_date <= ?", datetime)
+                      .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
     
     #count for purchase delivery
@@ -389,12 +389,12 @@ class Product < ActiveRecord::Base
                       .joins(:order => :order_status)
                       .where(order_statuses: {name: ["finished"]})
                       .where(orders: {customer_id: Contact.HK.id})
-                      .where("orders.order_date <= ?", datetime)
+                      .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
     
     #count for stock update
     count += product_stock_updates
-              .where("created_at <= ?", datetime)
+              .where("created_at < ?", datetime)
               .sum(:quantity)
     
     return count    
@@ -443,7 +443,7 @@ class Product < ActiveRecord::Base
     Product.joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
   end
   
-  def import_count(year=nil, month=nil, date=Time.now)
+  def import_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
@@ -460,7 +460,7 @@ class Product < ActiveRecord::Base
   
   
   
-  def export_count(year=nil, month=nil, date=Time.now)
+  def export_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
@@ -475,7 +475,7 @@ class Product < ActiveRecord::Base
     count = products.sum("order_details.quantity")
   end
   
-  def export_amount(year, month)
+  def export_amount(year, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
