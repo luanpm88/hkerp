@@ -423,6 +423,7 @@ class Product < ActiveRecord::Base
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished","confirmed"]})
+              .where(orders: {supplier_id: Contact.HK.id})
     if year.present?
       products = products.where('extract(year from orders.order_date) = ?', year)
     end
