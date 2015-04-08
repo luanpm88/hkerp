@@ -405,7 +405,7 @@ class Product < ActiveRecord::Base
   def import_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["finished","confirmed"]})
               .where(orders: {customer_id: Contact.HK.id})
     if year.present?
       products = products.where('extract(year from orders.order_date) = ?', year)
@@ -422,7 +422,7 @@ class Product < ActiveRecord::Base
   def export_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["finished","confirmed"]})
     if year.present?
       products = products.where('extract(year from orders.order_date) = ?', year)
     end
