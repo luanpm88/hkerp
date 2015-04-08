@@ -89,6 +89,8 @@
 									<td>
 										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 										<br />
+										[<%= order.printed_order_number %>]
+										<br />
 										<%= order.supplier.short_name %>
 										<br />
 										(<%= order.order_date_formatted %>)
