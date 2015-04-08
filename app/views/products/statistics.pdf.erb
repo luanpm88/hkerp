@@ -1,0 +1,73 @@
+					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+					<style>
+						.text-center {
+							text-align: center !important;
+						}
+						.text-right {
+							text-align: right !important;
+						}
+						.text-left {
+							text-align: left !important;
+						}
+						.list {
+							width: 100%;
+							margin-top: 20px;
+							border-left: 1px solid #000000;
+							border-top: 1px solid #000000;
+							border-bottom: none;
+							border-right: none;
+						  }
+						  .list th {
+							  background: none repeat scroll 0 0 #EFEFEF;
+							  border-bottom: 1px solid #000000;
+							  border-right: 1px solid #000000;
+							  border-top: none;
+							  border-left: none;
+							  padding: 5px;
+						  }
+						  .list td {
+							  border-bottom: 1px solid #000000;
+							  border-right: 1px solid #000000;
+							  border-top: none;
+							  border-left: none;
+							  padding: 5px;
+							  text-align: center;
+						  }
+					</style>
+					
+					<h2>BẢNG KÊ KHO - <%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></h2>
+					
+					<table cellspacing="0" celpadding="0" class="table datatable-products-statistics-pdf list">
+						<thead>
+							<tr>
+								<th class="text-center" width="1%">STT</th>
+								<th class="text-left" width="50%">Name</th>
+								<th class="text-center" width="1%">Import.No</th>
+								<th class="text-right">Import.Amount</th>
+								<th class="text-center" width="1%">Export.No</th>
+								<th class="text-right">Export.Amount</th>
+								<th class="text-center" width="1%">Stock</th>
+							</tr>
+						</thead>
+						
+						<%
+						count = 1;
+						@products.each do |product| %>
+						
+							<tbody>
+								<tr>
+									<th class="text-center"><%= count %></th>
+									<td class="text-left" width="50%"><%= product.display_name %></td>
+									<td class="text-center"><%= product.import_count(@year, @month) %></td>
+									<td class="text-right"><%= product.import_amount_formated(@year, @month) %></td>
+									<td class="text-center"><%= product.export_count(@year, @month) %></td>
+									<td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
+									<td class="text-center"><%= product.calculated_stock %></td>
+								</tr>
+							</tbody>
+						
+						<%
+							count += 1
+						end %>			
+						
+                    </table>

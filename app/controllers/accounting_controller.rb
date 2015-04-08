@@ -72,5 +72,6 @@ class AccountingController < ApplicationController
     
     @statistics = Order.statistics(@order.order_date.year, @month_val, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
   end
+
   
 end

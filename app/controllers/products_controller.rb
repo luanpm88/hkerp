@@ -225,8 +225,24 @@ class ProductsController < ApplicationController
     @year = @order.order_date.year
     
     @products = Product.statistics(@year, @month_val)
+    
+    if params[:pdf] == "1"
+        render  :pdf => "products_statistics_"+@order.quotation_code,
+            :template => 'products/statistics.pdf.erb',
+            :layout => nil,
+            :footer => {
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A4",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
+    end
+    
   end
-  
   
   def ajax_product_prices
     render layout: nil

@@ -347,13 +347,10 @@ class Product < ActiveRecord::Base
     count += combinations.sum(:quantity)-combination_details.sum(:quantity)
     
     #count for sales delivery
-    count -= delivery_details.joins(:order_detail => :order)
-                            .where(orders: {supplier_id: Contact.HK.id})
-                            .sum(:quantity)
+    count -= export_count
+    
     #count for purchase delivery
-    count += delivery_details.joins(:order_detail => :order)
-                            .where(orders: {customer_id: Contact.HK.id})
-                            .sum(:quantity)
+    count += import_count
     
     #count for stock update
     count += product_stock_updates.sum(:quantity)
@@ -402,15 +399,17 @@ class Product < ActiveRecord::Base
   end
   
   def self.statistics(year, month=nil)
-    Product.all
+    Product.joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
   end
   
-  def import_count(year, month=nil)
+  def import_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {customer_id: Contact.HK.id})
-              .where('extract(year from orders.order_date) = ?', year)
+    if year.present?
+      products = products.where('extract(year from orders.order_date) = ?', year)
+    end
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
@@ -418,24 +417,15 @@ class Product < ActiveRecord::Base
     count = products.sum("quantity")
   end
   
-  def import_count_test(year, month=nil)
-    products = order_details
-              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
-              .where(orders: {customer_id: Contact.HK.id})
-              .where('extract(year from orders.order_date) = ?', year)
-    if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
-    end
-    
-    count = products
-  end
   
-  def export_count(year, month=nil)
+  
+  def export_count(year=nil, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
-              .where(orders: {supplier_id: Contact.HK.id})
+    if year.present?
+      products = products.where('extract(year from orders.order_date) = ?', year)
+    end
     if month.present?
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
