@@ -531,6 +531,40 @@ class Product < ActiveRecord::Base
       history << line
     end
     
+    #combination
+    coms = combinations
+              .where('extract(year from created_at) = ?', year)
+    if month.present?
+      coms = coms.where('extract(month from created_at) = ?', month) 
+    end
+    
+    coms.each do |c|
+      c_str = ""
+      c.combination_details.each do |cd|
+        c_str += "<br />"
+        c_str += "----- #{cd.product.name} [<strong>#{cd.quantity}</strong>]"
+      end
+      
+      line = {date: c.created_at.strftime("%Y-%m-%d"), note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
+      
+      history << line
+    end
+    
+    #combination
+    com_ds = combination_details
+              .where('extract(year from created_at) = ?', year)
+    if month.present?
+      com_ds = com_ds.where('extract(month from created_at) = ?', month) 
+    end
+    
+    com_ds.each do |cd|
+      
+      line = {date: cd.created_at.strftime("%Y-%m-%d"), note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      
+      history << line
+    end
+    
+    
     return history.sort {|a,b| a[:date] <=> b[:date]}
   end
   
