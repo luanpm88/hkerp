@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   validates :categories, presence: true
   validates :manufacturer, presence: true
   
-  validate :check_valid_serial_numbers
+  #validate :check_valid_serial_numbers
   
   has_and_belongs_to_many :categories
   belongs_to :manufacturer
