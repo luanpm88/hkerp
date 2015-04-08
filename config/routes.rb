@@ -165,6 +165,8 @@ Hkerp::Application.routes.draw do
       
       get :statistics
       get :ajax_product_prices
+      
+      get :product_activity_history
     end
   end
   

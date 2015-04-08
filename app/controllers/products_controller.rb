@@ -232,8 +232,26 @@ class ProductsController < ApplicationController
     render layout: nil
   end
   
-  def product_activity_history()
-    history = Product.product_activity_history()
+  def product_activity_history
+    if params[:product].present?
+      @month = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : 1
+      @month_val  = params[:product]["created_at(2i)"].present? ? params[:product]["created_at(2i)"].to_i : nil
+      
+      date = Date.new params[:product]["created_at(1i)"].to_i, @month, params[:product]["created_at(3i)"].to_i
+      
+      @product = Product.new(:created_at => date)
+    else
+      @month = DateTime.now.month
+      @month_val = @month
+      
+      @product = Product.new(:created_at => DateTime.now)
+    end
+    
+    @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
+    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+    
+    @prod = Product.find(params[:id])
+    @history = @prod.product_activity_history(@product.created_at.year, @month_val)
   end
   
   private

@@ -135,6 +135,10 @@ class Delivery < ActiveRecord::Base
     end
   end
   
-  
+  def delivery_link
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: self.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe').html_safe
+  end
   
 end

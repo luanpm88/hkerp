@@ -1022,4 +1022,13 @@ class Order < ActiveRecord::Base
     return Order.format_price(calculated_discount_amount)
   end
   
+  def order_link
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    link = link_helper.link_to(self.quotation_code, {controller: "orders", action: "show", id: self.id}, title: "View Order", class: "fancybox.iframe show_order")
+    
+    return link.html_safe
+  end
+  
 end

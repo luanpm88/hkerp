@@ -164,12 +164,12 @@ class Product < ActiveRecord::Base
                 item = ["<div class=\"text-left\">#{product.id}</div>",
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.name+"<br />"+product.product_activity_history_link+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.import_count(params[:year], params[:month]).to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.import_amount_formated(params[:year], params[:month]).to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.export_amount_formated(params[:year], params[:month]).to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',                        
                         ''
 
                       ]
@@ -178,7 +178,7 @@ class Product < ActiveRecord::Base
       else
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+"<br />"+product.product_activity_history_link+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
@@ -469,17 +469,64 @@ class Product < ActiveRecord::Base
     
   end
   
-  def product_activity_history
+  def product_activity_history(year, month=nil)
     #Order details, sales and purchases
-    order_details = order_details
-              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+    od_details = order_details
+                      .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+                      .where(order_statuses: {name: ["finished"]})
+                      .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
     
     #Delivery details, sales and purchases
-    delivery_details = delivery_details
-              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
-              .where(orders: {supplier_id: Contact.HK.id})
+    status = OrderStatus.where(name: 'finished').first    
+    d_details = delivery_details
+              .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(orders: {order_status_id: status.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    history = []    
+    od_details.each do |od|
+      o = od.order
+      if o.is_purchase
+        line = {date: o.order_date, note: "Buy from [#{o.supplier.name}]", link: o.order_link, quantity: od.quantity}
+      else
+        line = {date: o.order_date, note: "Sell to [#{o.customer.name}]", link: o.order_link, quantity: od.quantity}
+      end
+      history << line
+    end
+    
+    d_details.each do |dd|
+      o = dd.order_detail.order
+      d = dd.delivery
+      if o.is_purchase
+        if dd.delivery.is_return
+          line = {date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: -dd.quantity}
+        else
+          line = {date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+        end
+      else
+        if dd.delivery.is_return
+          line = {date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+        else
+          line = {date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: -dd.quantity}
+        end
+      end
+      history << line
+    end
+    
+    return history.sort {|a,b| a[:date] <=> b[:date]}
+  end
+  
+  def product_activity_history_link
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    link_helper.link_to '<i class="icon-time"></i> Product Activities'.html_safe, {controller: "products", action: "product_activity_history", id: self.id},target: "blank", :class => "btn btn-primary btn-mini"
     
     
   end
