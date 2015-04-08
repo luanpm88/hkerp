@@ -407,7 +407,7 @@ class Product < ActiveRecord::Base
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    count = products.sum("order_details.quantity")
+    count = products.sum("price*quantity")
   end
   
   def import_count_test(year, month=nil)
