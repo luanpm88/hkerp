@@ -126,6 +126,8 @@ class Product < ActiveRecord::Base
                     order = "manufacturers.name"
                   when "3"
                     order = "products.name"
+                  when "6"
+                    order = "products.stock"
                   else
                     order = "products.updated_at DESC"
                   end
@@ -355,6 +357,13 @@ class Product < ActiveRecord::Base
     
     #count for stock update
     count += product_stock_updates.sum(:quantity)
+    
+    if self.stock.nil? || self.stock != count
+      self.update_attributes(stock: count)
+    end
+    
+    return count
+    
   end
   
   def wait_for_supply_count
