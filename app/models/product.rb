@@ -582,7 +582,13 @@ class Product < ActiveRecord::Base
     
     stocks.each do |s|      
       
-      line = {date: s.created_at, note: "Import to stock", link: "", quantity: s.quantity.to_s}
+      if s.quantity > 0
+        line = {date: s.created_at, note: "Custom Imported", link: "", quantity: s.quantity.to_s}
+      else
+        line = {date: s.created_at, note: "Custom Exported", link: "", quantity: s.quantity.to_s}
+      end
+      
+        
       
       history << line
     end
