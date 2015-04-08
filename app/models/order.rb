@@ -521,10 +521,12 @@ class Order < ActiveRecord::Base
       
       puts User.current_user
       
+      printed_order_number = item.printed_order_number.present? ? "<br />[#{item.printed_order_number}]" : ""
+      
       case params[:page]
       when "delivery"
           row = [
-                  item.quotation_code,              
+                  item.quotation_code+printed_order_number,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -537,7 +539,7 @@ class Order < ActiveRecord::Base
           actions_col = 7
       when "accounting"
           row = [
-                  item.quotation_code,              
+                  item.quotation_code+printed_order_number,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -549,7 +551,7 @@ class Order < ActiveRecord::Base
           data << row
           actions_col = 7
       else
-        printed_order_number = item.printed_order_number.present? ? "<br />[#{item.printed_order_number}]" : ""
+          
           row = [
                   item.quotation_code+printed_order_number,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
