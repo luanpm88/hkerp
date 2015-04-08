@@ -410,6 +410,19 @@ class Product < ActiveRecord::Base
     count = products.sum("order_details.quantity")
   end
   
+  def import_count_test(year, month=nil)
+    products = order_details
+              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(order_statuses: {name: ["finished"]})
+              .where(orders: {customer_id: Contact.HK.id})
+              .where('extract(year from orders.order_date) = ?', year)
+    if month.present?
+      products = products.where('extract(month from orders.order_date) = ?', month) 
+    end
+    
+    count = products.sum("order_details.quantity")
+  end
+  
   def export_count(year, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
