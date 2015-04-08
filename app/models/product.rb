@@ -164,7 +164,7 @@ class Product < ActiveRecord::Base
                 
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
-                col_2 = product.name
+                col_2 = product.name+"<br />"+product.product_activity_history_link
                 col_3 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s
                 
                 ic = product.import_count(params[:year], params[:month])
