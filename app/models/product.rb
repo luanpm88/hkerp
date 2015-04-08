@@ -591,15 +591,15 @@ class Product < ActiveRecord::Base
       d = dd.delivery
       if o.is_purchase
         if dd.delivery.is_return == 1
-          line = {user: d.creator, date: dd.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
         else
-          line = {user: d.creator, date: dd.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
         end
       else
         if dd.delivery.is_return == 1
-          line = {user: d.creator, date: dd.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
         else
-          line = {user: d.creator, date: dd.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
         end
       end
       history << line
@@ -664,7 +664,7 @@ class Product < ActiveRecord::Base
       history << line
     end
     
-    #addes
+    #added
     line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
     history << line
     
