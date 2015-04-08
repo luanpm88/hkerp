@@ -46,10 +46,8 @@
 								<th class="text-center" width="1%">STT</th>
 								<th class="text-left" width="50%">Name</th>
 								<th class="text-center" width="1%">Be.Stock</th>
-								<th class="text-center" width="1%">Im.No</th>
-								<th class="text-right">Im.Amount</th>
-								<th class="text-center" width="1%">Ex.No</th>
-								<th class="text-right">Ex.Amount</th>
+								<th class="text-right">Purchase</th>
+								<th class="text-right">Sales</th>
 								<th class="text-center" width="1%">Combi.</th>
 								<th class="text-center" width="1%">I/O</th>
 								<th class="text-center" width="1%">En.Stock</th>
@@ -65,10 +63,14 @@
 									<th class="text-center"><%= count %></th>
 									<td class="text-left" width="50%"><%= product.display_name %></td>
 									<td class="text-center"><%= product.statistic_stock("#{@year}-#{@month}-1".to_datetime.at_beginning_of_month.next_month) %></td>
-									<td class="text-center"><%= "+" if product.import_count(@year, @month) > 0 %><%= product.import_count(@year, @month) %></td>
-									<td class="text-right"><%= product.import_amount_formated(@year, @month) %></td>
-									<td class="text-center"><%= "-" if product.export_count(@year, @month) > 0 %><%= product.export_count(@year, @month) %></td>
-									<td class="text-right"><%= product.export_amount_formated(@year, @month) %></td>
+									<td class="text-center">
+										<%= "+" if product.import_count(@year, @month) > 0 %><%= product.import_count(@year, @month) %>
+										<br />(<%= product.import_amount_formated(@year, @month) %>)
+									</td>
+									<td class="text-center">
+										<%= "-" if product.export_count(@year, @month) > 0 %><%= product.export_count(@year, @month) %>
+										<br />(<%= product.export_amount_formated(@year, @month) %>)
+									</td>
 									<td class="text-center"><%= product.combination_count_formated(@year, @month) %></td>
 									<td class="text-center"><%= "+" if product.stock_update_count(@year, @month) > 0 %><%= product.stock_update_count(@year, @month) %></td>
 									<td class="text-center"><%= product.statistic_stock("#{@year}-#{@month}-1".to_datetime) %></td>
