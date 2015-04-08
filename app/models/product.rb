@@ -407,7 +407,7 @@ class Product < ActiveRecord::Base
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    count = products.sum("price*quantity")
+    count = products.sum("quantity")
   end
   
   def import_count_test(year, month=nil)
@@ -445,7 +445,7 @@ class Product < ActiveRecord::Base
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    amount = products.sum(:price)
+    amount = products.sum("price*quantity")
   end
   
   def export_amount_formated(year, month=nil)
@@ -462,7 +462,7 @@ class Product < ActiveRecord::Base
       products = products.where('extract(month from orders.order_date) = ?', month) 
     end
     
-    amount = products.sum(:price)
+    amount = products.sum("price*quantity")
   end
   
   def import_amount_formated(year, month=nil)
