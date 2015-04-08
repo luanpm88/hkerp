@@ -165,14 +165,15 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+"<br />"+product.product_activity_history_link+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.import_count(params[:year], params[:month]).to_s+'</div>',
-                        "<div class=\"text-right #{trashed_class}\">"+product.import_amount_formated(params[:year], params[:month]).to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+'</div>',
-                        "<div class=\"text-right #{trashed_class}\">"+product.export_amount_formated(params[:year], params[:month]).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.import_count(params[:year], params[:month]).to_s+
+                            "<br />("+product.import_amount_formated(params[:year], params[:month]).to_s+')</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.export_count(params[:year], params[:month]).to_s+
+                            "<br />("+product.export_amount_formated(params[:year], params[:month]).to_s+')</div>',
+                        
                         "<div class=\"text-center #{trashed_class}\">"+product.combination_count_formated+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.stock_update_count.to_s+
-                        " / "+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s+
-                        " / "+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s+"</div>",                        
+                        "<div class=\"text-right #{trashed_class}\">"+product.stock_update_count(params[:year], params[:month]).to_s+'</div>',                        
+                        "<div class=\"text-center #{trashed_class}\">"+product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s+'</div>',                 
                         ''
 
                       ]
@@ -400,8 +401,15 @@ class Product < ActiveRecord::Base
     return count    
   end
   
-  def stock_update_count
-    product_stock_updates.sum(:quantity)
+  def stock_update_count(year=nil, month=nil)
+    result = product_stock_updates
+    if year.present?
+      result = result.where('extract(year from created_at) = ?', year)
+    end
+    if month.present?
+      result = result.where('extract(month from created_at) = ?', month)
+    end
+    result = result.sum(:quantity)
   end
   
   def wait_for_supply_count
