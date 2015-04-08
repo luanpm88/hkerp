@@ -544,8 +544,8 @@ class Product < ActiveRecord::Base
   end
   
   def combination_count
-    count = combinations.sum(:quantity).count
-    count -= combination_details.sum(:quantity).count
+    count = combinations.sum(:quantity)
+    count -= combination_details.sum(:quantity)
     
     return count
   end
