@@ -34,7 +34,7 @@ class Order < ActiveRecord::Base
   before_save :calculate_discount
   
   def valid_debt_date
-    if !deposit.nil? && deposit < 100 && !debt_date.nil?
+    if !deposit.nil? && deposit > 0 && !debt_date.nil?
         if debt_date <= order_date
             errors.add(:debt_date, "can't be smaller than order date")
         end
