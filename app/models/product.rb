@@ -437,7 +437,7 @@ class Product < ActiveRecord::Base
   def export_amount(year, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["finished","confirmed"]})
               .where(orders: {supplier_id: Contact.HK.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
@@ -454,7 +454,7 @@ class Product < ActiveRecord::Base
   def import_amount(year, month=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["finished","confirmed"]})
               .where(orders: {customer_id: Contact.HK.id})
               .where('extract(year from orders.order_date) = ?', year)
     if month.present?
