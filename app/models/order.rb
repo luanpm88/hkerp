@@ -318,7 +318,7 @@ class Order < ActiveRecord::Base
   end
   
   def self.customer_orders
-    order("order_date DESC")
+    order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
   end
   
   def self.purchase_orders
