@@ -114,6 +114,7 @@ class Product < ActiveRecord::Base
                     order = "products.updated_at DESC"
                   end
                   order += " "+params["order"]["0"]["dir"]
+                
                 end
       else
                 if !params["order"].nil?
@@ -132,6 +133,8 @@ class Product < ActiveRecord::Base
                     order = "products.updated_at DESC"
                   end
                   order += " "+params["order"]["0"]["dir"]
+                else
+                  order = "updated_at DESC"
                 end
       end
     
