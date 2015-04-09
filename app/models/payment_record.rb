@@ -2,12 +2,15 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :order
   belongs_to :accountant, :class_name => "User"
   belongs_to :payment_method
+  belongs_to :user
   
   validates :note, presence: true
   validates :payment_method, presence: true
   
   validate :valid_amount
   validate :valid_debt_date
+  
+  
   
   
   def valid_amount
@@ -45,6 +48,12 @@ class PaymentRecord < ActiveRecord::Base
   
   def display_name
     created_at.strftime("%Y-%m-%d")
+  end
+  
+  def payment_record_link
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: self.id}, :class => 'fancybox.iframe ajax_iframe').html_safe
   end
   
 end

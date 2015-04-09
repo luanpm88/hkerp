@@ -16,7 +16,7 @@
 			
 					<div class="grid simple ">
 						<div class="grid-body no-border filters" method="get">
-						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "product_activity_history"})%>">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "product_log"})%>">
                         <input type="hidden" name="id" value="<%= @product.id %>" />
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-4">
@@ -73,3 +73,10 @@
 			
 			</div>
                 </div>
+<script>
+    $(document).ready(function() {
+		<% if @month_val.nil? %>
+			$("#order_order_date_2i").select2("val", "");
+		<% end %>
+    });
+</script>

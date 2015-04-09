@@ -113,6 +113,8 @@ Hkerp::Application.routes.draw do
       patch :do_update_info
       
       get :finish_order
+      
+      get :order_log
     end
   end
 
@@ -166,7 +168,7 @@ Hkerp::Application.routes.draw do
       get :statistics
       get :ajax_product_prices
       
-      get :product_activity_history
+      get :product_log
     end
   end
   

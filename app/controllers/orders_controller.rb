@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -72,7 +72,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.save
-        @order.set_status('new')
+        @order.set_status('new', current_user)
         if !@order.is_purchase
           format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
@@ -91,7 +91,7 @@ class OrdersController < ApplicationController
   # PATCH/PUT /orders/1.json
   def update
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
-    @order.save_draft
+    @order.save_draft(current_user)
       respond_to do |format|
         if @order.update(order_params)          
           @order.update_order_details(params[:order_details])
@@ -174,7 +174,7 @@ class OrdersController < ApplicationController
   def confirm_order
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
-      if @order.confirm_order        
+      if @order.confirm_order(current_user)        
         format.html { redirect_to list_path, notice: 'Order was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -188,7 +188,7 @@ class OrdersController < ApplicationController
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     
     respond_to do |format|
-      if @order.confirm_items        
+      if @order.confirm_items(current_user)     
         format.html { redirect_to list_path, notice: 'Order Items was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -200,7 +200,7 @@ class OrdersController < ApplicationController
   
   def confirm_price    
     respond_to do |format|
-      if @order.confirm_price        
+      if @order.confirm_price(current_user)      
         format.html { redirect_to pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
         format.json { head :no_content }
       else
@@ -213,7 +213,7 @@ class OrdersController < ApplicationController
   def finish_order
     
     respond_to do |format|
-      if @order.finish_order
+      if @order.finish_order(current_user)
         return_url = {controller: "accounting", action: "orders"}        
         format.html { redirect_to return_url, notice: 'Order was successfully finished.' }
         format.json { head :no_content }
@@ -316,7 +316,9 @@ class OrdersController < ApplicationController
       
       actions += '<li class="divider"></li>' if group_2 > 0
       
-      
+      if can? :order_log, item
+        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Order Logs".html_safe, {controller: "orders", action: "order_log", id: item.id}, title: "Order Logs", target: "_blank")+'</li>'
+      end
       if can? :show, item
         actions += '<li>'+view_context.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
       end
@@ -346,14 +348,14 @@ class OrdersController < ApplicationController
   end
   
   def do_change
-    @order.save_draft
+    @order.save_draft(current_user)
     respond_to do |format|
       if @order.update(order_params)
         
         if @order.is_purchase || !@order.is_prices_oudated
-          @order.confirm_price
+          @order.confirm_price(current_user)
         else
-          @order.confirm_items
+          @order.confirm_items(current_user)
         end
         
         @order.update_order_details(params[:order_details])       
@@ -391,8 +393,6 @@ class OrdersController < ApplicationController
       end
     end
     
-      
-    
     respond_to do |format|
       if !params[:confirm].nil?
         format.html { redirect_to confirm_price_orders_url(id: @order.id) }
@@ -428,6 +428,10 @@ class OrdersController < ApplicationController
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
+  end
+  
+  def order_log
+    @logs = @order.order_log
   end
 
   private

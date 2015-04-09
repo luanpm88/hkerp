@@ -164,7 +164,7 @@ class Product < ActiveRecord::Base
                 
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
-                col_2 = product.name+"<br />"+product.product_activity_history_link
+                col_2 = product.name+"<br />"+product.product_log_link
                 col_3 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s
                 
                 ic = product.import_count(params[:year], params[:month])
@@ -204,7 +204,7 @@ class Product < ActiveRecord::Base
       else
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+"<br />"+product.product_activity_history_link+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+"<br />"+product.product_log_link+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
@@ -555,14 +555,16 @@ class Product < ActiveRecord::Base
     
   end
   
-  def product_activity_history(year, month=nil)
+  def product_log(year, month=nil)
     #Order details, sales and purchases
     od_details = order_details
                       .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
                       .where(order_statuses: {name: ["finished"]})
                       .where('extract(year from orders.order_date) = ?', year)
     if month.present?
-      od_details = od_details.where('extract(month from orders.order_date) = ?', month) 
+      od_details = od_details.where('extract(month from orders.order_date) = ?', month)
+    else
+      month = 1
     end
     
     #Delivery details, sales and purchases
@@ -666,17 +668,17 @@ class Product < ActiveRecord::Base
     
     #added
     line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
-    history << line
+    history << line if "#{year}-#{month}-1".to_datetime <= self.created_at && self.created_at < "#{year}-#{month}-1".to_datetime.at_beginning_of_month.next_month
     
     
     return history.sort {|a,b| a[:date] <=> b[:date]}
   end
   
-  def product_activity_history_link
+  def product_log_link
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    link_helper.link_to '<i class="icon-time"></i> Product Activities'.html_safe, {controller: "products", action: "product_activity_history", id: self.id},target: "blank", :class => "btn btn-primary btn-mini"
+    link_helper.link_to '<i class="icon-time"></i> Product Logs'.html_safe, {controller: "products", action: "product_log", id: self.id},target: "blank", :class => "btn btn-primary btn-mini"
     
     
   end

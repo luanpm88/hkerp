@@ -1,0 +1,58 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+			<%= link_to 'Orders', {controller: "orders", action: "index"} %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Order - <span class="semi-bold"> History</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+			
+					
+                    
+                    <div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Order History</h4>
+					
+					<h3>
+                      <%= @order.quotation_code %>
+                    </h3>
+					<table class="table datatable-products-statistics">
+						<thead>
+							<tr>
+								<th>Date</th>
+								<th>Note</th>
+                                <th>Link</th>
+								<th>User</th>
+								<th class="text-center">Quantity</th>								
+							</tr>
+						</thead>
+                        
+                        <% @logs.each do |line| %>
+                        
+                          <tr class="quantity-<%= line[:quantity]%>">
+                            <td><%= line[:date].strftime("%Y-%m-%d, %H:%M") %></td>
+                            <td><%= line[:note].html_safe %></td>
+                            <td><%= line[:link].html_safe %></td>
+							<td><%= line[:user].name if line[:user].present? %></td>
+                            <td class="text-center"><%= line[:quantity] %></td>
+                          </tr>
+                        
+                        <% end %>
+						
+						
+						
+					</table>
+				</div>
+			</div>
+                    
+                    
+			
+			</div>
+                </div>

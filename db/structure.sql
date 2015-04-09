@@ -586,7 +586,8 @@ CREATE TABLE order_statuses_orders (
     order_id integer,
     order_status_id integer,
     created_at timestamp without time zone,
-    updated_at timestamp without time zone
+    updated_at timestamp without time zone,
+    user_id integer
 );
 
 
@@ -655,7 +656,8 @@ CREATE TABLE orders (
     discount integer DEFAULT 0,
     order_status_name character varying(255),
     discount_amount numeric DEFAULT 0,
-    price_status_name character varying(255)
+    price_status_name character varying(255),
+    user_id integer
 );
 
 
@@ -2244,4 +2246,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150406042130');
 INSERT INTO schema_migrations (version) VALUES ('20150407033111');
 
 INSERT INTO schema_migrations (version) VALUES ('20150408140146');
+
+INSERT INTO schema_migrations (version) VALUES ('20150408155624');
+
+INSERT INTO schema_migrations (version) VALUES ('20150409015540');
 

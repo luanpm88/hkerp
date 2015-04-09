@@ -229,4 +229,6 @@ class Notification < ActiveRecord::Base
     count = self.purchase_payment_alert.to_i + self.sales_payment_alert.to_i
     return count > 0 ? count : ""
   end
+  
+  
 end

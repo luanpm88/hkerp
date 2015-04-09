@@ -151,7 +151,9 @@ class Ability
         end
         can :ajax_destroy, OrderDetail do |order_detail|
           order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
-        end        
+        end
+        
+        can :order_log, Order
       end
 
       if user.has_role? "purchase_manager"        
@@ -251,9 +253,7 @@ class Ability
         
         can :statistic_sales, Order
         can :statistic_purchase, Order
-        
-        can :ajax_product_prices, Product
-        can :product_activity_history, Product
+
       end
 
       if user.has_role? "storage_manager"
@@ -273,6 +273,8 @@ class Ability
         end
         
         can :statistics, Product
+        can :ajax_product_prices, Product
+        can :product_log, Product
       end
 
     end

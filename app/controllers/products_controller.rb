@@ -1,7 +1,7 @@
 class ProductsController < ApplicationController
   load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
   
-  before_action :set_product, only: [:product_activity_history, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -248,7 +248,7 @@ class ProductsController < ApplicationController
     render layout: nil
   end
   
-  def product_activity_history
+  def product_log
     if params[:order].present?
       @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
       @month_val  = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : nil
@@ -268,7 +268,7 @@ class ProductsController < ApplicationController
     
     @year = @order.order_date.year
     
-    @history = @product.product_activity_history(@year, @month_val)
+    @history = @product.product_log(@year, @month_val)
   end
   
   private

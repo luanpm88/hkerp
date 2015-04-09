@@ -16,6 +16,8 @@ class Order < ActiveRecord::Base
   belongs_to :salesperson, :class_name => "User"
   belongs_to :purchase_manager, :class_name => "User"
   
+  belongs_to :user
+  
   has_many :order_details, :dependent => :destroy
   
   has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
@@ -246,14 +248,22 @@ class Order < ActiveRecord::Base
     end
   end
   
-  def set_status(name)
+  def set_status(name,user=nil)
     status = OrderStatus.where(name: name).first
     if status.nil?
       return false
     else
+      #oso = OrderStatusesOrder.new(order_id: self.id, order_status_id: status.id)
+      #oso.user = user
       self.order_statuses << status
       self.order_status = status
       self.save
+      
+      oso = OrderStatusesOrder.where(order_id: self.id).where(order_status_id: status.id).first
+      oso.update_attributes(user_id: user.id)
+      #oso.save
+      
+      #oso.save
     end
     
     return status
@@ -275,41 +285,40 @@ class Order < ActiveRecord::Base
     self.order_date.strftime("%Y-%m-%d")
   end
   
-  def confirm_order
+  def confirm_order(user)
     if order_details.count == 0
       return false
     end
     
-    self.set_status('confirmed')
+    self.set_status('confirmed',user)
     Notification.send_notification(salesperson, 'order_confirmed', self)
     
     return true
   end
   
-  def finish_order
+  def finish_order(user)
     if !printed_order_number.present?
       return false
     end
     
-    self.set_status('finished')
+    self.set_status('finished',user)
     
     return true
   end
   
-  def confirm_items
+  def confirm_items(user)
     if order_details.count == 0
       return false
     end
     
-    self.set_status('items_confirmed')
+    self.set_status('items_confirmed',user)
     Notification.send_notification(salesperson, 'order_items_confirmed', self)
     
     return true
   end
   
   def self.customer_orders
-    order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
-      .where(parent_id: nil)
+    order("order_date DESC")
   end
   
   def self.purchase_orders
@@ -815,14 +824,14 @@ class Order < ActiveRecord::Base
     orders_total.sort{|a,b| b[:created_at] <=> a[:created_at]}   
   end
   
-  def confirm_price
+  def confirm_price(user)
     order_details.each do |od|
       if (od.product.product_prices.count == 0 || od.product.product_price.price != od.price) && od.quantity > 0
         return false
       end
     end
     
-    set_status("price_confirmed")
+    set_status("price_confirmed",user)
     Notification.send_notification(purchase_manager, 'order_price_confirmed', self)
     
     return true
@@ -926,9 +935,10 @@ class Order < ActiveRecord::Base
     deliveries.order("created_at DESC")
   end
   
-  def save_draft
+  def save_draft(user)
     draft = self.dup
     draft.parent_id = self.id
+    draft.user = user
 
     draft.save
     self.order_details.each do |od|
@@ -938,7 +948,7 @@ class Order < ActiveRecord::Base
     end
 
     draft.parent = self
-    draft.set_status("draft")
+    draft.set_status("draft",user)
   end
   
   def all_payment_records
@@ -1032,6 +1042,71 @@ class Order < ActiveRecord::Base
     link = link_helper.link_to(self.quotation_code, {controller: "orders", action: "show", id: self.id}, title: "View Order", class: "fancybox.iframe show_order")
     
     return link.html_safe
+  end
+  
+  def order_log
+    history = []
+    #created at
+    if self.is_purchase
+      line = {user: self.purchase_manager, date: self.created_at, note: "Ordered to [#{self.supplier.name}]", link: self.order_link, quantity: ""}
+    else
+      line = {user: self.salesperson, date: self.created_at, note: "Ordered from [#{self.customer.name}]", link: self.order_link, quantity: ""}
+    end
+    history << line
+    
+    #status   
+    order_statuses.each do |os|
+      oso = OrderStatusesOrder.where(order_id: self.id, order_status_id: os.id).first
+      line = {user: oso.user, date: oso.created_at, note: "Status changed to [#{os.name}]", link: self.order_link, quantity: ""}
+      history << line
+    end
+    
+    #status
+    deliveries.each do |d|
+      o = d.order
+      if o.is_purchase
+        if d.is_return == 1
+          line = {user: d.creator, date: d.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+        else
+          line = {user: d.creator, date: d.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+        end
+      else
+        if d.is_return == 1
+          line = {user: d.creator, date: d.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+        else
+          line = {user: d.creator, date: d.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+        end
+      end
+      
+      history << line
+    end
+    
+    #payment
+    payment_records.each do |p|
+      o = p.order
+      if o.is_purchase
+        if p.amount < 0
+          line = {user: p.accountant, date: p.created_at, note: "Recieved from [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+        else
+          line = {user: p.accountant, date: p.created_at, note: "Paid [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+        end
+      else
+        if p.amount > 0
+          line = {user: p.accountant, date: p.created_at, note: "Recieved from [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+        else
+          line = {user: p.accountant, date: p.created_at, note: "Paid [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+        end
+      end
+      history << line
+    end
+    
+    #draft
+    drafts.each do |d|
+      line = {user: d.user, date: d.created_at, note: "Updated/Changed", link: d.order_link, quantity: ""}      
+      history << line
+    end
+    
+    return history.sort {|a,b| a[:date] <=> b[:date]}
   end
   
 end
