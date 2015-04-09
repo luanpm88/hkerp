@@ -207,7 +207,7 @@ class Product < ActiveRecord::Base
       else
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+"<br />"+product.product_log_link+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
