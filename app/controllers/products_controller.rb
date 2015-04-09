@@ -34,6 +34,9 @@ class ProductsController < ApplicationController
       if can? :create, ProductStockUpdate
         actions += '<li>'+view_context.link_to("Update Stock (Nhập Kho)", new_product_stock_update_path(product_id: item.id))+'</li>'
       end
+      if can? :product_log, item
+        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Product Logs".html_safe, {controller: "products", action: "product_log", id: item.id}, title: "Product Logs", target: "_blank")+'</li>'
+      end
       if can? :ajax_product_prices, item
         actions += '<li>'+item.price_history_link(false)+'</li>'
       end
