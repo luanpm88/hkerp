@@ -319,11 +319,12 @@ class Order < ActiveRecord::Base
   
   def self.customer_orders
     order("order_date DESC").where("supplier_id="+Contact.HK.id.to_s)
+                            .where(parent_id: nil)
   end
   
   def self.purchase_orders
     order("order_date DESC").where("customer_id="+Contact.HK.id.to_s)
-      .where(parent_id: nil)
+                            .where(parent_id: nil)
   end
   
   def is_purchase
@@ -420,12 +421,12 @@ class Order < ActiveRecord::Base
   
   def self.delivery_sales_orders
     Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
   end
   
   def self.delivery_purchase_orders
     Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"}) # orders confirmed
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
   end
   
   def self.accounting_sales_orders
