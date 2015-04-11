@@ -994,6 +994,8 @@ class Order < ActiveRecord::Base
   def display_title
     if ['confirmed'].include?(status.name)
       return "ĐƠN HÀNG"
+    elsif ['finished'].include?(status.name)
+      return "HÓA ĐƠN"
     else
       return "BẢNG BÁO GIÁ"
     end
