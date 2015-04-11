@@ -167,7 +167,7 @@ class Product < ActiveRecord::Base
                 
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
-                col_2 = product.name+"<br />"+product.product_log_link
+                col_2 = product.name+" "+product.product_code+"<br />"+product.product_log_link
                 col_3 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s
                 
                 ic = product.import_count(params[:year], params[:month])
@@ -209,7 +209,7 @@ class Product < ActiveRecord::Base
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.name+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
