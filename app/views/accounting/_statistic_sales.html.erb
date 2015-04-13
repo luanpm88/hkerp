@@ -21,9 +21,12 @@
 							<% order.order_details.each do |od| %>
                               <% if od.quantity > 0 %>
 								<tr class="quantity-<%= od.quantity %>">
-									<td class="text-center"><%= count %></td>
+									<td class="text-center"><%= count %>
+												<br />
+												[<strong class="finished"><%= order.printed_order_number %>]</strong>
+									</td>
 									<td>
-										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>[<%= order.printed_order_number %>]
+										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 										<br />
 										<%= order.customer.short_name %>
 										<br />
