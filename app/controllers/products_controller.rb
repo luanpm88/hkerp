@@ -210,7 +210,7 @@ class ProductsController < ApplicationController
   def statistics
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date].to_date
-      @to_date =  params[:to_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
     else
       @from_date = DateTime.now.beginning_of_month
       @to_date =  DateTime.now
@@ -243,7 +243,7 @@ class ProductsController < ApplicationController
   def product_log
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date].to_date
-      @to_date =  params[:to_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
     else
       @from_date = DateTime.now.beginning_of_month
       @to_date =  DateTime.now

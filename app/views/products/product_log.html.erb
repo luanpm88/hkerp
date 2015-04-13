@@ -20,13 +20,30 @@
                         <input type="hidden" name="id" value="<%= @product.id %>" />
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-4">
-									<h4>Date</h4>
+									<h4>From Date</h4>
 									<div class="date_select_filter">
-									<div class="input-with-icon  right">                                       
-										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
 									</div>
 									</div>
-								</div>								
+								</div>
+								<div class="col-md-4">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>							
 							</div>
 						</form>
 						</div>		    
@@ -37,7 +54,7 @@
                     
                     <div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">
-					<h4>Product History - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+					<h4>Product History - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
 					<h3><%= @product.display_name %></h3>
 					<table class="table datatable-products-statistics">
