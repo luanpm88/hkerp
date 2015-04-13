@@ -393,8 +393,8 @@ class Order < ActiveRecord::Base
         payment_vat_paid += order.paid_amount*(order.tax.rate/100)
       end      
     end
-    buy_orders.sort {|a,b| a[:customer_po] <=> b[:customer_po]}
-    sell_orders.sort {|a,b| a[:customer_po] <=> b[:customer_po]}
+    buy_orders.sort {|a,b| a[:printed_order_number] <=> b[:printed_order_number]}
+    sell_orders.sort {|a,b| a[:printed_order_number] <=> b[:printed_order_number]}
     
     
     return {
