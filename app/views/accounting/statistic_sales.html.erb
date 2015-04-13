@@ -19,10 +19,27 @@
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "statistic_sales"})%>">
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-4">
-									<h4>Order Date</h4>
+									<h4>From Date</h4>
 									<div class="date_select_filter">
-									<div class="input-with-icon  right">                                       
-										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
+									</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
 									</div>
 									</div>
 								</div>
@@ -46,11 +63,11 @@
 			
                     
 			
-			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, customer_id: params[:customer_id]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
 			
 			<div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">
-					<h4>Sales Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+					<h4>Sales Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
 					<%= render 'statistic_sales' %>
 					
@@ -62,7 +79,7 @@
 			
 			<div class="grid simple ">
 			    <div class="grid-title no-border">
-                                <h4>Statistics in/on - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+                                <h4>Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -145,8 +162,6 @@
 
 <script>
     $(document).ready(function() {
-	<% if @month_val.nil? %>
-	    $("#order_order_date_2i").select2("val", "");
-	<% end %>
+		$(".date_select_filter select").select2();
     });
 </script>

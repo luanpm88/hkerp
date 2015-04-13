@@ -335,7 +335,7 @@ class Order < ActiveRecord::Base
     return self.supplier == Contact.HK
   end
   
-  def self.statistics(year, month=nil, params = {})
+  def self.statistics(from_date, to_date, params = {})
     status = OrderStatus.get("confirmed")
     
     total_buy = 0.00
@@ -353,13 +353,11 @@ class Order < ActiveRecord::Base
     
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
-                  .where('extract(year from order_date) = ?', year)
+                  .where('order_date >= ?', from_date)
+                  .where('order_date <= ?', to_date)
+    
     if params[:customer_id].present?
       sell_orders = sell_orders.where(customer_id: params[:customer_id])
-    end
-    
-    if month.present?
-      sell_orders = sell_orders.where('extract(month from order_date) = ?', month) 
     end
                   
         
@@ -377,14 +375,11 @@ class Order < ActiveRecord::Base
     
     buy_orders = Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
-                  .where('extract(year from order_date) = ?', year)
+                  .where('order_date >= ?', from_date)
+                  .where('order_date <= ?', to_date)
+    
     if params[:supplier_id].present?
       buy_orders = buy_orders.where(supplier_id: params[:supplier_id])
-    end
-    
-    
-    if month.present?
-      buy_orders = buy_orders.where('extract(month from order_date) = ?', month) 
     end
         
     buy_orders.each do |order|
