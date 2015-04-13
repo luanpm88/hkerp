@@ -439,7 +439,7 @@ class Order < ActiveRecord::Base
   end
   
   pg_search_scope :search,
-                against: [:order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
+                against: [:customer_po, :printed_order_number, :order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
                 associated_against: {
                   salesperson: [:first_name],
                   purchase_manager: [:first_name],

@@ -18,16 +18,35 @@
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "index"})%>">
 							<div class="row accounting-statistics-filters">
-								<div class="col-md-4">
-									<h4>Order Date</h4>
+								<div class="col-md-3">
+									<h4>From Date</h4>
 									<div class="date_select_filter">
-									<div class="input-with-icon  right">                                       
-										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
 									</div>
 									</div>
 								</div>
-								<% if params[:purchase] || ["purchase_orders"].include?(params[:action]) %>
-									<div class="col-md-4">
+								<div class="col-md-3">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+								
+									
+								
+									<div class="col-md-3">
 										<h4>Supplier</h4>
 										<div class="">
 											<div class="input-with-icon  right">                                       
@@ -36,8 +55,8 @@
 											</div>
 										</div>
 									</div>
-								<% else %>
-									<div class="col-md-4">
+								
+									<div class="col-md-3">
 										<h4>Customer</h4>
 										<div class="">
 											<div class="input-with-icon  right">                                       
@@ -46,7 +65,7 @@
 											</div>
 										</div>
 									</div>
-								<% end %>
+								
 							</div>
 						</form>
 						</div>		    
@@ -54,7 +73,7 @@
 			
 			<div class="grid simple ">
 			    <div class="grid-title no-border">
-                                <h4>Statistics in/on - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+                                <h4>Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
