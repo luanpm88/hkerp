@@ -125,6 +125,36 @@ table {
 }
 </style>
 
+
+<%
+com_title = Contact.HK
+%>
+
+<table class="cominfo">
+  <tr>
+      <td rowspan="2" width="15%">
+        <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+      </td>
+    <td colspan="2">
+      <h2><%= com_title.name %></h2>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <p><%= com_title.address %></p>
+      
+      <p><label>ĐT: </label><%= com_title.phone %> - <label>Fax: </label><%= com_title.fax %> - <label>Hotline: </label><%= com_title.hotline %></p>
+      <p><label>STK: </label><%= com_title.account_number %> <%= com_title.bank %></p>
+    </td>
+    <td class="top-left" valign="top">
+      <p><label>MST: </label><%= com_title.tax_code %></p>
+      <p><label>Email: </label><%= com_title.email %></p>
+      <p><label>Website: </label><%= com_title.website %></p>
+    </td>
+  </tr>
+</table>
+<p></p>
+
 <h3 style="margin-bottom: 0">BẢN ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%Y-%m-%d") %> ĐẾN NGÀY <%= @to_date.strftime("%Y-%m-%d") %></h3>
 <h4 style="margin-top: 5px"><%= @customer.name if !@customer.nil? %></h4>
 
