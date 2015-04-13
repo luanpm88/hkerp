@@ -654,7 +654,7 @@ class Product < ActiveRecord::Base
     
     #added
     line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
-    history << line if "#{year}-#{month}-1".to_datetime <= self.created_at && self.created_at < "#{year}-#{month}-1".to_datetime.at_beginning_of_month.next_month
+    history << line if from_date.to_datetime <= self.created_at && self.created_at <= to_date
     
     
     return history.sort {|a,b| b[:date] <=> a[:date]}
