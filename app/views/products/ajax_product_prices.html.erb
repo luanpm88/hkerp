@@ -25,7 +25,7 @@
                         
                           <tbody>
                               <tr>
-                                  <td><%= price.supplier.name %></td>
+                                  <td><%= price.supplier.name if !price.supplier.nil? %></td>
                                   <td class="text-right"><%= price.supplier_price_formated %></td>
                                   <td class="text-right"><%= price.price_formated %></td>
                                   <td class="text-center"><%= price.created_at.strftime("%Y/%m/%d") %></td>
