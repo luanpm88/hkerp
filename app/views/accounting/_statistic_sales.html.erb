@@ -19,7 +19,7 @@
 						count = 1
 						@statistics[:sell_orders].each do |order| %>
 							<% order.order_details.each do |od| %>
-                              <% if od.quantity > 0 %>
+                              <% if od.quantity > 0 || true %>
 								<tr class="quantity-<%= od.quantity %>">
 									<td class="text-center"><%= count %></td>
 									<td>
