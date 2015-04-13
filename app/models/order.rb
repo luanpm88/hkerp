@@ -394,6 +394,7 @@ class Order < ActiveRecord::Base
       end      
     end
     buy_orders.sort {|a,b| a[:customer_po] <=> b[:customer_po]}
+    sell_orders.sort {|a,b| a[:customer_po] <=> b[:customer_po]}
     
     
     return {
