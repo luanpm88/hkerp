@@ -534,7 +534,7 @@ class Order < ActiveRecord::Base
       
       puts User.current_user
       
-      printed_order_number = item.printed_order_number.present? ? "<br />[<strong>#{item.printed_order_number}</strong>]" : ""
+      printed_order_number = item.printed_order_number.present? ? "<br />[<strong class=\"finished\">#{item.printed_order_number}</strong>]" : ""
       
       case params[:page]
       when "delivery"
