@@ -155,8 +155,8 @@ com_title = Contact.HK
 </table>
 <p></p>
 
-<h3 style="margin-bottom: 0">BẢN ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%Y-%m-%d") %> ĐẾN NGÀY <%= @to_date.strftime("%Y-%m-%d") %></h3>
-<h4 style="margin-top: 5px"><%= @customer.name if !@customer.nil? %></h4>
+<h3 style="margin-bottom: 0; text-align: center">BẢN ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%Y-%m-%d") %> ĐẾN NGÀY <%= @to_date.strftime("%Y-%m-%d") %></h3>
+<h4 style="margin-top: 10px">Kính gửi: <%= @customer.name if !@customer.nil? %></h4>
 
 <%= render 'statistic_sales_print' %>
 
