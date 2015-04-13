@@ -290,6 +290,10 @@ class Order < ActiveRecord::Base
       return false
     end
     
+    order_details.each do |od|
+      od.update_price(user)
+    end
+    
     self.set_status('confirmed',user)
     Notification.send_notification(salesperson, 'order_confirmed', self)
     
@@ -957,7 +961,7 @@ class Order < ActiveRecord::Base
   
   def is_prices_oudated
     order_details.each do |od|
-      if od.product.is_price_outdated
+      if od.is_price_outdated
         return true
       end
     end

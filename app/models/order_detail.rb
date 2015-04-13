@@ -195,4 +195,28 @@ class OrderDetail < ActiveRecord::Base
   def calculated_discount_amount_formated
     return Order.format_price(calculated_discount_amount)
   end
+  
+  def update_price(user)
+    params = {}
+    if order.is_purchase
+      params[:price] = product.product_price.price.nil? ? 0 : product.product_price.price
+      params[:supplier_id] = order.supplier_id
+      params[:supplier_price] = self.price
+    else
+      params[:price] = self.price
+      params[:supplier_id] = product.product_price.supplier_id
+      params[:supplier_price] = product.product_price.supplier_price
+    end
+    product.update_price(params,user)
+    
+  end
+  
+  def is_price_outdated
+    if product.is_price_outdated || (product.product_price.present? && product.product_price.supplier_price >= self.price)
+      return true
+    else
+      return false
+    end
+    
+  end
 end
