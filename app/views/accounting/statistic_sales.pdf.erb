@@ -122,6 +122,9 @@ table {
 }
 </style>
 
+<h3 style="margin-bottom: 0">BẢN ĐỐI CHIẾU CÔNG NỢ - THÁNG <%= @month %>/<%= @year %> - ĐẾN NGÀY <%= Time.now.strftime("%d/%m/%Y") %></h3>
+<h4 style="margin-top: 5px"><%= @customer.name if !@customer.nil? %></h4>
+
 <%= render 'statistic_sales_print' %>
 
 <page></page>

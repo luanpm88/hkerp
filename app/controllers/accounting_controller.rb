@@ -48,6 +48,8 @@ class AccountingController < ApplicationController
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
+    @year = @order.order_date.year
+    
     @statistics = Order.statistics(@order.order_date.year, @month_val, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
     
     
