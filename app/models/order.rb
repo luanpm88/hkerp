@@ -1108,7 +1108,7 @@ class Order < ActiveRecord::Base
       history << line
     end
     
-    return history.sort {|a,b| a[:date] <=> b[:date]}
+    return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
 end

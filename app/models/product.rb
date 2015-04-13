@@ -674,7 +674,7 @@ class Product < ActiveRecord::Base
     history << line if "#{year}-#{month}-1".to_datetime <= self.created_at && self.created_at < "#{year}-#{month}-1".to_datetime.at_beginning_of_month.next_month
     
     
-    return history.sort {|a,b| a[:date] <=> b[:date]}
+    return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
   def product_log_link
