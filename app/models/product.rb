@@ -165,28 +165,31 @@ class Product < ActiveRecord::Base
       when "statistics"
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 
+                from_date = params[:from_date].to_date
+                to_date = params[:to_date].to_date
+                
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
                 col_2 = product.name+" "+product.product_code+"<br />"+product.product_log_link
-                col_3 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime).to_s
+                col_3 = product.statistic_stock(from_date).to_s
                 
-                ic = product.import_count(params[:year], params[:month])
+                ic = product.import_count(from_date, to_date)
                 col_4 = ic.to_s+
-                            "<br />("+product.import_amount_formated(params[:year], params[:month]).to_s+')'
+                            "<br />("+product.import_amount_formated(from_date, to_date).to_s+')'
                 col_4 = "+"+col_4 if ic > 0
                 
-                ec = product.export_count(params[:year], params[:month])
+                ec = product.export_count(from_date, to_date)
                 col_5 = ec.to_s+
-                            "<br />("+product.export_amount_formated(params[:year], params[:month]).to_s+')'
+                            "<br />("+product.export_amount_formated(from_date, to_date).to_s+')'
                 col_5 = "-"+col_5 if ec > 0
                             
-                col_6 = product.combination_count_formated(params[:year], params[:month]).to_s
+                col_6 = product.combination_count_formated(from_date, to_date).to_s
                 
-                su = product.stock_update_count(params[:year], params[:month])
+                su = product.stock_update_count(from_date, to_date)
                 col_7 = su.to_s
                 col_7 = "+"+col_7 if su > 0
                 
-                col_8 = product.statistic_stock("#{params[:year]}-#{params[:month]}-1".to_datetime.at_beginning_of_month.next_month).to_s
+                col_8 = product.statistic_stock(to_date).to_s
                 
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+col_0+'</div>',
@@ -401,7 +404,7 @@ class Product < ActiveRecord::Base
   def statistic_stock(datetime)
     count = 0
     #count for combinations
-    count += combinations.where("created_at < ?", datetime).sum(:quantity)-combination_details.where("created_at < ?", datetime).sum(:quantity)
+    count += combinations.where("created_at <= ?", datetime).sum(:quantity)-combination_details.where("created_at <= ?", datetime).sum(:quantity)
     
     #count for sales delivery
     count -= order_details
@@ -427,13 +430,10 @@ class Product < ActiveRecord::Base
     return count    
   end
   
-  def stock_update_count(year=nil, month=nil)
+  def stock_update_count(from_date=nil, to_date=nil)
     result = product_stock_updates
-    if year.present?
-      result = result.where('extract(year from created_at) = ?', year)
-    end
-    if month.present?
-      result = result.where('extract(month from created_at) = ?', month)
+    if from_date.present? && to_date.present?
+      result = result.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
     result = result.sum(:quantity)
   end
@@ -473,67 +473,62 @@ class Product < ActiveRecord::Base
     return "<div class=\"#{status}\">#{status}</div>".html_safe
   end
   
-  def self.statistics(year, month=nil)
+  def self.statistics(from_date, to_date)
     Product.joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
   end
   
-  def import_count(year=nil, month=nil)
+  def import_count(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {customer_id: Contact.HK.id})
-    if year.present?
-      products = products.where('extract(year from orders.order_date) = ?', year)
+    if from_date.present? && to_date.present?
+      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
-    if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
-    end
+    
     
     count = products.sum("quantity")
   end
   
   
   
-  def export_count(year=nil, month=nil)
+  def export_count(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {supplier_id: Contact.HK.id})
-    if year.present?
-      products = products.where('extract(year from orders.order_date) = ?', year)
-    end
-    if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
+    if from_date.present? && to_date.present?
+      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
     
     count = products.sum("order_details.quantity")
   end
   
-  def export_amount(year, month=nil)
+  def export_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {supplier_id: Contact.HK.id})
-              .where('extract(year from orders.order_date) = ?', year)
-    if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
+
+    if from_date.present? && to_date.present?
+      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
     
     amount = products.sum("price*quantity")
   end
   
-  def export_amount_formated(year, month=nil)
-    Order.format_price(export_amount(year, month))
+  def export_amount_formated(from_date=nil, to_date=nil)
+    Order.format_price(export_amount(from_date, to_date))
   end
   
-  def import_amount(year, month=nil)
+  def import_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {customer_id: Contact.HK.id})
-              .where('extract(year from orders.order_date) = ?', year)
-    if month.present?
-      products = products.where('extract(month from orders.order_date) = ?', month) 
+    
+    if from_date.present? && to_date.present?
+      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
     
     
@@ -541,8 +536,8 @@ class Product < ActiveRecord::Base
     amount = products.sum("price*quantity")
   end
   
-  def import_amount_formated(year, month=nil)
-    Order.format_price(import_amount(year, month))
+  def import_amount_formated(from_date=nil, to_date=nil)
+    Order.format_price(import_amount(from_date, to_date))
   end
   
   def price_history_link(button=true)
@@ -558,27 +553,21 @@ class Product < ActiveRecord::Base
     
   end
   
-  def product_log(year, month=nil)
+  def product_log(from_date, to_date)
     #Order details, sales and purchases
     od_details = order_details
                       .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
                       .where(order_statuses: {name: ["finished"]})
-                      .where('extract(year from orders.order_date) = ?', year)
-    if month.present?
-      od_details = od_details.where('extract(month from orders.order_date) = ?', month)
-    else
-      month = 1
-    end
+                      .where('orders.order_date >= ?', from_date)
+                      .where('orders.order_date <= ?', to_date)
     
     #Delivery details, sales and purchases
     status = OrderStatus.where(name: 'finished').first    
     d_details = delivery_details
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(orders: {order_status_id: status.id})
-              .where('extract(year from orders.order_date) = ?', year)
-    if month.present?
-      d_details = d_details.where('extract(month from orders.order_date) = ?', month) 
-    end
+              .where('orders.order_date >= ?', from_date)
+              .where('orders.order_date <= ?', to_date)
     
     history = []    
     od_details.each do |od|
@@ -612,10 +601,8 @@ class Product < ActiveRecord::Base
     
     #combination
     coms = combinations
-              .where('extract(year from created_at) = ?', year)
-    if month.present?
-      coms = coms.where('extract(month from created_at) = ?', month) 
-    end
+              .where('created_at >= ?', from_date)
+              .where('created_at <= ?', to_date)
     
     coms.each do |c|
       c_str = ""
@@ -631,10 +618,8 @@ class Product < ActiveRecord::Base
     
     #combination
     com_ds = combination_details
-              .where('extract(year from created_at) = ?', year)
-    if month.present?
-      com_ds = com_ds.where('extract(month from created_at) = ?', month) 
-    end
+              .where('created_at >= ?', from_date)
+              .where('created_at <= ?', to_date)
     
     com_ds.each do |cd|
       
@@ -645,10 +630,9 @@ class Product < ActiveRecord::Base
     
     #stock update
     stocks = product_stock_updates
-              .where('extract(year from created_at) = ?', year)
-    if month.present?
-      stocks = stocks.where('extract(month from created_at) = ?', month) 
-    end    
+              .where('created_at >= ?', from_date)
+              .where('created_at <= ?', to_date)
+              
     stocks.each do |s|      
       if s.quantity > 0
         line = {user: s.user,date: s.created_at, note: "Custom Imported", link: "", quantity: s.quantity.to_s}
@@ -660,10 +644,9 @@ class Product < ActiveRecord::Base
     
     #price updated
     prices = product_prices
-              .where('extract(year from created_at) = ?', year)
-    if month.present?
-      prices = prices.where('extract(month from created_at) = ?', month) 
-    end    
+              .where('created_at >= ?', from_date)
+              .where('created_at <= ?', to_date)
+              
     prices.each do |s|      
       line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier.name}; Sup.Price: #{s.supplier_price_formated}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
       history << line
@@ -686,24 +669,18 @@ class Product < ActiveRecord::Base
     
   end
   
-  def combination_count(year=nil, month=nil)
+  def combination_count(from_date=nil, to_date=nil)
     in_c = combinations
-    if month.present?
-      in_c = in_c.where('extract(month from created_at) = ?', month) 
+    if from_date.present? && to_date.present?
+      in_c = in_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
-    if year.present?
-      in_c = in_c.where('extract(year from created_at) = ?', year) 
-    end  
     in_c = in_c.sum(:quantity)
     
     
     out_c = combination_details
-    if month.present?
-      out_c = out_c.where('extract(month from created_at) = ?', month) 
+    if from_date.present? && to_date.present?
+      out_c = out_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
-    if year.present?
-      out_c = out_c.where('extract(year from created_at) = ?', year) 
-    end  
     out_c = out_c.sum(:quantity)
     
     count = in_c - out_c
@@ -711,11 +688,12 @@ class Product < ActiveRecord::Base
     return count
   end
   
-  def combination_count_formated(year=nil, month=nil)
-    if combination_count > 0
-        "+"+combination_count.to_s
+  def combination_count_formated(from_date=nil, to_date=nil)
+    count = combination_count(from_date, to_date)
+    if count > 0
+        "+"+count.to_s
     else
-        combination_count.to_s
+        count.to_s
     end
     
   end

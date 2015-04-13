@@ -208,29 +208,18 @@ class ProductsController < ApplicationController
   end
   
   def statistics
-    if params[:order].present?
-      @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
-      @month_val  = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : nil
-      
-      date = Date.new params[:order]["order_date(1i)"].to_i, @month, params[:order]["order_date(3i)"].to_i
-      
-      @order = Order.new(:order_date => date)
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date
     else
-      @month = DateTime.now.month
-      @month_val = @month
-      
-      @order = Order.new(:order_date => DateTime.now)
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now
     end
     
-    @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
-    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
-    
-    @year = @order.order_date.year
-    
-    @products = Product.statistics(@year, @month_val)
+    @products = Product.statistics(@from_date, @to_date)
     
     if params[:pdf] == "1"
-        render  :pdf => "products_statistics_"+@order.quotation_code,
+        render  :pdf => "products_statistics_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
             :template => 'products/statistics.pdf.erb',
             :layout => nil,
             :footer => {
@@ -252,26 +241,15 @@ class ProductsController < ApplicationController
   end
   
   def product_log
-    if params[:order].present?
-      @month = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : 1
-      @month_val  = params[:order]["order_date(2i)"].present? ? params[:order]["order_date(2i)"].to_i : nil
-      
-      date = Date.new params[:order]["order_date(1i)"].to_i, @month, params[:order]["order_date(3i)"].to_i
-      
-      @order = Order.new(:order_date => date)
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date
     else
-      @month = DateTime.now.month
-      @month_val = @month
-      
-      @order = Order.new(:order_date => DateTime.now)
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now
     end
     
-    @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
-    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
-    
-    @year = @order.order_date.year
-    
-    @history = @product.product_log(@year, @month_val)
+    @history = @product.product_log(@from_date, @to_date)
   end
   
   private

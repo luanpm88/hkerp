@@ -19,24 +19,42 @@
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "statistics"})%>">
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-4">
-									<h4>Date</h4>
+									<h4>From Date</h4>
 									<div class="date_select_filter">
-									<div class="input-with-icon  right">                                       
-										<%= date_select(:order, :order_date, {include_blank: true, use_two_digit_numbers: true, discard_day: true}) %>
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
 									</div>
 									</div>
-								</div>								
+								</div>
+								<div class="col-md-4">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+				
 							</div>
 						</form>
 						</div>		    
 					</div>
 			
-			<%= link_to '<i class="icon-print"></i> Print'.html_safe, statistics_products_url(pdf: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
                     
                     
                     <div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">
-					<h4>Stock Statistics - <span class="semi-bold"><%= @month.to_s+"/" if @month_val.present? %><%= @order.order_date.strftime('%Y') %></span></h4>
+					<h4>Stock Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
 					
 					<table class="table datatable-products-statistics">
@@ -79,8 +97,8 @@
 			"ajax": {
 				"url": "<%= datatable_products_path(page: "statistics", year: params[:year], month: params[:month]) %>",
 				"data": function ( d ) {
-					d.year = <%= @year %>,
-					d.month = <%= @month %>
+					d.from_date = "<%= @from_date.strftime("%Y-%m-%d") %>",
+					d.to_date = "<%= @to_date.strftime("%Y-%m-%d") %>"
 				}
 			},
 			"columnDefs": [ { "targets": [3,4,5,6,7,8], "orderable": false } ],
