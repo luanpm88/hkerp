@@ -1,5 +1,5 @@
 class DeliveriesController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:deliver, :create]
   before_action :set_delivery, only: [:show, :edit, :update, :destroy, :download_pdf]
 
   # GET /deliveries
@@ -18,6 +18,9 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/1.json
   def deliver
     @order = Order.find(params[:order_id])
+    
+    authorize! :deliver, @order
+    
     @delivery = Delivery.new
   end
 
@@ -65,6 +68,9 @@ class DeliveriesController < ApplicationController
   # POST /deliveries.json
   def create
     @order = Order.find(delivery_params[:order_id])
+    
+    authorize! :deliver, @order
+    
     @delivery = Delivery.new(delivery_params)
     @delivery.creator = current_user
     

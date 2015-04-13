@@ -259,7 +259,7 @@ class Ability
       if user.has_role? "storage_manager"
         can :create, Delivery
         can :read, Delivery
-        can :deliver, Delivery
+        #can :deliver, Delivery
         #can :update, Delivery
         
         can :download_pdf, Delivery
@@ -269,7 +269,7 @@ class Ability
         can :create, ProductStockUpdate
         
         can :deliver, Order  do |order|
-          ['confirmed'].include?(order.status.name) && !order.is_delivered?
+          ['confirmed','finished'].include?(order.status.name) && !order.is_delivered?
         end
         
         can :statistics, Product
