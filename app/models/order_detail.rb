@@ -41,11 +41,11 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def vat_amount
-    price*(order.tax.rate/100+1)
+    price*(order.tax.rate/100)
   end
   
   def vat_amount_formated
-    Order.format_price(price)
+    Order.format_price(vat_amount)
   end
   
   def formated_supplier_price
