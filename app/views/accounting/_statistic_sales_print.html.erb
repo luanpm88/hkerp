@@ -3,7 +3,7 @@
 							<th class="text-center">STT</th>
 							<th>Order.No</th>
 							<th>Order.Date</th>
-                            <th class="text-left">Cutomer</th>
+                            <!--<th class="text-left">Cutomer</th>-->
 							<th class="text-left">Item</th>
 							<th class="text-center">Quantity</th>
 							<th class="text-right">Price</th>
@@ -29,9 +29,9 @@
 									<td>
                                       <%= order.order_date.strftime("%d/%m/%Y") %>
 									</td>
-									<td class="text-left">
+									<!--<td class="text-left">
 										<%= order.customer.short_name %>
-									</td>
+									</td>-->
                                     <td class="text-left">
                                       <%= od.product.display_name %>
                                     </td>
