@@ -49,6 +49,23 @@ class AccountingController < ApplicationController
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
     @statistics = Order.statistics(@order.order_date.year, @month_val, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
+    
+    
+    if params[:pdf] == "1"
+        render  :pdf => "accounting_statistic_sales_#{@order.order_date.year.to_s}_#{@month_val.to_s}",
+            :template => 'accounting/statistic_sales.pdf.erb',
+            :layout => nil,
+            :footer => {
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A4",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
+    end
   end
   
   def statistic_purchase
