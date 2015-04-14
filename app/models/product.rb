@@ -336,8 +336,7 @@ class Product < ActiveRecord::Base
   
   def is_price_outdated
     # if empty stock for 30 days
-    # (Time.now.to_date - updated_at.to_date).to_i >= 30 || product_price.nil? || product_price.price.nil?
-    false
+    (!product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 30) || product_price.nil? || product_price.price.nil?
   end
   
   def price_status
