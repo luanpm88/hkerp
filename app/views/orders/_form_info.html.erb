@@ -214,7 +214,7 @@
                                                         <span class="help">%</span>
                                                         <div class="input-with-icon  right">                                       
                                                                 <i class=""></i>
-                                                                <%= f.select :discount, options_for_select(0.upto(100).map { |u| [u, u] },@order.discount), {},  {:class => "modern_select width100 discount_percent"} %>
+                                                                <%= f.select :discount, options_for_select(0.upto(100).map { |u| [u, u] },@order.discount), {},  {:class => "modern_select width100  discount_percent"} %>
                                                         </div>
                                                  </div>
                                           </div>
@@ -224,7 +224,7 @@
                                                         <span class="help">VND</span>
                                                         <div class="input-with-icon  right">                                       
                                                                 <i class=""></i>
-                                                                <%= f.text_field :discount_amount, :class => "form-control price_input discount_amount" %>
+                                                                <%= f.text_field :discount_amount, :class => "form-control price_input  discount_amount" %>
                                                         </div>
                                                  </div>
                                           </div>
