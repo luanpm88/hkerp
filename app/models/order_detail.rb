@@ -212,7 +212,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def is_price_outdated
-    if product.is_price_outdated || (product.product_price.present? && product.product_price.supplier_price >= self.price)
+    if product.is_price_outdated # || (product.product_price.present? && product.product_price.supplier_price >= self.price)
       return true
     else
       return false
