@@ -1019,9 +1019,9 @@ class Order < ActiveRecord::Base
     return str.html_safe
   end
   
-  def price=(new_price)
+  def discount_amount=(new_price)
     self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
-  end
+  end  
   
   def calculate_discount
     if discount > 0
