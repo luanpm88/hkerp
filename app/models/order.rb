@@ -1028,7 +1028,7 @@ class Order < ActiveRecord::Base
   end  
   
   def calculate_discount
-    if discount.nil? || discount > 0
+    if discount.present? && discount > 0
       self[:discount_amount] = total*(discount.to_f/100)
     end    
   end
