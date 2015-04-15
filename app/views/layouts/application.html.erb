@@ -109,7 +109,7 @@
 				total += num
 			}				
 		});
-		$('#order_discount_amount').val(ReplaceNumberWithDots(total.toFixed(0)));
+		
 		
 		if (total == 0) {
 			$('.discount_percent').removeClass("disabled");
@@ -130,6 +130,8 @@
 				$('.discount_amount').removeClass("disabled");
 			}
 		} else {
+			$('#order_discount_amount').val(ReplaceNumberWithDots(total.toFixed(0)));
+			
 			$('.discount_percent').attr("value","");
 			$('.discount_percent').addClass("disabled");
 			
