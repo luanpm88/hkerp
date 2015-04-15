@@ -416,7 +416,7 @@ class OrdersController < ApplicationController
     if params[:accounting]
       redirect_url = {controller: "accounting", action: "orders"}
     else    
-      redirect_url = orders_url
+      redirect_url = @order.is_purchase ? purchase_orders_orders_path : orders_path
     end
     
     respond_to do |format|
