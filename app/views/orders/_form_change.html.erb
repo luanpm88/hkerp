@@ -477,7 +477,7 @@
                             </li>
                             <li class="discount text-right">
                                    <%= f.text_field :discount, placeholder: "%", value: @order.discount == 0 ? "" : @order.discount, :class => "width100 text-right discount_percent" %>
-                                   <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
+                                   <%= f.text_field :discount_amount, value: @order.discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
                             </li>
                             
                           </ul>
