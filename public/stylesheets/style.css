@@ -7429,6 +7429,7 @@ ul.my-friends li .profile-pic{
     width: 100%;
 }
 .product_order_list ul {
+    border-bottom: 1px solid #ccc;
     float: left;
     padding: 0;
     width: 100%;
@@ -7441,7 +7442,7 @@ ul.my-friends li .profile-pic{
     display: block;
     float: left;
     list-style: none outside none;
-    width: 12%;
+    width: 16%;
     padding: 15px;
 }
 .product_order_list ul li.price, .product_order_list ul li.supplier_price, .product_order_list ul li.price_total{
@@ -7456,12 +7457,12 @@ ul.my-friends li .profile-pic{
 }
 .product_order_list ul.footer li.sum
 {
-    width: 24%;
+    width: 32%;
     text-align: right;
 }
 .product_order_list ul.footer li.sumz
 {
-    width: 24%;
+    width: 32%;
     text-align: right;
 }
 .tmp_hide
@@ -7605,7 +7606,6 @@ ul.filter {
 }
 .price_input {
     text-align: right;
-    min-width: 105px;
 }
 .hidden, .quantity-0 {
     position: absolute;
@@ -7757,7 +7757,11 @@ input.disabled {
     /*color: rgba(0,0,0,0);*/
 }
 .line_discount_percent {
-    width: 40px;
+    text-align: right;
+}
+.line_discount_amount {
+    width: 100%;
+    min-width: auto;
 }
 .product_order_list ul li.action {
     width: auto;

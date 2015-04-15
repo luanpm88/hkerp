@@ -2,17 +2,14 @@
                                       <li class="name">
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
-                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
-                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
+                                          <textarea name="order_details[<%= order_detail.product_id %>][product_name]"><%= order_detail.product_name %></textarea>
+                                          <textarea name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
                                       </li>
                                       <li class="unit">
                                         <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
                                       </li>                                    
                                       <li class="text-right">
-                                        <%= order_detail.formated_price %>
-                                      </li>
-                                      <li class="text-center">
-                                        <%= order_detail.quantity %>
+                                        <%= order_detail.formated_price %> / <%= order_detail.quantity %>
                                       </li>
                                       <li class="total text-right">
                                         <%= order_detail.formated_total %>
@@ -21,7 +18,8 @@
                                           <%= order_detail.warranty %>
                                         </li>
                                       <li class="line_discount text-right">
-                                            <%= select_tag "order_details[#{order_detail.product_id}][discount]", options_for_select(0.upto(100).map { |u| [u, u] },order_detail.discount), {:class => "modern_selectz line_discount_percent"} %>%
-                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount, {:class => "form-control price_input  line_discount_amount"} %>VND
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount]", order_detail.discount.present? && order_detail.discount > 0 ? order_detail.discount : "", {placeholder: "%", class: "width100 modern_selectz form-control line_discount_percent"} %>
+                                            
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
                                         </li>
                                   </ul>

@@ -894,7 +894,9 @@ class Order < ActiveRecord::Base
             unit: line[1][:unit],
             price: line[1][:price],
             quantity: line[1][:quantity],
-            warranty: line[1][:warranty]
+            warranty: line[1][:warranty],
+            discount: line[1][:discount],
+            discount_amount: line[1][:discount_amount]
           )
         end
       end
@@ -929,6 +931,8 @@ class Order < ActiveRecord::Base
             product_name: line[1][:product_name],
             product_description: line[1][:product_description],
             unit: line[1][:unit],
+            discount: line[1][:discount],
+            discount_amount: line[1][:discount_amount]
           )
         end
       end
@@ -1024,7 +1028,7 @@ class Order < ActiveRecord::Base
   end  
   
   def calculate_discount
-    if discount > 0
+    if discount.nil? || discount > 0
       self[:discount_amount] = total*(discount.to_f/100)
     end    
   end

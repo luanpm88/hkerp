@@ -6,18 +6,20 @@
 
                                           
                                           
-                                          
-                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
-                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />
+                                          <textarea name="order_details[<%= order_detail.product_id %>][product_name]"><%= order_detail.product_name %></textarea>
+                                          <textarea name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
+                                          <!--<input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
+                                          <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />-->
+                                          <br />
+                                        <%= link_to 'Remove Item', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.product_id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
 
                                       </li>
                                       <li class="unit">
-                                        <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
+                                        <input class="text-center form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
+                                        
                                       </li>                                    
                                       <li class="">
                                         <input class="form-control price_input price" type="text" name="order_details[<%= order_detail.product_id %>][price]" value="<%= order_detail.price %>" />
-                                      </li>
-                                      <li class="">
                                         <input class="form-control number_input quantity" type="text" name="order_details[<%= order_detail.product_id %>][quantity]" value="<%= order_detail.quantity %>" />
                                       </li>
                                       <li class="total text-right">
@@ -27,10 +29,12 @@
                                             <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][warranty]" value="<%= order_detail.warranty %>" />
                                         </li>
                                         <li class="line_discount text-right">
-                                            <%= select_tag "order_details[#{order_detail.product_id}][discount]", options_for_select(0.upto(100).map { |u| [u, u] },order_detail.discount), {:class => "modern_selectz line_discount_percent"} %>%
-                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount ? order_detail.discount_amount : 0 , {:class => "form-control price_input  line_discount_amount"} %>VND
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount]", order_detail.discount.present? && order_detail.discount > 0 ? order_detail.discount : "", {placeholder: "%", class: "width100 modern_selectz form-control line_discount_percent"} %>
+                                            
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
                                         </li>
-                                      <li class="action text-right">
-                                          <%= link_to 'Delete', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.product_id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
-                                      </li>
+
                                   </ul>
+                                  
+                                  
+                                  

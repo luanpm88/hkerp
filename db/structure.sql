@@ -521,7 +521,7 @@ CREATE TABLE order_details (
     supplier_id integer,
     product_description text,
     product_price_id integer,
-    discount integer,
+    discount numeric DEFAULT 0.0,
     discount_amount numeric
 );
 
@@ -653,7 +653,7 @@ CREATE TABLE orders (
     customer_po character varying(255),
     printed_order_number text,
     supplier_agent_id integer,
-    discount integer DEFAULT 0,
+    discount numeric DEFAULT 0.0,
     order_status_name character varying(255),
     discount_amount numeric DEFAULT 0,
     price_status_name character varying(255),
@@ -2250,4 +2250,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150408140146');
 INSERT INTO schema_migrations (version) VALUES ('20150408155624');
 
 INSERT INTO schema_migrations (version) VALUES ('20150409015540');
+
+INSERT INTO schema_migrations (version) VALUES ('20150415043518');
 
