@@ -31,7 +31,7 @@
                                         <li class="line_discount text-right">
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][discount]", order_detail.discount.present? && order_detail.discount > 0 ? order_detail.discount : "", {placeholder: "%", class: "width100 modern_selectz form-control line_discount_percent"} %>
                                             
-                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
                                         </li>
 
                                   </ul>

@@ -70,11 +70,12 @@ class OrdersController < ApplicationController
     
     p @order.order_details    
     
+    list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
       if @order.save
         @order.set_status('new', current_user)
         if !@order.is_purchase
-          format.html { redirect_to orders_path, notice: 'Order was successfully created.' }
+          format.html { redirect_to list_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
         else
           format.html { redirect_to purchase_orders_orders_path, notice: 'Order was successfully created.' }
