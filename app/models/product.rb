@@ -648,7 +648,7 @@ class Product < ActiveRecord::Base
               .where('created_at <= ?', to_date)
               
     prices.each do |s|      
-      line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier.name}; Sup.Price: #{s.supplier_price_formated}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
+      line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier.nil? "no record" : s.supplier.name}; Sup.Price: #{s.supplier_price_formated}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
       history << line
     end
     
