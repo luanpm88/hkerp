@@ -51,7 +51,6 @@ class Order < ActiveRecord::Base
         if debt_date <= order_date
             errors.add(:debt_date, "can't be smaller than order date")
         end
-        
     end    
   end
   
@@ -1048,7 +1047,7 @@ class Order < ActiveRecord::Base
     if discount > 0
       total*(discount.to_f/100)
     else
-      discount_amount
+      discount_amount.nil? ? 0 : discount_amount.to_f
     end
   end
   

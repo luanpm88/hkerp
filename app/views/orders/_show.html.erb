@@ -106,7 +106,7 @@
 
   </tr>
   
-  <% if @order.discount_amount > 0 %>
+  <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
     <tr>
       <td colspan="5" style="text-align: right">Giảm giá</td>
       <td style="text-align: right"><%= @order.discount_amount_formated.to_s.gsub(",",".") %></td>
