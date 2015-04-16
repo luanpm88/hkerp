@@ -113,7 +113,7 @@
 </div>
 
 <div style="position: absolute;top:<%= pos8 %>px;left: 30px;width:122px;text-align: right">
-    <%= @order.tax.rate.to_i %>
+    <%= @order.tax.rate.to_i == 0 ? "X" : @order.tax.rate.to_i %>
 </div>
 
 <div style="position: absolute;top:<%= pos9 %>px;left: 570px;width:130px;text-align: right">
