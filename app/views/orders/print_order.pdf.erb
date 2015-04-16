@@ -121,7 +121,7 @@
 </div>
 
 <div style="position: absolute;top:<%= pos10 %>px;left: 570px;width:130px;text-align: right">
-    <%= @order.formated_vat_amount.to_s.gsub(",",".") %>
+    <%= @order.vat_amount == 0 ? "X" : @order.formated_vat_amount.to_s.gsub(",",".") %>
 </div>
 
 <div style="position: absolute;top:<%= pos11 %>px;left: 570px;width:130px;text-align: right">
