@@ -1151,4 +1151,11 @@ class Order < ActiveRecord::Base
     return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
+  def update_all_statuses
+    self.delivery_status
+    self.payment_status
+    self.payment_status
+    self.status
+  end
+  
 end
