@@ -5,6 +5,7 @@ class ProductPrice < ActiveRecord::Base
   
   belongs_to :product
   belongs_to :supplier, :class_name => "Contact"
+  belongs_to :customer, :class_name => "Contact"
   
   belongs_to :user
   
