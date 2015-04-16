@@ -509,7 +509,7 @@ class Order < ActiveRecord::Base
         @items = self.accounting_sales_orders
       end
       
-      if params["payment_status"].present? && params["payment_status"] == "waiting"
+      if params["payment_status"].present? && params["payment_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(payment_status_name: ["not_deposited", "debt", "pay_back"])
       end
     elsif params[:page].present? && params[:page] == "delivery"
@@ -519,7 +519,7 @@ class Order < ActiveRecord::Base
         @items = self.delivery_sales_orders
       end
       
-      if params["delivery_status"].present? && params["delivery_status"] == "waiting"
+      if params["delivery_status"].present? && params["delivery_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", "%not_delivered%", "%return_back%")
       end
     else
@@ -529,7 +529,7 @@ class Order < ActiveRecord::Base
         @items = self.customer_orders
       end
       
-      if params["order_status"].present? && params["order_status"] == "waiting"
+      if params["order_status"].present? && params["order_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(order_status_name: ["new", "items_confirmed", "price_confirmed"])
       end
     end
