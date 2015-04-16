@@ -33,7 +33,11 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def total_vat
-    total*(order.tax.rate/100+1)
+    sum = self.total*(order.tax.rate/100+1)
+    if !discount_amount.nil?
+      sum -= discount_amount
+    end
+    return sum
   end
   
   def total_vat_formated
@@ -176,6 +180,10 @@ class OrderDetail < ActiveRecord::Base
     end
     
     return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+  
+  def discount_amount=(new_price)
+    self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
   end
   
   def calculate_discount

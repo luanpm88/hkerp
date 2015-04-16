@@ -82,7 +82,11 @@
  	
 <script>
 	
-	function checkDiscountInput() {	
+	function checkDiscountInput() {		
+		if($('.total_not_vat').length == 0) {
+			return
+		}
+		
 		$('.line_discount').each(function() {
 			var d_box = $(this).find('.line_discount_percent');
 			var da_box = $(this).find('.line_discount_amount');
@@ -118,17 +122,26 @@
 			if($('.discount_percent').val() != "") {
 				$('.discount_amount').addClass("disabled");
 				
-				if($('.total_not_vat').length > 0) {
+				
 					var total = parseFloat($('.total_not_vat').html().replace(/,/g,""))
 					var discount = parseFloat($('.discount_percent').val())
 					var discount_amount = total*(discount/100)
-					$('.discount_amount').val(discount_amount)					
-				}
+					$('.discount_amount').val(discount_amount)
+					$('.total_discount').html(ReplaceNumberWithDots(discount_amount.toFixed(0)))
+
 			} else {
-				$('.discount_amount').removeClass("disabled");
+
+					$('.discount_amount').removeClass("disabled");
+					var discount = 0;
+					if ($('.discount_amount').val() != "") {
+						discount = parseFloat($('.discount_amount').val())
+					}
+					$('.total_discount').html(ReplaceNumberWithDots(discount.toFixed(0)))
+
 			}
 		} else {
 			$('#order_discount_amount').val(ReplaceNumberWithDots(total.toFixed(0)));
+			$('.total_discount').html(ReplaceNumberWithDots(total.toFixed(0)));
 			
 			$('.discount_percent').attr("value","");
 			$('.discount_percent').addClass("disabled");
@@ -136,6 +149,8 @@
 			$('.discount_amount').val(total);
 			$('.discount_amount').addClass("disabled");
 		}
+		
+		updateOrderPrices();		
 	}
 	
 	function update_update_price_form() {
@@ -249,6 +264,11 @@
     
     function updateOrderPrices()
     {
+		//checkDiscountInput();
+		if($('.total_not_vat').length == 0) {
+			return
+		}
+		
 		//update lines
 		$('#product-line-items ul').each(function() {
 			quantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
@@ -265,15 +285,22 @@
 			sum = sum + parseFloat($(this).html().replace(/,/g,"")) //parseFloat($(this).val());
 		});
 		
+		var discount = parseFloat($('.total_discount').html().replace(/,/g,""))
 		
-		sumvat = ReplaceNumberWithDots((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1)).toFixed(0));
-		sum = ReplaceNumberWithDots(sum.toFixed(0));
-		$('.product_order_list .footer .total_without_vat').html(sum);
-		$('.product_order_list .footer .total_with_vat').html(sumvat);
+		
+		var vat = ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(0));		
+		var dist = ReplaceNumberWithDots(discount.toFixed(0));
+		var sum_all = ReplaceNumberWithDots(sum.toFixed(0));
+		var sumvatdiscount = ReplaceNumberWithDots(((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1))-discount).toFixed(0));
+		
+		$('.product_order_list .footer .total_vat').html(vat);
+		$('.product_order_list .footer .total_without_vat').html(sum_all);
+		$('.product_order_list .footer .total_with_vat').html(sumvatdiscount);
+		$('.product_order_list .footer .total_discount').html(dist);
 
 		$('.order_tax_name').html($('select.tax-select option:selected').html());
 		
-		checkDiscountInput();
+		
     }
     
     function updateOrderAgentFormInfo(customer_id)
@@ -1179,6 +1206,9 @@
 		});
 		
 		$('.line_discount_amount').live("keyup",function() {
+			checkDiscountInput();
+		});
+		$('#order_discount_amount').live("keyup",function() {
 			checkDiscountInput();
 		});
 		$('#order_discount').number(true, 2);

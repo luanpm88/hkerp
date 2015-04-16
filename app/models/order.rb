@@ -8,6 +8,7 @@ class Order < ActiveRecord::Base
   validates :order_date, presence: true
   validates :order_deadline, presence: true
   validate :valid_debt_date
+  validate :valid_discount
   
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
@@ -35,6 +36,16 @@ class Order < ActiveRecord::Base
 
   before_save :calculate_discount
   
+  def valid_discount
+    sum_total = 0
+    order_details.each do |od|
+      sum_total += od.calculated_discount_amount if !od.calculated_discount_amount.nil?
+    end
+    if sum_total > 0 && discount_amount != sum_total
+      errors.add(:discount_amount, "is not valid")
+    end    
+  end
+  
   def valid_debt_date
     if !deposit.nil? && deposit > 0 && !debt_date.nil?
         if debt_date <= order_date
@@ -53,11 +64,11 @@ class Order < ActiveRecord::Base
   end
   
   def total_vat
-    total = 0
-    order_details.each {|item|
-      total = total + item.total
-    }
-    return total*(tax.rate/100+1)
+    sum = self.total*(tax.rate/100+1)
+    if !discount_amount.nil?
+      sum -= discount_amount
+    end    
+    return sum
   end
   
   def vat_amount
@@ -1043,6 +1054,10 @@ class Order < ActiveRecord::Base
   
   def calculated_discount_amount_formated
     return Order.format_price(calculated_discount_amount)
+  end
+  
+  def discount_amount_formated
+    return Order.format_price(discount_amount)
   end
   
   def order_link

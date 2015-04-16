@@ -105,11 +105,23 @@
     <td style="text-align: right"><%= @order.formated_total.to_s.gsub(",",".") %></td>
 
   </tr>
+  
+  <% if @order.discount_amount > 0 %>
+    <tr>
+      <td colspan="5" style="text-align: right">Giảm giá</td>
+      <td style="text-align: right"><%= @order.discount_amount_formated.to_s.gsub(",",".") %></td>
+  
+    </tr>
+  <% end %>
+  
   <tr>
     <td colspan="5" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
     <td style="text-align: right"><%= @order.formated_vat_amount.to_s.gsub(",",".") %></td>
 
   </tr>
+  
+  
+
   <tr>
     <td colspan="5" style="text-align: right">Tổng cộng tiền thanh toán</td>
     <td style="text-align: right"><%= @order.formated_total_vat.to_s.gsub(",",".") %></td>
