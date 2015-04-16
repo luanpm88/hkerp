@@ -268,7 +268,7 @@ class OrdersController < ApplicationController
         group_3 += 1
       end      
       if can? :update_info, item
-        actions += '<li>'+view_context.link_to("Update Info", update_info_orders_path(:id => item.id))+'</li>'
+        actions += '<li>'+view_context.link_to("Update Info", update_info_orders_path(:id => item.id, page: params[:page]))+'</li>'
         group_3 += 1
       end
       
@@ -415,7 +415,7 @@ class OrdersController < ApplicationController
   end
   
   def do_update_info
-    if params[:accounting]
+    if params[:page] == "accounting"
       redirect_url = {controller: "accounting", action: "orders"}
     else    
       redirect_url = @order.is_purchase ? purchase_orders_orders_path : orders_path
