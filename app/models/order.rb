@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   validates :order_date, presence: true
   validates :order_deadline, presence: true
   validate :valid_debt_date
-  validate :valid_discount
+  #validate :valid_discount
   
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
