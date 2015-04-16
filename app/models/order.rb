@@ -530,7 +530,7 @@ class Order < ActiveRecord::Base
       end
       
       if params["order_status"].present? && params["order_status"] == "waiting" && params["search"]["value"].empty?
-        @items = @items.where(order_status_name: ["new", "items_confirmed", "price_confirmed"])
+        @items = @items.where(order_status_name: [nil, "new", "items_confirmed", "price_confirmed"])
       end
     end
     
