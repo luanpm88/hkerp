@@ -502,11 +502,19 @@ class Order < ActiveRecord::Base
       else
         @items = self.accounting_sales_orders
       end
+      
+      if params["payment_status"].present? && params["payment_status"] == "waiting"
+        @items = @items.where(payment_status_name: ["not_deposited", "debt", "pay_back"])
+      end
     elsif params[:page].present? && params[:page] == "delivery"
       if params[:purchase]
         @items = self.delivery_purchase_orders
       else
         @items = self.delivery_sales_orders
+      end
+      
+      if params["delivery_status"].present? && params["delivery_status"] == "waiting"
+        @items = @items.where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", "%not_delivered%", "%return_back%")
       end
     else
       if params[:purchase]
@@ -514,12 +522,16 @@ class Order < ActiveRecord::Base
       else
         @items = self.customer_orders
       end
+      
+      if params["order_status"].present? && params["order_status"] == "waiting"
+        @items = @items.where(order_status_name: ["new", "items_confirmed", "price_confirmed"])
+      end
     end
     
     @items = @items.joins(:order_status)
-    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present?
-    @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?
-    @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?
+    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting"
+    @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?  && params["delivery_status"] != "waiting"
+    @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?  && params["payment_status"] != "waiting"
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
     @items = @items.where('extract(month from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["month"]) if params["month"].present?
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?

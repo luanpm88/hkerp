@@ -40,7 +40,8 @@
 						  <div class="input-with-icon  right">                                       
 							  <i class=""></i>
 							  <select name="delivery_status" class="modern_select width100">
-								  <option value="">All</option>								  
+								  <option value="">All</option>
+								  <option value="waiting" <%= 'selected="selected"' if ["deliveries"].include?(params[:controller]) %>>Waiting...</option>
 								  <option value="not_delivered">Not Delivered</option>
 								  <option value="combinable">Combinable</option>
 								  <option value="out_of_stock">Out Of Stock</option>
@@ -61,7 +62,8 @@
 						  <div class="input-with-icon  right">                                       
 							  <i class=""></i>
 							  <select name="payment_status" class="modern_select width100">
-								  <option value="">All</option>								  
+								  <option value="">All</option>
+								  <option value="waiting" <%= 'selected="selected"' if ["accounting"].include?(params[:controller]) %>>Waiting...</option>
 								  <option value="not_deposited">Not Deposited</option>
 								  <option value="out_of_date">Out of Date</option>
 								  <option value="debt">Debt</option>
@@ -82,6 +84,7 @@
 							  <i class=""></i>
 							  <select name="order_status" class="modern_select width100">
 								  <option value="">All</option>
+								  <option value="waiting" <%= 'selected="selected"' if ["orders"].include?(params[:controller]) %>>Waiting...</option>
 								  <option value="new">New</option>
 								  <option value="items_confirmed">Items Confirmed</option>
 								  <option value="price_confirmed">Price Confirmed</option>

@@ -25,4 +25,8 @@ class ProductPrice < ActiveRecord::Base
   def supplier_price_formated
     supplier_price.nil? ? "" : Order.format_price(supplier_price)
   end
+  
+  def supplier_name
+    supplier.nil? ? "NONE" : supplier.name
+  end
 end

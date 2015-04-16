@@ -384,7 +384,9 @@ class OrdersController < ApplicationController
     params[:order_details].each do |line|
       od = @order.order_details.find(line[0])
       od.product.update_price(line[1][:product], current_user)
-      od.update_attributes(product_price_id: od.product.product_price.id, price: od.product.product_price.price)
+      
+      pp = Product.find(od.product.id)
+      od.update_attributes(product_price_id: pp.product_price.id, price: pp.product_price.price)
     end
     
     if !params[:product_parts].nil?

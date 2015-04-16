@@ -168,22 +168,25 @@ class Notification < ActiveRecord::Base
   
   def self.sales_delivery_alert
     count = Order.customer_orders
-                              .joins(:order_status).where(order_statuses: {name: "confirmed"})
-                              .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+                              .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
+                              .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
+                              .where(parent_id: nil).count("orders.id")
     
     return count > 0 ? count : ""
   end
   def self.purchase_delivery_alert
     count = Order.purchase_orders
-                              .joins(:order_status).where(order_statuses: {name: "confirmed"})
-                              .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+                              .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
+                              .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
+                              .where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
   def self.delivery_alert
     count = Order
-                .joins(:order_status).where(order_statuses: {name: "confirmed"})
-                .where("delivery_status_name != ?", 'delivered').where(parent_id: nil).count
+                .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
+                .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
+                .where(parent_id: nil).count
     
     return count > 0 ? count : ""
   end
@@ -201,7 +204,7 @@ class Notification < ActiveRecord::Base
     count = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "items_confirmed"}).count
     count += Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                   .where("delivery_status_name LIKE ?", '%out_of_stock%').where(parent_id: nil).count
     return count > 0 ? count : ""
   end
@@ -211,7 +214,7 @@ class Notification < ActiveRecord::Base
   
   def self.sales_payment_alert
     count = Order.customer_orders
-                .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                 .where("payment_status_name IN (?,?,?)", 'out_of_date', 'not_deposited', 'pay_back').where(parent_id: nil).count
     
     return count > 0 ? count : ""
@@ -219,7 +222,7 @@ class Notification < ActiveRecord::Base
   
   def self.purchase_payment_alert
     count = Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: "confirmed"})
+                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                   .where("payment_status_name IN (?,?)", 'out_of_date', 'not_deposited').where(parent_id: nil).count
     
     return count > 0 ? count : ""
