@@ -33,6 +33,8 @@ class Order < ActiveRecord::Base
   has_many :deliveries, :dependent => :destroy
   
   has_many :payment_records, :dependent => :destroy
+  
+  has_many :notifications, foreign_key: "item_id", :dependent => :destroy
 
   before_save :calculate_discount
   
@@ -72,6 +74,10 @@ class Order < ActiveRecord::Base
   
   def vat_amount
     return total*(tax.rate/100)
+  end
+  
+  def vat_amount_formated
+    Order.format_price(vat_amount)
   end
   
   def self.format_price(amount)

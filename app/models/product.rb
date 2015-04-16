@@ -317,6 +317,7 @@ class Product < ActiveRecord::Base
     new_price = product_prices.new(price: params[:price],
       supplier_price: params[:supplier_price],
       supplier_id: params[:supplier_id],
+      customer_id: params[:customer_id],
       user_id: user.id,
     )
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id || new_price.customer_id != self.product_price.customer_id

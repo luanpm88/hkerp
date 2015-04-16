@@ -28,6 +28,10 @@ class ProductPrice < ActiveRecord::Base
   end
   
   def supplier_name
-    supplier.nil? ? "NONE" : supplier.name
+    supplier.nil? ? "" : supplier.name
+  end
+  
+  def customer_name
+    customer.nil? ? "" : customer.name
   end
 end

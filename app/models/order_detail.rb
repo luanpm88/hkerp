@@ -210,10 +210,12 @@ class OrderDetail < ActiveRecord::Base
       params[:price] = product.product_price.price.nil? ? 0 : product.product_price.price
       params[:supplier_id] = order.supplier_id
       params[:supplier_price] = self.price
+      params[:customer_id] = nil
     else
       params[:price] = self.price
       params[:supplier_id] = product.product_price.supplier_id
       params[:supplier_price] = product.product_price.supplier_price
+      params[:customer_id] = order.customer_id
     end
     product.update_price(params,user)
     

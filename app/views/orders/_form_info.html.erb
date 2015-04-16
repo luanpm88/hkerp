@@ -451,33 +451,41 @@
                                 <% end %>
                             <% end %>
                           </div>
+                          
+                          
                           <ul class="footer line1">
                             <li class="name">
                             </li>
+                            <li class="unit"></li>
+                            <li class="sum"></li>
                             
-                            <li class="sumz"></li>
-                            <li class="price_totalz"></li>
-                            <li class="warranty text-right">Dist.Total:</li>
+                            <li class="warranty text-right">
+                                   Dist.Total:
+                            </li>
                             <li class="discount text-right">
                                    <%= f.text_field :discount, placeholder: "%", value: @order.discount == 0 ? "" : @order.discount, :class => "width100 text-right discount_percent" %>
                                    <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
                             </li>
-                            <li class="action"></li>
+                            
                           </ul>
                           <ul class="footer line2">
                             <li class="name">
                             </li>
                             <li class="sum">
                                    Total<br />
-                                   Total (+ <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span>)
-                            </li>
+                                   Discount<br />
+                                   <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span><br />
+                                   Sum.Total</li>
                             <li class="text-right">
+                                  
                                    <span class="total_without_vatz total_not_vat"><%= @order.formated_total %></span><br />
+                                    <span class="total_discount"><%= @order.discount_amount_formated %></span><br />
+                                    <span class="total_vat_raw total_vatz "><%= @order.vat_amount_formated %></span><br />
                                    <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
                             </li>
                             <li class="warranty text-right"></li>
                             <li class="discount_total text-right"></li>
-                            <li class="action"></li>
+                            
                           </ul>
                         </div>
 
