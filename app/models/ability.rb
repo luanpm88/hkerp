@@ -232,7 +232,7 @@ class Ability
         end
         can :download_pdf, Order
         can :pay_order, Order  do |order|
-          ['confirmed'].include?(order.status.name) && !order.is_paid
+          ['finished','confirmed'].include?(order.status.name) && !order.is_paid
         end
         
         can :create, PaymentRecord
