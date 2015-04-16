@@ -558,15 +558,15 @@ class Product < ActiveRecord::Base
     #Order details, sales and purchases
     od_details = order_details
                       .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-                      .where(order_statuses: {name: ["finished"]})
+                      .where(order_statuses: {name: ["finished","confirmed"]})
                       .where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
     
     #Delivery details, sales and purchases
-    status = OrderStatus.where(name: 'finished').first    
+    statuses = OrderStatus.where(name: ["finished","confirmed"])    
     d_details = delivery_details
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(orders: {order_status_id: status.id})
+              .where(orders: {order_status_id: statuses.map(&:id)})
               .where('orders.order_date >= ?', from_date)
               .where('orders.order_date <= ?', to_date)
     
