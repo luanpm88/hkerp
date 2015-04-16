@@ -81,7 +81,7 @@
 							</thead>
 							<tbody>
 								<% @order.order_details.each do |line| %>
-								<tr class="quantity-">
+								<tr class="quantity-1">
 									<td>
 									<%= hidden_field_tag "delivery_lines[#{line.id}][order_detail_id]", line.id %>
 									<%= line.product_name %><br />
