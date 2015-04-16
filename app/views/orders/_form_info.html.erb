@@ -439,9 +439,9 @@
                             </li>
                             <li class="unit text-center">Unit</li>
                             <li class="price">Price/Quantity</li>                            
-                            <li class="price_total">Total</li>
+                            <li class="price_total text-right">Total</li>
                             <li class="warranty text-center">Warranty</li>
-                            <li class="discount text-center">Discount</li>
+                            <li class="discount text-right">Discount</li>
                             
                           </ul>
                           <div id="product-line-itemsz">
@@ -450,24 +450,9 @@
                                   <%= render 'order_details/line_item_info', :order_detail => order_detail %>
                                 <% end %>
                             <% end %>
-                          </div>
+                          </div>      
                           
                           
-                          <ul class="footer line1">
-                            <li class="name">
-                            </li>
-                            <li class="unit"></li>
-                            <li class="sum"></li>
-                            
-                            <li class="warranty text-right">
-                                   Dist.Total:
-                            </li>
-                            <li class="discount text-right">
-                                   <%= f.text_field :discount, placeholder: "%", value: @order.discount == 0 ? "" : @order.discount, :class => "width100 text-right discount_percent" %>
-                                   <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
-                            </li>
-                            
-                          </ul>
                           <ul class="footer line2">
                             <li class="name">
                             </li>
@@ -478,9 +463,9 @@
                                    Sum.Total</li>
                             <li class="text-right">
                                   
-                                   <span class="total_without_vatz total_not_vat"><%= @order.formated_total %></span><br />
-                                    <span class="total_discount"><%= @order.discount_amount_formated %></span><br />
-                                    <span class="total_vat_raw total_vatz "><%= @order.vat_amount_formated %></span><br />
+                                   <span class="total_without_vatz total_not_vatz"><%= @order.formated_total %></span><br />
+                                    <span class="total_discountz"><%= @order.discount_amount_formated %></span><br />
+                                    <span class="total_vatz "><%= @order.vat_amount_formated %></span><br />
                                    <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
                             </li>
                             <li class="warranty text-right"></li>

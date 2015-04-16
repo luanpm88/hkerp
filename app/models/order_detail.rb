@@ -229,4 +229,8 @@ class OrderDetail < ActiveRecord::Base
     end
     
   end
+  
+  def discount_amount_formated
+    Order.format_price(discount_amount)
+  end
 end
