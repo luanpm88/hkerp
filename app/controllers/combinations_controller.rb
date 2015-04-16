@@ -46,7 +46,7 @@ class CombinationsController < ApplicationController
     
     respond_to do |format|
       if @combination.save
-        @combination.proccess
+        #@combination.proccess
         
         format.html { redirect_to new_combination_path(product_id: @combination.product_id), notice: 'Combination was successfully created.' }
         format.json { render action: 'show', status: :created, location: @combination }
