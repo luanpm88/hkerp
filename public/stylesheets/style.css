@@ -7457,7 +7457,6 @@ ul.my-friends li .profile-pic{
 }
 .product_order_list ul.footer li.sum
 {
-    width: 32%;
     text-align: right;
 }
 .product_order_list ul.footer li.sumz
@@ -7788,4 +7787,19 @@ tr.parent td {
 }
 .update-price-form input.price,.update-price-form input.supplier_price {
     min-width: 105px;
+}
+.product_order_list ul li.name {
+    width: 32%;
+}
+.product_order_list ul li.sum {
+    width: 26%;
+}
+.product_order_list ul li.quant {
+    
+}
+.product_order_list ul li.unit {
+    width: 10%;
+}
+.product_order_list ul li.warranty {
+    width: 10%;
 }
