@@ -616,7 +616,7 @@ class Product < ActiveRecord::Base
       if c.combined.nil? || c.combined
         line = {user: c.user, date: c.created_at, note: "Combining:"+c_str, link: "", quantity: c.quantity}
       else
-        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", quantity: c.quantity}
+        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", "-"+quantity: c.quantity}
       end
       
       history << line
@@ -631,7 +631,7 @@ class Product < ActiveRecord::Base
       if cd.combination.combined.nil? || cd.combination.combined
         line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
       else
-        line = {user: cd.combination.user,date: cd.created_at, note: "Added by de-combine [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+        line = {user: cd.combination.user,date: cd.created_at, note: "Added by de-combine [#{cd.combination.product.name}]", link: "", quantity: cd.quantity.to_s}
       end
       
       history << line
