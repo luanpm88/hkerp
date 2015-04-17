@@ -7773,8 +7773,11 @@ input.disabled {
     color: #ccc;
 }
 .price-history {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 .page-content {
     overflow-y: hidden;
+}
+tr.children {
+    background: #efefef !important;
 }
