@@ -96,9 +96,9 @@
                     <%= order_detail.product_name %><br />
                     <%= order_detail.product_description %></div>
                 <div style="border: solid 0px #aaa;float: left;width:50px;margin-right: 15px;text-align: center"><%= order_detail.unit %></div>
-                <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 15px;text-align: center"><%= order_detail.quantity.to_s.gsub(",",".") %></div>
-                <div style="border: solid 0px #aaa;float: left;width:83px;margin-right: 15px;text-align: right"><%= order_detail.formated_price.to_s.gsub(",",".") %></div>
-                <div style="border: solid 0px #aaa;float: left;width:130px;margin-right: 0;text-align: right"><%= order_detail.formated_total.to_s.gsub(",",".") %></div>
+                <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 15px;text-align: center"><%= order_detail.quantity %></div>
+                <div style="border: solid 0px #aaa;float: left;width:83px;margin-right: 15px;text-align: right"><%= format_price(order_detail.price, true) %></div>
+                <div style="border: solid 0px #aaa;float: left;width:130px;margin-right: 0;text-align: right"><%= format_price(order_detail.total, true) %></div>
             </div>
       <% end %>
     <% end %>
@@ -117,15 +117,15 @@
 </div>
 
 <div style="position: absolute;top:<%= pos9 %>px;left: 570px;width:130px;text-align: right">
-    <%= @order.formated_total.to_s.gsub(",",".") %>
+    <%= format_price(@order.total, true, true) %>
 </div>
 
 <div style="position: absolute;top:<%= pos10 %>px;left: 570px;width:130px;text-align: right">
-    <%= @order.vat_amount == 0 ? "X" : @order.formated_vat_amount.to_s.gsub(",",".") %>
+    <%= @order.vat_amount == 0 ? "X" : format_price(@order.vat_amount, true, true) %>
 </div>
 
 <div style="position: absolute;top:<%= pos11 %>px;left: 570px;width:130px;text-align: right">
-    <%= @order.formated_total_vat.to_s.gsub(",",".") %>
+    <%= format_price(@order.total_vat, true, true) %>
 </div>
 
 <div style="position: absolute;top:<%= pos12 %>px;left: 165px;width:500px;line-height: 31px;">

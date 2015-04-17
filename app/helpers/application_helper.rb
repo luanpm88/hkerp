@@ -1,5 +1,11 @@
 module ApplicationHelper
-  def format_price number
-    number_to_currency(number, precision: 0, unit: '', delimiter: ",")
+  def format_price(number, vn = false, round = false)
+    prec = (number.to_f.round == number.to_f) ? 0 : 2
+    prec = 0 if round
+    if vn
+      number_to_currency(number, precision: prec, separator: ",", unit: '', delimiter: ".")
+    else
+      number_to_currency(number, precision: prec, separator: ".", unit: '', delimiter: ",")
+    end
   end
 end

@@ -23,7 +23,7 @@
                                         <input class="form-control number_input quantity" type="text" name="order_details[<%= order_detail.product_id %>][quantity]" value="<%= order_detail.quantity %>" />
                                       </li>
                                       <li class="total text-right">
-                                        <%= order_detail.formated_total %>
+                                        <%= format_pprice(order_detail.total) %>
                                       </li>
                                         <li class="warranty">
                                             <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][warranty]" value="<%= order_detail.warranty %>" />

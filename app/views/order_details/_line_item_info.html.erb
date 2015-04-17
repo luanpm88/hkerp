@@ -9,15 +9,15 @@
                                         <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
                                       </li>                                    
                                       <li class="text-right">
-                                        <%= order_detail.formated_price %> / <%= order_detail.quantity %>
+                                        <%= format_price(order_detail.price) %> / <%= order_detail.quantity %>
                                       </li>
                                       <li class="total text-right">
-                                        <%= order_detail.formated_total %>
+                                        <%= format_price(order_detail.total) %>
                                       </li>
                                         <li class="warranty text-center">
                                           <%= order_detail.warranty %>
                                         </li>
                                       <li class="line_discount text-right">
-                                            <%= order_detail.discount_amount_formated %>
+                                            <%= format_price(order_detail.discount_amount) %>
                                         </li>
                                   </ul>
