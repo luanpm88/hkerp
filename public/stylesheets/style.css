@@ -7778,6 +7778,6 @@ input.disabled {
 .page-content {
     overflow-y: hidden;
 }
-tr.children {
+tr.children td {
     background: #efefef !important;
 }
