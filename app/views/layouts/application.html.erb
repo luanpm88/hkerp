@@ -590,6 +590,9 @@
 						  return {results: data};
 						}
 					},
+					initSelection: function (element, callback) {				      
+					  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+					}
 			    });
 			}
 		    }
@@ -839,6 +842,9 @@
 						  return {results: data};
 						}
 					},
+					initSelection: function (element, callback) {				      
+					  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+					}
 			    });
 			    
 			    $('.select2-ajax-manufacturers').select2({
@@ -1076,7 +1082,10 @@
 		  },
 		  results: function (data, page) {
 		    return {results: data};
-		  }
+		  },
+			initSelection: function (element, callback) {				      
+			  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+			}
 		},
 		initSelection: function (element, callback) {				      
 		  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
