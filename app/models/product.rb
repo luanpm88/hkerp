@@ -616,7 +616,7 @@ class Product < ActiveRecord::Base
       if c.combined.nil? || c.combined
         line = {user: c.user, date: c.created_at, note: "Combining:"+c_str, link: "", quantity: c.quantity}
       else
-        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", "-"+quantity: c.quantity}
+        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", quantity: "-"+c.quantity.to_s}
       end
       
       history << line
