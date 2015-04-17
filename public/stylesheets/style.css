@@ -7780,9 +7780,9 @@ input.disabled {
 }
 tr.children td {
     background: none repeat scroll 0 0 #efefef !important;
-    border-bottom: solid 1px #ccc;
 }
 tr.parent td {
     background: none repeat scroll 0 0 #fff !important;
-    border-bottom: solid 1px #ccc;
+    border-bottom: 1px solid #ccc !important;
+    border-top: 1px solid #ccc !important;
 }
