@@ -7779,5 +7779,10 @@ input.disabled {
     overflow-y: hidden;
 }
 tr.children td {
-    background: #efefef !important;
+    background: none repeat scroll 0 0 #efefef !important;
+    border-bottom: solid 1px #ccc;
+}
+tr.parent td {
+    background: none repeat scroll 0 0 #fff !important;
+    border-bottom: solid 1px #ccc;
 }
