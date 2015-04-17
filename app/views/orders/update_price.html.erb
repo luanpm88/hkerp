@@ -36,7 +36,6 @@
                                         <tr>
                                             <th>Product Name</th>
                                             <th>Quantity</th>
-											<th>Status</th>
                                             <th>Current Price</th>
 					    <th>Supplier</th>
 					    <th>Supplier Price</th>
@@ -52,18 +51,14 @@
 													<td>					      
 													  <strong><%= line.product_name %><br /><%= line.product_description %></strong>
 													</td>
-																		<td class="text-center">
+													<td class="text-center">
 													  <%= line.quantity %>
-													</td>
-													<td>
-														<%= line.product.price_status %>
-														
-														<%= line.product.price_history_link %>
-													</td>
-													
+													  
+													</td>													
 													<td class="text-right">
 													  <%= line.formated_price %>
-													  
+													  <%= line.product.price_status %>
+													  <%= line.product.price_history_link %>
 													</td>
 													<td>
 													  <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
@@ -85,14 +80,12 @@
 														  <span class="child-pointer">----></span> <%= part.display_name %><br /><%= part.description %>
 														</td>
 
-														<td>
-															<%= part.price_status %>
-															
-															<%= part.price_history_link %>
-														</td>
+														
 														
 														<td class="text-right">
 														  <%= part.product_price.price_formated %>
+														  <%= part.price_status %>
+														  <%= part.price_history_link %>
 														</td>
 														<td>
 														  <input style="width:100%;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
