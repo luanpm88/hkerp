@@ -37,7 +37,9 @@
                                             <th>Product Name</th>
                                             <th>Quantity</th>
                                             <th>Current Price</th>
-					    <th>Supplier</th>
+					    <th>Supplier
+						  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+						</th>
 					    <th>Supplier Price</th>
                                             <th>New Price</th>
 											
@@ -62,7 +64,7 @@
 													</td>
 													<td>
 													  <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
-													  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+													  
 													</td>
 													<td>
 													  <%= text_field_tag "order_details[#{line.id}][product][supplier_price]",line.product.product_price.supplier_price, {:class => "form-control price_input supplier_price"} %>
@@ -87,7 +89,7 @@
 														</td>
 														<td>
 														  <input style="width:100%;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
-														  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+														  
 														</td>
 														<td><%= text_field_tag "product_parts[#{part.id}][product][supplier_price]",part.product_price.supplier_price, {:class => "form-control price_input supplier_price", rel: line.product_id} %></td>
 														<td>
