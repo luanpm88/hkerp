@@ -272,6 +272,10 @@ class Ability
           ['confirmed','finished'].include?(order.status.name) && !order.is_delivered?
         end
         
+        can :trash, Delivery do |d|
+          ['confirmed','finished'].include?(d.order.status.name) && d.creator_id == user.id
+        end
+        
         can :statistics, Product
         can :ajax_product_prices, Product
         can :product_log, Product

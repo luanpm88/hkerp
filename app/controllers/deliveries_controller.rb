@@ -1,6 +1,6 @@
 class DeliveriesController < ApplicationController
   load_and_authorize_resource :except => [:deliver, :create]
-  before_action :set_delivery, only: [:show, :edit, :update, :destroy, :download_pdf]
+  before_action :set_delivery, only: [:trash, :show, :edit, :update, :destroy, :download_pdf]
 
   # GET /deliveries
   # GET /deliveries.json
@@ -125,6 +125,20 @@ class DeliveriesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to deliveries_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def trash
+    list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
+    
+    respond_to do |format|
+      if @delivery.trash
+        format.html { redirect_to list_path, notice: 'Delivery was successfully trashed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to list_path, alert: 'Delivery was unsuccessfully trashed.' }
+        format.json { head :no_content }
+      end
     end
   end
 

@@ -23,6 +23,7 @@ Hkerp::Application.routes.draw do
     collection do
       get :deliver
       get :download_pdf
+      get :trash
     end
   end
 

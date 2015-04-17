@@ -372,7 +372,8 @@ CREATE TABLE deliveries (
     updated_at timestamp without time zone,
     creator_id integer,
     delivery_person_id integer,
-    is_return integer DEFAULT 0
+    is_return integer DEFAULT 0,
+    status integer DEFAULT 1
 );
 
 
@@ -2261,4 +2262,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150416043832');
 INSERT INTO schema_migrations (version) VALUES ('20150417034742');
 
 INSERT INTO schema_migrations (version) VALUES ('20150417041617');
+
+INSERT INTO schema_migrations (version) VALUES ('20150417080712');
 

@@ -382,13 +382,17 @@ class Product < ActiveRecord::Base
     
     #count for sales delivery
     count -= delivery_details
+                      .joins(:delivery)
                       .joins(:order_detail => :order)
+                      .where(deliveries: {status: 1})
                       .where(orders: {supplier_id: Contact.HK.id})
                       .sum(:quantity)
     
     #count for purchase delivery
     count += delivery_details
+                      .joins(:delivery)
                       .joins(:order_detail => :order)
+                      .where(deliveries: {status: 1})
                       .where(orders: {customer_id: Contact.HK.id})
                       .sum(:quantity)
     
@@ -566,7 +570,9 @@ class Product < ActiveRecord::Base
     #Delivery details, sales and purchases
     statuses = OrderStatus.where(name: ["finished","confirmed"])    
     d_details = delivery_details
+              .joins(:delivery)
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+              .where(deliveries: {status: 1})
               .where(orders: {order_status_id: statuses.map(&:id)})
               .where('orders.order_date >= ?', from_date)
               .where('orders.order_date <= ?', to_date)

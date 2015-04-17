@@ -968,7 +968,7 @@ class Order < ActiveRecord::Base
   end
   
   def all_deliveries
-    deliveries.order("created_at DESC")
+    deliveries.where(status: 1).order("created_at DESC")
   end
   
   def save_draft(user)
@@ -1104,7 +1104,7 @@ class Order < ActiveRecord::Base
     end
     
     #status
-    deliveries.each do |d|
+    all_deliveries.each do |d|
       o = d.order
       if o.is_purchase
         if d.is_return == 1

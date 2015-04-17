@@ -141,4 +141,8 @@ class Delivery < ActiveRecord::Base
     link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: self.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe').html_safe
   end
   
+  def trash
+    self.update_attribute("status", 0)
+  end
+  
 end

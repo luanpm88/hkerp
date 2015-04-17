@@ -121,7 +121,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def delivered_count
-    delivery_details.sum :quantity
+    delivery_details.joins(:delivery).where(deliveries: {status: 1}).sum :quantity
   end
   
   def remain_count
