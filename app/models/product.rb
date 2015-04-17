@@ -613,7 +613,11 @@ class Product < ActiveRecord::Base
         c_str += "----- #{cd.product.name} [<strong>#{cd.quantity}</strong>]"
       end
       
-      line = {user: c.user, date: c.created_at, note: "Created by combining:"+c_str, link: "", quantity: c.quantity}
+      if c.combined.nil? || c.combined
+        line = {user: c.user, date: c.created_at, note: "Combining:"+c_str, link: "", quantity: c.quantity}
+      else
+        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", quantity: c.quantity}
+      end
       
       history << line
     end
@@ -624,8 +628,11 @@ class Product < ActiveRecord::Base
               .where('created_at <= ?', to_date)
     
     com_ds.each do |cd|
-      
-      line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      if cd.combination.combined.nil? || cd.combination.combined
+        line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      else
+        line = {user: cd.combination.user,date: cd.created_at, note: "Added by de-combine [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+      end
       
       history << line
     end
