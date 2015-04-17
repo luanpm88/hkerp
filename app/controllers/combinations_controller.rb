@@ -15,7 +15,9 @@ class CombinationsController < ApplicationController
 
   # GET /combinations/new
   def new
-    @combination = Combination.new(product_id: params[:product_id])
+    @combination = Combination.new(product_id: params[:product_id], combined: params[:combined])
+    
+    
     @product = Product.find(params[:product_id])
   end
 
@@ -46,9 +48,9 @@ class CombinationsController < ApplicationController
     
     respond_to do |format|
       if @combination.save
-        #@combination.proccess
+        @combination.update_stock_after
         
-        format.html { redirect_to new_combination_path(product_id: @combination.product_id), notice: 'Combination was successfully created.' }
+        format.html { redirect_to products_url, notice: 'Combination was successfully created.' }
         format.json { render action: 'show', status: :created, location: @combination }
       else
         format.html { render action: 'new' }
@@ -89,6 +91,6 @@ class CombinationsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def combination_params
-      params.require(:combination).permit(:product_id, :quantity)
+      params.require(:combination).permit(:combined, :product_id, :quantity)
     end
 end

@@ -31,9 +31,6 @@ class ProductStockUpdatesController < ApplicationController
     
     @product_stock_update.user = current_user
     
-    
-    
-    
     respond_to do |format|
       if @product_stock_update.save
         format.html { redirect_to products_url, notice: 'Product stock update was successfully created.' }
@@ -77,6 +74,6 @@ class ProductStockUpdatesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_stock_update_params
-      params.require(:product_stock_update).permit(:is_import, :product_id, :quantity, :serial_numbers)
+      params.require(:product_stock_update).permit(:note, :is_import, :product_id, :quantity, :serial_numbers)
     end
 end

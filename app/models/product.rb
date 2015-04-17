@@ -377,7 +377,8 @@ class Product < ActiveRecord::Base
   def calculated_stock
     count = 0
     #count for combinations
-    count += combinations.sum(:quantity)-combination_details.sum(:quantity)
+    count += combinations.where(combined: [nil,true]).sum(:quantity)-combination_details.joins(:combination).where(combinations: {combined: [nil,true]}).sum(:quantity)
+    count += -combinations.where(combined: false).sum(:quantity)+combination_details.joins(:combination).where(combinations: {combined: false}).sum(:quantity)
     
     #count for sales delivery
     count -= delivery_details

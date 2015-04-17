@@ -275,6 +275,13 @@ class Ability
         can :statistics, Product
         can :ajax_product_prices, Product
         can :product_log, Product
+        
+        can :combine_parts, Product do |product|
+          product.is_combinable
+        end
+        can :de_combine_parts, Product do |product|
+          product.calculated_stock > 0
+        end
       end
 
     end

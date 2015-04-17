@@ -14,15 +14,28 @@ class CombinationDetail < ActiveRecord::Base
   def serial_numbers_remain_can_not_greater_than_stock_remain
     p = Product.find(product_id)
     
-    removed_serial_number = []
-    Product.extract_serial_numbers(serial_numbers).each do |number|
-      if Product.extract_serial_numbers(p.serial_numbers).include?(number)
-        removed_serial_number << number
-      end      
+    if combination.combined
+      removed_serial_number = []
+      Product.extract_serial_numbers(serial_numbers).each do |number|
+        if Product.extract_serial_numbers(p.serial_numbers).include?(number)
+          removed_serial_number << number
+        end      
+      end
+      
+      if Product.extract_serial_numbers(p.serial_numbers).count - removed_serial_number.count > p.calculated_stock - quantity
+          errors.add(:serial_numbers, "can not be greater than stock")
+      end
+    else
+      added_serial_number = []
+      Product.extract_serial_numbers(serial_numbers).each do |number|
+        if !Product.extract_serial_numbers(p.serial_numbers).include?(number)
+          added_serial_number << number
+        end      
+      end
+      
+      if Product.extract_serial_numbers(p.serial_numbers).count + added_serial_number.count > p.calculated_stock + quantity
+        errors.add(:serial_numbers, "can not be greater than stock")
+      end
     end
-    
-    if Product.extract_serial_numbers(p.serial_numbers).count - removed_serial_number.count > p.stock - quantity
-        errors.add(:serial_numbers, "remains can not be greater than stock remain")
-    end    
   end
 end

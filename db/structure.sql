@@ -257,7 +257,8 @@ CREATE TABLE combinations (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     serial_numbers text,
-    user_id integer
+    user_id integer,
+    combined boolean DEFAULT true
 );
 
 
@@ -891,7 +892,8 @@ CREATE TABLE product_stock_updates (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     is_import integer,
-    user_id integer
+    user_id integer,
+    note text
 );
 
 
@@ -2255,4 +2257,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150409015540');
 INSERT INTO schema_migrations (version) VALUES ('20150415043518');
 
 INSERT INTO schema_migrations (version) VALUES ('20150416043832');
+
+INSERT INTO schema_migrations (version) VALUES ('20150417034742');
+
+INSERT INTO schema_migrations (version) VALUES ('20150417041617');
 
