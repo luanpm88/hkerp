@@ -1197,6 +1197,11 @@
 		});
 		
 		//update_update_price_form();
+		$('.update-price-form .parent').each(function() {
+			if ($(this).find('.supplier_price').val() == "") {
+				update_update_price_form($(this).attr("rel"));
+			}
+		});
 		$('.update-price-form .children input').keyup(function() {
 			update_update_price_form($(this).attr("rel"));
 		});
