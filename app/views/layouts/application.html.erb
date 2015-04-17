@@ -127,7 +127,7 @@
 					var discount = parseFloat($('.discount_percent').val())
 					var discount_amount = total*(discount/100)
 					$('.discount_amount').val(discount_amount)
-					$('.total_discount').html(ReplaceNumberWithDots(discount_amount.toFixed(0)))
+					$('.total_discount').html(ReplaceNumberWithDots(discount_amount.toFixed(2)))
 
 			} else {
 
@@ -136,12 +136,12 @@
 					if ($('.discount_amount').val() != "") {
 						discount = parseFloat($('.discount_amount').val())
 					}
-					$('.total_discount').html(ReplaceNumberWithDots(discount.toFixed(0)))
+					$('.total_discount').html(ReplaceNumberWithDots(discount.toFixed(2)))
 
 			}
 		} else {
-			$('#order_discount_amount').val(ReplaceNumberWithDots(total.toFixed(0)));
-			$('.total_discount').html(ReplaceNumberWithDots(total.toFixed(0)));
+			$('#order_discount_amount').val(ReplaceNumberWithDots(total.toFixed(2)));
+			$('.total_discount').html(ReplaceNumberWithDots(total.toFixed(2)));
 			
 			$('.discount_percent').attr("value","");
 			$('.discount_percent').addClass("disabled");
@@ -153,8 +153,8 @@
 		updateOrderPrices();		
 	}
 	
-	function update_update_price_form() {
-		$('.update-price-form .parent').each(function() {
+	function update_update_price_form(rel) {
+		$('.update-price-form .parent[rel="'+rel+'"').each(function() {
 			var rel = $(this).attr("rel");
 			var parent = $(this)
 			
@@ -274,7 +274,7 @@
 			quantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
 			price = parseFloat($(this).find('.price').val().replace(/,/g,""))
 			
-			total = ReplaceNumberWithDots((quantity*price).toFixed(0));
+			total = ReplaceNumberWithDots((quantity*price).toFixed(2));
 			
 			$(this).find('.total').html(total);
 		});
@@ -288,10 +288,10 @@
 		var discount = parseFloat($('.total_discount').html().replace(/,/g,""))
 		
 		
-		var vat = ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(0));		
-		var dist = ReplaceNumberWithDots(discount.toFixed(0));
-		var sum_all = ReplaceNumberWithDots(sum.toFixed(0));
-		var sumvatdiscount = ReplaceNumberWithDots(((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1))-discount).toFixed(0));
+		var vat = ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(2));		
+		var dist = ReplaceNumberWithDots(discount.toFixed(2));
+		var sum_all = ReplaceNumberWithDots(sum.toFixed(2));
+		var sumvatdiscount = ReplaceNumberWithDots(((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1))-discount).toFixed(2));
 		
 		$('.product_order_list .footer .total_vat').html(vat);
 		$('.product_order_list .footer .total_without_vat').html(sum_all);
@@ -557,7 +557,7 @@
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
 			    //format typping price
-			      $('input.price_input').number( true, 0 );
+			      $('input.price_input').number( true, 2 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,				  
@@ -625,7 +625,7 @@
 						$('#product-line-items').append(success_box.html());
 					}
 					
-					$('input.price_input').number( true, 0 );
+					$('input.price_input').number( true, 2 );
 					$('input.number_input').number( true, 0 );
                     $('input.line_discount_percent').number(true, 2);
 				}
@@ -752,7 +752,7 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
-			    $('input.price_input').number( true, 0 );
+			    $('input.price_input').number( true, 2 );
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -782,7 +782,7 @@
 	    });
 	    
 	    //format typping price
-	    $('input.price_input').number( true, 0 );
+	    $('input.price_input').number( true, 2 );
 	    
 	    //show order
 	    //action for add agent button
@@ -806,7 +806,7 @@
 			complete: function(jqXHR, textStatus) {
 			    $("#ajax-product-form .modern_select").select2();
 			    //format typping price
-			    $('input.price_input').number( true, 0 );
+			    $('input.price_input').number( true, 2 );
 			    $('.select2-ajax-categories').select2({
 					placeholder: "Search for a category",
 					minimumInputLength: 1,
@@ -1192,7 +1192,7 @@
 		
 		//update_update_price_form();
 		$('.update-price-form .children input').keyup(function() {
-			update_update_price_form();
+			update_update_price_form($(this).attr("rel"));
 		});
 		
 		
