@@ -591,7 +591,7 @@
 						}
 					},
 					initSelection: function (element, callback) {				      
-					  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+					  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
 					}
 			    });
 			}
@@ -843,7 +843,7 @@
 						}
 					},
 					initSelection: function (element, callback) {				      
-					  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+					  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
 					}
 			    });
 			    
@@ -1069,27 +1069,24 @@
 	    
 	    //ajax select2 for contacts
 	    $('.select2-ajax-suppliers').select2({
-		placeholder: "Search for a contact",
-		minimumInputLength: 1,
-		allowClear: true,
-		ajax: {
-		  url: $('.select2-ajax-suppliers').attr("url"),
-		  dataType: 'json',
-		  data: function (term, page) { // page is the one-based page number tracked by Select2
-		    return {
-		      q: term, //search term
-		    };
-		  },
-		  results: function (data, page) {
-		    return {results: data};
-		  },
+			placeholder: "Search for a contact",
+			minimumInputLength: 1,
+			allowClear: true,
+			ajax: {
+			  url: $('.select2-ajax-suppliers').attr("url"),
+			  dataType: 'json',
+			  data: function (term, page) { // page is the one-based page number tracked by Select2
+				return {
+				  q: term, //search term
+				};
+			  },
+			  results: function (data, page) {
+				return {results: data};
+			  }
+			},
 			initSelection: function (element, callback) {				      
-			  callback({ id: $('.select2-ajax-suppliers').val(), text: $('.select2-ajax-suppliers').attr('text') });
+			  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
 			}
-		},
-		initSelection: function (element, callback) {				      
-		  callback({ id: $('.select2-ajax-suppliers').val, text: $('.select2-ajax-suppliers').attr('text') });
-		}
 	    });
 	    
 	    //Datatable products
