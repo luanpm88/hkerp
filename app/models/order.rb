@@ -69,7 +69,7 @@ class Order < ActiveRecord::Base
     if !discount_amount.nil?
       sum -= discount_amount
     end    
-    return sum.to_f.round(2)
+    return sum.round(2)
   end
   
   def vat_amount
