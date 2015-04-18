@@ -105,7 +105,7 @@
     
     <% if @order.customer_po.present? %>
         <div class="po_water_mark">
-            <div class="text">PO: <%= @order.customer_po %></div>
+            <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
             <div class="line1"></div>
             <div class="line2"></div>
         </div>
