@@ -711,7 +711,7 @@ class Order < ActiveRecord::Base
     if ["confirmed","finished"].include?(self.status.name)
       if is_payback
         status = "pay_back"
-      elsif paid_amount == total_vat.round(0)
+      elsif paid_amount == total_vat
         status = "paid"
       elsif !is_deposited
         status = "not_deposited"
