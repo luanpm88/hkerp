@@ -85,7 +85,7 @@
     <% if !@order.order_details.nil? %>
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
-        <% @count = @count + 1 %>
+        <% @count = @count + 1 if order_detail.quantity > 0 %>
           <tr class="quantity-<%= order_detail.quantity %>">
             <td><%= @count %></td>
             <td style="text-align: left;">
