@@ -104,12 +104,14 @@
       <% end %>
     <% end %>
     
-    <% if @order.customer_po.present? %>
+    
         <div class="po_water_mark">
-            <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
+            <% if @order.customer_po.present? %>
+                <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
+            </div>
             <div class="line1"></div>
             <div class="line2"></div>
-        </div>
+        
     <% end %>
 </div>
 
