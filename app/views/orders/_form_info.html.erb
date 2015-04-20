@@ -482,7 +482,7 @@
                             <li class="quant text-right">
                                   
                                    <span class="total_not_vat_val total_without_vatz total_not_vatz"><%= @order.formated_total %></span><br />
-                                    <span class="total_discountz"><%= @order.discount_amount_formated %></span><br />
+                                    <span class="total_discountz"><%= format_price(@order.discount_amount,true,true) %></span><br />
                                     <span class="total_vatz "><%= @order.vat_amount_formated %></span><br />
                                    <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
                             </li>
