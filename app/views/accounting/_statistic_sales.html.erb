@@ -2,9 +2,7 @@
 						<tr>
 							<th class="text-center">STT</th>
 							<th>Order</th>
-							<th>Delivery</th>
 							<th>Item</th>
-							<th class="text-center">Quantity</th>
 							<th class="text-right">Price</th>
 							<th class="text-center">Paid</th>
 							<th class="text-right">Tax</th>
@@ -31,19 +29,16 @@
 										<br />
 										(<%= order.order_date_formatted %>)
 									</td>
-									<td>										
+									<td>
+										<%= od.product.display_name %><br /><br />
+										Deliveries:
 										<% od.delivery_details.each do |dd| %>
-											<%= link_to dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
+											<br /><%= link_to dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
 										<% end %>
 									</td>
-									<td>
-										<%= od.product.display_name %>
-									</td>
-									<td class="text-center">
-										<%= od.quantity %> <%= od.unit %>
-									</td>
 									<td class="text-right">
-										<%= od.total_vat_formated %>
+										<%= od.total_vat_formated %><br />
+										(<%= od.quantity %> <%= od.unit %>)
 									</td>
 									<td class="text-center">
 										<%= od.paid_status %>
