@@ -1174,7 +1174,7 @@ class Order < ActiveRecord::Base
   def tip_status
     status = ""
     
-    if ["finished"].include?(self.status.name)
+    if ["finished"].include?(self.status.name) && tip_amount > 0
       if is_tipped
         status = "tipped"
       else
