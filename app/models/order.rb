@@ -37,6 +37,7 @@ class Order < ActiveRecord::Base
   has_many :notifications, foreign_key: "item_id", :dependent => :destroy
 
   before_save :calculate_discount
+  before_save :calculate_tip
   
   def valid_discount
     sum_total = 0
@@ -585,7 +586,7 @@ class Order < ActiveRecord::Base
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+item.display_delivery_status+'</div>',
-                  '<div class="text-center">'+item.display_status+'</div>',
+                  '<div class="text-center">'+item.display_status+item.display_tip_status+'</div>',
                   "<div class=\"text-center\">#{item.display_payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}</div>",                                                      
                   ''
                 ]
@@ -681,11 +682,23 @@ class Order < ActiveRecord::Base
   end
   
   def paid_amount
-    total = payment_records.sum :amount
+    all_payment_records.sum :amount
+  end
+  
+  def tipped_amount
+    payment_records.where(is_tip: true).sum :amount
+  end
+  
+  def is_tipped
+    tip_amount == tipped_amount
   end
   
   def remain_amount
     total_vat - paid_amount
+  end
+  
+  def remain_tip
+    tip_amount - tipped_amount
   end
   
   def remain_amount_formated
@@ -924,7 +937,9 @@ class Order < ActiveRecord::Base
             quantity: line[1][:quantity],
             warranty: line[1][:warranty],
             discount: line[1][:discount],
-            discount_amount: line[1][:discount_amount]
+            discount_amount: line[1][:discount_amount],
+            tip: line[1][:tip],
+            tip_amount: line[1][:tip_amount]
           )
         end
       end
@@ -988,7 +1003,7 @@ class Order < ActiveRecord::Base
   end
   
   def all_payment_records
-    payment_records.order("created_at DESC")
+    payment_records.where(is_tip: false).order("created_at DESC")
   end
   
   def is_prices_oudated
@@ -1053,11 +1068,20 @@ class Order < ActiveRecord::Base
   
   def discount_amount=(new_price)
     self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
-  end  
+  end
+  def tip_amount=(new_price)
+    self[:tip_amount] = new_price.to_s.gsub(/\,/, '')
+  end
   
   def calculate_discount
     if discount.present? && discount > 0
       self[:discount_amount] = total*(discount.to_f/100)
+    end    
+  end
+  
+  def calculate_tip
+    if tip.present? && tip > 0
+      self[:tip_amount] = total*(tip.to_f/100)
     end    
   end
   
@@ -1124,7 +1148,7 @@ class Order < ActiveRecord::Base
     end
     
     #payment
-    payment_records.each do |p|
+    all_payment_records.each do |p|
       o = p.order
       if o.is_purchase
         if p.amount < 0
@@ -1152,10 +1176,26 @@ class Order < ActiveRecord::Base
   end
   
   def update_all_statuses
-    self.delivery_status
-    self.payment_status
-    self.payment_status
-    self.status
+  end
+  
+  def tip_status
+    status = ""
+    
+    if ["confirmed","finished"].include?(self.status.name)
+      if is_tipped
+        status = "tipped"
+      else
+        status = "not_tipped"
+      end
+    end
+    
+    update_attributes(tip_status_name: status)
+    
+    return status
+  end
+  
+  def display_tip_status
+    return "<div class=\"#{tip_status}\">#{tip_status}</div>".html_safe
   end
   
 end

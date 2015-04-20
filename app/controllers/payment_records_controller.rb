@@ -42,6 +42,11 @@ class PaymentRecordsController < ApplicationController
     @order = Order.find(params[:id])
     @payment_record = PaymentRecord.new
   end
+  
+  def pay_tip
+    @order = Order.find(params[:order_id])
+    @payment_record = PaymentRecord.new(is_tip: true)
+  end
 
   # GET /payment_records/1/edit
   def edit
@@ -68,6 +73,25 @@ class PaymentRecordsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
         format.html { render action: 'new' }
+        format.json { render json: @payment_record.errors, status: :unprocessable_entity }
+      end
+    end    
+  end
+  
+  def do_pay_tip
+    @order = Order.find(payment_record_params[:order_id])
+    @payment_record = @order.payment_records.new(payment_record_params)
+    @payment_record.accountant = current_user
+    @payment_record.is_tip = true    
+    
+    list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
+    
+    respond_to do |format|
+      if @payment_record.save
+        format.html { redirect_to list_path, notice: 'Payment record was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @payment_record }
+      else
+        format.html { render action: 'pay_tip' }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
@@ -105,6 +129,6 @@ class PaymentRecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_record_params
-      params.require(:payment_record).permit(:payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
+      params.require(:payment_record).permit(:is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
     end
 end

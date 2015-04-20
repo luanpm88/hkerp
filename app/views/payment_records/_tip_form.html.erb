@@ -1,0 +1,125 @@
+				<% if @payment_record.errors.any? %>
+				    <div class="alert alert-error">
+				      <button data-dismiss="alert" class="close"></button>
+				      <div id="error_explanation">
+					<h5><%= pluralize(@payment_record.errors.count, "error") %> prohibited this payment record from being saved:</h5>
+				  
+					<ul>
+					<% @payment_record.errors.full_messages.each do |msg| %>
+					  <li><%= msg %></li>
+					<% end %>
+					</ul>
+				      </div>
+				    </div>
+				<% end %>
+				
+                                <%= form_for(@payment_record, url: {controller: "payment_records", action: "do_pay_tip"}) do |f| %>
+										<%= f.hidden_field :order_id, {value: @order.id} %>
+										<%= f.hidden_field :is_tip, {value: true} %>
+										<%= hidden_field_tag :order_order_date, @order.order_date.to_date %>
+				    
+                                    
+                                    <div class="row">
+                                      <div class="col-md-6">
+										<div class="row">
+											<div class="col-md-12">
+													<div class="form-group">
+														<label class="form-label"><%= f.label :details %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon right text-left">                                       
+																<i class=""></i>
+																<table class="table">
+																	<tr>
+																		<th>Item</th>
+																		<th>Tip Amount</th>
+																	</tr>
+																	<% @order.order_details.each do |od| %>
+																		<tr>
+																			<td><%= od.product.display_name %></td>
+																			<td class="text-right"><%= format_price(od.tip_amount) %></td>
+																		</tr>
+																	<% end %>
+																	<tr>
+																		<td class="text-right">Total Tip</td>
+																		<td class="text-right"><strong><%= format_price(@order.tip_amount) %></strong></td>
+																	</tr>
+																	
+																</table>
+																	
+														</div>
+													</div>
+											</div>				
+											<div class="col-md-6">
+													<div class="form-group">
+														<label class="form-label"><%= f.label :amount %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon right text-left">                                       
+																<i class=""></i>
+																<%= f.hidden_field :amount, value: @order.remain_tip %>
+																<strong><%= format_price(@order.remain_tip) %></strong> VND
+														</div>
+													</div>
+											</div>
+											<div class="col-md-6">
+													 <div class="form-group">
+													   <label class="form-label"><%= f.label :payment_method %></label>
+													   <span class="help"></span>
+														 <div class="input-with-icon  right">                                       
+														   <i class=""></i>
+														   <select name="payment_record[payment_method_id]" class="modern_select" style="width: 100%">
+																   <option value="">Select Method</option>
+																   <% PaymentMethod.all.each do |payment| %>
+																	   <option value="<%= payment.id %>" <% if !@payment_record.payment_method_id.nil? && @payment_record.payment_method_id == payment.id %>selected="selected"<% end %>>
+																		 <%= payment.name %>
+																	   </option>
+																   <% end %>
+															</select>
+														 </div>
+													 </div>
+											  </div>
+										</div>
+                                      </div>
+                                      <div class="col-md-6">
+                                        
+										
+										
+											
+											
+                                        
+                                        
+										<div class="form-group">
+                                            <label class="form-label"><%= f.label :note %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_area :note, :class => "form-control" %>
+                                            </div>
+                                        </div>
+					<div class="form-group">
+                                            <label class="form-label"><%= f.label :paid_person %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :paid_person, :class => "form-control" %>
+                                            </div>
+                                        </div>
+					<div class="form-group">
+                                            <label class="form-label"><%= f.label :paid_address %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <%= f.text_field :paid_address, :class => "form-control" %>
+                                            </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                      <div class="col-md-12">
+                                        <div class="text-right">
+                                            <input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
+                                        </div>
+                                      </div>
+                                    </div>
+                                      
+				<% end %>

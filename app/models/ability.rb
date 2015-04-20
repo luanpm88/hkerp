@@ -238,6 +238,13 @@ class Ability
         can :create, PaymentRecord
         can :read, PaymentRecord
         
+        can :pay_tip, Order do |order|
+          order.is_tipped && ['finished'].include?(order.status.name)
+        end
+        can :do_pay_tip, Order do |order|
+          order.is_tipped && ['finished'].include?(order.status.name)
+        end
+        
         can :download_pdf, PaymentRecord
         
         can :update_info, Order do |order|

@@ -524,7 +524,9 @@ CREATE TABLE order_details (
     product_description text,
     product_price_id integer,
     discount numeric DEFAULT 0.0,
-    discount_amount numeric
+    discount_amount numeric,
+    tip numeric DEFAULT 0.0,
+    tip_amount numeric DEFAULT 0.0
 );
 
 
@@ -659,7 +661,10 @@ CREATE TABLE orders (
     order_status_name character varying(255),
     discount_amount numeric DEFAULT 0,
     price_status_name character varying(255),
-    user_id integer
+    user_id integer,
+    tip numeric DEFAULT 0.0,
+    tip_amount numeric DEFAULT 0.0,
+    tip_status_name character varying(255)
 );
 
 
@@ -789,7 +794,8 @@ CREATE TABLE payment_records (
     paid_person text,
     paid_address text,
     debt_date timestamp without time zone,
-    payment_method_id integer
+    payment_method_id integer,
+    is_tip boolean DEFAULT false
 );
 
 
@@ -2264,4 +2270,16 @@ INSERT INTO schema_migrations (version) VALUES ('20150417034742');
 INSERT INTO schema_migrations (version) VALUES ('20150417041617');
 
 INSERT INTO schema_migrations (version) VALUES ('20150417080712');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420012246');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420013051');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420014251');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420021244');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420023041');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420023153');
 

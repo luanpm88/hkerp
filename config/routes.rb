@@ -14,6 +14,8 @@ Hkerp::Application.routes.draw do
   resources :payment_records do
     collection do
       get :download_pdf
+      get :pay_tip
+      post :do_pay_tip
     end
   end
 

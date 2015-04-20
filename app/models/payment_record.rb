@@ -11,27 +11,36 @@ class PaymentRecord < ActiveRecord::Base
   validate :valid_debt_date
   
   
-  
+  def all_payment_records
+    where(is_tip: false)
+  end
   
   def valid_amount
-    if false
-      errors.add(:amount, "too small")
-    end
-    if !order.is_payback && amount.to_f > order.remain_amount.to_f.round(2)
-      errors.add(:amount, "can't be greater than remain amount")
-    end
-    if order.is_payback && amount.to_f > order.remain_amount.to_f.abs.round(2)
-      errors.add(:amount, "can't be greater than remain amount")
+    if !is_tip       
+      if false
+        errors.add(:amount, "too small")
+      end
+      if !order.is_payback && amount.to_f > order.remain_amount.to_f.round(2)
+        errors.add(:amount, "can't be greater than remain amount")
+      end
+      if order.is_payback && amount.to_f > order.remain_amount.to_f.abs.round(2)
+        errors.add(:amount, "can't be greater than remain amount")
+      end
+    else
+      if order.tip_amount.to_f.round(2) != amount.to_f
+        errors.add(:amount, "not valid")
+      end
     end
   end
   
   def valid_debt_date
-    if order.is_deposited && !debt_date.nil?
-      if debt_date <= order.order_date
-        errors.add(:debt_date, "can't be smaller than order date")
+    if !is_tip
+      if order.is_deposited && !debt_date.nil?
+        if debt_date <= order.order_date
+          errors.add(:debt_date, "can't be smaller than order date")
+        end
       end
     end
-    
   end
   
   def amount=(new_price)

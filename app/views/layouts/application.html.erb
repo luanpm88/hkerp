@@ -82,6 +82,67 @@
  	
 <script>
 	
+	function checkTipInput() {		
+		if($('.total_not_vat').length == 0) {
+			return
+		}
+		
+		$('.line_discount').each(function() {
+			var d_box = $(this).find('.line_tip_percent');
+			var da_box = $(this).find('.line_tip_amount');
+			var total_box = $(this).parent().find('.total');
+			
+			if(d_box.val() != "") {
+				da_box.addClass("disabled");
+				
+				if(total_box.length > 0) {
+					var total = parseFloat(total_box.html().replace(/,/g,""))
+					var discount = parseFloat(d_box.val())
+					var discount_amount = total*(discount/100)
+					da_box.val(discount_amount)
+				}
+			} else {
+				da_box.removeClass("disabled");
+			}
+		});
+		
+		total = 0
+		$('.line_tip_amount').each(function() {
+			if ($(this).val() != "") {
+				var num = parseFloat($(this).val().replace(/,/g,""));
+				total += num
+			}				
+		});
+		
+		var tip_box = $('.tip_percent')
+		var	tip_amount_box = $('.tip_amount')
+		if (total == 0) {
+			
+			tip_box.removeClass("disabled");			
+			tip_amount_box.removeClass("disabled");
+			
+			if(tip_box.val() != "") {
+				tip_amount_box.addClass("disabled");
+				
+				
+					var total = parseFloat($('.total_not_vat').html().replace(/,/g,""))
+					var discount = parseFloat(tip_box.val())
+					var discount_amount = total*(discount/100)
+					tip_amount_box.val(discount_amount)
+
+			} else {
+					tip_amount_box.removeClass("disabled");
+			}
+		} else {
+			tip_box.attr("value","");
+			tip_box.addClass("disabled");
+			
+			tip_amount_box.val(total);
+			tip_amount_box.addClass("disabled");
+		}
+
+	}
+	
 	function checkDiscountInput() {		
 		if($('.total_not_vat').length == 0) {
 			return
@@ -1224,6 +1285,15 @@
 		});
 		$('#order_discount').number(true, 2);
 		
+		
+		checkTipInput();
+		$('.tip_percent').live("keyup",function() {
+			checkTipInput();
+		});
+		
+		$('.line_tip_percent').live("keyup",function() {
+			checkTipInput();
+		});
 		
 		setTimeout("$('.dataTables_wrapper select').select2();", 2000);
 		

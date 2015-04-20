@@ -19,6 +19,7 @@ class OrderDetail < ActiveRecord::Base
   has_many :delivery_details
   
   before_save :calculate_discount
+  before_save :calculate_tip
   
   def total
     price * quantity
@@ -186,9 +187,19 @@ class OrderDetail < ActiveRecord::Base
     self[:discount_amount] = new_price.to_s.gsub(/\,/, '')
   end
   
+  def tip_amount=(new_price)
+    self[:tip_amount] = new_price.to_s.gsub(/\,/, '')
+  end
+  
   def calculate_discount
     if discount.present? && discount > 0
       self[:discount_amount] = total*(discount.to_f/100)
+    end    
+  end
+  
+  def calculate_tip
+    if tip.present? && tip > 0
+      self[:tip_amount] = total*(tip.to_f/100)
     end    
   end
   

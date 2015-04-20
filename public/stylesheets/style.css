@@ -7443,7 +7443,7 @@ ul.my-friends li .profile-pic{
     float: left;
     list-style: none outside none;
     width: 16%;
-    padding: 15px;
+    padding: 12px;
 }
 .product_order_list ul li.price, .product_order_list ul li.supplier_price, .product_order_list ul li.price_total{
     text-align: right
@@ -7788,11 +7788,14 @@ tr.parent td {
 .update-price-form input.price,.update-price-form input.supplier_price {
     min-width: 105px;
 }
+.product_order_list ul li {
+    width: 12%;
+}
 .product_order_list ul li.name {
     width: 32%;
 }
-.product_order_list ul li.sum {
-    width: 26%;
+.product_order_list ul li.sum, .product_order_list ul li.sumz {
+    width: 22%;
 }
 .product_order_list ul li.quant {
     

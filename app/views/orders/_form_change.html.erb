@@ -457,7 +457,7 @@
                             <li class="price_total">Total</li>
                             <li class="warranty text-center">Warranty</li>
                             <li class="discount text-center">Discount</li>
-                            
+                            <li class="tip text-right">Tip</li>
                           </ul>
                           <div id="product-line-items">
                             <% if !@order.order_details.nil? %>
@@ -476,10 +476,15 @@
                                    Dist.Total:
                             </li>
                             <li class="discount text-right">
+                                   <strong>Dist.Total:</strong>
                                    <%= f.text_field :discount, placeholder: "%", value: @order.discount == 0 ? "" : @order.discount, :class => "width100 text-right discount_percent" %>
                                    <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
                             </li>
-                            
+                            <li class="tip text-right">
+                                   <strong>Tip.Total:</strong>
+                                   <%= f.text_field :tip, placeholder: "%", value: @order.tip == 0 ? "" : @order.tip, :class => "width100 text-right price_input tip_percent" %>
+                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
+                            </li>
                           </ul>
                           <ul class="footer line2">
                             <li class="name">
@@ -498,7 +503,7 @@
                             </li>
                             <li class="warranty text-right"></li>
                             <li class="discount_total text-right"></li>
-                            
+                            <li class="tip text-center"></li>
                           </ul>
                         </div>
 

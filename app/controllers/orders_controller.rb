@@ -248,6 +248,11 @@ class OrdersController < ApplicationController
         group_1 += 1
       end
       
+      if can? :pay_tip, item
+        actions += '<li>'+view_context.link_to('Pay Tip', {controller: "payment_records", action: "pay_tip", order_id: item.id})+'</li>'
+        group_1 += 1
+      end
+      
       actions += '<li class="divider"></li>' if group_1 > 0
       
       group_3 = 0
@@ -459,7 +464,9 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :discount,
-                                    :discount_amount
+                                    :discount_amount,
+                                    :tip,
+                                    :tip_amount
                                   )
     end
     
@@ -477,7 +484,9 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :discount,
-                                    :discount_amount
+                                    :discount_amount,
+                                    :tip,
+                                    :tip_amount
                                   )
     end
 end
