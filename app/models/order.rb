@@ -1194,7 +1194,7 @@ class Order < ActiveRecord::Base
   def is_valid_tip
     total = 0
     order_details.each do |od|
-      total += od.tip_amount
+      total += od.tip_amount if !od.tip_amount.nil?
     end
     
     return self.tip_amount - total >= 0.5
