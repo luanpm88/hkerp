@@ -108,11 +108,11 @@
         <div class="po_water_mark">
             <% if @order.customer_po.present? %>
                 <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
-            </div>
+            <% end %>
             <div class="line1"></div>
             <div class="line2"></div>
-        
-    <% end %>
+        </div>
+    
 </div>
 
 <div style="position: absolute;top:<%= pos8 %>px;left: 30px;width:122px;text-align: right">
