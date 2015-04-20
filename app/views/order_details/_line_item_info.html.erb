@@ -20,4 +20,9 @@
                                       <li class="line_discount text-right">
                                             <%= format_price(order_detail.discount_amount) %>
                                         </li>
+                                      <li class="line_tip text-right">
+                                            
+                                            
+                                            <%= text_field_tag "order_details[#{order_detail.product_id}][tip_amount]", order_detail.tip_amount.present? && order_detail.tip_amount > 0 ? order_detail.tip_amount : "" , {placeholder: "VND", :class => "form-control price_input line_tip_amount"} %>
+                                        </li>
                                   </ul>

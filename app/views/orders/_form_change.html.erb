@@ -473,7 +473,7 @@
                             <li class="quant"></li>
                             
                             <li class="warranty text-right">
-                                   Dist.Total:
+                                   
                             </li>
                             <li class="discount text-right">
                                    <strong>Dist.Total:</strong>
@@ -481,8 +481,7 @@
                                    <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
                             </li>
                             <li class="tip text-right">
-                                   <strong>Tip.Total:</strong>
-                                   <%= f.text_field :tip, placeholder: "%", value: @order.tip == 0 ? "" : @order.tip, :class => "width100 text-right price_input tip_percent" %>
+                                   <strong>Tip.Total:</strong>                                   
                                    <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
                             </li>
                           </ul>
@@ -496,7 +495,7 @@
                                    Sum.Total</li>
                             <li class="quant text-right">
                                   
-                                   <span class="total_without_vat total_not_vat">0</span><br />
+                                   <span class="total_not_vat_val total_without_vat total_not_vat">0</span><br />
                                     <span class="total_discount">0</span><br />
                                     <span class="total_vat">0</span><br />
                                    <span class="total_with_vat">0</span>

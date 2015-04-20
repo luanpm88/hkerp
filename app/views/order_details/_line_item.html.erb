@@ -34,8 +34,8 @@
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
                                         </li>
                                         
-                                        <li class="line_discount text-right">
-                                            <%= text_field_tag "order_details[#{order_detail.product_id}][tip]", order_detail.tip.present? && order_detail.tip > 0 ? order_detail.tip : "", {placeholder: "%", class: "width100 modern_selectz form-control price_input line_tip_percent"} %>
+                                        <li class="line_tip text-right">
+                                            
                                             
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][tip_amount]", order_detail.tip_amount.present? && order_detail.tip_amount > 0 ? order_detail.tip_amount : "" , {placeholder: "VND", :class => "form-control price_input line_tip_amount"} %>
                                         </li>

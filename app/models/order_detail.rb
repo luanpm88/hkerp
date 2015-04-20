@@ -19,7 +19,6 @@ class OrderDetail < ActiveRecord::Base
   has_many :delivery_details
   
   before_save :calculate_discount
-  before_save :calculate_tip
   
   def total
     price * quantity
@@ -197,12 +196,6 @@ class OrderDetail < ActiveRecord::Base
     end    
   end
   
-  def calculate_tip
-    if tip.present? && tip > 0
-      self[:tip_amount] = total*(tip.to_f/100)
-    end    
-  end
-  
   def calculated_discount_amount
     if discount.present? && discount > 0
       total*(discount.to_f/100)
@@ -244,4 +237,10 @@ class OrderDetail < ActiveRecord::Base
   def discount_amount_formated
     Order.format_price(discount_amount)
   end
+  
+  def auto_tip_amount
+    amount = (self.total/order.total)*order.tip_amount
+    self.update_attribute("tip_amount", amount)
+  end
+
 end

@@ -465,7 +465,6 @@ class OrdersController < ApplicationController
                                     :supplier_agent_id,
                                     :discount,
                                     :discount_amount,
-                                    :tip,
                                     :tip_amount
                                   )
     end
@@ -485,7 +484,6 @@ class OrdersController < ApplicationController
                                     :supplier_agent_id,
                                     :discount,
                                     :discount_amount,
-                                    :tip,
                                     :tip_amount
                                   )
     end

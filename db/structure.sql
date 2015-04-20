@@ -525,7 +525,6 @@ CREATE TABLE order_details (
     product_price_id integer,
     discount numeric DEFAULT 0.0,
     discount_amount numeric,
-    tip numeric DEFAULT 0.0,
     tip_amount numeric DEFAULT 0.0
 );
 
@@ -662,7 +661,6 @@ CREATE TABLE orders (
     discount_amount numeric DEFAULT 0,
     price_status_name character varying(255),
     user_id integer,
-    tip numeric DEFAULT 0.0,
     tip_amount numeric DEFAULT 0.0,
     tip_status_name character varying(255)
 );
@@ -2282,4 +2280,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150420021244');
 INSERT INTO schema_migrations (version) VALUES ('20150420023041');
 
 INSERT INTO schema_migrations (version) VALUES ('20150420023153');
+
+INSERT INTO schema_migrations (version) VALUES ('20150420050835');
 

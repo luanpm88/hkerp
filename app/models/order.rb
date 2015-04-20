@@ -8,7 +8,7 @@ class Order < ActiveRecord::Base
   validates :order_date, presence: true
   validates :order_deadline, presence: true
   validate :valid_debt_date
-  #validate :valid_discount
+  validate :valid_tip
   
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
@@ -37,7 +37,6 @@ class Order < ActiveRecord::Base
   has_many :notifications, foreign_key: "item_id", :dependent => :destroy
 
   before_save :calculate_discount
-  before_save :calculate_tip
   
   def valid_discount
     sum_total = 0
@@ -942,9 +941,8 @@ class Order < ActiveRecord::Base
             warranty: line[1][:warranty],
             discount: line[1][:discount],
             discount_amount: line[1][:discount_amount],
-            tip: line[1][:tip],
             tip_amount: line[1][:tip_amount]
-          )
+          )          
         end
       end
     end
@@ -956,7 +954,7 @@ class Order < ActiveRecord::Base
     end
     order_details_params.each do |line|
       if !od_pids.include?(line[1][:product_id].to_i)
-        self.order_details.create(line[1])
+        new_od = self.order_details.create(line[1])
       end
     end
   end
@@ -966,8 +964,6 @@ class Order < ActiveRecord::Base
     if order_details_params.nil?
       return false
     end
-    
-    
     
     # Update current order details
     self.order_details.each do |od|      
@@ -979,7 +975,8 @@ class Order < ActiveRecord::Base
             product_description: line[1][:product_description],
             unit: line[1][:unit],
             discount: line[1][:discount],
-            discount_amount: line[1][:discount_amount]
+            discount_amount: line[1][:discount_amount],
+            tip_amount: line[1][:tip_amount]
           )
         end
       end
@@ -1083,11 +1080,6 @@ class Order < ActiveRecord::Base
     end    
   end
   
-  def calculate_tip
-    if tip.present? && tip > 0
-      self[:tip_amount] = total*(tip.to_f/100)
-    end    
-  end
   
   def calculated_discount_amount
     if discount.present? && discount > 0
@@ -1179,9 +1171,6 @@ class Order < ActiveRecord::Base
     return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
-  def update_all_statuses
-  end
-  
   def tip_status
     status = ""
     
@@ -1202,4 +1191,18 @@ class Order < ActiveRecord::Base
     return "<div class=\"#{tip_status}\">#{tip_status}</div>".html_safe
   end
   
+  def is_valid_tip
+    total = 0
+    order_details.each do |od|
+      total += od.tip_amount
+    end
+    
+    return self.tip_amount - total >= 0.5
+  end
+  
+  def valid_tip
+    if is_valid_tip
+      errors.add(:tip_amount, "is not valid")
+    end    
+  end
 end
