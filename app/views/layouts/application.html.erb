@@ -290,6 +290,9 @@
 			sum = sum + parseFloat($(this).html().replace(/,/g,"")) //parseFloat($(this).val());
 		});
 		//alert(sum);
+		if ($('.discount_amount').val() == "") {
+			$('.discount_amount').val(0)
+		}
 		var discount = parseFloat($('.discount_amount').val().replace(/,/g,""))
 		
 		
