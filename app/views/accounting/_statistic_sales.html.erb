@@ -8,11 +8,10 @@
 							<th class="text-right">Price</th>
 							<th class="text-center">Paid</th>
 							<th class="text-right">Tax</th>
-							
-							<th class="text-center">Staff</th>
-							
+							<th class="text-center">Staff</th>							
 							<th class="text-right">Cost Total</th>
 							<th class="text-right">Fare</th>
+							<th class="text-right">Tip</th>
 						</tr>
 						
 						<%
@@ -23,7 +22,7 @@
 								<tr class="quantity-<%= od.quantity %>">
 									<td class="text-center"><%= count %>
 												<br />
-												[<strong class="finished"><%= order.printed_order_number %></strong>]
+												<strong class="finished"><%= order.printed_order_number %></strong>
 									</td>
 									<td>
 										<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
@@ -63,6 +62,10 @@
 									</td>
 									<td class="text-right">
 										<%= od.fare_formated %>
+									</td>
+									<td class="text-right">
+										<%= format_price(od.tip_amout) %>
+										<%= order.tip_status %>
 									</td>
 								</tr>
 								<% count += 1 %>
