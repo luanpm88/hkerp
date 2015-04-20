@@ -1,5 +1,5 @@
 class PaymentRecordsController < ApplicationController
-  load_and_authorize_resource
+  load_and_authorize_resource :except => [:pay_tip, :do_pay_tip]
   
   before_action :set_payment_record, only: [:download_pdf, :show, :edit, :update, :destroy]
 
@@ -45,6 +45,9 @@ class PaymentRecordsController < ApplicationController
   
   def pay_tip
     @order = Order.find(params[:order_id])
+    
+    authorize! :pay_tip, @order
+    
     @payment_record = PaymentRecord.new(is_tip: true)
   end
 
@@ -80,6 +83,9 @@ class PaymentRecordsController < ApplicationController
   
   def do_pay_tip
     @order = Order.find(payment_record_params[:order_id])
+    
+    authorize! :pay_tip, @order
+    
     @payment_record = @order.payment_records.new(payment_record_params)
     @payment_record.accountant = current_user
     @payment_record.is_tip = true    
