@@ -38,6 +38,8 @@ class Order < ActiveRecord::Base
 
   before_save :calculate_discount
   
+  after_save :update_status_names
+  
   def valid_discount
     sum_total = 0
     order_details.each do |od|
@@ -247,14 +249,12 @@ class Order < ActiveRecord::Base
     return chuoi.strip.capitalize + " đồng"
   end
   
-  def status
-    if self.order_status.nil?      
-      return self.set_status('new')      
+  def status    
+    if self.order_status.present?
+      return self.order_status
+    else
+      OrderStatus.where(name: 'new').first
     end
-    
-    update_attributes(order_status_name: self.order_status.name) if self.order_status.name != self.order_status_name
-    
-    return self.order_status
   end
   
   def status_formatted
@@ -671,7 +671,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    self.update_attributes(delivery_status_name: status_arr.join(",")) # if status_arr.join(",") != delivery_status_name
+    #self.update_attributes(delivery_status_name: status_arr.join(",")) # if status_arr.join(",") != delivery_status_name
     
     return status_arr
   end
@@ -740,7 +740,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    update_attributes(payment_status_name: status)
+    #update_attributes(payment_status_name: status)
     
     return status
   end
@@ -829,7 +829,6 @@ class Order < ActiveRecord::Base
   end
   
   def display_status
-    str = "" 
     if self.status.nil?
     else
       "<div class=\"#{status.name}\">#{status.name}</div>".html_safe
@@ -1025,7 +1024,7 @@ class Order < ActiveRecord::Base
       status = "price_updated"
     end
     
-    update_attributes(price_status_name: status)
+    #update_attributes(price_status_name: status)
     
     return status
   end
@@ -1182,7 +1181,7 @@ class Order < ActiveRecord::Base
       end
     end
     
-    update_attributes(tip_status_name: status)
+    #update_attributes(tip_status_name: status)
     
     return status
   end
@@ -1204,5 +1203,18 @@ class Order < ActiveRecord::Base
     if is_valid_tip
       errors.add(:tip_amount, "is not valid")
     end    
+  end
+  
+  def update_status_names
+    #order status
+    update_attribute(:order_status_name, self.order_status.name) if self.order_status.present? && self.order_status.name != self.order_status_name
+    #payment
+    update_attribute(:payment_status_name, payment_status) if payment_status_name != payment_status
+    #delivery
+    update_attributes(delivery_status_name: delivery_status.join(",")) if delivery_status.join(",") != delivery_status_name
+    #price_status
+    update_attributes(price_status_name: price_status) if price_status_name != price_status
+    #tip status
+    update_attributes(tip_status_name: tip_status) if tip_status_name != tip_status
   end
 end
