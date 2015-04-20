@@ -7806,3 +7806,9 @@ tr.parent td {
 .product_order_list ul li.warranty {
     width: 10%;
 }
+.not_tipped {
+    color: #aa6708;
+}
+.tipped {
+    color: #3c763d;
+}
