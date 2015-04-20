@@ -369,7 +369,7 @@ class OrdersController < ApplicationController
         format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'change' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -463,7 +463,6 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount,
                                     :discount_amount,
                                     :tip_amount
                                   )
@@ -482,7 +481,6 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount,
                                     :discount_amount,
                                     :tip_amount
                                   )

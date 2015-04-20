@@ -8,7 +8,8 @@ class Order < ActiveRecord::Base
   validates :order_date, presence: true
   validates :order_deadline, presence: true
   validate :valid_debt_date
-  validate :valid_tip
+  #validate :valid_discount
+  #validate :valid_tip
   
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
@@ -35,20 +36,9 @@ class Order < ActiveRecord::Base
   has_many :payment_records, :dependent => :destroy
   
   has_many :notifications, foreign_key: "item_id", :dependent => :destroy
-
-  before_save :calculate_discount
   
   after_save :update_status_names
   
-  def valid_discount
-    sum_total = 0
-    order_details.each do |od|
-      sum_total += od.calculated_discount_amount if !od.calculated_discount_amount.nil?
-    end
-    if sum_total > 0 && discount_amount != sum_total
-      errors.add(:discount_amount, "is not valid")
-    end    
-  end
   
   def valid_debt_date
     if !deposit.nil? && deposit > 0 && !debt_date.nil?
@@ -275,11 +265,9 @@ class Order < ActiveRecord::Base
       self.order_status = status
       self.save
       
-      oso = OrderStatusesOrder.where(order_id: self.id).where(order_status_id: status.id).first
+      oso = OrderStatusesOrder.where(order_id: self.id).where(order_status_id: status.id).order("created_at DESC").first
       oso.update_attributes(user_id: user.id)
-      #oso.save
-      
-      #oso.save
+
     end
     
     return status
@@ -566,7 +554,7 @@ class Order < ActiveRecord::Base
       
       puts User.current_user
       
-      printed_order_number = item.printed_order_number.present? ? "<br />[<strong class=\"finished\">#{item.printed_order_number}</strong>]" : ""
+      printed_order_number = item.printed_order_number.present? ? "<br /><strong class=\"finished\">#{item.printed_order_number}</strong>" : ""
       
       case params[:page]
       when "delivery"
@@ -938,7 +926,6 @@ class Order < ActiveRecord::Base
             price: line[1][:price],
             quantity: line[1][:quantity],
             warranty: line[1][:warranty],
-            discount: line[1][:discount],
             discount_amount: line[1][:discount_amount],
             tip_amount: line[1][:tip_amount]
           )          
@@ -953,7 +940,7 @@ class Order < ActiveRecord::Base
     end
     order_details_params.each do |line|
       if !od_pids.include?(line[1][:product_id].to_i)
-        new_od = self.order_details.create(line[1])
+        self.order_details.create(line[1])
       end
     end
   end
@@ -973,7 +960,6 @@ class Order < ActiveRecord::Base
             product_name: line[1][:product_name],
             product_description: line[1][:product_description],
             unit: line[1][:unit],
-            discount: line[1][:discount],
             discount_amount: line[1][:discount_amount],
             tip_amount: line[1][:tip_amount]
           )
@@ -1071,29 +1057,6 @@ class Order < ActiveRecord::Base
   end
   def tip_amount=(new_price)
     self[:tip_amount] = new_price.to_s.gsub(/\,/, '')
-  end
-  
-  def calculate_discount
-    if discount.present? && discount > 0
-      self[:discount_amount] = total*(discount.to_f/100)
-    end    
-  end
-  
-  
-  def calculated_discount_amount
-    if discount.present? && discount > 0
-      total*(discount.to_f/100)
-    else
-      discount_amount.nil? ? 0 : discount_amount.to_f
-    end
-  end
-  
-  def calculated_discount_amount_formated
-    return Order.format_price(calculated_discount_amount)
-  end
-  
-  def discount_amount_formated
-    return Order.format_price(discount_amount)
   end
   
   def order_link
@@ -1204,6 +1167,23 @@ class Order < ActiveRecord::Base
       errors.add(:tip_amount, "is not valid")
     end    
   end
+  
+  def is_valid_discount
+    total = 0
+    order_details.each do |od|
+      total += od.discount_amount if !od.discount_amount.nil?
+    end
+    
+    return self.discount_amount - total >= 0.5
+  end
+  
+  def valid_discount
+    if is_valid_discount
+      errors.add(:discount_amount, "is not valid")
+    end    
+  end
+  
+  
   
   def update_status_names
     #order status
