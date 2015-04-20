@@ -54,7 +54,7 @@
 				  
 				<% end %>
 				
-				<% if ["orders","accounting"].include?(params[:controller]) %>
+				<% if ["accounting"].include?(params[:controller]) %>
 				  
 				  <div class="col-md-2">
 					  <h4>Payment Status</h4>
@@ -76,7 +76,7 @@
 				  
 				<% end %>
 				
-				<% if ["orders"].include?(params[:controller]) %>
+				<% if ["accounting","orders"].include?(params[:controller]) %>
 				  <div class="col-md-2">
 					  <h4>Order Status</h4>
 					  <div class="">
