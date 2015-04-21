@@ -571,7 +571,7 @@ class Order < ActiveRecord::Base
           data << row
           actions_col = 7
       when "accounting"
-        debt_time = item.is_debt ? item.debt_days.to_s+' days' : ""
+        debt_time = item.is_debt ? item.debt_days.to_s+'<br />days' : ""
           row = [
                   item.quotation_code+printed_order_number,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
