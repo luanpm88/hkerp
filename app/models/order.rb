@@ -571,14 +571,15 @@ class Order < ActiveRecord::Base
           data << row
           actions_col = 7
       when "accounting"
+        debt_time = item.is_debt ? item.debt_days.to_s+' days' : ""
           row = [
                   item.quotation_code+printed_order_number,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
                   "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  '<div class="text-center">'+item.display_delivery_status+'</div>',
-                  '<div class="text-center">'+item.display_status+item.display_tip_status+'</div>',
-                  "<div class=\"text-center\">#{item.display_payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}</div>",                                                      
+                  '<div class="text-center">'+debt_time+'</div>',
+                  '<div class="text-center">'+item.display_status+item.display_delivery_status+'</div>',
+                  "<div class=\"text-center\">#{item.display_payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status}</div>",                                                      
                   ''
                 ]
           data << row
@@ -719,7 +720,7 @@ class Order < ActiveRecord::Base
         status = "paid"
       elsif !is_deposited
         status = "not_deposited"
-      elsif is_deposited && !debt_date.nil? && debt_date >= order_date
+      elsif is_debt
         status = "debt"
       elsif is_deposited && !debt_date.nil? && debt_date < order_date
         status = "out_of_date"
@@ -731,6 +732,10 @@ class Order < ActiveRecord::Base
     #update_attributes(payment_status_name: status)
     
     return status
+  end
+  
+  def is_debt
+    is_deposited && !debt_date.nil? && debt_date >= order_date && paid_amount != total_vat
   end
   
   def display_payment_status
