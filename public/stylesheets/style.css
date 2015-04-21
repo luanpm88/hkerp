@@ -7812,3 +7812,9 @@ tr.parent td {
 .tipped {
     color: #3c763d;
 }
+.width50 {
+    width: 50%;
+}
+.width60 {
+    width: 60%;
+}

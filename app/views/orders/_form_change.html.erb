@@ -476,13 +476,26 @@
                                    
                             </li>
                             <li class="discount text-right">
-                                   <strong>Dist.Total:</strong>
+                                   <strong>Dist.Total:</strong>                                   
+                                   <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input discount_amount" %>
+                                   <div class="input-group transparent">
+                                          <span class="input-group-addon ">
+                                            %
+                                          </span>
+                                          <%= text_field_tag :discount_percent, "", {:class => "form-control price_input discount_percent"} %>
+                                   </div>
                                    
-                                   <%= f.text_field :discount_amount, :placeholder => "VND", :class => "form-control price_input  discount_amount" %>
+                                   
                             </li>
                             <li class="tip text-right">
                                    <strong>Tip.Total:</strong>                                   
-                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
+                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>                                   
+                                   <div class="input-group transparent">
+                                          <span class="input-group-addon ">
+                                            %
+                                          </span>
+                                          <%= text_field_tag :tip_percent, "", {:class => "form-control price_input tip_percent"} %>
+                                   </div>
                             </li>
                           </ul>
                           <ul class="footer line2">

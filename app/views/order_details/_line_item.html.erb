@@ -32,12 +32,24 @@
                                             
                                             
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][discount_amount]", order_detail.discount_amount.present? && order_detail.discount_amount > 0 ? order_detail.discount_amount : "" , {placeholder: "VND", :class => "form-control price_input  line_discount_amount"} %>
+                                            <div class="input-group transparent">
+                                                    <span class="input-group-addon ">
+                                                      %
+                                                    </span>
+                                                    <%= text_field_tag :line_discount_percent, "", {:class => "form-control price_input line_discount_percent"} %>
+                                             </div>
                                         </li>
                                         
                                         <li class="line_tip text-right">
                                             
                                             
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][tip_amount]", order_detail.tip_amount.present? && order_detail.tip_amount > 0 ? order_detail.tip_amount : "" , {placeholder: "VND", :class => "form-control price_input line_tip_amount"} %>
+                                            <div class="input-group transparent">
+                                                    <span class="input-group-addon ">
+                                                      %
+                                                    </span>
+                                                    <%= text_field_tag :line_tip_percent, "", {:class => "form-control price_input line_tip_percent"} %>
+                                             </div>
                                         </li>
 
                                   </ul>
