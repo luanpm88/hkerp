@@ -317,8 +317,7 @@ class OrdersController < ApplicationController
             actions += '<li>'
             actions += view_context.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
             actions += '</li>'
-		  end
-		  
+		  end		  
 		  group_2 += 1
 		end
 	  end
