@@ -118,6 +118,9 @@ Hkerp::Application.routes.draw do
       get :finish_order
       
       get :order_log
+      
+      get :update_tip
+      patch :do_update_tip
     end
   end
 

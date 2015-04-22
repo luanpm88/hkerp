@@ -257,7 +257,13 @@ class Ability
         
         can :statistic_sales, Order
         can :statistic_purchase, Order
-
+        
+        can :update_tip, Order do |order|
+          ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+        end
+        can :do_update_tip, Order do |order|
+          ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+        end
       end
 
       if user.has_role? "storage_manager"

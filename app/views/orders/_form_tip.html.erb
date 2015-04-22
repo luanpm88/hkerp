@@ -1,0 +1,539 @@
+     <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Order <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                
+                
+                <div class="grid-body no-border">
+                  
+                  
+                  <% if @order.errors.any? %>
+                    <div class="alert alert-error">
+                      <button data-dismiss="alert" class="close"></button>
+                      <div id="error_explanation">
+                        <h5><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h5>
+                  
+                        <ul>
+                        <% @order.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                    
+                 
+                  
+                  
+                  <%= form_for(@order, url: do_update_tip_orders_url) do |f| %>
+                     <%= hidden_field_tag :id, @order.id %>
+                     <% if !params[:page].nil? %>
+                            <%= hidden_field_tag :page, params[:page] %>
+                     <% end %>
+                    <div class="row column-seperation info_tip">
+                           
+                            <div class="col-md-6">
+                              
+                              <div class="row">
+                                          <div class="col-md-8">
+                                                            <div class="form-group">
+                                                                <label class="form-label"><%= f.label :supplier %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div class="input-with-icon  right">                                       
+                                                                  <i class=""></i>
+                                                                    <input type="hidden" name="order[supplier_id]" value="<%= @order.supplier_id %>">
+                                                                    <strong><%= @order.supplier.name %></strong>                                 
+                                                                </div>
+                                                            </div>
+
+                                                        
+                                          </div>
+                                          <div class="col-md-4">
+                                                        
+                                                        <div class="form-group order-form-supplier-agent-select">
+                                                          <label class="form-label"><%= f.label :supplier_agent %></label>
+                                                          
+                                                          <div class="input-with-icon  right">                                       
+                                                            <i class=""></i>
+                                                            <div class="select_inner">
+                                                              <select name="order[supplier_agent_id]" class="modern_select">
+                                                                <option value="">Select Agent</option>
+                                                                <% if !@order.supplier.nil? && !@order.supplier.agents.nil? %>
+                                                                  <% @order.supplier.agents.all.each do |contact| %>
+                                                                    <% if contact.is_agent %>
+                                                                        <option value="<%= contact.id %>" <% if !@order.supplier_agent_id.nil? && @order.supplier_agent_id == contact.id %>selected="selected"<% end %>>
+                                                                          <%= contact.name %>
+                                                                        </option>
+                                                                    <% end %>
+                                                                  <% end %>
+                                                                <% end %>
+                                                              </select>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                          </div>
+                                </div>
+                                
+                                
+                                <div class="row">
+                                          <div class="col-md-8">
+                                
+
+                                                            <div class="form-group">
+                                                                <label class="form-label"><%= f.label :customer %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div class="input-with-icon  right">                                       
+                                                                  <i class=""></i>
+                                                                    <input type="hidden" name="order[customer_id]" value="<%= @order.customer_id %>">
+                                                                    <strong><%= @order.customer.name %></strong>                                 
+                                                                </div>
+                                                            </div>
+
+                                                        
+                                                        
+                                          </div>
+                                          <div class="col-md-4">
+                                                      
+                                                        <div class="form-group order-form-agent-select">
+                                                          <label class="form-label"><%= f.label :agent %></label>
+
+                                                          <div class="input-with-icon  right">                                       
+                                                            <i class=""></i>
+                                                            <div class="select_inner">
+                                                              <select name="order[agent_id]" class="modern_select">
+                                                                <option value="">Select Agent</option>
+                                                                <% if !@order.customer.nil? && !@order.customer.agents.nil? %>
+                                                                  <% @order.customer.agents.all.each do |contact| %>
+                                                                    <% if contact.is_agent %>
+                                                                        <option value="<%= contact.id %>" <% if !@order.agent_id.nil? && @order.agent_id == contact.id %>selected="selected"<% end %>>
+                                                                          <%= contact.name %>
+                                                                        </option>
+                                                                    <% end %>
+                                                                  <% end %>
+                                                                <% end %>
+                                                              </select>
+                                                            </div>
+                                                          </div>
+                                                        </div>
+                                    
+                                
+                                          </div>
+                                </div>
+                            
+                            
+                              
+                                   <div class="row">
+                                          <div class="col-md-6">
+                                                 <div class="form-group">
+                                                         <label class="form-label"><%= f.label :customer_po %></label>
+                                                         <span class="help"></span>
+                                                         <div class="input-with-icon  right">                                       
+                                                             <i class=""></i>
+                                                             <%= f.text_field :customer_po, :class => "form-control" %>
+                                                         </div>
+                                                     </div>
+                                          </div>
+                                          <div class="col-md-6">
+                                                   <div class="form-group">
+                                                         <label class="form-label"><%= f.label :printed_order_number %></label>
+                                                         <span class="help"></span>
+                                                         <div class="input-with-icon  right">                                       
+                                                             <i class=""></i>
+                                                             <%= f.text_field :printed_order_number, :class => "form-control" %>
+                                                         </div>
+                                                     </div>
+                                          </div>
+                                   </div>
+                              
+                            </div>
+                            <div class="col-md-6">
+                              
+                              
+                              
+                              <div class="row">
+                                          <div class="col-md-6">
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :order_date %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :order_date, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                          <div class="col-md-6">                              
+                              
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :order_deadline %></label>
+                                                   <span class="help">(default: + 7 days)</span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :order_deadline, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+                                                 
+                                          </div>
+                              </div>
+                              
+                              
+                              
+                              
+                                   <div class="row">
+                                          <div class="col-md-4">
+                                                 <div class="form-group">
+                                                   <label class="form-label"><%= f.label :payment_method %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <select name="order[payment_method_id]" class="modern_select" style="width: 100%">
+                                                               <option value="">Select Method</option>
+                                                               <% PaymentMethod.all.each do |payment| %>
+                                                                   <option value="<%= payment.id %>" <% if !@order.payment_method_id.nil? && @order.payment_method_id == payment.id %>selected="selected"<% end %>>
+                                                                     <%= payment.name %>
+                                                                   </option>
+                                                               <% end %>
+                                                        </select>
+                                                     </div>
+                                                 </div>
+                                          </div>
+                                          <div class="col-md-4">
+                                                 <div class="form-group">
+                                                        <label class="form-label"><%= f.label :discount %></label>
+                                                        <span class="help">%</span>
+                                                        <div class="input-with-icon  right">                                       
+                                                                <i class=""></i>
+                                                               
+                                                        </div>
+                                                 </div>
+                                          </div>
+                                          <div class="col-md-4">
+                                                 <div class="form-group">
+                                                        <label class="form-label"><%= f.label :discount %></label>
+                                                        <span class="help">VND</span>
+                                                        <div class="input-with-icon  right">                                       
+                                                                <i class=""></i>
+                                                               
+                                                        </div>
+                                                 </div>
+                                          </div>
+                                   </div>
+                              
+                              
+                              
+                              
+                              
+                              <div class="row">
+                                   <div class="col-md-3">
+                                        <div class="form-group">
+                                             <label class="form-label"><%= f.label :deposit %></label>
+                                               <div class="input-with-icon  right">                                       
+                                                 <i class=""></i>
+                                                 <%= f.select :deposit, options_for_select(0.upto(100).map { |u| [u, u] },@order.deposit), {},  {:class => "modern_select width100"} %>
+                                               </div>
+                                        </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_days %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <%= text_field_tag "order_debt_days", @order.debt_days, {:class => "form-control number_input"} %>
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-5">
+                                       <div class="form-group">
+                                           <label class="form-label"><%= f.label :debt_date %></label>
+                                           <span class="help"></span>
+                                           <div class="input-with-icon  right">                                       
+                                                   <i class=""></i>
+                                                   <div class="input-append success date col-md-10 no-padding">
+                                                     <%= f.text_field :debt_date, :class => "form-control" %>
+                                                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                   </div>
+                                                   <br style="clear: both" />
+                                           </div>
+                                       </div>
+                                   </div>
+                              </div>
+                                    
+                                               
+                            
+                            </div>
+                        
+                        
+                    </div>
+                
+                    <div class="row column-seperation info_tip">
+                      <div class="col-md-6">
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_name %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_name, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_company %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_company, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_address %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_address, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_tax_code %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_tax_code, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        
+                        
+                         <div class="form-group datetime">
+                                <label class="form-label"><%= f.label :shipping_date %></label>
+                                <span class="help">(default: current date)</span>
+                                  <div class="input-append success date col-md-10 no-padding">
+                                      <%= f.text_field :shipping_date, :class => "form-control" %>
+                                      <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                    </div>
+                                    <br style="clear: both" />
+                         </div>
+                         
+                         <div class="form-group datetime">
+                                <label class="form-label"><%= f.label :shipping_time %></label>
+                                <span class="help"></span>
+                                  <div class="input-with-icon  right">                                       
+                                    <i class=""></i>
+                                    <%= f.text_field :shipping_time, :class => "form-control" %>
+                                  </div>
+                         </div>
+                         
+                         <div class="form-group">
+                              <label class="form-label"><%= f.label :watermark %></label>
+                              <span class="help"></span>
+                              <div class="input-with-icon  right">                                       
+                                <i class=""></i>
+                                <%= f.text_area :watermark, :class => "form-control" %>
+                              </div>
+                        </div>
+                        
+                      </div>
+                      
+                      <div class="col-md-6">
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_phone %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_phone, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_fax %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_fax, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :buyer_email %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                            <i class=""></i>
+                            <%= f.text_field :buyer_email, :class => "form-control" %>
+                          </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :shipping_place %></label>
+                          <span class="help"></span>
+                            <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :shipping_place, :class => "form-control" %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :warranty_place %></label>
+                          <span class="help"></span>
+                            <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :warranty_place, :class => "form-control" %>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                          <label class="form-label"><%= f.label :warranty_cost %></label>
+                          <span class="help"></span>
+                            <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :warranty_cost, :class => "form-control price_input" %>
+                            </div>
+                        </div>
+                        
+                              <div class="form-group">
+                                <label class="form-label"><%= f.label :tax_id %></label>
+                                <span class="help"></span>
+                                  <div class="input-with-icon  right">                                       
+                                    <i class=""></i>
+                                    <select name="order[tax_id]" class="modern_select tax-select">                                    
+                                    <% Tax.all.order("created_at DESC").each do |tax| %>
+                                        <option rel="<%= tax.rate %>" value="<%= tax.id %>" <% if !@order.tax_id.nil? && @order.tax_id == tax.id %>selected="selected"<% end %>>
+                                          <%= tax.name %>
+                                        </option>
+                                    <% end %>
+                                  </select>
+                                  </div>
+                              </div>
+                        
+                        
+                        
+                      </div>
+                      
+                    </div>
+                    
+                            
+                            
+                            <div class="row column-seperation">
+                      <div class="col-md-12">
+                        <h4>Products <span class="semi-bold"> Details</span></h4>
+                        
+                        
+                        <div class="product_order_list">
+                          <ul class="head">
+                            <li class="name">
+                              Name/Description
+                            </li>
+                            <li class="unit text-center">Unit</li>
+                            <li class="price">Price/Quantity</li>                            
+                            <li class="price_total text-right">Total</li>
+                            <li class="warranty text-center">Warranty</li>
+                            <li class="discount text-right">Discount</li>
+                            <li class="discount text-right">Tip</li>
+                          </ul>
+                          <div id="product-line-itemsz">
+                            <% if !@order.order_details.nil? %>
+                                <% @order.order_details.each do |order_detail| %>
+                                  <%= render 'order_details/line_item_tip', :order_detail => order_detail %>
+                                <% end %>
+                            <% end %>
+                          </div>      
+                          
+                          <ul class="footer line1">
+                            <li class="name">
+                            </li>
+                            <li class="sum"></li>
+                            <li class="quant"></li>
+                            
+                            <li class="warranty text-right">
+                                   
+                            </li>
+                            <li class="discount text-right">
+                                   
+                            </li>
+                            <li class="tip text-right">
+                                   <strong>Tip.Total:</strong>
+                                   
+                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
+                                   <div class="input-group transparent">
+                                          <span class="input-group-addon ">
+                                            %
+                                          </span>
+                                          <%= text_field_tag :tip_percent, "", {:class => "form-control price_input tip_percent"} %>
+                                   </div>
+                            </li>
+                          </ul>
+                          
+                          <ul class="footer line2">
+                            <li class="name">
+                            </li>
+                            <li class="sum">
+                                   Total<br />
+                                   Discount<br />
+                                   <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span><br />
+                                   Sum.Total</li>
+                            <li class="quant text-right">
+                                  
+                                   <span class="total_not_vat_val total_without_vatz total_not_vatz"><%= @order.formated_total %></span><br />
+                                    <span class="total_discountz"><%= format_price(@order.discount_amount,true,true) %></span><br />
+                                    <span class="total_vatz "><%= @order.vat_amount_formated %></span><br />
+                                   <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
+                            </li>
+                            <li class="warranty text-right"></li>
+                            <li class="discount_total text-right"></li>
+                            <li class="tip text-center"></li>
+                          </ul>
+                        </div>
+
+                      </div>
+                    </div>
+                            
+                            
+                    
+                      
+                        <div class="form-actions">  
+                          <div class="pull-right">
+                              <input type="submit" class="btn btn-success btn-cons" value="Save" />
+                              <% if can? :confirm_items, @order %>
+                                   <input name="confirm_items" type="submit" class="btn btn-info btn-cons" value="Save and Confirm Items" />
+                              <% end %>
+                              <%= link_to 'Cancel', url_for(:back), :class => "btn btn-white btn-cons" %>
+                          </div>
+                        </div>
+                  <% end %>
+                </div>
+              </div>
+            </div>		
+      </div>
+
+
+<script>
+       $(document).ready(function() {
+              $('.info_tip input, .info_tip select, .info_tip textarea').addClass('disabled');
+              $('.info_tip input, .info_tip select, .info_tip textarea').attr('disabled','disabled');
+              $('.info_tip .modern_select').select2("enable", false);
+              
+              $('.info_tip input[type=submit]').removeClass('disabled');
+              $('.info_tip input[type=submit]').removeAttr('disabled');
+              
+              
+              //$('.info_tip input, .info_tip select, .info_tip textarea').removeAttr('disabled','disabled');
+       });
+</script>
+
+
+
+

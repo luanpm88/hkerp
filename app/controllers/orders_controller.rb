@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -276,7 +276,10 @@ class OrdersController < ApplicationController
         actions += '<li>'+view_context.link_to("Update Info", update_info_orders_path(:id => item.id, page: params[:page]))+'</li>'
         group_3 += 1
       end
-      
+      if can? :update_tip, item
+        actions += '<li>'+view_context.link_to('Update Tip', {controller: "orders", action: "update_tip", id: item.id})+'</li>'
+        group_1 += 1
+      end
       
       actions += '<li class="divider"></li>' if group_3 > 0
       
@@ -438,6 +441,23 @@ class OrdersController < ApplicationController
     end
   end
   
+  def update_tip    
+  end
+  
+  def do_update_tip
+    return_url = {controller: "accounting", action: "orders"}
+    respond_to do |format|
+      if @order.update(update_tip_params)
+        @order.update_order_detail_tips(params[:order_details])
+        format.html { redirect_to return_url, notice: 'Order tip was successfully updated.' }
+        format.json { head :no_content }
+      else
+        format.html { render "update_tip" }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def order_log
     @logs = @order.order_log
   end
@@ -482,6 +502,12 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :discount_amount,
+                                    :tip_amount
+                                  )
+    end
+    
+    def update_tip_params
+      params.require(:order).permit(
                                     :tip_amount
                                   )
     end

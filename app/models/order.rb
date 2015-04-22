@@ -973,6 +973,25 @@ class Order < ActiveRecord::Base
     end    
   end
   
+  def update_order_detail_tips(order_details_params)
+    
+    if order_details_params.nil?
+      return false
+    end
+    
+    # Update current order details
+    self.order_details.each do |od|      
+      order_details_params.each do |line|
+        if line[1][:product_id].to_i == od.product_id
+          
+          od.update_attributes(
+            tip_amount: line[1][:tip_amount]
+          )
+        end
+      end
+    end    
+  end
+  
   def all_deliveries
     deliveries.where(status: 1).order("created_at DESC")
   end

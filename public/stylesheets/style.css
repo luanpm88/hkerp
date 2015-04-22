@@ -7789,13 +7789,13 @@ tr.parent td {
     min-width: 105px;
 }
 .product_order_list ul li {
-    width: 12%;
+    width: 13%;
 }
 .product_order_list ul li.name {
-    width: 32%;
+    width: 28%;
 }
 .product_order_list ul li.sum, .product_order_list ul li.sumz {
-    width: 22%;
+    width: 23%;
 }
 .product_order_list ul li.quant {
     

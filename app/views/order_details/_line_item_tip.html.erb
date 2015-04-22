@@ -2,11 +2,11 @@
                                       <li class="name">
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
-                                          <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_name]"><%= order_detail.product_name %></textarea>
-                                          <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
+                                          <%= order_detail.product_name %>
+                                          <br /><%= order_detail.product_description %>
                                       </li>
-                                      <li class="unit">
-                                        <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
+                                      <li class="unit text-center">
+                                        <%= order_detail.unit %>
                                       </li>                                    
                                       <li class="text-right">
                                         <%= format_price(order_detail.price) %> / <%= order_detail.quantity %>
