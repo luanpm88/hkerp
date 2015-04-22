@@ -153,13 +153,6 @@ class Product < ActiveRecord::Base
     actions_col = 7
     @products.each do |product|
       
-      edit_link = '<a href="'+Rails.application.routes.url_helpers.edit_product_path(product)+'" class="btn btn-info btn-xs btn-mini">Edit</a> '
-      update_price_link = link_helper.link_to('Price', {controller: "products", action: "update_price", id: product.id}, class: "btn btn-info btn-xs btn-mini")
-      update_stock_link = link_helper.link_to('Update Stock', {controller: "product_stock_updates", action: "new", product_id: product.id}, class: "btn btn-info btn-xs btn-mini")
-      trash_link = link_helper.link_to('Trash', {controller: "products", action: "trash", product_id: product.id}, method: :patch, class: "btn btn-info btn-xs btn-mini")
-      
-      
-      
       
       case params[:page]
       when "statistics"
@@ -560,6 +553,8 @@ class Product < ActiveRecord::Base
   end
   
   def product_log(from_date, to_date)
+    import_icon = '<i class="icon-download-alt"></i> '.html_safe
+    export_icon = '<i class="icon-external-link"></i> '.html_safe
     #Order details, sales and purchases
     od_details = order_details
                       .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
@@ -593,15 +588,22 @@ class Product < ActiveRecord::Base
       d = dd.delivery
       if o.is_purchase
         if dd.delivery.is_return == 1
-          line = {user: d.creator, date: d.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator,
+                  date: d.created_at, note: "Return items to [#{o.supplier.name}]",
+                  link: d.delivery_link,
+                  quantity: export_icon+dd.quantity.to_s}
         else
-          line = {user: d.creator, date: d.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator,
+                  date: d.created_at,
+                  note: "Recieved items from [#{o.supplier.name}]",
+                  link: d.delivery_link,
+                  quantity: import_icon+dd.quantity.to_s}
         end
       else
         if dd.delivery.is_return == 1
-          line = {user: d.creator, date: d.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Recieved returned items from [#{o.customer.name}]", link: d.delivery_link, quantity: import_icon+dd.quantity.to_s}
         else
-          line = {user: d.creator, date: d.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: dd.quantity}
+          line = {user: d.creator, date: d.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: export_icon+dd.quantity.to_s}
         end
       end
       history << line
@@ -620,9 +622,9 @@ class Product < ActiveRecord::Base
       end
       
       if c.combined.nil? || c.combined
-        line = {user: c.user, date: c.created_at, note: "Combining:"+c_str, link: "", quantity: c.quantity}
+        line = {user: c.user, date: c.created_at, note: "Combining:"+c_str, link: "", quantity: import_icon+c.quantity.to_s}
       else
-        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", quantity: "-"+c.quantity.to_s}
+        line = {user: c.user, date: c.created_at, note: "De-Combining:"+c_str, link: "", quantity: export_icon+c.quantity.to_s}
       end
       
       history << line
@@ -635,9 +637,9 @@ class Product < ActiveRecord::Base
     
     com_ds.each do |cd|
       if cd.combination.combined.nil? || cd.combination.combined
-        line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: "-"+cd.quantity.to_s}
+        line = {user: cd.combination.user,date: cd.created_at, note: "Combined with others to create [#{cd.combination.product.name}]", link: "", quantity: export_icon+cd.quantity.to_s}
       else
-        line = {user: cd.combination.user,date: cd.created_at, note: "Added by de-combine [#{cd.combination.product.name}]", link: "", quantity: cd.quantity.to_s}
+        line = {user: cd.combination.user,date: cd.created_at, note: "Added by de-combine [#{cd.combination.product.name}]", link: "", quantity: import_icon+cd.quantity.to_s}
       end
       
       history << line
@@ -650,9 +652,9 @@ class Product < ActiveRecord::Base
               
     stocks.each do |s|      
       if s.quantity > 0
-        line = {user: s.user,date: s.created_at, note: "Custom Imported", link: "", quantity: s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Imported", link: "", quantity: import_icon+s.quantity.to_s}
       else
-        line = {user: s.user,date: s.created_at, note: "Custom Exported", link: "", quantity: s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Exported", link: "", quantity: export_icon+s.quantity.to_s}
       end
       history << line
     end
