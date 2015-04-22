@@ -123,11 +123,11 @@
             <td valign="top" style="text-align: center">
               <% if detail.serial_numbers.present? %>
                 <% detail.serial_numbers_extracted.each_with_index do |serial_number,index| %>
-                      <div style="display: inline-block; text-align: center; margin-right: 20px;"><%= serial_number %>
+                      <div>
+                        <%= serial_number %>
+                      
+                      
                       </div>
-                      
-                      
-                      <% if index%2 == 1 %><br /><% end %>
                 <% end %>
               <% elsif detail.order_detail.order.tax.rate == 0 %>
                 -
