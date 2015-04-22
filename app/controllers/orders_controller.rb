@@ -429,6 +429,8 @@ class OrdersController < ApplicationController
       redirect_url = @order.is_purchase ? purchase_orders_orders_path : orders_path
     end
     
+    @order.save_draft(current_user)
+    
     respond_to do |format|
       if @order.update(update_info_params)
         @order.update_order_details_info(params[:order_details])
@@ -445,6 +447,8 @@ class OrdersController < ApplicationController
   end
   
   def do_update_tip
+    @order.save_draft(current_user)
+    
     return_url = {controller: "accounting", action: "orders"}
     respond_to do |format|
       if @order.update(update_tip_params)
