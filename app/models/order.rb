@@ -467,22 +467,25 @@ class Order < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    if !params["order"].nil?
-      case params["order"]["0"]["column"]
-        when "1"
-          order = "categories.name"
-        when "2"
-          order = "manufacturers.name"
-        when "3"
-          order = "products.name"
+    if !params["order"].nil? && !params["order"]["0"].nil?
+      case params[:page]
+      when "delivery"      
+
+        
+      else
+        case params["order"]["0"]["column"]
         when "4"
-          order = "products.price"
+          order_by = "orders.debt_date"
         else
-          order = "orders.created_at"
+          order_by = "orders.created_at"
+        end
+        
       end
-      order += " "+params["order"]["0"]["dir"]
+      
+      
+      order_by += " "+params["order"]["0"]["dir"]
     else
-      order = "created_at DESC"
+        order_by = "orders.created_at DESC"
     end
     
     where = {}    
@@ -536,7 +539,7 @@ class Order < ActiveRecord::Base
     
     @items = @items.where(where)
     @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?    
-    @items = @items.order(order) if !order.nil?
+    @items = @items.order(order_by) if !order_by.nil?
     
     total = @items.count(:all)
     
@@ -552,6 +555,13 @@ class Order < ActiveRecord::Base
         name_col = item.customer.short_name
       end
       
+      if !item.is_purchase
+        staff_col = item.salesperson_name
+      else
+        staff_col = item.purchase_manager_name
+      end
+      
+      
       puts User.current_user
       
       printed_order_number = item.printed_order_number.present? ? "<br /><strong class=\"finished\">#{item.printed_order_number}</strong>" : ""
@@ -560,8 +570,8 @@ class Order < ActiveRecord::Base
       when "delivery"
           row = [
                   item.quotation_code+printed_order_number,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
-                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
+                  "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+item.display_status+'</div>',
                   "<div class=\"text-center\">#{item.display_payment_status}</div>",
@@ -571,11 +581,11 @@ class Order < ActiveRecord::Base
           data << row
           actions_col = 7
       when "accounting"
-        debt_time = item.is_debt ? item.debt_days.to_s+'<br />days' : ""
+        debt_time = item.is_debt || item.is_out_of_date ? item.debt_remain_days.to_s+'<br />days' : ""
           row = [
                   item.quotation_code+printed_order_number,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,                                
-                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
+                  "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+debt_time+'</div>',
                   '<div class="text-center">'+item.display_status+item.display_delivery_status+'</div>',
@@ -588,9 +598,9 @@ class Order < ActiveRecord::Base
           
           row = [
                   item.quotation_code+printed_order_number,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")+item.display_description,              
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,              
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
-                  "<div class=\"text-center\"><strong>salesperson:</strong><br />#{item.salesperson_name}<br /><strong>purchaser:</strong><br />#{item.purchase_manager_name}</div>",
+                  "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   "<div class=\"text-center\">#{item.display_price_status}#{item.display_delivery_status}#{item.display_payment_status}</div>",                  
                   '<div class="text-center">'+item.display_status+'</div>',
@@ -722,7 +732,7 @@ class Order < ActiveRecord::Base
         status = "not_deposited"
       elsif is_debt
         status = "debt"
-      elsif is_deposited && !debt_date.nil? && debt_date < order_date
+      elsif is_out_of_date
         status = "out_of_date"
       else
         status = "out_of_date"
@@ -735,7 +745,10 @@ class Order < ActiveRecord::Base
   end
   
   def is_debt
-    is_deposited && !debt_date.nil? && debt_date >= order_date && paid_amount != total_vat
+    is_deposited && !debt_date.nil? && debt_date >= Time.now && paid_amount != total_vat
+  end
+  def is_out_of_date
+    is_deposited && !debt_date.nil? && debt_date < Time.now && paid_amount != total_vat
   end
   
   def display_payment_status
@@ -888,6 +901,14 @@ class Order < ActiveRecord::Base
   def debt_days
     if !debt_date.nil?
       (debt_date.to_date - order_date.to_date).to_i
+    else
+      Time.now
+    end
+  end
+  
+  def debt_remain_days
+    if !debt_date.nil?
+      (debt_date.to_date - Time.now.to_date).to_i
     else
       Time.now
     end
@@ -1066,7 +1087,7 @@ class Order < ActiveRecord::Base
     arr = []
     order_details.each do |od|
       p_str = "<div class=\"order-desc-line-item quantity-#{od.quantity}\">"
-      p_str += "<label>[#{od.quantity.to_s}]</label> " 
+      p_str += "<label>#{od.quantity.to_s}</label> " 
       p_str += od.product.display_name.strip
       p_str += "</div>"
       arr << p_str

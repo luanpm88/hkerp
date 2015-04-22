@@ -7818,3 +7818,23 @@ tr.parent td {
 .width60 {
     width: 60%;
 }
+.main-title {
+    font-weight: 700;
+}
+.order-desc-line-items .order-desc-line-item label {
+    color: #333;
+    display: inline;
+    font-size: 100%;
+    font-weight: bold;
+    line-height: 150%;
+    margin-left: -44px;
+    position: absolute;
+    text-align: right;
+    width: 38px;
+}
+.order-desc-line-items .order-desc-line-item {
+    margin: 5px 0;
+}
+.out_of_date {
+    color: #ce4844;
+}
