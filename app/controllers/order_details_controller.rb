@@ -113,7 +113,7 @@ class OrderDetailsController < ApplicationController
   end
   
   def ajax_destroy
-    @order_detail.update_attributes(quantity: 0)
+    @order_detail.quantity = 0
     
     respond_to do |format|
       format.html { render action: 'ajax_show', :layout => nil, :id => @order_detail.id }
