@@ -94,6 +94,70 @@ ALTER SEQUENCE assignments_id_seq OWNED BY assignments.id;
 
 
 --
+-- Name: autotask_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE autotask_details (
+    id integer NOT NULL,
+    autotask_id integer,
+    item_count integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: autotask_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE autotask_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: autotask_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE autotask_details_id_seq OWNED BY autotask_details.id;
+
+
+--
+-- Name: autotasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE autotasks (
+    id integer NOT NULL,
+    name character varying(255),
+    time_interval integer,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+--
+-- Name: autotasks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE autotasks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: autotasks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE autotasks_id_seq OWNED BY autotasks.id;
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1444,6 +1508,20 @@ ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY autotask_details ALTER COLUMN id SET DEFAULT nextval('autotask_details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY autotasks ALTER COLUMN id SET DEFAULT nextval('autotasks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
 
 
@@ -1692,6 +1770,22 @@ ALTER TABLE ONLY agents_contacts
 
 ALTER TABLE ONLY assignments
     ADD CONSTRAINT assignments_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: autotask_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY autotask_details
+    ADD CONSTRAINT autotask_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: autotasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY autotasks
+    ADD CONSTRAINT autotasks_pkey PRIMARY KEY (id);
 
 
 --
@@ -2282,4 +2376,8 @@ INSERT INTO schema_migrations (version) VALUES ('20150420023153');
 INSERT INTO schema_migrations (version) VALUES ('20150420050835');
 
 INSERT INTO schema_migrations (version) VALUES ('20150420065002');
+
+INSERT INTO schema_migrations (version) VALUES ('20150423011049');
+
+INSERT INTO schema_migrations (version) VALUES ('20150423012413');
 

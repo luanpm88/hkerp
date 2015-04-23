@@ -12,6 +12,9 @@ class ApplicationController < ActionController::Base
     resource = controller_name.singularize.to_sym
     method = "#{resource}_params"
     params[resource] &&= send(method) if respond_to?(method, true)
+    
+    #auto
+    Autotask.run
   end 
   
   rescue_from CanCan::AccessDenied do |exception|

@@ -122,3 +122,5 @@ OrderStatus.create(name: "confirmed", description: "Order Confirmed")
 OrderStatus.create(name: "outdated", description: "Outdated")
 OrderStatus.create(name: "canceled", description: "Canceled")
 OrderStatus.create(name: "finished", description: "Finished")
+
+Autotask.create(name: "order_debt_outdate", time_interval: 43200)

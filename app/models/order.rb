@@ -1242,4 +1242,14 @@ class Order < ActiveRecord::Base
     #tip status
     update_attributes(tip_status_name: tip_status) if tip_status_name != tip_status
   end
+  
+  def check_debt_outdate
+    if self.debt_date < Time.now.beginning_of_day
+      self.update_attribute(:payment_status_name, "out_of_date")
+      return true
+    else
+      return false
+    end
+  end
+  
 end

@@ -1,4 +1,8 @@
 Hkerp::Application.routes.draw do
+  resources :autotask_details
+
+  resources :autotasks
+
   resources :product_stock_updates
 
   resources :combination_details
@@ -99,6 +103,7 @@ Hkerp::Application.routes.draw do
     collection do
       get :download_pdf
       get :print_order
+      get :print_order_fix1
       get :purchase_orders
       get :confirm_order
       get :datatable

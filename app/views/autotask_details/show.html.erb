@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Autotask:</strong>
+  <%= @autotask_detail.autotask_id %>
+</p>
+
+<p>
+  <strong>Item count:</strong>
+  <%= @autotask_detail.item_count %>
+</p>
+
+<p>
+  <strong>Time interval:</strong>
+  <%= @autotask_detail.time_interval %>
+</p>
+
+<%= link_to 'Edit', edit_autotask_detail_path(@autotask_detail) %> |
+<%= link_to 'Back', autotask_details_path %>

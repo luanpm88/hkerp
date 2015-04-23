@@ -230,6 +230,7 @@ class Ability
         can :print_order, Order do |order|
           ['confirmed'].include?(order.status.name)
         end
+        can :print_order_fix1
         can :download_pdf, Order
         can :pay_order, Order  do |order|
           ['finished','confirmed'].include?(order.status.name) && !order.is_paid

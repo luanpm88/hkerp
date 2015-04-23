@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  item_count: 1
+  time_interval: 1
+
+two:
+  name: MyString
+  item_count: 1
+  time_interval: 1

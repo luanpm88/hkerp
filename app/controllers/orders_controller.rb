@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   load_and_authorize_resource :except => [:datatable]
   
-  before_action :set_order, only: [:update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:print_order_fix1, :update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -151,6 +151,27 @@ class OrdersController < ApplicationController
     @hk = @order.supplier
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/print_order.pdf.erb',
+            :layout => nil,
+            :footer => {
+                :center => "",
+                :left => "",
+                :right => "",
+                :page_size => "A4",
+                :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
+    
+    #render layout: false
+  end
+  
+  def print_order_fix1
+    authorize! :read, @order
+    
+    @hk = @order.supplier
+    render  :pdf => "fix1_quotation_"+@order.quotation_code,
+            :template => 'orders/print_order_fix1.pdf.erb',
             :layout => nil,
             :footer => {
                 :center => "",
@@ -341,6 +362,10 @@ class OrdersController < ApplicationController
       end
       if can? :print_order, item       
         actions += '<li>'+view_context.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
+      end
+      
+      if can? :print_order_fix1, item       
+        actions += '<li>'+view_context.link_to('Print Order (raw) Fix1', print_order_fix1_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end
      
       

@@ -1,0 +1,29 @@
+<h1>Listing autotask_details</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Autotask</th>
+      <th>Item count</th>
+      <th>Time interval</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @autotask_details.each do |autotask_detail| %>
+      <tr>
+        <td><%= autotask_detail.autotask_id %></td>
+        <td><%= autotask_detail.item_count %></td>
+        <td><%= autotask_detail.time_interval %></td>
+        <td><%= link_to 'Show', autotask_detail %></td>
+        <td><%= link_to 'Edit', edit_autotask_detail_path(autotask_detail) %></td>
+        <td><%= link_to 'Destroy', autotask_detail, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Autotask detail', new_autotask_detail_path %>
