@@ -216,7 +216,7 @@
                                                        <i class=""></i>
                                                        <select name="order[payment_method_id]" class="modern_select" style="width: 100%">
                                                                
-                                                               <% PaymentMethod.all.each do |payment| %>
+                                                               <% PaymentMethod.all_payments.each do |payment| %>
                                                                    <option value="<%= payment.id %>" <% if !@order.payment_method_id.nil? && @order.payment_method_id == payment.id %>selected="selected"<% end %>>
                                                                      <%= payment.name %>
                                                                    </option>
