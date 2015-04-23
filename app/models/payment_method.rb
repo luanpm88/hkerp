@@ -4,7 +4,7 @@ class PaymentMethod < ActiveRecord::Base
   has_many :orders
   has_many :payment_records
   
-  def all_payments
+  def self.all_payments
     order("created_at DESC")
   end
 end
