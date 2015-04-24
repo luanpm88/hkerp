@@ -18,7 +18,7 @@
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "statistic_sales"})%>">
 							<div class="row accounting-statistics-filters">
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<h4>From Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -31,7 +31,7 @@
 									</div>
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<h4>To Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -44,7 +44,7 @@
 									</div>
 								</div>
 								
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<h4>Customer</h4>
 										<div class="">
 											<div class="input-with-icon  right">                                       
@@ -53,6 +53,20 @@
 											</div>
 										</div>
 									</div>
+											
+											<div class="col-md-2">
+													<h4>Paid Status</h4>
+													<div class="">
+														<div class="input-with-icon  right">                                       
+															<i class=""></i>
+															<select name="paid_status" class="modern_select width100">
+																<option value="">All</option>
+																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="not_paid">Not Paid</option>
+																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="paid">Paid</option>
+															</select>
+														</div>
+													</div>
+											</div>
 
 							</div>
 						</form>
@@ -69,7 +83,7 @@
 			    <div class="grid-body no-border filters" method="get">
 					<h4>Sales Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
-					<%= render 'statistic_sales' %>
+					<%= render 'statistic_table' %>
 					
 				</div>
 			</div>

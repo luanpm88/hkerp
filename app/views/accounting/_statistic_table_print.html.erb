@@ -11,15 +11,21 @@
 							<th class="text-center">Quantity</th>
 							<th class="text-right">Price</th>
 							<th class="text-center">Paid</th>
+							
 							<th class="text-right">Tax</th>
 							
-							<th class="text-center">Total</th>
-
+							<th class="text-right">Total</th>
+							<th class="text-right">
+										Remain
+									</th>
+							<!--<th class="text-right">Discount</th>-->
+							<!--<th class="text-right">Cost Total</th>-->
+							<!--<th class="text-right">Fare</th>-->
 						</tr>
 						
 						<%
 						count = 1
-						@statistics[:buy_orders].each do |order| %>
+						@orders.each do |order| %>
 							<% order.order_details.each do |od| %>
                               <% if od.quantity > 0 && !order.is_paid %>
 								<tr class="quantity-<%= od.quantity %>">
@@ -42,6 +48,7 @@
 									<td class="text-right">
 										<%= od.formated_total %>
 									</td>
+									
 									<td class="text-center">
 										<%= od.paid_status %>
 									</td>
@@ -53,6 +60,9 @@
 									<td class="text-center">
 										<%= od.total_vat_formated %>
 									</td>
+									<td class="text-right">
+										<%= format_price(order.remain_amount) %>
+									</td>
 									
 								</tr>
 								<% count += 1 %>
@@ -61,8 +71,10 @@
 						<% end %>
 						
                         <tr>
-                          <td class="text-right" colspan="8">Tổng cộng</td>
-                          <td class="text-right"><%= @statistics[:total_buy_with_vat] %></td>
+                          <td class="text-center" colspan="10">
+								Tổng cộng nợ:
+								<strong><%= @total_notpaid %></strong>
+								<td>
                         </tr>
 						
 						

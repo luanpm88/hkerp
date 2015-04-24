@@ -359,6 +359,9 @@ class Order < ActiveRecord::Base
     payment_vat_paid = 0.00
     payment_vat_recieved = 0.00
     
+    total_buy_with_vat_notpaid = 0.00
+    total_sell_with_vat_notpaid = 0.00
+    
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
                   .where('order_date >= ?', from_date)
@@ -366,6 +369,12 @@ class Order < ActiveRecord::Base
     
     if params[:customer_id].present?
       sell_orders = sell_orders.where(customer_id: params[:customer_id])
+    end
+    if params[:paid_status].present? && params[:paid_status] == "paid"
+      sell_orders = sell_orders.where(payment_status_name: "paid")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "not_paid"
+      sell_orders = sell_orders.where("payment_status_name != 'paid'")
     end
                   
         
@@ -378,6 +387,8 @@ class Order < ActiveRecord::Base
         payment_recieved_vat += order.paid_amount
         payment_recieved += order.paid_amount/(order.tax.rate/100+1)
         payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
+        
+        total_sell_with_vat_notpaid += order.remain_amount
       end      
     end
     
@@ -399,6 +410,8 @@ class Order < ActiveRecord::Base
         payment_paid_vat += order.paid_amount
         payment_paid += order.paid_amount/(order.tax.rate/100+1)
         payment_vat_paid += order.paid_amount*(order.tax.rate/100)
+        
+        total_buy_with_vat_notpaid += order.remain_amount
       end      
     end
     
@@ -420,6 +433,9 @@ class Order < ActiveRecord::Base
       payment_recieved_vat: format_price(payment_recieved_vat),
       payment_recieved: format_price(payment_recieved),
       payment_vat_recieved: format_price(payment_vat_recieved),
+      
+      total_buy_with_vat_notpaid: format_price(total_buy_with_vat_notpaid),
+      total_sell_with_vat_notpaid: format_price(total_sell_with_vat_notpaid),
       
       sell_orders: sell_orders,
       buy_orders: buy_orders

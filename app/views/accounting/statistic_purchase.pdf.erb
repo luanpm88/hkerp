@@ -158,27 +158,8 @@ com_title = Contact.HK
 <h3 style="margin-bottom: 0; text-align: center">BẢNG ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
 <h4 style="margin-top: 10px"><%= @supplier.name if !@supplier.nil? %></h4>
 
-<%= render 'statistic_purchase_print' %>
+<%= render 'statistic_table_print' %>
 
-<p></p><p></p>
-<table class="footer">
-  <tr>
 
-      <td width="33%" align="left" valign="top">
-        <p><strong>Xác nhận của khách hàng</strong></p>
-        <p><strong>Người đại diện</strong></p>
-        
-      </td>
-      <td width="20%" align="center" valign="top">
-        
-      </td>
-      <td width="46%" align="left" valign="top">
-        <p><strong>TP.HCM ngày <%= Time.now.strftime("%d") %> tháng <%= Time.now.strftime("%m") %> năm <%= Time.now.strftime("%Y") %></strong></p>
-        <p><strong>Chúng tôi rất mong được phúc đáp của Quý Công Ty</strong></p>
-        <p><strong>Xin trân trọng cám ơn</strong></p>
-      </td>
-
-  </tr>
-</table>
 
 <page></page>

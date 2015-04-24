@@ -18,7 +18,7 @@
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "statistic_purchase"})%>">
 							<div class="row accounting-statistics-filters">
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<h4>From Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -31,7 +31,7 @@
 									</div>
 									</div>
 								</div>
-								<div class="col-md-4">
+								<div class="col-md-3">
 									<h4>To Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -44,7 +44,7 @@
 									</div>
 								</div>
 								
-									<div class="col-md-4">
+									<div class="col-md-3">
 										<h4>Supplier</h4>
 										<div class="">
 											<div class="input-with-icon  right">                                       
@@ -68,7 +68,7 @@
 			    <div class="grid-body no-border filters" method="get">
 					<h4>Purchase Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
-					<%= render 'statistic_purchase' %>
+					<%= render 'statistic_table' %>
 					
 					
 				</div>

@@ -4,20 +4,18 @@
 							<th>Order</th>
 							<th>Delivery</th>
 							<th>Item</th>
-							<th class="text-center">Quantity</th>
 							<th class="text-right">Price</th>
-							<th class="text-center">Paid</th>
+							<th class="text-right">Remain</th>
 							<th class="text-right">Tax</th>
 							
 							<th class="text-center">Staff</th>
-							<!--<th class="text-right">Cost</th>-->
 							<th class="text-right">Cost Total</th>
 							<th class="text-right">Fare</th>
 						</tr>
 						
 						<%
 						count = 1
-						@statistics[:buy_orders].each do |order| %>
+						@orders.each do |order| %>
 							<% order.order_details.each do |od| %>
 								<% if od.quantity > 0 %>
 									<tr class="quantity-<%= od.quantity %>">
@@ -37,16 +35,14 @@
 											<% end %>
 										</td>
 										<td>
-											<%= od.product.display_name %>
-										</td>
-										<td class="text-center">
-											<%= od.quantity %> <%= od.unit %>
+											<%= od.product.display_name %><br />
+											(<%= od.quantity %> <%= od.unit %>)
 										</td>
 										<td class="text-right">
 											<%= od.total_vat_formated %>
 										</td>
-										<td class="text-center">
-											<%= od.paid_status %>
+										<td class="text-right">
+											<%= format_price(order.remain_amount) %>
 										</td>
 										<td class="text-right">
 											<%= od.vat_amount_formated %>
@@ -54,11 +50,8 @@
 											(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
 										</td>
 										<td class="text-center">
-											<%= order.purchase_manager.name %>
+											<%= od.paid_status %>
 										</td>
-										<!--<td class="text-right">
-											<%= od.cost_vat_formated %>
-										</td>-->
 										<td class="text-right">
 											<%= od.cost_total_vat_formated %>
 										</td>
@@ -70,6 +63,13 @@
 								<% end %>
 							<% end %>
 						<% end %>
+						
+						<tr>
+                          <td class="text-center" colspan="10">
+								Tổng cộng nợ:
+								<strong><%= @total_notpaid %></strong>
+								<td>
+                        </tr>
 						
 						
 					</table>

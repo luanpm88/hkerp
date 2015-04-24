@@ -41,8 +41,10 @@ class AccountingController < ApplicationController
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
-    @statistics = Order.statistics(@from_date, @to_date, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
+    @statistics = Order.statistics(@from_date, @to_date, params)
     
+    @orders = @statistics[:sell_orders]
+    @total_notpaid = @statistics[:total_sell_with_vat_notpaid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_sales_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
@@ -76,6 +78,9 @@ class AccountingController < ApplicationController
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
     @statistics = Order.statistics(@from_date, @to_date, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
+    
+    @orders = @statistics[:buy_orders]
+    @total_notpaid = @statistics[:total_buy_with_vat_notpaid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_purchase_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
