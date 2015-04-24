@@ -64,6 +64,9 @@
 												<% if index == 0 %>												
 													<td rowspan="<%= count %>" class="text-center">
 														<%= order.display_payment_status %>
+														<%= order.debt_remain_days.to_s+' days' if (order.is_debt || order.is_out_of_date) %>
+														<br />
+														(<%= order.debt_date.to_date %>)
 													</td>
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.total_vat) %>
