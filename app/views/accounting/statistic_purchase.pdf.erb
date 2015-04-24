@@ -156,7 +156,7 @@ com_title = Contact.HK
 <p></p>
 
 <h3 style="margin-bottom: 0; text-align: center">BẢNG ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
-<h4 style="margin-top: 10px"><%= @supplier.name if !@supplier.nil? %></h4>
+<h4 style="margin-top: 20px; text-align: center"><%= @supplier.name if !@supplier.nil? %></h4>
 
 <%= render 'statistic_table_print' %>
 
