@@ -400,6 +400,12 @@ class Order < ActiveRecord::Base
     if params[:supplier_id].present?
       buy_orders = buy_orders.where(supplier_id: params[:supplier_id])
     end
+    if params[:paid_status].present? && params[:paid_status] == "paid"
+      buy_orders = buy_orders.where(payment_status_name: "paid")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "not_paid"
+      buy_orders = buy_orders.where("payment_status_name != 'paid'")
+    end
         
     buy_orders.each do |order|
       if order.parent.nil?
