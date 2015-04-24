@@ -15,12 +15,7 @@
 							<th class="text-right">Tax</th>
 							
 							<th class="text-right">Total</th>
-							<th class="text-right">
-										Remain
-									</th>
-							<!--<th class="text-right">Discount</th>-->
-							<!--<th class="text-right">Cost Total</th>-->
-							<!--<th class="text-right">Fare</th>-->
+
 						</tr>
 						
 						<%
@@ -36,9 +31,7 @@
 									<td>
                                       <%= order.order_date.strftime("%d/%m/%Y") %>
 									</td>
-									<!--<td class="text-left">
-										<%= order.customer.short_name %>
-									</td>-->
+
                                     <td class="text-left">
                                       <%= od.product.display_name %>
                                     </td>
