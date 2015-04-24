@@ -53,6 +53,20 @@
 											</div>
 										</div>
 									</div>
+											
+											<div class="col-md-2">
+													<h4>Paid Status</h4>
+													<div class="">
+														<div class="input-with-icon  right">                                       
+															<i class=""></i>
+															<select name="paid_status" class="modern_select width100">
+																<option value="">All</option>
+																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="not_paid">Not Paid</option>
+																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="paid">Paid</option>
+															</select>
+														</div>
+													</div>
+											</div>
 							</div>
 						</form>
 						</div>		    
