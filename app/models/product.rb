@@ -702,13 +702,13 @@ class Product < ActiveRecord::Base
     in_c_de = in_c_de.sum(:quantity)
     
     
-    out_c = combination_details.where(combined: [nil,true])
+    out_c = combination_details.joins(:combination).where(combined: [nil,true])
     if from_date.present? && to_date.present?
       out_c = out_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
     out_c = out_c.sum(:quantity)
     
-    out_c_de = combination_details.where(combined: [false])
+    out_c_de = combination_details.joins(:combination).where(combined: [false])
     if from_date.present? && to_date.present?
       out_c_de = out_c_de.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
