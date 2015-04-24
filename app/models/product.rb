@@ -689,20 +689,32 @@ class Product < ActiveRecord::Base
   end
   
   def combination_count(from_date=nil, to_date=nil)
-    in_c = combinations
+    in_c = combinations.where(combined: [nil,true])
     if from_date.present? && to_date.present?
       in_c = in_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
     in_c = in_c.sum(:quantity)
     
+    in_c_de = combinations.where(combined: [false])
+    if from_date.present? && to_date.present?
+      in_c_de = in_c_de.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+    end
+    in_c_de = in_c_de.sum(:quantity)
     
-    out_c = combination_details
+    
+    out_c = combination_details.where(combined: [nil,true])
     if from_date.present? && to_date.present?
       out_c = out_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
     end
     out_c = out_c.sum(:quantity)
     
-    count = in_c - out_c
+    out_c_de = combination_details.where(combined: [false])
+    if from_date.present? && to_date.present?
+      out_c_de = out_c_de.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+    end
+    out_c_de = out_c_de.sum(:quantity)
+    
+    count = in_c - out_c + out_c_de - in_c_de
     
     return count
   end
