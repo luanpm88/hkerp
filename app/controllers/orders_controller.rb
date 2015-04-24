@@ -28,6 +28,9 @@ class OrdersController < ApplicationController
       @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
       @order.warranty_place = "Tận nơi"
       @order.warranty_cost = "0"
+      
+      @order.payment_method_id = -1
+      
       if !params[:purchase].nil?
         @order.customer = Contact.HK
       else

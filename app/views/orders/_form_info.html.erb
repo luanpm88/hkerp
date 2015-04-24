@@ -204,7 +204,7 @@
                                                                      <%= payment.name %>
                                                                    </option>
                                                                <% end %>
-                                                               <option value="">Tiền mặt/Chuyển khoản</option>
+                                                               <option <% if !@order.payment_method_id.present? %>selected="selected"<% end %> value="">Tiền mặt/Chuyển khoản</option>
                                                         </select>
                                                      </div>
                                                  </div>
