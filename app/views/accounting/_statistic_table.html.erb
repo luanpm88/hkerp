@@ -19,7 +19,7 @@
 						num = 1
 						@orders.each do |order| %>
 							<%
-								count = order.order_details.where("quantity > 0").count
+								count = order.order_details.where("quantity > 0").count+1
 							%>
 							
 							
@@ -45,9 +45,7 @@
 													<%= od.product.display_name %>
 													
 																									
-													<% od.delivery_details.each do |dd| %>
-														<br />	<%= link_to '<i class="icon-print"></i> '.html_safe+dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
-													<% end %>
+													
 												</td>
 												<td class="text-right">
 													<%= format_price(od.total_vat) %>
@@ -61,7 +59,7 @@
 												
 												
 												<% if index == 0 %>												
-													<td rowspan="<%= count %>" class="text-center">
+													<td rowspan="<%= count-1 %>" class="text-center">
 														<%= order.display_payment_status %>
 														<% if (order.is_debt || order.is_out_of_date) %>
 															<%= order.debt_remain_days.to_s+' days' %>
@@ -69,15 +67,15 @@
 															(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
 														<% end %>
 													</td>
-													<td rowspan="<%= count %>" class="text-right">
+													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.total_vat) %>
 														<br />
 														(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
 													</td>
-													<td rowspan="<%= count %>" class="text-right">
+													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.paid_amount) %>
 													</td>
-													<td rowspan="<%= count %>" class="text-right">
+													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.remain_amount) %>
 													</td>
 												<% end %>
@@ -86,6 +84,23 @@
 											
 										<% end %>
 									<% end %>
+								<tr style="background: #efefef">
+									<td colspan="7">
+										Deliveries:
+										<% order.deliveries.each do |d| %>
+											<% d.delivery_details.each do |dd| %>
+												&nbsp;&nbsp;&nbsp;<%= link_to '<i class="icon-print"></i> '.html_safe+dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
+												
+											<% end %>
+										<% end %>
+									<br />
+										Recepts:
+										<% order.payment_records.each do |recept| %>
+											&nbsp;&nbsp;&nbsp;<%= link_to("<i class=\"icon-print\"></i> ".html_safe+recept.created_at.strftime("%Y-%m-%d"), recept, :class => 'fancybox.iframe ajax_iframe') %>
+											
+										<% end %>
+									</td>
+								</tr>
 							<% num += 1 %>
 						<% end %>
 						
