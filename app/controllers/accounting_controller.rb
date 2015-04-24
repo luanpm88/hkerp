@@ -77,7 +77,7 @@ class AccountingController < ApplicationController
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
-    @statistics = Order.statistics(@from_date, @to_date, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
+    @statistics = Order.statistics(@from_date, @to_date, params)
     
     @orders = @statistics[:buy_orders]
     @total_notpaid = @statistics[:total_buy_with_vat_notpaid]
