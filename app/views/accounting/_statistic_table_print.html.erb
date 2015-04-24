@@ -17,7 +17,7 @@
 						</tr>
 						
 						<%
-						count = 1
+						num = 1
 						@orders.each do |order| %>
 							<%
 								count = order.order_details.where("quantity > 0").count
@@ -47,7 +47,7 @@
 													
 												</td>
 												<td class="text-center">
-													<%= od.quantity %> <%= od.unit %>
+													<%= od.quantity %><br /><%= od.unit %>
 													
 												</td>
 												<td class="text-right">
@@ -72,9 +72,10 @@
 												<% end %>
 												
 											</tr>
-											<% count += 1 %>
+											
 										<% end %>
 									<% end %>
+							<% num += 1 %>
 						<% end %>
 						
 						<tr>
@@ -82,10 +83,10 @@
 								Tổng cộng:
 							</td>
 							<td>
-								<strong class="paid"><%= @total_paid %></strong>
+								<strong class="paid"><%= format_price(@total_paid) %></strong>
 							</td>
 							<td>
-								<strong class="debt"><%= @total_notpaid %></strong>
+								<strong class="debt"><%= format_price(@total_notpaid) %></strong>
 							</td>
                         </tr>
 						

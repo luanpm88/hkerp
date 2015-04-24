@@ -430,24 +430,24 @@ class Order < ActiveRecord::Base
     
     
     return {
-      total_buy: format_price(total_buy),
-      total_sell: format_price(total_sell),
-      total_buy_with_vat: format_price(total_buy_with_vat),
-      total_sell_with_vat: format_price(total_sell_with_vat),
-      total_vat_buy: format_price(total_vat_buy),
-      total_vat_sell: format_price(total_vat_sell),
+      total_buy: total_buy,
+      total_sell: total_sell,
+      total_buy_with_vat: total_buy_with_vat,
+      total_sell_with_vat: total_sell_with_vat,
+      total_vat_buy: total_vat_buy,
+      total_vat_sell: total_vat_sell,
       
-      payment_paid_vat: format_price(payment_paid_vat),
-      payment_paid: format_price(payment_paid),
-      payment_vat_paid: format_price(payment_vat_paid),
-      payment_recieved_vat: format_price(payment_recieved_vat),
-      payment_recieved: format_price(payment_recieved),
-      payment_vat_recieved: format_price(payment_vat_recieved),
+      payment_paid_vat: payment_paid_vat,
+      payment_paid: payment_paid,
+      payment_vat_paid: payment_vat_paid,
+      payment_recieved_vat: payment_recieved_vat,
+      payment_recieved: payment_recieved,
+      payment_vat_recieved: payment_vat_recieved,
       
-      total_buy_with_vat_notpaid: format_price(total_buy_with_vat_notpaid),
-      total_sell_with_vat_notpaid: format_price(total_sell_with_vat_notpaid),
-      total_buy_with_vat_paid: format_price(total_buy_with_vat_paid),
-      total_sell_with_vat_paid: format_price(total_sell_with_vat_paid),
+      total_buy_with_vat_notpaid: total_buy_with_vat_notpaid,
+      total_sell_with_vat_notpaid: total_sell_with_vat_notpaid,
+      total_buy_with_vat_paid: total_buy_with_vat_paid,
+      total_sell_with_vat_paid: total_sell_with_vat_paid,
       
       sell_orders: sell_orders,
       buy_orders: buy_orders

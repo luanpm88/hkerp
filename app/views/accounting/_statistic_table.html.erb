@@ -2,7 +2,6 @@
 						<tr>
 							<th class="text-center">STT</th>
 							<th><%= ["statistics_purchase"].include?(params[:action]) ? "Supplier" : "Customer" %></th>
-							<th>Delivery</th>
 							<th>Item</th>
 							
 							<th class="text-right">Price</th>
@@ -17,7 +16,7 @@
 						</tr>
 						
 						<%
-						count = 1
+						num = 1
 						@orders.each do |order| %>
 							<%
 								count = order.order_details.where("quantity > 0").count
@@ -29,7 +28,7 @@
 											<tr>												
 												<% if index == 0 %>
 													<td rowspan="<%= count %>" class="text-center">
-													<%= count %>
+													<%= num %>
 													<br />
 														<strong class="finished"><%= order.printed_order_number %></strong>
 													<br />
@@ -37,40 +36,40 @@
 														<br /><%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 													</td>
 													<td rowspan="<%= count %>">
-														
-														
 														<%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
 														
-													</td>
-													<td rowspan="<%= count %>">										
-														<% od.delivery_details.each do |dd| %>
-															<%= link_to dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
-														<% end %>
 													</td>
 												<% end %>
 												
 												
 												
 												<td>
-													<%= od.product.display_name %><br />
-													(<%= od.quantity %><br /><%= od.unit %>)
+													<%= od.product.display_name %>
+													
+																									
+													<% od.delivery_details.each do |dd| %>
+														<br />	<%= link_to '<i class="icon-print"></i> '.html_safe+dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
+													<% end %>
 												</td>
 												<td class="text-right">
 													<%= format_price(od.total_vat) %>
+													<div class="text-right">(<%= od.quantity %> <%= od.unit %>)</div>
 												</td>
 												<td class="text-right">
-													<%= format_price(od.cost_total) %>
-													<br />
-													Fare:<br /><%= od.fare_formated %>
+													<%= format_price(od.cost_total_vat) %>
+													<!--<br />
+													Fare:<br /><%= od.fare_formated %>-->
 												</td>
 												
 												
 												<% if index == 0 %>												
 													<td rowspan="<%= count %>" class="text-center">
 														<%= order.display_payment_status %>
-														<%= order.debt_remain_days.to_s+' days' if (order.is_debt || order.is_out_of_date) %>
-														<br />
-														(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+														<% if (order.is_debt || order.is_out_of_date) %>
+															<%= order.debt_remain_days.to_s+' days' %>
+															<br />
+															(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+														<% end %>
 													</td>
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.total_vat) %>
@@ -89,20 +88,21 @@
 												<% end %>
 												
 											</tr>
-											<% count += 1 %>
+											
 										<% end %>
 									<% end %>
+							<% num += 1 %>
 						<% end %>
 						
 						<tr>
-							<td class="text-right" colspan="8">
+							<td class="text-right" colspan="7">
 								Tổng cộng:
 							</td>
 							<td>
-								<strong class="paid"><%= @total_paid %></strong>
+								<strong class="paid"><%= format_price(@total_paid) %></strong>
 							</td>
 							<td>
-								<strong class="debt"><%= @total_notpaid %></strong>
+								<strong class="debt"><%= format_price(@total_notpaid) %></strong>
 							</td>
                         </tr>
 						
