@@ -704,13 +704,13 @@ class Product < ActiveRecord::Base
     
     out_c = combination_details.joins(:combination).where(combinations: {combined: [nil,true]})
     if from_date.present? && to_date.present?
-      out_c = out_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+      out_c = out_c.where('combination_details.created_at >= ?', from_date).where('combination_details.created_at <= ?', to_date)
     end
     out_c = out_c.sum(:quantity)
     
     out_c_de = combination_details.joins(:combination).where(combinations: {combined: [false]})
     if from_date.present? && to_date.present?
-      out_c_de = out_c_de.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+      out_c_de = out_c_de.where('combination_details.created_at >= ?', from_date).where('combination_details.created_at <= ?', to_date)
     end
     out_c_de = out_c_de.sum(:quantity)
     
