@@ -23,7 +23,7 @@
     }
     
     * {
-        font-size: 16px;
+        font-size: 17px;
         font-family: "Times New Roman";
     }
         .po_water_mark .text {
@@ -70,9 +70,9 @@
 
 
 <div style="position: absolute;top:<%= pos3 %>px;left: 98px">
-    <%= @order.buyer_company %>
+    <%= @order.buyer_company.split.map(&:capitalize).join(' ') %>
 </div>
-<div style="position: absolute;top:<%= pos4 %>px;left: 250px;font-size: 16px;font-weight: bold;letter-spacing: 1px;">
+<div style="position: absolute;top:<%= pos4 %>px;left: 250px;font-size: 17px;font-weight: bold;letter-spacing: 1px;">
     <%= @order.buyer_tax_code %>
 </div>
 <div style="position: absolute;top:<%= pos5 %>px;left: 75px">
@@ -91,7 +91,7 @@
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
         <% @count = @count + 1 if order_detail.quantity > 0 %>
-            <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 16px<%= ";display:none" if order_detail.quantity == 0 %>">
+            <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 17px<%= ";display:none" if order_detail.quantity == 0 %>">
                 <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 17px;text-align: center"><%= @count %></div>
                 <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px">
                     <%= order_detail.product_name %><br />
