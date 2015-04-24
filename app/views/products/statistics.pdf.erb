@@ -63,15 +63,17 @@
 										<td class="text-left" width="50%"><%= product.display_name %></td>
 										<td class="text-center"><%= product.statistic_stock(@from_date) %></td>
 										<td class="text-center">
-											<%= "+" if product.import_count(@from_date, @to_date) > 0 %><%= product.import_count(@from_date, @to_date) %>
+											<%= add_sign(product.import_count(@from_date, @to_date)) %>
 											<br />(<%= product.import_amount_formated(@from_date, @to_date) %>)
 										</td>
 										<td class="text-center">
-											<%= "-" if product.export_count(@from_date, @to_date) > 0 %><%= product.export_count(@from_date, @to_date) %>
+											<%= add_sign(-product.export_count(@from_date, @to_date)) %>
 											<br />(<%= product.export_amount_formated(@from_date, @to_date) %>)
 										</td>
-										<td class="text-center"><%= product.combination_count_formated(@from_date, @to_date) %></td>
-										<td class="text-center"><%= "+" if product.stock_update_count(@from_date, @to_date) > 0 %><%= product.stock_update_count(@year, @month) %></td>
+										<td class="text-center"><%= add_sign(product.combination_count(@from_date, @to_date)) %></td>
+										<td class="text-center">
+											<%= add_sign(product.stock_update_count(@year, @month)) %>
+										</td>
 										<td class="text-center"><%= product.statistic_stock(@to_date) %></td>
 									</tr>
 								<% end %>

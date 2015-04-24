@@ -14,4 +14,8 @@ module ApplicationHelper
       number_to_currency(number, precision: prec, separator: ".", unit: '', delimiter: ",")
     end
   end
+  
+  def add_sign(number)
+    number > 0 ? "+"+number.to_s : number.to_s
+  end
 end
