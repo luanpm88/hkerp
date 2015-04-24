@@ -404,8 +404,8 @@ class Product < ActiveRecord::Base
     count = 0
     #count for combinations
     #count += combinations.where("created_at <= ?", datetime).sum(:quantity)-combination_details.where("created_at <= ?", datetime).sum(:quantity)
-    count += combinations.where("created_at <= ?", datetime).where(combined: [nil,true]).sum(:quantity)-combination_details.joins(:combination).where("created_at <= ?", datetime).where(combinations: {combined: [nil,true]}).sum(:quantity)
-    count += -combinations.where("created_at <= ?", datetime).where(combined: false).sum(:quantity)+combination_details.joins(:combination).where("created_at <= ?", datetime).where(combinations: {combined: false}).sum(:quantity)
+    count += combinations.where("combinations.created_at <= ?", datetime).where(combined: [nil,true]).sum(:quantity)-combination_details.joins(:combination).where("combination_details.created_at <= ?", datetime).where(combinations: {combined: [nil,true]}).sum(:quantity)
+    count += -combinations.where("combinations.created_at <= ?", datetime).where(combined: false).sum(:quantity)+combination_details.joins(:combination).where("combination_details.created_at <= ?", datetime).where(combinations: {combined: false}).sum(:quantity)
     
     #count for sales delivery
     count -= order_details
