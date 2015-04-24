@@ -45,6 +45,7 @@ class AccountingController < ApplicationController
     
     @orders = @statistics[:sell_orders]
     @total_notpaid = @statistics[:total_sell_with_vat_notpaid]
+    @total_paid = @statistics[:total_sell_with_vat_paid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_sales_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
@@ -81,6 +82,7 @@ class AccountingController < ApplicationController
     
     @orders = @statistics[:buy_orders]
     @total_notpaid = @statistics[:total_buy_with_vat_notpaid]
+    @total_paid = @statistics[:total_buy_with_vat_paid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_purchase_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",

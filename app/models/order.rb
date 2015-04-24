@@ -361,6 +361,8 @@ class Order < ActiveRecord::Base
     
     total_buy_with_vat_notpaid = 0.00
     total_sell_with_vat_notpaid = 0.00
+    total_buy_with_vat_paid = 0.00
+    total_sell_with_vat_paid = 0.00
     
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
@@ -389,6 +391,7 @@ class Order < ActiveRecord::Base
         payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
         
         total_sell_with_vat_notpaid += order.remain_amount
+        total_sell_with_vat_paid += order.paid_amount
       end      
     end
     
@@ -418,6 +421,7 @@ class Order < ActiveRecord::Base
         payment_vat_paid += order.paid_amount*(order.tax.rate/100)
         
         total_buy_with_vat_notpaid += order.remain_amount
+        total_buy_with_vat_paid += order.paid_amount
       end      
     end
     
@@ -442,6 +446,8 @@ class Order < ActiveRecord::Base
       
       total_buy_with_vat_notpaid: format_price(total_buy_with_vat_notpaid),
       total_sell_with_vat_notpaid: format_price(total_sell_with_vat_notpaid),
+      total_buy_with_vat_paid: format_price(total_buy_with_vat_paid),
+      total_sell_with_vat_paid: format_price(total_sell_with_vat_paid),
       
       sell_orders: sell_orders,
       buy_orders: buy_orders

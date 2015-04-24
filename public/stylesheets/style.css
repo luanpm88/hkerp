@@ -7838,3 +7838,6 @@ tr.parent td {
 .out_of_date {
     color: #ce4844;
 }
+table.table-border td {
+    border: solid 1px #ccc !important;
+}

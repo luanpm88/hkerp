@@ -1,67 +1,91 @@
-
-		
-		
-		<table class="table list" cellspacing="0" cellpadding="0">
+                    <table cellspacing="0" cellpadding="0" class="list table table-border">
 						<tr>
 							<th class="text-center">STT</th>
-							<th>Order.No</th>
-							<th>Order.Date</th>
-							<th class="text-left">Item</th>
-							<th class="text-center">Quantity</th>
+							<th>Order</th>
+							
+							<th>Item</th>
+							<th class="text-center">Unit</th>
 							<th class="text-right">Price</th>
-							<th class="text-center">Paid</th>
-							
-							<th class="text-right">Tax</th>
-							
-							<th class="text-right">Total</th>
 
+							
+							
+														
+							
+							<th class="text-right">Total(+VAT)</th>
+							<th class="text-right">Paid</th>
+							<th class="text-right">Remain</th>
 						</tr>
 						
 						<%
 						count = 1
 						@orders.each do |order| %>
-							<% order.order_details.each do |od| %>
-                              <% if od.quantity > 0 && !order.is_paid %>
-								<tr class="quantity-<%= od.quantity %>">
-									<td class="text-center"><%= count %></td>
-									<td>
-                                      <%= order.printed_order_number %>										
-									</td>
-									<td>
-                                      <%= order.order_date.strftime("%d/%m/%Y") %>
-									</td>
-
-                                    <td class="text-left">
-                                      <%= od.product.display_name %>
-                                    </td>
-									<td class="text-center">
-										<%= od.quantity %> <%= od.unit %>
-									</td>
-									<td class="text-right">
-										<%= od.formated_total %>
-									</td>									
-									<td class="text-center">
-										<%= od.paid_status %>
-									</td>
-									<td class="text-right">
-										<%= od.vat_amount_formated %>
-										<br />
-										(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
-									</td>
-									<td class="text-center">
-										<%= od.total_vat_formated %>
-									</td>
-									
-								</tr>
-								<% count += 1 %>
-                              <% end %>
-							<% end %>
+							<%
+								count = order.order_details.where("quantity > 0").count
+							%>
+							
+							
+									<% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
+										<% if od.quantity > 0 %>
+											<tr>												
+												<% if index == 0 %>
+													<td rowspan="<%= count %>" class="text-center"><%= count %></td>
+													<td rowspan="<%= count %>">
+														<strong><%= order.printed_order_number %></strong>
+														<br />
+														(<%= order.order_date_formatted %>)
+														
+														
+														
+													</td>
+													
+												<% end %>
+												
+												
+												
+												<td style="text-align: left !important">
+													<%= od.product.display_name %><br />
+													
+												</td>
+												<td class="text-center">
+													<%= od.quantity %> <%= od.unit %>
+													
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total_vat) %>
+												</td>
+												
+												
+												
+												<% if index == 0 %>												
+													
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.total_vat) %>
+														<br />
+														(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+													</td>
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.paid_amount) %>
+													</td>
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.remain_amount) %>
+													</td>
+												<% end %>
+												
+											</tr>
+											<% count += 1 %>
+										<% end %>
+									<% end %>
 						<% end %>
 						
-                        <tr>
-							<td class="text-center" colspan="9">
-								Tổng cộng nợ:
-								<strong><%= @total_notpaid %></strong>
+						<tr>
+							<td class="text-right" colspan="6">
+								Tổng cộng:
+							</td>
+							<td>
+								<strong class="paid"><%= @total_paid %></strong>
+							</td>
+							<td>
+								<strong class="debt"><%= @total_notpaid %></strong>
 							</td>
                         </tr>
 						
