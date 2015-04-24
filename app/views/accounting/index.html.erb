@@ -71,9 +71,13 @@
 						</div>		    
 					</div>
 			
+			
+			
+			
+			
 			<div class="grid simple ">
 			    <div class="grid-title no-border">
-                                <h4>Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+                                <h4>Sales Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
@@ -84,69 +88,123 @@
                                 </div>
                             </div>
                             <div class="grid-body no-border statistics-content">
-				<div class="row">
-				    <div class="col-md-4">
-					<h5>Total Sell</h5>
-					<h2><%= @statistics[:total_sell] %></h2>
-				    </div>
-				    
-				    <div class="col-md-4">
-					<h5>Total Sell + VAT</h5>
-					<h2><%= @statistics[:total_sell_with_vat] %></h2>
-				    </div>
-				    
-				    <div class="col-md-4">
-					<h5>Total VAT (sell)</h5>
-					<h2><%= @statistics[:total_vat_sell] %></h2>
-				    </div>
-				    
-				    <div class="col-md-4">
-					<h5>Total Buy</h5>
-					<h2><%= @statistics[:total_buy] %></h2>
-				    </div>
-				    
-				    <div class="col-md-4">
-					<h5>Total Buy + VAT</h5>
-					<h2><%= @statistics[:total_buy_with_vat] %></h2>
-				    </div>
-				    
-				    <div class="col-md-4">
-					<h5>Total VAT (Buy)</h5>
-					<h2><%= @statistics[:total_vat_buy] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment Recieved</h5>
-					<h2><%= @statistics[:payment_recieved] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment Recieved + VAT</h5>
-					<h2><%= @statistics[:payment_recieved_vat] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment VAT (Recieved)</h5>
-					<h2><%= @statistics[:payment_vat_recieved] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment Paid</h5>
-					<h2><%= @statistics[:payment_paid] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment Paid + VAT</h5>
-					<h2><%= @statistics[:payment_paid_vat] %></h2>
-				    </div>
-					
-					<div class="col-md-4">
-					<h5>Payment VAT (Paid)</h5>
-					<h2><%= @statistics[:payment_vat_paid] %></h2>
-				    </div>
-				</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Total</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_sell],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Total (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:total_sell_with_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_vat_sell],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Recieved</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:payment_recieved],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Recieved (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:payment_recieved_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Recieved VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:payment_vat_recieved],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_sell]-@statistics[:payment_recieved],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:total_sell_with_vat]-@statistics[:payment_recieved_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_vat_sell]-@statistics[:payment_vat_recieved],false,false,2) %></h2>
+						</div>
+						
+					</div>
 			    </div>
 			</div>
+			
+			
+			
+			
+			<div class="grid simple ">
+			    <div class="grid-title no-border">
+                                <h4>Purchase Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border statistics-content">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Total</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_buy],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Total (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:total_buy_with_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_vat_buy],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Paid</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:payment_paid],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Paid (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:payment_paid_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Paid VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:payment_vat_paid],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_buy]-@statistics[:payment_paid],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain (+VAT)</h5>
+							<h2 class="text-right main-title"><%= format_price(@statistics[:total_buy_with_vat]-@statistics[:payment_paid_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Remain VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_vat_buy]-@statistics[:payment_vat_paid],false,false,2) %></h2>
+						</div>
+						
+					</div>
+			    </div>
+			</div>
+			
+			
 			
 			
 			</div>
