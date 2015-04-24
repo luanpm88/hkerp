@@ -40,8 +40,7 @@
 									</td>
 									<td class="text-right">
 										<%= od.formated_total %>
-									</td>
-									
+									</td>									
 									<td class="text-center">
 										<%= od.paid_status %>
 									</td>
@@ -53,9 +52,6 @@
 									<td class="text-center">
 										<%= od.total_vat_formated %>
 									</td>
-									<td class="text-right">
-										<%= format_price(order.remain_amount) %>
-									</td>
 									
 								</tr>
 								<% count += 1 %>
@@ -64,7 +60,7 @@
 						<% end %>
 						
                         <tr>
-							<td class="text-center" colspan="10">
+							<td class="text-center" colspan="9">
 								Tổng cộng nợ:
 								<strong><%= @total_notpaid %></strong>
 							<td>
