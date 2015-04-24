@@ -160,7 +160,9 @@ com_title = Contact.HK
 <p></p>
 
 <h3 style="margin-bottom: 0; text-align: center">BẢNG ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
-<h4 style="margin-top: 20px; text-align: center">Kính gửi: <%= @customer.name if !@customer.nil? %></h4>
+<% if !@customer.nil? %>
+  <h4 style="margin-top: 20px; text-align: center">Kính gửi: <%= @customer.name %></h4>
+<% end %>
 
 <%= render 'statistic_table_print' %>
 
