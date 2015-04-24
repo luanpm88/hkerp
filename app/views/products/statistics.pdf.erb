@@ -53,32 +53,32 @@
 								<th class="text-center" width="1%">Af.Stock</th>
 							</tr>
 						</thead>
+						<tbody>
+							<%
+							count = 1;
+							@products.each do |product| %>
+								<% if params[:remain].nil? || (!params[:remain].nil? && product.statistic_stock(@to_date) > 0) %>
+									<tr>
+										<th class="text-center"><%= count %></th>
+										<td class="text-left" width="50%"><%= product.display_name %></td>
+										<td class="text-center"><%= product.statistic_stock(@from_date) %></td>
+										<td class="text-center">
+											<%= "+" if product.import_count(@from_date, @to_date) > 0 %><%= product.import_count(@from_date, @to_date) %>
+											<br />(<%= product.import_amount_formated(@from_date, @to_date) %>)
+										</td>
+										<td class="text-center">
+											<%= "-" if product.export_count(@from_date, @to_date) > 0 %><%= product.export_count(@from_date, @to_date) %>
+											<br />(<%= product.export_amount_formated(@from_date, @to_date) %>)
+										</td>
+										<td class="text-center"><%= product.combination_count_formated(@from_date, @to_date) %></td>
+										<td class="text-center"><%= "+" if product.stock_update_count(@from_date, @to_date) > 0 %><%= product.stock_update_count(@year, @month) %></td>
+										<td class="text-center"><%= product.statistic_stock(@to_date) %></td>
+									</tr>
+								<% end %>
 						
-						<%
-						count = 1;
-						@products.each do |product| %>
-						
-							<tbody>
-								<tr>
-									<th class="text-center"><%= count %></th>
-									<td class="text-left" width="50%"><%= product.display_name %></td>
-									<td class="text-center"><%= product.statistic_stock(@from_date) %></td>
-									<td class="text-center">
-										<%= "+" if product.import_count(@from_date, @to_date) > 0 %><%= product.import_count(@from_date, @to_date) %>
-										<br />(<%= product.import_amount_formated(@from_date, @to_date) %>)
-									</td>
-									<td class="text-center">
-										<%= "-" if product.export_count(@from_date, @to_date) > 0 %><%= product.export_count(@from_date, @to_date) %>
-										<br />(<%= product.export_amount_formated(@from_date, @to_date) %>)
-									</td>
-									<td class="text-center"><%= product.combination_count_formated(@from_date, @to_date) %></td>
-									<td class="text-center"><%= "+" if product.stock_update_count(@from_date, @to_date) > 0 %><%= product.stock_update_count(@year, @month) %></td>
-									<td class="text-center"><%= product.statistic_stock(@to_date) %></td>
-								</tr>
-							</tbody>
-						
-						<%
-							count += 1
-						end %>			
+							<%
+								count += 1
+							end %>
+						</tbody>
 						
                     </table>
