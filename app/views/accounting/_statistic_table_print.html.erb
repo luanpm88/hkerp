@@ -28,7 +28,9 @@
 										<% if od.quantity > 0 %>
 											<tr>												
 												<% if index == 0 %>
-													<td rowspan="<%= count %>" class="text-center"><%= count %></td>
+													<td rowspan="<%= count %>" class="text-center">
+													<%= num %>
+													</td>
 													<td rowspan="<%= count %>">
 														<strong><%= order.printed_order_number %></strong>
 														<br />
