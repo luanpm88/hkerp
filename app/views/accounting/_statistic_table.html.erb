@@ -1,7 +1,7 @@
                     <table class="table table-border">
 						<tr>
 							<th class="text-center">STT</th>
-							<th>Order</th>
+							<th><%= ["statistics_purchase"].include?(params[:action]) ? "Supplier" : "Customer" %></th>
 							<th>Delivery</th>
 							<th>Item</th>
 							
@@ -28,15 +28,19 @@
 										<% if od.quantity > 0 %>
 											<tr>												
 												<% if index == 0 %>
-													<td rowspan="<%= count %>" class="text-center"><%= count %></td>
-													<td rowspan="<%= count %>">
-														<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
-														<br />
-														[<%= order.printed_order_number %>]
-														<br />
-														<%= order.supplier.short_name %>
-														<br />
+													<td rowspan="<%= count %>" class="text-center">
+													<%= count %>
+													<br />
+														<strong class="finished"><%= order.printed_order_number %></strong>
+													<br />
 														(<%= order.order_date_formatted %>)
+														<br /><%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
+													</td>
+													<td rowspan="<%= count %>">
+														
+														
+														<%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
+														
 													</td>
 													<td rowspan="<%= count %>">										
 														<% od.delivery_details.each do |dd| %>
