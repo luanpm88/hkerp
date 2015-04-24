@@ -1,7 +1,7 @@
                     <table class="table table-border">
 						<tr>
-							<th class="text-center">STT</th>
-							<th><%= ["statistics_purchase"].include?(params[:action]) ? "Supplier" : "Customer" %></th>
+							<th class="text-center">Order</th>
+							
 							<th>Item</th>
 							
 							<th class="text-right">Price</th>
@@ -34,10 +34,8 @@
 													<br />
 														(<%= order.order_date_formatted %>)
 														<br /><%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
-													</td>
-													<td rowspan="<%= count %>">
-														<%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
-														
+														<br /><br />
+														<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
 													</td>
 												<% end %>
 												
@@ -92,7 +90,7 @@
 						<% end %>
 						
 						<tr>
-							<td class="text-right" colspan="7">
+							<td class="text-right" colspan="6">
 								Tổng cộng:
 							</td>
 							<td>
