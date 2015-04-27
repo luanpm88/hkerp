@@ -26,10 +26,11 @@ class Order < ActiveRecord::Base
   has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
   belongs_to :parent, class_name: "Order"
   
-  #has_and_belongs_to_many :order_statuses
+  has_and_belongs_to_many :order_statuses
+  belongs_to :order_status
   
-  has_one :order_statuses_order, -> { order created_at: :desc }
-  has_one :order_status, :through => :order_statuses_order
+  #has_one :order_statuses_order, -> { order created_at: :desc }
+  #belongs_to :order_status, :through => :order_statuses_order
   
   has_many :sales_deliveries, :dependent => :destroy
   
@@ -558,7 +559,7 @@ class Order < ActiveRecord::Base
     end
     
     @items = @items.joins(:order_status)
-    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
+    #@items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?  && params["delivery_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?  && params["payment_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
