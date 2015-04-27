@@ -169,7 +169,7 @@
 <p>
   
   <% if @order.is_purchase %>
-    Email:	<%= @order.purchase_manager.email %><% if !@order.purchase_manager.mobile.nil? %>; ĐT Di Động:	<%= @order.purchase_manager.mobile %><% end %>		
+    Email:	<%= @order.purchaser.email %><% if !@order.purchaser.mobile.nil? %>; ĐT Di Động:	<%= @order.purchaser.mobile %><% end %>		
   <% else %>
     Email:	<%= @order.salesperson.email %><% if !@order.salesperson.mobile.nil? %>; ĐT Di Động:	<%= @order.salesperson.mobile %><% end %>		
   <% end %>

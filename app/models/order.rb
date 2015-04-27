@@ -17,6 +17,7 @@ class Order < ActiveRecord::Base
   belongs_to :payment_method
   belongs_to :salesperson, :class_name => "User"
   belongs_to :purchase_manager, :class_name => "User"
+  belongs_to :purchaser, :class_name => "User"
   
   belongs_to :user
   
@@ -478,7 +479,7 @@ class Order < ActiveRecord::Base
                 against: [:tip_status_name,:customer_po, :printed_order_number, :order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
                 associated_against: {
                   salesperson: [:first_name],
-                  purchase_manager: [:first_name],
+                  purchaser: [:first_name],
                   supplier: [:name, :tax_code, :address, :email],
                   order_details: [:product_name, :product_description],
                   #order_status: [:name]
@@ -586,7 +587,7 @@ class Order < ActiveRecord::Base
       if !item.is_purchase
         staff_col = item.salesperson_name
       else
-        staff_col = item.purchase_manager_name
+        staff_col = item.purchaser_name
       end
       
       
@@ -913,13 +914,13 @@ class Order < ActiveRecord::Base
     end
     
     set_status("price_confirmed",user)
-    Notification.send_notification(purchase_manager, 'order_price_confirmed', self)
+    Notification.send_notification(purchaser, 'order_price_confirmed', self)
     
     return true
   end
   
-  def purchase_manager_name
-    purchase_manager.nil? ? "" : purchase_manager.name
+  def purchaser_name
+    purchaser.nil? ? "" : purchaser.name
   end
   
   def salesperson_name
@@ -1145,7 +1146,7 @@ class Order < ActiveRecord::Base
     history = []
     #created at
     if self.is_purchase
-      line = {user: self.purchase_manager, date: self.created_at, note: "Ordered to [#{self.supplier.name}]", link: self.order_link, quantity: ""}
+      line = {user: self.purchaser, date: self.created_at, note: "Ordered to [#{self.supplier.name}]", link: self.order_link, quantity: ""}
     else
       line = {user: self.salesperson, date: self.created_at, note: "Ordered from [#{self.customer.name}]", link: self.order_link, quantity: ""}
     end

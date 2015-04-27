@@ -14,10 +14,10 @@ class Notification < ActiveRecord::Base
     case type
     when 'order_items_confirmed'
       users = User.joins(:roles)
-                  .where(roles: {name: 'purchase_manager'})
+                  .where(roles: {name: 'purchaser'})
       
-      if !item.purchase_manager.nil?
-        users = users.where(id: item.purchase_manager.id)
+      if !item.purchaser.nil?
+        users = users.where(id: item.purchaser.id)
       end      
       
       users.each do |user|
@@ -71,7 +71,7 @@ class Notification < ActiveRecord::Base
       
     when 'order_out_of_stock'
       users = User.joins(:roles)
-                  .where(roles: {name: 'purchase_manager'})
+                  .where(roles: {name: 'purchaser'})
       
       users.each do |user|
         n = Notification.new

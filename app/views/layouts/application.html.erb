@@ -1596,7 +1596,7 @@
 	    </li>
 	<% end %>
 	
-	<% if current_user.has_role? "purchase_manager" %>
+	<% if current_user.has_role? "purchaser" %>
 	    <li class="start<% if ["orders"].include?(params[:controller]) && (params[:purchase] == "1" || ["purchase_orders","pricing_orders"].include?(params[:action])) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-reorder"></i>
@@ -1617,7 +1617,7 @@
 	    </li>
 	<% end %>
 	
-	<% if current_user.has_role?("storage_manager") || current_user.has_role?("salesperson") || current_user.has_role?("purchase_manager") %>
+	<% if current_user.has_role?("storage_manager") || current_user.has_role?("salesperson") || current_user.has_role?("purchaser") %>
 	    <li class="start<% if ["products", "categories", "manufacturers", "deliveries"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
 		  <i class="icon-archive"></i>

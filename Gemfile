@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 4.1.4'
+gem 'rails', '~> 4.2.1'
 
 # Use postgresql as the database for Active Record
 gem 'pg'
@@ -52,6 +52,6 @@ gem 'wicked_pdf'
 gem 'pg_search'
 gem 'carrierwave'
 gem 'mini_magick'
-gem 'nokogiri', '~> 1.6.1'
+gem 'nokogiri'
 gem 'execjs'
 gem 'therubyracer'

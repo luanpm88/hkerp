@@ -724,7 +724,8 @@ CREATE TABLE orders (
     price_status_name character varying(255),
     user_id integer,
     tip_amount numeric DEFAULT 0.0,
-    tip_status_name character varying(255)
+    tip_status_name character varying(255),
+    purchaser_id integer
 );
 
 
@@ -2383,4 +2384,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150423011049');
 INSERT INTO schema_migrations (version) VALUES ('20150423012413');
 
 INSERT INTO schema_migrations (version) VALUES ('20150424094205');
+
+INSERT INTO schema_migrations (version) VALUES ('20150427010451');
 
