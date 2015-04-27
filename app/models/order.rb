@@ -26,9 +26,10 @@ class Order < ActiveRecord::Base
   has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
   belongs_to :parent, class_name: "Order"
   
-  has_and_belongs_to_many :order_statuses
+  #has_and_belongs_to_many :order_statuses
   
-  belongs_to :order_status
+  has_one :order_statuses_order, -> { order created_at: :desc }
+  has_one :order_status, :through => :order_statuses_order
   
   has_many :sales_deliveries, :dependent => :destroy
   
@@ -260,8 +261,6 @@ class Order < ActiveRecord::Base
     if status.nil?
       return false
     else
-      #oso = OrderStatusesOrder.new(order_id: self.id, order_status_id: status.id)
-      #oso.user = user
       self.order_statuses << status
       self.order_status = status
       self.save
@@ -457,22 +456,22 @@ class Order < ActiveRecord::Base
   
   def self.delivery_sales_orders
     Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.delivery_purchase_orders
     Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_sales_orders
     Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_purchase_orders
     Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   pg_search_scope :search,
