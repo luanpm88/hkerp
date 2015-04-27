@@ -345,8 +345,6 @@ class Order < ActiveRecord::Base
   end
   
   def self.statistics(from_date, to_date, params = {})
-    status = OrderStatus.get("confirmed")
-    
     total_buy = 0.00
     total_sell = 0.00
     total_buy_with_vat = 0.00
