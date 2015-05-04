@@ -971,16 +971,16 @@ class Order < ActiveRecord::Base
     # Update current order details
     self.order_details.each do |od|        
       order_details_params.each do |line|
-        if line[1][:product_id].to_i == od.product_id
+        if line[:product_id].to_i == od.product_id
           od.update_attributes(
-            product_name: line[1][:product_name],
-            product_description: line[1][:product_description],
-            unit: line[1][:unit],
-            price: line[1][:price],
-            quantity: line[1][:quantity],
-            warranty: line[1][:warranty],
-            discount_amount: line[1][:discount_amount],
-            tip_amount: line[1][:tip_amount]
+            product_name: line[:product_name],
+            product_description: line[:product_description],
+            unit: line[:unit],
+            price: line[:price],
+            quantity: line[:quantity],
+            warranty: line[:warranty],
+            discount_amount: line[:discount_amount],
+            tip_amount: line[:tip_amount]
           )          
         end
       end
@@ -992,8 +992,8 @@ class Order < ActiveRecord::Base
       od_pids << od.product_id
     end
     order_details_params.each do |line|
-      if !od_pids.include?(line[1][:product_id].to_i)
-        self.order_details.create(line[1])
+      if !od_pids.include?(line[:product_id].to_i)
+        self.order_details.create(line)
       end
     end
   end
@@ -1007,14 +1007,14 @@ class Order < ActiveRecord::Base
     # Update current order details
     self.order_details.each do |od|      
       order_details_params.each do |line|
-        if line[1][:product_id].to_i == od.product_id
+        if line[:product_id].to_i == od.product_id
           
           od.update_attributes(
-            product_name: line[1][:product_name],
-            product_description: line[1][:product_description],
-            unit: line[1][:unit],
-            discount_amount: line[1][:discount_amount],
-            tip_amount: line[1][:tip_amount]
+            product_name: line[:product_name],
+            product_description: line[:product_description],
+            unit: line[:unit],
+            discount_amount: line[:discount_amount],
+            tip_amount: line[:tip_amount]
           )
         end
       end
@@ -1030,10 +1030,10 @@ class Order < ActiveRecord::Base
     # Update current order details
     self.order_details.each do |od|      
       order_details_params.each do |line|
-        if line[1][:product_id].to_i == od.product_id
+        if line[:product_id].to_i == od.product_id
           
           od.update_attributes(
-            tip_amount: line[1][:tip_amount]
+            tip_amount: line[:tip_amount]
           )
         end
       end
