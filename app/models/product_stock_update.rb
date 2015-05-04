@@ -3,7 +3,7 @@ class ProductStockUpdate < ActiveRecord::Base
   validates :quantity, presence: true
   validates :user_id, presence: true
   validates :note, presence: true
-  validate :is_import, presence: true
+  validates :is_import, presence: true
   
   validate :valid_serial_numbers_count
   

@@ -57,7 +57,7 @@ class OrdersController < ApplicationController
     @order.create_quotation_code
     
     if @order.is_purchase
-      @order.purchase_manager = current_user
+      @order.purchaser = current_user
     end
     if @order.is_sales
       @order.salesperson = current_user
@@ -414,7 +414,7 @@ class OrdersController < ApplicationController
   end
   
   def do_update_price
-    @order.update_attributes(purchase_manager_id: current_user.id)    
+    @order.update_attributes(purchaser_id: current_user.id)    
     
     params[:order_details].each do |line|
       od = @order.order_details.find(line[0])

@@ -33,7 +33,6 @@ Hkerp::Application.routes.draw do
     end
   end
 
-  resources :sales_delivery_details
 
   resources :sales_deliveries do
     collection do

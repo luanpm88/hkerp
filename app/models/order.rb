@@ -17,6 +17,7 @@ class Order < ActiveRecord::Base
   belongs_to :payment_method
   belongs_to :salesperson, :class_name => "User"
   belongs_to :purchase_manager, :class_name => "User"
+  belongs_to :purchaser, :class_name => "User"
   
   belongs_to :user
   
@@ -26,8 +27,10 @@ class Order < ActiveRecord::Base
   belongs_to :parent, class_name: "Order"
   
   has_and_belongs_to_many :order_statuses
-  
   belongs_to :order_status
+  
+  #has_one :order_statuses_order, -> { order created_at: :desc }
+  #belongs_to :order_status, :through => :order_statuses_order
   
   has_many :sales_deliveries, :dependent => :destroy
   
@@ -259,8 +262,6 @@ class Order < ActiveRecord::Base
     if status.nil?
       return false
     else
-      #oso = OrderStatusesOrder.new(order_id: self.id, order_status_id: status.id)
-      #oso.user = user
       self.order_statuses << status
       self.order_status = status
       self.save
@@ -456,29 +457,29 @@ class Order < ActiveRecord::Base
   
   def self.delivery_sales_orders
     Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.delivery_purchase_orders
     Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_sales_orders
     Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_purchase_orders
     Order.purchase_orders
-                  .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]}) # orders confirmed
+                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
   end
   
   pg_search_scope :search,
                 against: [:tip_status_name,:customer_po, :printed_order_number, :order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
                 associated_against: {
                   salesperson: [:first_name],
-                  purchase_manager: [:first_name],
+                  purchaser: [:first_name],
                   supplier: [:name, :tax_code, :address, :email],
                   order_details: [:product_name, :product_description],
                   #order_status: [:name]
@@ -558,7 +559,7 @@ class Order < ActiveRecord::Base
     end
     
     @items = @items.joins(:order_status)
-    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
+    #@items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?  && params["delivery_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?  && params["payment_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
@@ -586,7 +587,7 @@ class Order < ActiveRecord::Base
       if !item.is_purchase
         staff_col = item.salesperson_name
       else
-        staff_col = item.purchase_manager_name
+        staff_col = item.purchaser_name
       end
       
       
@@ -913,13 +914,13 @@ class Order < ActiveRecord::Base
     end
     
     set_status("price_confirmed",user)
-    Notification.send_notification(purchase_manager, 'order_price_confirmed', self)
+    Notification.send_notification(purchaser, 'order_price_confirmed', self)
     
     return true
   end
   
-  def purchase_manager_name
-    purchase_manager.nil? ? "" : purchase_manager.name
+  def purchaser_name
+    purchaser.nil? ? "" : purchaser.name
   end
   
   def salesperson_name
@@ -1145,7 +1146,7 @@ class Order < ActiveRecord::Base
     history = []
     #created at
     if self.is_purchase
-      line = {user: self.purchase_manager, date: self.created_at, note: "Ordered to [#{self.supplier.name}]", link: self.order_link, quantity: ""}
+      line = {user: self.purchaser, date: self.created_at, note: "Ordered to [#{self.supplier.name}]", link: self.order_link, quantity: ""}
     else
       line = {user: self.salesperson, date: self.created_at, note: "Ordered from [#{self.customer.name}]", link: self.order_link, quantity: ""}
     end
