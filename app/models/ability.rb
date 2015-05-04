@@ -295,7 +295,7 @@ class Ability
           product.is_combinable
         end
         can :de_combine_parts, Product do |product|
-          product.calculated_stock > 0
+          product.calculated_stock > 0 && product.parts.count > 0
         end
       end
 
