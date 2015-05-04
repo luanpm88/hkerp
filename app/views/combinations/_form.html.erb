@@ -87,7 +87,7 @@
 							  
 							  <div class="form-actions">  
 								<div class="pull-right">
-								  <input type="submit" class="btn btn-success btn-cons" name="combine" value="Combine" />
+								  <input type="submit" class="btn btn-success btn-cons" name="combine" value="<%= @combination.combined != false ? "Combine" : "De-Combine" %>" />
 								  <%= link_to 'Cancel', url_for(:back), :class => "btn btn-white btn-cons" %>
 								</div>
 							</div>
