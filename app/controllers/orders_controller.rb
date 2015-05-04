@@ -66,7 +66,7 @@ class OrdersController < ApplicationController
     order_details_params = params[:order_details]
     if !order_details_params.nil?
         order_details_params.each do |line|
-        od = OrderDetail.new(line[1])      
+        od = OrderDetail.new(line[1].permit(:tip_amount,:discount_amount,:product_price_id, :order_id, :product_id, :quantity, :price, :supplier_price, :product_name, :warranty, :unit, :supplier_id, :product_description))      
         @order.order_details << od
       end
     end
@@ -460,7 +460,7 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.update(update_info_params)
-        @order.update_order_details_info(params[:order_details])
+        @order.update_order_details_info(params[:order_details].permit(:tip_amount,:discount_amount,:product_price_id, :order_id, :product_id, :quantity, :price, :supplier_price, :product_name, :warranty, :unit, :supplier_id, :product_description))
         format.html { redirect_to redirect_url, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
@@ -479,7 +479,7 @@ class OrdersController < ApplicationController
     return_url = {controller: "accounting", action: "orders"}
     respond_to do |format|
       if @order.update(update_tip_params)
-        @order.update_order_detail_tips(params[:order_details])
+        @order.update_order_detail_tips(params[:order_details].permit(:tip_amount,:discount_amount,:product_price_id, :order_id, :product_id, :quantity, :price, :supplier_price, :product_name, :warranty, :unit, :supplier_id, :product_description))
         format.html { redirect_to return_url, notice: 'Order tip was successfully updated.' }
         format.json { head :no_content }
       else
