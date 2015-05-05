@@ -358,6 +358,38 @@ CREATE TABLE contact_types (
 
 
 --
+-- Name: contact_types_contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE contact_types_contacts (
+    id integer NOT NULL,
+    contact_id integer,
+    contact_type_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: contact_types_contacts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE contact_types_contacts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: contact_types_contacts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE contact_types_contacts_id_seq OWNED BY contact_types_contacts.id;
+
+
+--
 -- Name: contact_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
@@ -1430,6 +1462,13 @@ ALTER TABLE ONLY contact_types ALTER COLUMN id SET DEFAULT nextval('contact_type
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY contact_types_contacts ALTER COLUMN id SET DEFAULT nextval('contact_types_contacts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq'::regclass);
 
 
@@ -1664,6 +1703,14 @@ ALTER TABLE ONLY combination_details
 
 ALTER TABLE ONLY combinations
     ADD CONSTRAINT combinations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: contact_types_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY contact_types_contacts
+    ADD CONSTRAINT contact_types_contacts_pkey PRIMARY KEY (id);
 
 
 --
@@ -2172,4 +2219,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150423012413');
 INSERT INTO schema_migrations (version) VALUES ('20150424094205');
 
 INSERT INTO schema_migrations (version) VALUES ('20150427010451');
+
+INSERT INTO schema_migrations (version) VALUES ('20150505075859');
 

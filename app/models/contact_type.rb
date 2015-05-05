@@ -1,7 +1,7 @@
 class ContactType < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   
-  has_many :contacts
+  has_and_belongs_to_many :contacts
   
   def self.customer
     self.find_by_name('Customer').id.to_s

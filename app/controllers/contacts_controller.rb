@@ -48,6 +48,8 @@ class ContactsController < ApplicationController
   # PATCH/PUT /contacts/1
   # PATCH/PUT /contacts/1.json
   def update
+    params[:contact][:contact_type_ids] ||= []
+    
     respond_to do |format|
       if @contact.update(contact_params)
         format.html { redirect_to contacts_url, notice: 'Contact was successfully updated.' }
@@ -137,6 +139,6 @@ class ContactsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def contact_params
-      params.require(:contact).permit(:website, :name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :account_number, :bank, :contact_type_id, :parent_ids => [], :agent_ids => [], :company_ids => [])
+      params.require(:contact).permit(:website, :name, :phone, :mobile, :fax, :email, :address, :tax_code, :note, :account_number, :bank, :contact_type_id, :parent_ids => [], :agent_ids => [], :company_ids => [], :contact_type_ids => [])
     end
 end

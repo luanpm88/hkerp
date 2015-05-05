@@ -37,25 +37,27 @@
                            
                             <div class="col-md-6">
                               
-                                                        
-                                                        <div class="form-group">
-                                                          <label class="form-label"><%= f.label :contact_type %></label>
-                                                          <span class="help">(required)</span>
+							  
+													   <div class="form-group">
+															<label class="form-label"><%= f.label :contact_type %></label>
+															<span class="help">(required)</span>
                                                             <div class="input-with-icon  right">                                       
                                                                     <i class=""></i>
-                                                                    <div class="row">
-                                                                        <div class="radio">                                                                          
-                                                                          <% ContactType.all.each do |rt| %>                                                                            
-                                                                            <div class="col-md-3">
-                                                                                <%= f.radio_button :contact_type_id, rt.id %>
-                                                                                <%= f.label :contact_type_id, rt.name, :for => "contact_contact_type_id_"+rt.id.to_s %>
-                                                                            </div>
-                                                                          <% end %>                                                                          
-                                                                          
-                                                                        </div>
-                                                                    </div>
+																	  <% ContactType.all.each do |ct| %>
+																		   <div class="row-fluid contact_types">
+																				<div class="checkbox check-success">
+																					 <%= check_box_tag "contact[contact_type_ids][]", ct.id, @contact.contact_types.include?(ct), {id: "checkbox"+ct.id.to_s} %>
+																				  <label for="checkbox<%= ct.id %>"><%= ct.name %></label>
+																				</div>
+																		   </div>
+																	  <% end %>
+																	  <br style="clear: both" />
                                                             </div>
                                                         </div>
+							  
+							  
+                                                        
+                                                        
                                                         
                               
                                                         <div class="form-group">

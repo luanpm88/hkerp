@@ -2,7 +2,7 @@ class Contact < ActiveRecord::Base
   include PgSearch
   
   validates :name, presence: true, :uniqueness => true
-  validates :contact_type_id, presence: true
+  validates :contact_types, presence: true
   
   has_many :parent_contacts, :dependent => :destroy
   has_many :parent, :through => :parent_contacts, :source => :parent
@@ -18,6 +18,8 @@ class Contact < ActiveRecord::Base
   belongs_to :contact_type
   belongs_to :user
   
+  has_and_belongs_to_many :contact_types
+  
   def is_main
     parent.first.nil? && !is_agent
   end
@@ -26,9 +28,10 @@ class Contact < ActiveRecord::Base
     contact_type.id.to_s == ContactType.agent
   end
   
-  def self.main_contacts(options = {})
+  def self.main_contacts(options = {})    
     if !options[:type].nil?
-      Contact.where(:contact_type_id => options[:type]).where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
+      ct = ContactType.find(options[:type])
+      ct.contacts.where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
     else
       Contact.where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
     end
