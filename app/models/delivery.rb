@@ -10,6 +10,12 @@ class Delivery < ActiveRecord::Base
   validate :valid_serial_numbers
   validate :valid_delivery_details
   
+  after_save :update_delivery_status_name
+  
+  def update_delivery_status_name
+    order.update_delivery_status_name
+  end
+  
   def delivery_details_not_empty
     if delivery_details.empty?
       errors.add(:delivery_details, "can't be empty")

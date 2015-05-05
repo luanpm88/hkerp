@@ -10,6 +10,13 @@ class PaymentRecord < ActiveRecord::Base
   validate :valid_amount
   validate :valid_debt_date
   
+  after_save :update_payment_status_name
+  
+  def update_payment_status_name
+    order.update_payment_status_name
+    order.update_tip_status_name
+  end
+  
   
   def all_payment_records
     where(is_tip: false)

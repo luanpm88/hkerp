@@ -11,7 +11,15 @@ class ProductStockUpdate < ActiveRecord::Base
   belongs_to :user
   
   before_validation :update_quantity
-  before_validation :fix_serial_numbers
+  before_validation :fix_serial_numbers  
+  
+  after_save :update_delivery_status_names
+  
+  def update_delivery_status_names
+    product.orders.where(parent_id: nil).where("delivery_status_name NOT LIKE ?", '%delivered%').each do |o|
+      o.update_delivery_status_name
+    end
+  end
   
   def quantity=(num)
     self[:quantity] = num.to_s.gsub(",","")

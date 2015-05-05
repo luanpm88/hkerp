@@ -1253,19 +1253,37 @@ class Order < ActiveRecord::Base
     end    
   end
   
+  def update_order_status_name
+    update_attribute(:order_status_name, self.order_status.name) if self.order_status.present? && self.order_status.name != self.order_status_name
+  end
   
+  def update_payment_status_name
+    update_attribute(:payment_status_name, payment_status) if payment_status_name != payment_status
+  end
+  
+  def update_delivery_status_name
+    update_attributes(delivery_status_name: delivery_status.join(",")) if delivery_status.join(",") != delivery_status_name
+  end
+  
+  def update_price_status_name
+    update_attributes(price_status_name: price_status) if price_status_name != price_status
+  end
+  
+  def update_tip_status_name
+    update_attributes(tip_status_name: tip_status) if tip_status_name != tip_status
+  end
   
   def update_status_names
     #order status
-    update_attribute(:order_status_name, self.order_status.name) if self.order_status.present? && self.order_status.name != self.order_status_name
+    self.update_order_status_name
     #payment
-    update_attribute(:payment_status_name, payment_status) if payment_status_name != payment_status
+    self.update_payment_status_name
     #delivery
-    update_attributes(delivery_status_name: delivery_status.join(",")) if delivery_status.join(",") != delivery_status_name
+    self.update_delivery_status_name
     #price_status
-    update_attributes(price_status_name: price_status) if price_status_name != price_status
+    self.update_price_status_name
     #tip status
-    update_attributes(tip_status_name: tip_status) if tip_status_name != tip_status
+    self.update_tip_status_name
   end
   
   def check_debt_outdate

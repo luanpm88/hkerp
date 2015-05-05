@@ -131,7 +131,7 @@ ALTER SEQUENCE autotask_details_id_seq OWNED BY autotask_details.id;
 
 CREATE TABLE autotasks (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     time_interval integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -163,7 +163,7 @@ ALTER SEQUENCE autotasks_id_seq OWNED BY autotasks.id;
 
 CREATE TABLE categories (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -351,7 +351,7 @@ ALTER SEQUENCE combinations_id_seq OWNED BY combinations.id;
 
 CREATE TABLE contact_types (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -382,25 +382,25 @@ ALTER SEQUENCE contact_types_id_seq OWNED BY contact_types.id;
 
 CREATE TABLE contacts (
     id integer NOT NULL,
-    name character varying(255),
-    phone character varying(255),
-    mobile character varying(255),
-    fax character varying(255),
-    email character varying(255),
-    address character varying(255),
+    name character varying,
+    phone character varying,
+    mobile character varying,
+    fax character varying,
+    email character varying,
+    address character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    tax_code character varying(255),
+    tax_code character varying,
     note text,
     contact_type_id integer,
-    website character varying(255),
-    account_number character varying(255),
-    bank character varying(255),
-    representative character varying(255),
-    representative_role character varying(255),
-    representative_phone character varying(255),
+    website character varying,
+    account_number character varying,
+    bank character varying,
+    representative character varying,
+    representative_role character varying,
+    representative_phone character varying,
     is_mine boolean DEFAULT false,
-    hotline character varying(255),
+    hotline character varying,
     user_id integer
 );
 
@@ -501,7 +501,7 @@ ALTER SEQUENCE delivery_details_id_seq OWNED BY delivery_details.id;
 
 CREATE TABLE manufacturers (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
@@ -579,11 +579,11 @@ CREATE TABLE order_details (
     quantity integer,
     price numeric(16,2),
     supplier_price numeric(16,2),
-    product_name character varying(255),
+    product_name character varying,
     warranty integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    unit character varying(255),
+    unit character varying,
     supplier_id integer,
     product_description text,
     product_price_id integer,
@@ -617,7 +617,7 @@ ALTER SEQUENCE order_details_id_seq OWNED BY order_details.id;
 
 CREATE TABLE order_statuses (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     description text,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -685,27 +685,27 @@ CREATE TABLE orders (
     customer_id integer,
     supplier_id integer,
     agent_id integer,
-    shipping_place character varying(255),
+    shipping_place character varying,
     payment_method_id integer,
     payment_deadline timestamp without time zone,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    buyer_name character varying(255),
-    buyer_company character varying(255),
-    buyer_tax_code character varying(255),
-    buyer_address character varying(255),
-    buyer_email character varying(255),
-    buyer_phone character varying(255),
-    buyer_fax character varying(255),
+    buyer_name character varying,
+    buyer_company character varying,
+    buyer_tax_code character varying,
+    buyer_address character varying,
+    buyer_email character varying,
+    buyer_phone character varying,
+    buyer_fax character varying,
     tax_id integer,
     order_date timestamp without time zone,
     order_deadline timestamp without time zone,
-    quotation_code character varying(255) DEFAULT 'HK-0000-000'::character varying,
+    quotation_code character varying DEFAULT 'HK-0000-000'::character varying,
     salesperson_id integer,
     deposit integer,
     shipping_date timestamp without time zone,
-    shipping_time character varying(255),
-    warranty_place character varying(255),
+    shipping_time character varying,
+    warranty_place character varying,
     warranty_cost text,
     older_id integer,
     watermark text,
@@ -714,17 +714,17 @@ CREATE TABLE orders (
     parent_id integer,
     purchase_manager_id integer,
     debt_date timestamp without time zone,
-    delivery_status_name character varying(255),
-    payment_status_name character varying(255),
-    customer_po character varying(255),
+    delivery_status_name character varying,
+    payment_status_name character varying,
+    customer_po character varying,
     printed_order_number text,
     supplier_agent_id integer,
-    order_status_name character varying(255),
+    order_status_name character varying,
     discount_amount numeric DEFAULT 0,
-    price_status_name character varying(255),
+    price_status_name character varying,
     user_id integer,
     tip_amount numeric DEFAULT 0.0,
-    tip_status_name character varying(255),
+    tip_status_name character varying,
     purchaser_id integer
 );
 
@@ -814,10 +814,10 @@ ALTER SEQUENCE parent_contacts_id_seq OWNED BY parent_contacts.id;
 
 CREATE TABLE payment_methods (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    print_name character varying(255)
+    print_name character varying
 );
 
 
@@ -991,15 +991,15 @@ ALTER SEQUENCE product_stock_updates_id_seq OWNED BY product_stock_updates.id;
 
 CREATE TABLE products (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     description text,
     price numeric(16,2),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    product_code character varying(255),
-    warranty character varying(255),
+    product_code character varying,
+    warranty character varying,
     manufacturer_id integer,
-    unit character varying(255),
+    unit character varying,
     user_id integer,
     tmpproduct integer,
     stock integer DEFAULT 0,
@@ -1033,7 +1033,7 @@ ALTER SEQUENCE products_id_seq OWNED BY products.id;
 
 CREATE TABLE roles (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
 );
@@ -1059,148 +1059,12 @@ ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 
 
 --
--- Name: sales_deliveries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE sales_deliveries (
-    id integer NOT NULL,
-    order_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone
-);
-
-
---
--- Name: sales_deliveries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sales_deliveries_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sales_deliveries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE sales_deliveries_id_seq OWNED BY sales_deliveries.id;
-
-
---
--- Name: sales_delivery_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE sales_delivery_details (
-    id integer NOT NULL,
-    sales_delivery_id integer,
-    order_detail_id integer,
-    quantity integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    serial_numbers text
-);
-
-
---
--- Name: sales_delivery_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE sales_delivery_details_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: sales_delivery_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE sales_delivery_details_id_seq OWNED BY sales_delivery_details.id;
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
 CREATE TABLE schema_migrations (
-    version character varying(255) NOT NULL
+    version character varying NOT NULL
 );
-
-
---
--- Name: supplier_order_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE supplier_order_details (
-    id integer NOT NULL,
-    supplier_order_id integer,
-    product_id integer,
-    quantity integer,
-    price numeric(16,2),
-    product_name character varying(255),
-    warranty integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    product_description text,
-    unit text
-);
-
-
---
--- Name: supplier_order_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE supplier_order_details_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: supplier_order_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE supplier_order_details_id_seq OWNED BY supplier_order_details.id;
-
-
---
--- Name: supplier_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE supplier_orders (
-    id integer NOT NULL,
-    supplier_id integer,
-    created_at timestamp without time zone,
-    updated_at timestamp without time zone,
-    salesperson_id integer,
-    tax_id integer
-);
-
-
---
--- Name: supplier_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE supplier_orders_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: supplier_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE supplier_orders_id_seq OWNED BY supplier_orders.id;
 
 
 --
@@ -1209,7 +1073,7 @@ ALTER SEQUENCE supplier_orders_id_seq OWNED BY supplier_orders.id;
 
 CREATE TABLE taxes (
     id integer NOT NULL,
-    name character varying(255),
+    name character varying,
     rate numeric,
     created_at timestamp without time zone,
     updated_at timestamp without time zone
@@ -1452,24 +1316,24 @@ ALTER SEQUENCE tmpproducttocats_id_seq OWNED BY tmpproducttocats.id;
 
 CREATE TABLE users (
     id integer NOT NULL,
-    email character varying(255) DEFAULT ''::character varying NOT NULL,
-    encrypted_password character varying(255) DEFAULT ''::character varying NOT NULL,
-    reset_password_token character varying(255),
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     sign_in_count integer DEFAULT 0 NOT NULL,
     current_sign_in_at timestamp without time zone,
     last_sign_in_at timestamp without time zone,
-    current_sign_in_ip character varying(255),
-    last_sign_in_ip character varying(255),
+    current_sign_in_ip character varying,
+    last_sign_in_ip character varying,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    first_name character varying(255),
-    last_name character varying(255),
-    phone_ext character varying(255),
-    mobile character varying(255),
-    "ATT_No" character varying(255),
-    image character varying(255)
+    first_name character varying,
+    last_name character varying,
+    phone_ext character varying,
+    mobile character varying,
+    "ATT_No" character varying,
+    image character varying
 );
 
 
@@ -1686,34 +1550,6 @@ ALTER TABLE ONLY products ALTER COLUMN id SET DEFAULT nextval('products_id_seq':
 --
 
 ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sales_deliveries ALTER COLUMN id SET DEFAULT nextval('sales_deliveries_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY sales_delivery_details ALTER COLUMN id SET DEFAULT nextval('sales_delivery_details_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supplier_order_details ALTER COLUMN id SET DEFAULT nextval('supplier_order_details_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY supplier_orders ALTER COLUMN id SET DEFAULT nextval('supplier_orders_id_seq'::regclass);
 
 
 --
@@ -1983,38 +1819,6 @@ ALTER TABLE ONLY roles
 
 
 --
--- Name: sales_deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY sales_deliveries
-    ADD CONSTRAINT sales_deliveries_pkey PRIMARY KEY (id);
-
-
---
--- Name: sales_delivery_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY sales_delivery_details
-    ADD CONSTRAINT sales_delivery_details_pkey PRIMARY KEY (id);
-
-
---
--- Name: supplier_order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY supplier_order_details
-    ADD CONSTRAINT supplier_order_details_pkey PRIMARY KEY (id);
-
-
---
--- Name: supplier_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY supplier_orders
-    ADD CONSTRAINT supplier_orders_pkey PRIMARY KEY (id);
-
-
---
 -- Name: taxes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2213,18 +2017,6 @@ INSERT INTO schema_migrations (version) VALUES ('20140324055837');
 
 INSERT INTO schema_migrations (version) VALUES ('20140324084629');
 
-INSERT INTO schema_migrations (version) VALUES ('20140528021615');
-
-INSERT INTO schema_migrations (version) VALUES ('20140528021954');
-
-INSERT INTO schema_migrations (version) VALUES ('20140528022742');
-
-INSERT INTO schema_migrations (version) VALUES ('20140528023719');
-
-INSERT INTO schema_migrations (version) VALUES ('20140528025816');
-
-INSERT INTO schema_migrations (version) VALUES ('20140528025846');
-
 INSERT INTO schema_migrations (version) VALUES ('20140731010224');
 
 INSERT INTO schema_migrations (version) VALUES ('20140731064555');
@@ -2253,13 +2045,7 @@ INSERT INTO schema_migrations (version) VALUES ('20150305085608');
 
 INSERT INTO schema_migrations (version) VALUES ('20150313042522');
 
-INSERT INTO schema_migrations (version) VALUES ('20150313082319');
-
-INSERT INTO schema_migrations (version) VALUES ('20150313082735');
-
 INSERT INTO schema_migrations (version) VALUES ('20150316011514');
-
-INSERT INTO schema_migrations (version) VALUES ('20150316051122');
 
 INSERT INTO schema_migrations (version) VALUES ('20150316092543');
 

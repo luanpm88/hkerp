@@ -31,6 +31,8 @@ class Product < ActiveRecord::Base
   has_many :parent_parts, :class_name => "ProductPart", :foreign_key => "part_id"
   has_many :parent, :through => :parent_parts, :source => :part
   
+  has_many :orders, :through => :order_details
+  
   before_save :fix_serial_numbers
   
   
