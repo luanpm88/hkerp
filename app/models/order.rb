@@ -32,8 +32,6 @@ class Order < ActiveRecord::Base
   #has_one :order_statuses_order, -> { order created_at: :desc }
   #belongs_to :order_status, :through => :order_statuses_order
   
-  has_many :sales_deliveries, :dependent => :destroy
-  
   has_many :deliveries, :dependent => :destroy
   
   has_many :payment_records, :dependent => :destroy
