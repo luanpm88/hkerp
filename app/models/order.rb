@@ -896,7 +896,7 @@ class Order < ActiveRecord::Base
     
     orders_2 = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
-                  .where("delivery_status_name LIKE ? OR price_status_name LIKE ?", '%out_of_stock%', '%price_outdated%')
+                  .where("delivery_status_name LIKE ?", '%out_of_stock%')
     
     orders_total = orders + orders_2
     orders_total.sort{|a,b| b[:created_at] <=> a[:created_at]}   
