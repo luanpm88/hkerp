@@ -11,7 +11,7 @@
                 <div class="row">
                     <div class="col-md-12">			
                         <div class="grid simple ">
-                            <div class="">
+                            
                                 <h4>Order:  <span class="semi-bold"><%= @order.quotation_code %></span></h4>
 								<h4>
 									<%= @order.is_purchase ? "Supplier" : "Customer" %>:
@@ -29,6 +29,10 @@
 								<h4>Deposit:  <span class="semi-bold"><%= @order.deposit %>%</span></h4>
                                 <h4>Paid:  <span class="semi-bold"><%= @order.paid_amount_formated %> VND (<%= @order.paid_percent %>%)</span></h4>
                                 <h4>Remain:  <span class="semi-bold"><%= @order.remain_amount_formated %> VND</span></h4>
+								
+								
+							<div class="grid-title no-border">
+								<h4>Details</h4>
                                 <div class="tools">
 				    
 				    <a href="javascript:;" class="collapse"></a>
