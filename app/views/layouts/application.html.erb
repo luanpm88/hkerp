@@ -1137,9 +1137,9 @@
 	    OrderDataTable('.datatable-orders', "<%= datatable_orders_path %>");
 	    OrderDataTable('.datatable-purchase-orders', "<%= datatable_orders_path(purchase: 1) %>");
 		OrderDataTable('.datatable-accounting-salse-orders', "<%= datatable_orders_path(page: "accounting") %>");
-		OrderDataTable('.datatable-accounting-purchase-orders', "<%= datatable_orders_path(page: "accounting", purchase: 1) %>");
+		OrderDataTable('.datatable-accounting-purchase-orders', "<%= datatable_orders_path(page: "accounting", purchase: 1).html_safe %>");
 		OrderDataTable('.datatable-deliver-salse-orders', "<%= datatable_orders_path(page: "delivery") %>");
-		OrderDataTable('.datatable-deliver-purchase-orders', "<%= datatable_orders_path(page: "delivery", purchase: 1) %>");
+		OrderDataTable('.datatable-deliver-purchase-orders', "<%= datatable_orders_path(page: "delivery", purchase: 1).html_safe %>");
 	    
 	    $('.order-filters select, .order-filters input').change(function() {
 			$('.datatable-purchase-orders').dataTable().fnFilter();

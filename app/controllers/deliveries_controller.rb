@@ -5,11 +5,11 @@ class DeliveriesController < ApplicationController
   # GET /deliveries
   # GET /deliveries.json
   def index
-    if params[:purchase]
-      @orders = Order.delivery_purchase_orders
-    else
-      @orders = Order.delivery_sales_orders
-    end
+    #if params[:purchase] == true
+      #@orders = Order.delivery_purchase_orders
+    #else
+    #  @orders = Order.delivery_sales_orders
+    #end
     
     
   end
