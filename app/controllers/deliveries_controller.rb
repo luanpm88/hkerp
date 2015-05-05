@@ -78,7 +78,7 @@ class DeliveriesController < ApplicationController
     if !params[:delivery_lines].nil?
       params[:delivery_lines].each do |item|
         if item[1][:quantity].to_i != 0
-          detail = DeliveryDetail.new(item[1])
+          detail = DeliveryDetail.new(item[1].permit(order_detail_id, :product_id, :serial_numbers, :delivery_id, :order_detail_id, :quantity))
           @delivery.delivery_details << detail
         end
       end
