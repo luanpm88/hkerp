@@ -25,7 +25,7 @@ class Contact < ActiveRecord::Base
   end
   
   def is_agent
-    contact_type.id.to_s == ContactType.agent
+    contact_types.include?(ContactType.agent)
   end
   
   def self.main_contacts(options = {})    
