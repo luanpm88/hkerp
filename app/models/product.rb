@@ -675,7 +675,7 @@ class Product < ActiveRecord::Base
     
     #added
     line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
-    history << line if from_date.to_datetime <= self.created_at && self.created_at <= to_date
+    history << line if from_date.to_datetime <= self.created_at && self.created_at <= to_date.to_datetime
     
     
     return history.sort {|a,b| b[:date] <=> a[:date]}
