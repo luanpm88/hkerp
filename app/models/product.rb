@@ -448,11 +448,11 @@ class Product < ActiveRecord::Base
                 .where("orders.delivery_status_name LIKE ?", "%not_delivered%")                
                 .where(product_id: self.id).sum(:quantity)
     
-    count -= DeliveryDetail.joins(:delivery => :order)
+    count -= DeliveryDetail.joins(:delivery => :order).joins(:order_detail)
                 .where(orders: {customer_id: Contact.HK.id})
                 .where(orders: {parent_id: nil})
                 .where("orders.delivery_status_name LIKE ?", "%not_delivered%")                
-                .where(product_id: self.id).sum(:quantity)
+                .where(order_details: {product_id: self.id}).sum(:quantity)
     
     return count
   end
@@ -656,9 +656,9 @@ class Product < ActiveRecord::Base
               
     stocks.each do |s|      
       if s.quantity > 0
-        line = {user: s.user,date: s.created_at, note: "Custom Imported", link: "", quantity: import_icon+s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Imported: [#{s.note}]", link: "", quantity: import_icon+s.quantity.to_s}
       else
-        line = {user: s.user,date: s.created_at, note: "Custom Exported", link: "", quantity: export_icon+s.quantity.to_s}
+        line = {user: s.user,date: s.created_at, note: "Custom Exported: [#{s.note}]", link: "", quantity: export_icon+s.quantity.to_s}
       end
       history << line
     end
