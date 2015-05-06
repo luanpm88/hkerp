@@ -114,4 +114,16 @@ class User < ActiveRecord::Base
     notifications.where(viewed: 0).order("created_at DESC").limit(20)
   end
   
+  def self.backup_system(params)
+    dir = Time.now.strftime("%Y%m%d%H%M%S")
+    
+    `mkdir backup` if !File.directory?("backup")    
+    `mkdir backup/#{dir}`
+    
+    `pg_dump -a hkerp_development >> backup/#{dir}/data.dump` if !params[:database].nil?
+    `cp -a public/uploads backup/#{dir}/` if !params[:file].nil?
+    `zip -r backup/#{dir}.zip backup/#{dir}`
+    `rm -rf backup/#{dir}`
+  end
+  
 end

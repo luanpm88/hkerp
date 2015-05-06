@@ -1563,9 +1563,9 @@
 		<ul class="sub-menu">
 		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings" %></li>
 		  
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', {controller: "accounting", action: "statistic_sales"} %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', "/accounting/statistic_sales" %></li>
 		  
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', {controller: "accounting", action: "statistic_purchase"} %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase" %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
@@ -1686,14 +1686,25 @@
 	
 	<% if current_user.has_role? "admin" %>
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
-		<%= link_to contacts_url do %>
-		  <i class="icon-user"></i>
-		  <span class="title">User Management</span>
-		  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
-		<% end %>
-		<ul class="sub-menu">
-		  <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
-		</ul>
+				<%= link_to contacts_url do %>
+				  <i class="icon-user"></i>
+				  <span class="title">User Management</span>
+				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
+				<% end %>
+				<ul class="sub-menu">
+				  <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
+				</ul>
+	    </li>
+		
+		<li <% if params[:controller] == "admin" %> class="active open"<% end %>>
+				<%= link_to contacts_url do %>
+				  <i class="icon-user"></i>
+				  <span class="title">System</span>
+				  <span class="arrow<% if params[:controller] == "admin" %> open<% end %>"></span>
+				<% end %>
+				<ul class="sub-menu">
+				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/backup" %></li>
+				</ul>
 	    </li>
 	<% end %>
 

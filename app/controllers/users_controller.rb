@@ -83,6 +83,12 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def backup
+    if params[:backup]
+      User.backup_system(params)
+    end
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
