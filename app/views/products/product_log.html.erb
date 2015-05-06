@@ -56,7 +56,7 @@
 			    <div class="grid-body no-border filters" method="get">
 					<h4>Product History - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
 					
-					<h3><%= @product.display_name %></h3>
+					<h3><%= @product.display_name.html_safe %></h3>
 					<table class="table datatable-products-statistics">
 						<thead>
 							<tr>
@@ -70,7 +70,7 @@
                         
                         <% @history.each do |line| %>
                         
-                          <tr class="quantity-<%= line[:quantity]%>">
+                          <tr class="quantity">
                             <td><%= line[:date].strftime("%Y-%m-%d, %H:%M") %></td>
                             <td><%= line[:note].html_safe %></td>
                             <td><%= line[:link].html_safe %></td>
