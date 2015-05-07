@@ -515,7 +515,8 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :discount_amount,
-                                    :tip_amount
+                                    :tip_amount,
+                                    :tip_contact
                                   )
     end
     
@@ -533,13 +534,15 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :discount_amount,
-                                    :tip_amount
+                                    :tip_amount,
+                                    :tip_contact
                                   )
     end
     
     def update_tip_params
       params.require(:order).permit(
-                                    :tip_amount
+                                    :tip_amount,
+                                    :tip_contact
                                   )
     end
     

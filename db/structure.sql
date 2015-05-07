@@ -758,7 +758,8 @@ CREATE TABLE orders (
     user_id integer,
     tip_amount numeric DEFAULT 0.0,
     tip_status_name character varying,
-    purchaser_id integer
+    purchaser_id integer,
+    tip_contact_id integer
 );
 
 
@@ -2230,4 +2231,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150507033018');
 INSERT INTO schema_migrations (version) VALUES ('20150507034707');
 
 INSERT INTO schema_migrations (version) VALUES ('20150507064831');
+
+INSERT INTO schema_migrations (version) VALUES ('20150507083737');
 

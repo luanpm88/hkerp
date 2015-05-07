@@ -21,6 +21,8 @@ class Order < ActiveRecord::Base
   
   belongs_to :user
   
+  belongs_to :tip_contact, :class_name => "Contact"
+  
   has_many :order_details, :dependent => :destroy
   
   has_many :drafts, class_name: "Order", foreign_key: "parent_id", :dependent => :destroy
