@@ -75,7 +75,7 @@ class PaymentRecordsController < ApplicationController
     respond_to do |format|
       if @payment_record.save
         @order.update_attributes(debt_date: @payment_record.debt_date)
-        format.html { redirect_to list_path, notice: 'Payment record was successfully created.' }
+        format.html { redirect_to @payment_record, notice: 'Payment record was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
         format.html { render action: 'new' }
