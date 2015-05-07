@@ -270,7 +270,20 @@
                                        </div>
                                    </div>
                               </div>
-                                    
+                                   
+                                   
+                                   
+                                   <div class="form-group">
+                                          <label class="form-label"><%= f.label :tip_contact %></label>
+                                        <span class="help">(required)</span>
+                                          <div class="input-with-icon  right">                                       
+                                            <i class=""></i>
+                                             <input style="width:100%;margin-bottom: 5px;" name="order[tip_contact_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.tip_contact_id %>" text="<%= @order.tip_contact.name if !@order.tip_contact.nil? %>" />
+                                             <br />
+                                             <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                   
+                                          </div>
+                                   </div>
                                                
                             
                             </div>
