@@ -52,8 +52,9 @@ class AccountingController < ApplicationController
     @total_tip_amount_notpaid = @statistics[:total_tip_amount_notpaid]
     
     if params[:pdf] == "1"
-        render  :pdf => "accounting_statistic_sales_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
-            :template => 'accounting/statistic_sales.pdf.erb',
+      tip = params[:tip] == "1" ? "_tip" : ""
+        render  :pdf => "accounting_statistic_sales#{tip}_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
+            :template => "accounting/statistic_sales#{tip}.pdf.erb",
             :layout => nil,
             :footer => {
                :center => "",
