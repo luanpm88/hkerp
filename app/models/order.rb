@@ -1160,15 +1160,15 @@ class Order < ActiveRecord::Base
       o = d.order
       if o.is_purchase
         if d.is_return == 1
-          line = {user: d.creator, date: d.created_at, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+          line = {user: d.creator, date: d.delivery_date, note: "Return items to [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
         else
-          line = {user: d.creator, date: d.created_at, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+          line = {user: d.creator, date: d.delivery_date, note: "Recieved items from [#{o.supplier.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
         end
       else
         if d.is_return == 1
-          line = {user: d.creator, date: d.created_at, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+          line = {user: d.creator, date: d.delivery_date, note: "Recieved returned items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
         else
-          line = {user: d.creator, date: d.created_at, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
+          line = {user: d.creator, date: d.delivery_date, note: "Deliver items to [#{o.customer.name}]", link: d.delivery_link, quantity: d.delivery_details.sum(:quantity)}
         end
       end
       
@@ -1180,15 +1180,15 @@ class Order < ActiveRecord::Base
       o = p.order
       if o.is_purchase
         if p.amount < 0
-          line = {user: p.accountant, date: p.created_at, note: "Recieved from [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+          line = {user: p.accountant, date: p.paid_date, note: "Recieved from [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
         else
-          line = {user: p.accountant, date: p.created_at, note: "Paid [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+          line = {user: p.accountant, date: p.paid_date, note: "Paid [#{o.supplier.name}]", link: p.payment_record_link, quantity: p.amount_formated}
         end
       else
         if p.amount > 0
-          line = {user: p.accountant, date: p.created_at, note: "Recieved from [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+          line = {user: p.accountant, date: p.paid_date, note: "Recieved from [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
         else
-          line = {user: p.accountant, date: p.created_at, note: "Paid [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
+          line = {user: p.accountant, date: p.paid_date, note: "Paid [#{o.customer.name}]", link: p.payment_record_link, quantity: p.amount_formated}
         end
       end
       history << line
