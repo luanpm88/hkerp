@@ -516,7 +516,7 @@ class Order < ActiveRecord::Base
     where = {}    
     where[:customer_id] = params["customer_id"] if params["customer_id"].present?
     where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
-    where[:salesperson_id] = user.id if !user.has_role? "sales_manager"
+    
     
     if params[:page].present? && params[:page] == "accounting"
       if params[:purchase]
@@ -552,6 +552,8 @@ class Order < ActiveRecord::Base
       if params["order_status"].present? && params["order_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(order_status_name: [nil, "new", "items_confirmed", "price_confirmed"])
       end
+      
+      where[:salesperson_id] = user.id if !user.has_role? "sales_manager"
     end
     
     @items = @items.joins(:order_status)
