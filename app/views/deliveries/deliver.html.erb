@@ -57,15 +57,27 @@
 				    <% if @order.has_return_items %>
 				    
 					    <h2>Return Items</h2>
+						
+						<label class="form-label"><%= f.label :delivery_date %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :delivery_date, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
 					    
 					    <div class="form-group">
-						<label class="form-label"><%= f.label :delivery_person %></label>
-						<span class="help">(required)</span>
-						<div class="input-with-icon  right">                                       
-							<i class=""></i>
-							
-							<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
-						</div>
+							<label class="form-label"><%= f.label :delivery_person %></label>
+							<span class="help">(required)</span>
+							<div class="input-with-icon  right">                                       
+								<i class=""></i>
+								
+								<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+							</div>
 					    </div>
 					    
 					    <table class="table table-striped no-more-tables no-filter">
@@ -131,16 +143,32 @@
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
 				    <%= f.hidden_field :is_return, {value: 0} %>
 				    
+					<div class="form-group">
+                                                   
+					
 					<h2>Deliver Items</h2>
 				    
+												<label class="form-label"><%= f.label :delivery_date %></label>
+                                                   <span class="help"></span>
+                                                     <div class="input-with-icon  right">                                       
+                                                       <i class=""></i>
+                                                       <div class="input-append success date col-md-10 no-padding">
+                                                         <%= f.text_field :delivery_date, :class => "form-control" %>
+                                                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                                       </div>
+                                                       <br style="clear: both" />
+                                                     </div>
+                                                 </div>
+					
 				    <div class="form-group">
-					<label class="form-label"><%= f.label :delivery_person %></label>
-					<span class="help">(required)</span>
-					<div class="input-with-icon  right">                                       
-						<i class=""></i>
-						
-						<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
-					</div>
+						<label class="form-label"><%= f.label :delivery_person %></label>
+						<span class="help">(required)</span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+							
+							<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+							
+						</div>
 				    </div>
 				    
                                     <table class="table table-striped no-more-tables no-filter">

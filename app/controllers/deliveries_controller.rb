@@ -22,6 +22,7 @@ class DeliveriesController < ApplicationController
     authorize! :deliver, @order
     
     @delivery = Delivery.new
+    @delivery.delivery_date = (Time.now).strftime("%Y-%m-%d")
   end
 
   # GET /deliveries/1
@@ -57,6 +58,7 @@ class DeliveriesController < ApplicationController
   # GET /deliveries/new
   def new
     @delivery = Delivery.new
+    @delivery.delivery_date = (Time.now).strftime("%Y-%m-%d")
   end
 
   # GET /deliveries/1/edit
