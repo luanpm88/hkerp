@@ -293,9 +293,9 @@ class Order < ActiveRecord::Base
       return false
     end
     
-    order_details.each do |od|
-      od.update_price(user)
-    end
+    #order_details.each do |od|
+    #  od.update_price(user)
+    #end
     
     self.set_status('confirmed',user)
     Notification.send_notification(salesperson, 'order_confirmed', self)
@@ -516,7 +516,7 @@ class Order < ActiveRecord::Base
     where = {}    
     where[:customer_id] = params["customer_id"] if params["customer_id"].present?
     where[:supplier_id] = params["supplier_id"] if params["supplier_id"].present?
-    #where[:salesperson_id] = user.id
+    where[:salesperson_id] = user.id if !user.has_role? "sales_manager"
     
     if params[:page].present? && params[:page] == "accounting"
       if params[:purchase]
