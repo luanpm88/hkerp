@@ -257,6 +257,16 @@ class Ability
       can :do_update_tip, Order do |order|
         ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
       end
+      
+    end
+    
+    if user.has_role? "accountant_manager"
+      can :update_info, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end
+      can :do_update_info, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end
     end
 
     if user.has_role? "storage_manager"

@@ -60,6 +60,7 @@ Role.create(name: "storage_manager")
 Role.create(name: "purchase_manager")
 Role.create(name: "purchaser")
 Role.create(name: "sales_manager")
+Role.create(name: "accountant_manager")
 
 user = User.where(:email => "luanpm@hoangkhang.com.vn").first
 user.ATT_No = 123
