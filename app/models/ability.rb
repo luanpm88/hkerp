@@ -260,7 +260,7 @@ class Ability
       
     end
     
-    if user.has_role? "accountant_manager"
+    if user.has_role? "sales_manager"
       can :update_info, Order do |order|
         ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
       end
