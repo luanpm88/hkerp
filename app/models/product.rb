@@ -38,12 +38,12 @@ class Product < ActiveRecord::Base
   
   def order_supplier_history
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
-                        .where(orders: {customer_id: Contact.HK.id})
+                        .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                         .where(product_id: id)
                         .order("created_at DESC").limit(10)
     @html = "<ul>"
     @list.each do |item|
-      @html += "<li>"+item.order.supplier.name+": <br />Price: <strong>"+item.formated_price+" VND</strong></li>";
+      @html += "<li>"+item.order.supplier.name+": <br />Price: <strong>"+item.formated_price+" VND</strong> (#{item.created_at.strftime("%Y-%m-%d")})</li>";
     end
     @html += "</ul>";
     
