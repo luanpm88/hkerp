@@ -472,7 +472,7 @@ class Order < ActiveRecord::Base
   end
   
   pg_search_scope :search,
-                against: [:tip_status_name,:customer_po, :printed_order_number, :order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
+                against: [:shipping_place, :tip_status_name,:customer_po, :printed_order_number, :order_status_name, :delivery_status_name, :quotation_code, :buyer_company, :buyer_name, :buyer_tax_code, :buyer_address, :buyer_email],
                 associated_against: {
                   salesperson: [:first_name],
                   purchaser: [:first_name],

@@ -960,7 +960,8 @@ CREATE TABLE product_prices (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     user_id integer,
-    customer_id integer
+    customer_id integer,
+    public_price numeric DEFAULT 0.0
 );
 
 
@@ -2227,4 +2228,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150505075859');
 INSERT INTO schema_migrations (version) VALUES ('20150507033018');
 
 INSERT INTO schema_migrations (version) VALUES ('20150507034707');
+
+INSERT INTO schema_migrations (version) VALUES ('20150507064831');
 

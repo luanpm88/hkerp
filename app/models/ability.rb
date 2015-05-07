@@ -42,7 +42,9 @@ class Ability
     
     if user.has_role? "admin"
       can :manage, :all
-    else
+    end
+    
+    if user.has_role? "user"
       can :read_notification, Notification
       
       can :read, User
@@ -91,210 +93,203 @@ class Ability
       can :update, CheckinoutRequest do |request|
         request.user_id == user.id && request.status == 0
       end
-      
-      if user.has_role? "attendance_manager"
-        can :manage, Checkinout
-        can :manage, CheckinoutRequest
+    end  
+    
+    if user.has_role? "attendance_manager"
+      can :manage, Checkinout
+      can :manage, CheckinoutRequest
+    end
+    
+    if user.has_role? "salesperson"
+      can :create, Order do |order|
+        order.is_sales || order.id.nil?
+      end
+      can :view_list, Order
+      can :read, Order do |order|
+        order.is_sales && order.salesperson_id == user.id
+      end
+      can :update, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
+      end
+      can :destroy, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
+      end
+      can :confirm_items, Order do |order|
+        order.id.present? && order.is_sales && order.salesperson_id == user.id && ["new","price_confirmed"].include?(order.status.name)
+      end
+      can :confirm_order, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
+                          
+      end        
+      can :change, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ['price_confirmed','confirmed'].include?(order.status.name)
+      end
+      can :do_change, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ['price_confirmed','confirmed'].include?(order.status.name)
       end
       
-      if user.has_role? "salesperson"
-        can :create, Order do |order|
-          order.is_sales || order.id.nil?
-        end
-        can :view_list, Order
-        can :read, Order do |order|
-          order.is_sales && order.salesperson_id == user.id
-        end
-        can :update, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
-        end
-        can :destroy, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ["new"].include?(order.status.name)
-        end
-        can :confirm_items, Order do |order|
-          order.id.present? && order.is_sales && order.salesperson_id == user.id && ["new","price_confirmed"].include?(order.status.name)
-        end
-        can :confirm_order, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
-                            
-        end        
-        can :change, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ['price_confirmed','confirmed'].include?(order.status.name)
-        end
-        can :do_change, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ['price_confirmed','confirmed'].include?(order.status.name)
-        end
-        
-        can :update_info, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
-        end
-        can :do_update_info, Order do |order|
-          order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
-        end
-
-        #can :print_order, Order do |order|
-        #  order.salesperson_id == user.id && order.status.name == 'confirmed'
-        #end
-        can :download_pdf, Order do |order|
-          order.is_sales && order.salesperson_id == user.id
-        end        
-        #can :purchase_orders, Order do |order|
-        #  order.salesperson_id == user.id
-        #end
-
-        can :create, OrderDetail
-        can :read, OrderDetail do |order_detail|
-          order_detail.order.salesperson_id == user.id
-        end
-        can :update, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
-        end
-        can :ajax_destroy, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
-        end
-        
-        can :order_log, Order
+      can :update_info, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
+      end
+      can :do_update_info, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
       end
 
-      if user.has_role? "purchaser"        
-        can :show, Order
-        can :pricing_orders, Order do |order|
-          order.is_sales && order.status.name == 'items_confirmed'
-        end
-        can :update_price, Order do |order|
-          order.is_sales && order.status.name == 'items_confirmed'
-        end
-        can :do_update_price, Order do |order|
-          order.is_sales && order.status.name == 'items_confirmed'
-        end
-        can :confirm_price, Order do |order|
-          order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
-        end
-        
-        can :update_price, Product
-        can :do_update_price, Product
-        
-        can :trash, Product do |product|
-          product.status == 1 && product.calculated_stock == 0
-        end        
-        can :un_trash, Product do |product|
-          product.status == 0
-        end
+      can :download_pdf, Order do |order|
+        order.is_sales && order.salesperson_id == user.id
+      end        
 
-        can :purchase_orders, Order do |order|
-          order.purchaser_id == user.id
-        end
-        can :view_list, Order
-        can :create, Order do |order|
-          order.is_purchase || order.id.nil?
-        end
-        can :confirm_order, Order do |order|
-          order.is_purchase && order.purchaser_id == user.id && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
-        end
-        can :update, Order do |order|
-          order.is_purchase && order.purchaser_id == user.id && order.status.name == 'new'
-        end
-        can :destroy, Order do |order|
-          order.is_purchase && order.purchaser_id == user.id && ["new"].include?(order.status.name)
-        end
-        
-        can :change, Order do |order|
-          order.is_purchase && order.purchaser_id == user.id && ['confirmed'].include?(order.status.name)
-        end
-        can :do_change, Order do |order|
-          order.is_purchase && order.purchaser_id == user.id && ['confirmed'].include?(order.status.name)
-        end
-
-        can :create, OrderDetail
-        can :read, OrderDetail do |order_detail|
-          order_detail.order.purchaser_id == user.id
-        end
-        can :update, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && order_detail.order.status.name == 'new')
-        end
-        can :destroy, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && order_detail.order.status.name == 'new')
-        end
-        can :ajax_destroy, OrderDetail do |order_detail|
-          order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
-        end   
+      can :create, OrderDetail
+      can :read, OrderDetail do |order_detail|
+        order_detail.order.salesperson_id == user.id
       end
-
-      if user.has_role? "accountant"
-        can :read, Order
-        can :print_order, Order do |order|
-          ['confirmed'].include?(order.status.name)
-        end
-        can :print_order_fix1, Order
-        can :download_pdf, Order
-        can :pay_order, Order  do |order|
-          ['finished','confirmed'].include?(order.status.name) && !order.is_paid
-        end
-        
-        can :create, PaymentRecord
-        can :read, PaymentRecord
-        
-        can :pay_tip, Order do |order|
-          !order.is_tipped && ['finished'].include?(order.status.name)
-        end
-        
-        can :download_pdf, PaymentRecord
-        
-        can :update_info, Order do |order|
-          ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
-        end
-        can :do_update_info, Order do |order|
-          ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
-        end
-        
-        can :finish_order, Order do |order|
-          ['confirmed'].include?(order.status.name)
-        end
-        
-        can :statistic_sales, Order
-        can :statistic_purchase, Order
-        
-        can :update_tip, Order do |order|
-          ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
-        end
-        can :do_update_tip, Order do |order|
-          ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
-        end
+      can :update, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
       end
-
-      if user.has_role? "storage_manager"
-        can :create, Delivery
-        can :read, Delivery
-        #can :deliver, Delivery
-        #can :update, Delivery
-        
-        can :download_pdf, Delivery
-        
-        can :create, Combination
-        
-        can :create, ProductStockUpdate
-        
-        can :deliver, Order  do |order|
-          ['confirmed','finished'].include?(order.status.name) && !order.is_delivered?
-        end
-        
-        can :trash, Delivery do |d|
-          ['confirmed','finished'].include?(d.order.status.name) && d.creator_id == user.id
-        end
-        
-        can :statistics, Product
-        can :ajax_product_prices, Product
-        can :product_log, Product
-        
-        can :combine_parts, Product do |product|
-          product.is_combinable
-        end
-        can :de_combine_parts, Product do |product|
-          product.calculated_stock > 0 && product.parts.count > 0
-        end
+      can :ajax_destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
       end
-
+      
+      can :order_log, Order
     end
 
+    if user.has_role? "purchaser"        
+      can :show, Order
+      can :pricing_orders, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :update_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :do_update_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :confirm_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
+      end
+      
+      can :update_price, Product
+      can :do_update_price, Product
+      
+      can :trash, Product do |product|
+        product.status == 1 && product.calculated_stock == 0
+      end        
+      can :un_trash, Product do |product|
+        product.status == 0
+      end
+
+      can :purchase_orders, Order do |order|
+        order.purchaser_id == user.id
+      end
+      can :view_list, Order
+      can :create, Order do |order|
+        order.is_purchase || order.id.nil?
+      end
+      can :confirm_order, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
+      end
+      can :update, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && order.status.name == 'new'
+      end
+      can :destroy, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && ["new"].include?(order.status.name)
+      end
+      
+      can :change, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && ['confirmed'].include?(order.status.name)
+      end
+      can :do_change, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && ['confirmed'].include?(order.status.name)
+      end
+
+      can :create, OrderDetail
+      can :read, OrderDetail do |order_detail|
+        order_detail.order.purchaser_id == user.id
+      end
+      can :update, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && order_detail.order.status.name == 'new')
+      end
+      can :destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && order_detail.order.status.name == 'new')
+      end
+      can :ajax_destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
+      end   
+    end
+
+    if user.has_role? "accountant"
+      can :read, Order
+      can :print_order, Order do |order|
+        ['confirmed'].include?(order.status.name)
+      end
+      can :print_order_fix1, Order
+      can :download_pdf, Order
+      can :pay_order, Order  do |order|
+        ['finished','confirmed'].include?(order.status.name) && !order.is_paid
+      end
+      
+      can :create, PaymentRecord
+      can :read, PaymentRecord
+      
+      can :pay_tip, Order do |order|
+        !order.is_tipped && ['finished'].include?(order.status.name)
+      end
+      
+      can :download_pdf, PaymentRecord
+      
+      can :update_info, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
+      end
+      can :do_update_info, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)
+      end
+      
+      can :finish_order, Order do |order|
+        ['confirmed'].include?(order.status.name)
+      end
+      
+      can :statistic_sales, Order
+      can :statistic_purchase, Order
+      
+      can :update_tip, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end
+      can :do_update_tip, Order do |order|
+        ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end
+    end
+
+    if user.has_role? "storage_manager"
+      can :create, Delivery
+      can :read, Delivery
+      #can :deliver, Delivery
+      #can :update, Delivery
+      
+      can :download_pdf, Delivery
+      
+      can :create, Combination
+      
+      can :create, ProductStockUpdate
+      
+      can :deliver, Order  do |order|
+        ['confirmed','finished'].include?(order.status.name) && !order.is_delivered?
+      end
+      
+      can :trash, Delivery do |d|
+        ['confirmed','finished'].include?(d.order.status.name) && d.creator_id == user.id
+      end
+      
+      can :statistics, Product
+      can :ajax_product_prices, Product
+      can :product_log, Product
+      
+      can :combine_parts, Product do |product|
+        product.is_combinable
+      end
+      can :de_combine_parts, Product do |product|
+        product.calculated_stock > 0 && product.parts.count > 0
+      end
+    end
+    
   end
 end

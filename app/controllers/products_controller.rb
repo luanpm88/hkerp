@@ -94,7 +94,8 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        @product.update_price(params["product_prices"], current_user)
+        @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
+        
         format.html { redirect_to products_url, notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
@@ -109,7 +110,7 @@ class ProductsController < ApplicationController
   def update
     respond_to do |format|
       if @product.update(product_params)
-        @product.update_price(params["product_prices"], current_user)
+        @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
         format.html { redirect_to products_url, notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
@@ -159,7 +160,7 @@ class ProductsController < ApplicationController
 
     respond_to do |format|
       if @product.save
-        @product.update_price(params["product_prices"], current_user)
+        @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
         format.html { render action: 'ajax_show', :layout => nil, :id => @product.id }
         format.json { render action: 'show', status: :created, location: @product }
       else
