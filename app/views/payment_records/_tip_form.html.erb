@@ -61,6 +61,20 @@
 													</div>
 											</div>
 											<div class="col-md-6">
+												
+																			<div class="form-group">
+																				<label class="form-label"><%= f.label :paid_date %></label>
+																				<span class="help"></span>
+																				  <div class="input-with-icon  right">                                       
+																					<i class=""></i>
+																					<div class="input-append success date col-md-10 no-padding">
+																					  <%= f.text_field :paid_date, :class => "form-control" %>
+																					  <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+																					</div>
+																					<br style="clear: both" />
+																				  </div>
+																			  </div>
+												
 													 <div class="form-group">
 													   <label class="form-label"><%= f.label :payment_method %></label>
 													   <span class="help">(required)</span>

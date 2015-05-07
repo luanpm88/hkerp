@@ -43,7 +43,7 @@
       
     </td>
     <td class="mid middle1" style="padding-bottom: 30px;">
-      <p><label>Ngày thu: </label><%= @order.order_date.strftime("%d/%m/%Y") %></p>
+      <p><label>Ngày thu: </label><%= @order.paid_date.strftime("%d/%m/%Y") %></p>
       
       <p><label>Số: </label><%= @order.quotation_code %>-<%= @payment_record.id %></p>
     </td>

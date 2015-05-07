@@ -41,6 +41,8 @@ class PaymentRecordsController < ApplicationController
   def new
     @order = Order.find(params[:id])
     @payment_record = PaymentRecord.new
+    
+    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
   end
   
   def pay_tip
@@ -49,6 +51,7 @@ class PaymentRecordsController < ApplicationController
     authorize! :pay_tip, @order
     
     @payment_record = PaymentRecord.new(is_tip: true)
+    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
   end
 
   # GET /payment_records/1/edit
@@ -135,6 +138,6 @@ class PaymentRecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_record_params
-      params.require(:payment_record).permit(:is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
+      params.require(:payment_record).permit(:paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
     end
 end

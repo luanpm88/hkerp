@@ -890,7 +890,8 @@ CREATE TABLE payment_records (
     paid_address text,
     debt_date timestamp without time zone,
     payment_method_id integer,
-    is_tip boolean DEFAULT false
+    is_tip boolean DEFAULT false,
+    paid_date timestamp without time zone
 );
 
 
@@ -2224,4 +2225,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150427010451');
 INSERT INTO schema_migrations (version) VALUES ('20150505075859');
 
 INSERT INTO schema_migrations (version) VALUES ('20150507033018');
+
+INSERT INTO schema_migrations (version) VALUES ('20150507034707');
 
