@@ -40,12 +40,16 @@ class AccountingController < ApplicationController
     
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+    @tip_contact = params[:tip_contact_id].present? ? Contact.find(params[:tip_contact_id]) : nil
     
     @statistics = Order.statistics(@from_date, @to_date, params)
     
     @orders = @statistics[:sell_orders]
     @total_notpaid = @statistics[:total_sell_with_vat_notpaid]
     @total_paid = @statistics[:total_sell_with_vat_paid]
+    
+    @total_tip_amount_paid = @statistics[:total_tip_amount_paid]
+    @total_tip_amount_notpaid = @statistics[:total_tip_amount_notpaid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_sales_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",

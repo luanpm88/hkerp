@@ -363,6 +363,9 @@ class Order < ActiveRecord::Base
     total_buy_with_vat_paid = 0.00
     total_sell_with_vat_paid = 0.00
     
+    total_tip_amount_notpaid = 0.00
+    total_tip_amount_paid = 0.00
+    
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
                   .where('order_date >= ?', from_date)
@@ -370,6 +373,9 @@ class Order < ActiveRecord::Base
     
     if params[:customer_id].present?
       sell_orders = sell_orders.where(customer_id: params[:customer_id])
+    end
+    if params[:tip_contact_id].present?
+      sell_orders = sell_orders.where(tip_contact_id: params[:tip_contact_id])
     end
     if params[:paid_status].present? && params[:paid_status] == "paid"
       sell_orders = sell_orders.where(payment_status_name: "paid")
@@ -391,6 +397,9 @@ class Order < ActiveRecord::Base
         
         total_sell_with_vat_notpaid += order.remain_amount
         total_sell_with_vat_paid += order.paid_amount
+        
+        total_tip_amount_notpaid += order.tip_amount if !order.is_tipped
+        total_tip_amount_paid += order.tip_amount if order.is_tipped
       end      
     end
     
@@ -447,6 +456,9 @@ class Order < ActiveRecord::Base
       total_sell_with_vat_notpaid: total_sell_with_vat_notpaid,
       total_buy_with_vat_paid: total_buy_with_vat_paid,
       total_sell_with_vat_paid: total_sell_with_vat_paid,
+      
+      total_tip_amount_notpaid: total_tip_amount_notpaid,
+      total_tip_amount_paid: total_tip_amount_paid,
       
       sell_orders: sell_orders,
       buy_orders: buy_orders

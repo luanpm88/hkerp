@@ -54,6 +54,16 @@
 										</div>
 									</div>
 											
+									<div class="col-md-3">
+										<h4>Tip For</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="tip_contact_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @tip_contact_id %>" text="<%= @tip_contact.name if !@tip_contact.nil? %>" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+											
 											<div class="col-md-2">
 													<h4>Paid Status</h4>
 													<div class="">
@@ -140,7 +150,7 @@
 			
                     
 			
-			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
 			
 			<div class="grid simple ">
 			    <div class="grid-body no-border filters" method="get">

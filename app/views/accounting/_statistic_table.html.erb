@@ -13,6 +13,7 @@
 							<th class="text-right">Total(+VAT)</th>
 							<th class="text-right">Paid</th>
 							<th class="text-right">Remain</th>
+							<th class="text-right">Tip</th>
 						</tr>
 						
 						<%
@@ -78,6 +79,9 @@
 													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.remain_amount) %>
 													</td>
+													<td rowspan="<%= count-1 %>" class="text-right">
+														<%= format_price(order.tip_amount) %>
+													</td>
 												<% end %>
 												
 											</tr>
@@ -85,7 +89,7 @@
 										<% end %>
 									<% end %>
 								<tr style="background: #efefef">
-									<td colspan="7">
+									<td colspan="8">
 										Deliveries:
 										<% order.deliveries.each do |d| %>
 											<% d.delivery_details.each do |dd| %>
@@ -105,14 +109,26 @@
 						<% end %>
 						
 						<tr>
-							<td class="text-right" colspan="6">
+							<td class="text-right" colspan="7">
 								Tổng cộng:
 							</td>
-							<td>
+							<td class="text-right">
 								<strong class="paid"><%= format_price(@total_paid) %></strong>
 							</td>
-							<td>
+							<td class="text-right">
 								<strong class="debt"><%= format_price(@total_notpaid) %></strong>
+							</td>
+                        </tr>
+						
+						<tr>
+							<td class="text-right" colspan="7">
+								Tổng cộng TIP:
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_tip_amount_paid) %></strong>
+							</td>
+							<td class="text-right">
+								<strong class="debt"><%= format_price(@total_tip_amount_notpaid) %></strong>
 							</td>
                         </tr>
 						
