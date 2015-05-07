@@ -1,0 +1,97 @@
+                    <table cellspacing="0" cellpadding="0" class="list table table-border">
+						<tr>
+							<th class="text-center">STT</th>
+							<th>Order</th>
+							
+							<th>Item</th>
+							<th class="text-center">Unit</th>
+							<th class="text-right">Price</th>
+
+							
+							
+														
+							
+							<th class="text-right">Total(+VAT)</th>
+							<th class="text-right">Paid</th>
+							<th class="text-right">Remain</th>
+                            <th class="text-right">HH</th>
+						</tr>
+						
+						<%
+						num = 1
+						@orders.each do |order| %>
+							<%
+								count = order.order_details.where("quantity > 0").count
+							%>
+							
+							
+									<% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
+										<% if od.quantity > 0 %>
+											<tr>												
+												<% if index == 0 %>
+													<td rowspan="<%= count %>" class="text-center">
+													<%= num %>
+													</td>
+													<td rowspan="<%= count %>">
+														<strong><%= order.printed_order_number %></strong>
+														<br />
+														(<%= order.order_date_formatted %>)
+														
+														
+														
+													</td>
+													
+												<% end %>
+												
+												
+												
+												<td style="text-align: left !important">
+													<%= od.product.display_name %><br />
+													
+												</td>
+												<td class="text-center">
+													<%= od.quantity %><br /><%= od.unit %>
+													
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total_vat) %>
+												</td>
+												
+												
+												
+												<% if index == 0 %>												
+													
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.total_vat) %>
+														<br />
+														(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+													</td>
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.paid_amount) %>
+													</td>
+													<td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.remain_amount) %>
+													</td>
+                                                    <td rowspan="<%= count %>" class="text-right">
+														<%= format_price(order.tip_amount) %>
+													</td>
+												<% end %>
+												
+											</tr>
+											
+										<% end %>
+									<% end %>
+							<% num += 1 %>
+						<% end %>
+						
+						<tr>
+							<td class="text-right" colspan="8">
+								Tổng cộng HH:
+							</td>
+							<td>
+								<strong class="debt"><%= format_price(@total_tip_amount_notpaid) %></strong>
+							</td>
+                        </tr>
+						
+						
+					</table>
