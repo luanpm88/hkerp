@@ -1698,12 +1698,12 @@
 		
 		<li <% if params[:controller] == "admin" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
-				  <i class="icon-user"></i>
+				  <i class="icon-cogs"></i>
 				  <span class="title">System</span>
 				  <span class="arrow<% if params[:controller] == "admin" %> open<% end %>"></span>
 				<% end %>
 				<ul class="sub-menu">
-				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/backup" %></li>
+				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup" %></li>
 				</ul>
 	    </li>
 	<% end %>

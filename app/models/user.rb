@@ -115,15 +115,20 @@ class User < ActiveRecord::Base
   end
   
   def self.backup_system(params)
-    dir = Time.now.strftime("%Y%m%d%H%M%S")
+    dir = Time.now.strftime("%Y_%m_%d_%H%M%S")
+    dir += "_db" if !params[:database].nil?
+    dir += "_source" if !params[:file].nil?
     
     `mkdir backup` if !File.directory?("backup")    
     `mkdir backup/#{dir}`
     
-    `pg_dump -a hkerp_development >> backup/#{dir}/data.dump` if !params[:database].nil?
-    `cp -a public/uploads backup/#{dir}/` if !params[:file].nil?
-    `zip -r backup/#{dir}.zip backup/#{dir}`
-    `rm -rf backup/#{dir}`
+    backup_cmd = ""
+    backup_cmd += "pg_dump -a hkerp_development >> backup/#{dir}/data.dump && " if !params[:database].nil?
+    backup_cmd += "cp -a public/uploads backup/#{dir}/ && " if !params[:file].nil?
+    backup_cmd += "zip -r backup/#{dir}.zip backup/#{dir} && "
+    backup_cmd += "rm -rf backup/#{dir}"
+    
+    `#{backup_cmd} &`
   end
   
 end

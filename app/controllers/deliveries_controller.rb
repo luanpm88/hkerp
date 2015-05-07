@@ -90,12 +90,12 @@ class DeliveriesController < ApplicationController
     #render nothing: true
     
     
-    list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
+    @list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
     
     respond_to do |format|
       if @delivery.valid?
         @delivery.update_stock
-        format.html { redirect_to list_path, notice: 'Sales delivery was successfully created.' }
+        format.html { redirect_to @delivery, notice: 'Sales delivery was successfully created.' }
         format.json { render action: 'show', status: :created, location: @delivery }
       else
         format.html { render action: 'deliver' }

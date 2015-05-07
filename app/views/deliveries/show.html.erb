@@ -1,11 +1,17 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
+<%
+@list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
+%>
+
 <%= stylesheet_link_tag "print_html.css" %>
 
 <div class="order_histories" style="float: right">
 <%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-  
+  <%= link_to '<< Back'.html_safe, @list_path, :class => "btn btn-info btn-xs btn-mini" %>
 </div>
+
+
 
 <div class="order_histories" style="float: left; max-width: 640px">
   <% @order.all_deliveries.each do |d| %>
@@ -43,7 +49,7 @@
 <div class="order_histories" style="float: right;margin: 10px 0 0 0">
   <%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
   <%= link_to 'X Trash'.html_safe, {controller: "deliveries", action: "trash", :id => @delivery.id}, :class => "btn btn-info btn-xs btn-mini" %>
-  
+  <%= link_to '<< Back'.html_safe, @list_path, :class => "btn btn-info btn-xs btn-mini" %>
 </div>
 <script>
   $('.show_order').fancybox({

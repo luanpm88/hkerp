@@ -134,6 +134,9 @@ Hkerp::Application.routes.draw do
       collection do
         get :backup
         post :backup
+        
+        get :download_backup
+        get :delete_backup
       end
     end
   end

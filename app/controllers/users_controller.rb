@@ -88,6 +88,21 @@ class UsersController < ApplicationController
     if params[:backup]
       User.backup_system(params)
     end
+    
+    @files = Dir.glob("backup/*").sort{|a,b| b <=> a}
+    
+  end
+  
+  def download_backup
+    send_file "backup/"+params[:filename].gsub("backup/",""), :type=>"application/zip"
+  end
+  
+  def delete_backup
+    `rm #{"backup/"+params[:filename].gsub("backup/","")}`
+    respond_to do |format|
+      format.html { redirect_to backup_users_path }
+      format.json { head :no_content }
+    end
   end
 
   private
