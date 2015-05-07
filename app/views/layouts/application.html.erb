@@ -1687,22 +1687,12 @@
 	<% if current_user.has_role? "admin" %>
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
-				  <i class="icon-user"></i>
-				  <span class="title">User Management</span>
+				  <i class="icon-cogs"></i>
+				  <span class="title">System</span>
 				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
 				<% end %>
 				<ul class="sub-menu">
-				  <li<% if params[:controller] == "users" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
-				</ul>
-	    </li>
-		
-		<li <% if params[:controller] == "users" %> class="active open"<% end %>>
-				<%= link_to contacts_url do %>
-				  <i class="icon-cogs"></i>
-				  <span class="title">System</span>
-				  <span class="arrow<% if params[:controller] == "admin" %> open<% end %>"></span>
-				<% end %>
-				<ul class="sub-menu">
+				  <li<% if params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
 				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup" %></li>
 				</ul>
 	    </li>
