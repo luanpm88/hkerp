@@ -14,6 +14,9 @@
 							<th class="text-right">Paid</th>
 							<th class="text-right">Remain</th>
 							<th class="text-right">Tip</th>
+							<% if @paid_date_check && @paid_date_filter.present? %>
+								<th class="text-right">P.A.D</th>
+							<% end %>
 						</tr>
 						
 						<%
@@ -83,6 +86,11 @@
 														<%= format_price(order.tip_amount) %>
 														<%= order.display_tip_status %>
 													</td>
+													<% if @paid_date_check && @paid_date_filter.present? %>
+														<td class="text-right">
+															<%= format_price(order.payments_by_date(@paid_date_filter.to_date).sum(:amount)) %>
+														</td>
+													<% end %>
 												<% end %>
 												
 											</tr>
@@ -135,6 +143,19 @@
 								</strong>
 							</td>
                         </tr>
+						
+						<% if @paid_date_check && @paid_date_filter.present? %>
+							<tr>
+								<td class="text-right" colspan="9">
+									Tổng cộng P.A.D:
+								</td>
+								<td class="text-right">
+									<strong class="paid">
+										<%= format_price(@total_PAD_sell_paid) %>
+									</strong><br />									
+								</td>
+							</tr>
+						<% end %>
 						
 						
 					</table>

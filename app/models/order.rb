@@ -366,13 +366,21 @@ class Order < ActiveRecord::Base
     total_tip_amount_notpaid = 0.00
     total_tip_amount_paid = 0.00
     
+    total_PAD_sell_notpaid = 0.00
+    total_PAD_sell_paid = 0.00
+    
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
     
     if params[:paid_date_check].present? && params[:paid_date_filter].present?
       paid_date = params[:paid_date_filter].to_date
-      order_ids = PaymentRecord.where('paid_date >= ?', paid_date.beginning_of_day)
-                                .where('paid_date <= ?', paid_date.end_of_day).map(&:order_id)
+      payments = PaymentRecord.where('paid_date >= ?', paid_date.beginning_of_day)
+                                .where('paid_date <= ?', paid_date.end_of_day)
+      payments.each do |p|
+        total_PAD_sell_paid += p.amount
+      end
+      
+      order_ids = payments.map(&:order_id)
       sell_orders = sell_orders.where(id: order_ids)
     else
       sell_orders = sell_orders.where('order_date >= ?', from_date)
@@ -471,7 +479,10 @@ class Order < ActiveRecord::Base
       total_tip_amount_paid: total_tip_amount_paid,
       
       sell_orders: sell_orders,
-      buy_orders: buy_orders
+      buy_orders: buy_orders,
+      
+      total_PAD_sell_paid: total_PAD_sell_paid,
+      total_PAD_sell_notpaid: total_PAD_sell_notpaid
     }
   end
   
@@ -1319,6 +1330,11 @@ class Order < ActiveRecord::Base
     else
       return false
     end
+  end
+  
+  def payments_by_date(d)
+    all_payment_records.where('paid_date >= ?', d.beginning_of_day)
+                        .where('paid_date <= ?', d.end_of_day)
   end
   
 end
