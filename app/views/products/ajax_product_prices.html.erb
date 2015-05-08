@@ -16,7 +16,7 @@
 								<th>Supplier</th>
 								<th class="text-right">Supplier Price</th>
 								<th class="text-right">Sales Price</th>
-								<th class="">Customer</th>
+								<!--<th class="">Customer</th>-->
 								<th class="text-center">Updated At</th>
 								<th class="text-center">Staff</th>	
 							</tr>
@@ -29,7 +29,7 @@
                                   <td><%= price.supplier_name %></td>
                                   <td class="text-right"><%= price.supplier_price_formated %></td>
                                   <td class="text-right"><%= price.price_formated %></td>
-                                  <td class=""><%= price.customer_name %></td>
+                                  <!--<td class=""><%= price.customer_name %></td>-->
 								  <td class="text-center"><%= price.created_at.strftime("%Y/%m/%d") %></td>
 								  <th class="text-center"><%= price.user.name if !price.user.nil? %></th>	
                               </tr>
