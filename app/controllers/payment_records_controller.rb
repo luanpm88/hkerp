@@ -43,6 +43,8 @@ class PaymentRecordsController < ApplicationController
     @payment_record = PaymentRecord.new
     
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+    @payment_record.paid_person = @order.is_purchase ? @order.supplier.name : @order.customer.name
+    @payment_record.paid_address = @order.is_purchase ? @order.supplier.address : @order.customer.address
   end
   
   def pay_tip
