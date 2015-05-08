@@ -112,6 +112,14 @@ user = User.where(:email => "quannt@hoangkhang.com.vn").first
 user.ATT_No = 25
 user.save
 
+user = User.where(:email => "tantd@hoangkhang.com.vn").first
+user.ATT_No = 131
+user.save
+
+user = User.where(:email => "tamvm@hoangkhang.com.vn").first
+user.ATT_No = 129
+user.save
+
 user = User.where(:email => "trungpn@hoangkhang.com.vn").first
 user.destroy
 
