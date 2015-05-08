@@ -109,11 +109,11 @@
 						<% if @paid_date_check && @paid_date_filter.present? %>
 							<tr>
 								<td class="text-right" colspan="8">
-									Tổng cộng P.A.D:
+									Tổng thanh toán ngày <%= @paid_date_filter.to_date.strftime("%Y-%m-%d") %>:
 								</td>
 								<td class="text-right">
 									<strong class="paid">
-										<%= format_price(@total_PAD_sell_paid) %>
+										<%= format_price(@total_PAD_paid) %>
 									</strong><br />									
 								</td>
 							</tr>
