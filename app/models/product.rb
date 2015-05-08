@@ -36,14 +36,14 @@ class Product < ActiveRecord::Base
   before_save :fix_serial_numbers
   
   
-  def order_supplier_history
+  def order_customer_history
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
                         .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                         .where(product_id: id)
                         .order("created_at DESC").limit(10)
     @html = "<ul>"
     @list.each do |item|
-      @html += "<li>"+item.order.supplier.name+": <br />Price: <strong>"+item.formated_price+" VND</strong> (#{item.created_at.strftime("%Y-%m-%d")})</li>";
+      @html += "<li>"+item.order.customer.name+": <br />Price: <strong>"+item.formated_price+" VND</strong> (#{item.created_at.strftime("%Y-%m-%d")})</li>";
     end
     @html += "</ul>";
     
