@@ -366,7 +366,7 @@ class Order < ActiveRecord::Base
     total_tip_amount_notpaid = 0.00
     total_tip_amount_paid = 0.00
     
-    total_PAD_sell_notpaid = 0.00
+    total_PAD_buy_paid = 0.00
     total_PAD_sell_paid = 0.00
     
     sell_orders = Order.customer_orders
@@ -376,6 +376,10 @@ class Order < ActiveRecord::Base
       paid_date = params[:paid_date_filter].to_date
       payments = PaymentRecord.where('paid_date >= ?', paid_date.beginning_of_day)
                                 .where('paid_date <= ?', paid_date.end_of_day)
+      if params[:customer_id].present?
+        payments = payments.joins(:order).where(order: {customer_id: params[:customer_id]})
+      end
+      
       payments.each do |p|
         total_PAD_sell_paid += p.amount
       end
@@ -385,8 +389,7 @@ class Order < ActiveRecord::Base
     else
       sell_orders = sell_orders.where('order_date >= ?', from_date)
                                 .where('order_date <= ?', to_date)
-    end
-    
+    end    
                   
     
     if params[:customer_id].present?
@@ -423,8 +426,22 @@ class Order < ActiveRecord::Base
     
     buy_orders = Order.purchase_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
-                  .where('order_date >= ?', from_date)
-                  .where('order_date <= ?', to_date)
+                  
+    if params[:paid_date_check].present? && params[:paid_date_filter].present?
+      paid_date = params[:paid_date_filter].to_date
+      payments = PaymentRecord.where(is_tip: false)
+                                .where('paid_date >= ?', paid_date.beginning_of_day)
+                                .where('paid_date <= ?', paid_date.end_of_day)
+      payments.each do |p|
+        total_PAD_sell_paid += p.amount
+      end
+      
+      order_ids = payments.map(&:order_id)
+      buy_orders = buy_orders.where(id: order_ids)
+    else
+      sell_orders = sell_orders.where('order_date >= ?', from_date)
+                                .where('order_date <= ?', to_date)
+    end
     
     if params[:supplier_id].present?
       buy_orders = buy_orders.where(supplier_id: params[:supplier_id])
@@ -482,7 +499,7 @@ class Order < ActiveRecord::Base
       buy_orders: buy_orders,
       
       total_PAD_sell_paid: total_PAD_sell_paid,
-      total_PAD_sell_notpaid: total_PAD_sell_notpaid
+      total_PAD_buy_paid: total_PAD_buy_paid
     }
   end
   
