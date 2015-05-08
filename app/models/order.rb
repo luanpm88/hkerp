@@ -377,7 +377,7 @@ class Order < ActiveRecord::Base
       payments = PaymentRecord.where('paid_date >= ?', paid_date.beginning_of_day)
                                 .where('paid_date <= ?', paid_date.end_of_day)
       if params[:customer_id].present?
-        payments = payments.joins(:order).where(order: {customer_id: params[:customer_id]})
+        payments = payments.joins(:order).where(orders: {customer_id: params[:customer_id]})
       end
       
       payments.each do |p|
