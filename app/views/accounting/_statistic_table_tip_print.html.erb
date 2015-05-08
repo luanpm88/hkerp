@@ -21,11 +21,11 @@
 						num = 1
 						@orders.each do |order| %>
 							<%
-								count = order.order_details.where("quantity > 0").count
+								count = order.order_details.where("quantity > 0").where("tip_amount > 0").count
 							%>
 							
 							
-									<% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
+									<% order.order_details.where("quantity > 0").where("tip_amount > 0").each_with_index do |od,index| %>
 										<% if od.quantity > 0 %>
 											<tr>												
 												<% if index == 0 %>
