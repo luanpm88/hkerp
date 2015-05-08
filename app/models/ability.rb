@@ -274,6 +274,17 @@ class Ability
       can :do_change, Order do |order|
         order.is_sales && ['price_confirmed','confirmed','finished'].include?(order.status.name)
       end
+      
+      can :create, OrderDetail
+      can :read, OrderDetail do |order_detail|
+        order_detail.order.salesperson_id == user.id
+      end
+      can :update, OrderDetail do |order_detail|
+        order_detail.order.nil? && ['new','confirmed','finished'].include?(order_detail.order.status.name))
+      end
+      can :ajax_destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? && ['new','confirmed','finished'].include?(order_detail.order.status.name))
+      end
     end
 
     if user.has_role? "storage_manager"
