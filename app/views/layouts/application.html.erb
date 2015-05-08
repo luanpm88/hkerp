@@ -1173,7 +1173,7 @@
 			$('#accounting-statistics-filters-form').submit();
 	    });
 		
-		$('.accounting-statistics-filters input').change(function() {
+		$('.accounting-statistics-filters input[type=text]').change(function() {
 			setTimeout("$('#accounting-statistics-filters-form').submit();", 500);
 	    });
 	    
@@ -1360,6 +1360,9 @@
 				$('input[name="paid_date_filter"]').removeClass("disabled")
 			} else {
 				$('input[name="paid_date_filter"]').addClass("disabled")
+			}
+			if ($('input[name="paid_date_filter"]').val() != "") {
+				setTimeout("$('#accounting-statistics-filters-form').submit();", 500);
 			}
 		});
       });
