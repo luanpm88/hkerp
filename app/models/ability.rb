@@ -276,14 +276,12 @@ class Ability
       end
       
       can :create, OrderDetail
-      can :read, OrderDetail do |order_detail|
-        order_detail.order.salesperson_id == user.id
-      end
+      can :read, OrderDetail
       can :update, OrderDetail do |order_detail|
-        order_detail.order.nil? && ['new','confirmed','finished'].include?(order_detail.order.status.name)
+        ['new','confirmed','finished'].include?(order_detail.order.status.name)
       end
       can :ajax_destroy, OrderDetail do |order_detail|
-        order_detail.order.nil? && ['new','confirmed','finished'].include?(order_detail.order.status.name)
+        ['new','confirmed','finished'].include?(order_detail.order.status.name)
       end
     end
 

@@ -66,21 +66,6 @@ Hkerp::Application.routes.draw do
     end
   end
 
-  resources :supplier_order_details do
-    collection do
-      get :ajax_new
-      post :ajax_create
-      get :ajax_destroy
-      get :ajax_edit
-      patch :ajax_update
-    end
-  end
-
-  resources :supplier_orders do
-    collection do
-      get :download_pdf
-    end
-  end
 
   resources :roles
 
