@@ -127,7 +127,10 @@
 								Tổng cộng TIP:
 							</td>
 							<td class="text-right">
-								<strong class="debt"><%= format_price(@total_tip_amount_notpaid) %></strong>
+								<strong class="debt">
+									<%= format_price(@total_tip_amount_paid) %>
+									<%= format_price(@total_tip_amount_notpaid) %>
+								</strong>
 							</td>
                         </tr>
 						
