@@ -269,10 +269,10 @@ class Ability
       end
       
       can :change, Order do |order|
-        order.is_purchase && order.purchaser_id == user.id && ['confirmed','finished'].include?(order.status.name)
+        order.is_sales && ['price_confirmed','confirmed'].include?(order.status.name)
       end
       can :do_change, Order do |order|
-        order.is_purchase && order.purchaser_id == user.id && ['confirmed','finished'].include?(order.status.name)
+        order.is_sales && ['price_confirmed','confirmed'].include?(order.status.name)
       end
     end
 
