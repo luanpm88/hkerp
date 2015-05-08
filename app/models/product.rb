@@ -36,7 +36,7 @@ class Product < ActiveRecord::Base
   before_save :fix_serial_numbers
   
   
-  def order_customer_history
+  def order_supplier_history
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
                         .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                         .where(product_id: id)
