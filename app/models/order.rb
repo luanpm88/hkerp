@@ -433,7 +433,7 @@ class Order < ActiveRecord::Base
                                 .where('paid_date >= ?', paid_date.beginning_of_day)
                                 .where('paid_date <= ?', paid_date.end_of_day)
       payments.each do |p|
-        total_PAD_sell_paid += p.amount
+        total_PAD_buy_paid += p.amount
       end
       
       order_ids = payments.map(&:order_id)
