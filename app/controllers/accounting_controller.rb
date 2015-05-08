@@ -54,7 +54,7 @@ class AccountingController < ApplicationController
     @total_tip_amount_paid = @statistics[:total_tip_amount_paid]
     @total_tip_amount_notpaid = @statistics[:total_tip_amount_notpaid]
     
-    @total_PAD_sell_paid = @statistics[:total_PAD_sell_paid]
+    @total_PAD_paid = @statistics[:total_PAD_sell_paid]
     
     if params[:pdf] == "1"
       tip = params[:tip] == "1" ? "_tip" : ""
@@ -88,11 +88,16 @@ class AccountingController < ApplicationController
     @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
+    @paid_date_check = params[:paid_date_check].present? && params[:paid_date_check] == "1" ? true : false
+    @paid_date_filter = @paid_date_check && params[:paid_date_filter].present? ? params[:paid_date_filter] : nil
+    
     @statistics = Order.statistics(@from_date, @to_date, params)
     
     @orders = @statistics[:buy_orders]
     @total_notpaid = @statistics[:total_buy_with_vat_notpaid]
     @total_paid = @statistics[:total_buy_with_vat_paid]
+    
+    @total_PAD_paid = @statistics[:total_PAD_buy_paid]
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_purchase_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",

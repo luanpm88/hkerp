@@ -432,6 +432,10 @@ class Order < ActiveRecord::Base
       payments = PaymentRecord.where(is_tip: false)
                                 .where('paid_date >= ?', paid_date.beginning_of_day)
                                 .where('paid_date <= ?', paid_date.end_of_day)
+      if params[:supplier_id].present?
+        payments = payments.joins(:order).where(orders: {supplier_id: params[:supplier_id]})
+      end
+      
       payments.each do |p|
         total_PAD_buy_paid += p.amount
       end
