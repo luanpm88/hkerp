@@ -159,7 +159,8 @@ com_title = Contact.HK
 </table>
 <p></p>
 
-<h3 style="margin-bottom: 0; text-align: center">DOANH SỐ HH (<%= @tip_contact.name if !@tip_contact.nil? %>) - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
+<h3 style="margin-bottom: 0; text-align: center">DOANH SỐ HH (<%= @tip_contact.name if !@tip_contact.nil? %>)
+<br />TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
 
 <%= render 'statistic_table_tip_print' %>
 
