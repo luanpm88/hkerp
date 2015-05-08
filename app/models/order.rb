@@ -368,8 +368,18 @@ class Order < ActiveRecord::Base
     
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
-                  .where('order_date >= ?', from_date)
-                  .where('order_date <= ?', to_date)
+    
+    if params[:paid_date_check].present? && params[:paid_date_filter].present?
+      paid_date = params[:paid_date_filter].to_date
+      order_ids = PaymentRecord.where('paid_date >= ?', paid_date.beginning_of_day)
+                                .where('paid_date <= ?', paid_date.end_of_day).map(&:order_id)
+      sell_orders = sell_orders.where(id: order_ids)
+    else
+      sell_orders = sell_orders.where('order_date >= ?', from_date)
+                                .where('order_date <= ?', to_date)
+    end
+    
+                  
     
     if params[:customer_id].present?
       sell_orders = sell_orders.where(customer_id: params[:customer_id])

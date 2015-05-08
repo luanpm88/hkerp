@@ -44,6 +44,27 @@
 									</div>
 								</div>
 								
+								<div class="col-md-3">
+									<h4>Paid Date
+										<div class="row-fluid" style="display: inline-block;width: 30px;">
+											<div class="checkbox check-success">
+												<%= check_box_tag "paid_date_check", 1, @paid_date_check, {id: "checkbox1"} %>
+												<label for="checkbox1"></label>
+											</div>
+									   </div>
+									</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<% disabled = !@paid_date_check ? " disabled" : ""  %>
+											<%= text_field_tag :paid_date_filter, @paid_date_filter, :class => "datetime form-control"+disabled %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+								
 									<div class="col-md-3">
 										<h4>Customer</h4>
 										<div class="">
@@ -82,6 +103,24 @@
 						</form>
 						</div>		    
 					</div>
+			
+			
+			
+			
+			
+                    
+			
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			<%= link_to '<i class="icon-print"></i> Print TIP'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, tip: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			
+			<div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Sales Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+					
+					<%= render 'statistic_table' %>
+					
+				</div>
+			</div>
 			
 			
 			
@@ -147,22 +186,6 @@
 					</div>
 			    </div>
 			</div>
-			
-                    
-			
-			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
-			<%= link_to '<i class="icon-print"></i> Print TIP'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, tip: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
-			
-			<div class="grid simple ">
-			    <div class="grid-body no-border filters" method="get">
-					<h4>Sales Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
-					
-					<%= render 'statistic_table' %>
-					
-				</div>
-			</div>
-			
-			
 			
 			
 			

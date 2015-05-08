@@ -1352,6 +1352,16 @@
 		
 		$('.price-history').fancybox();
 	    
+		
+		
+		//paid day checkbox
+		$('input[name="paid_date_check"]').change(function() {
+			if ($('input[name="paid_date_check"]:checked').length) {
+				$('input[name="paid_date_filter"]').removeClass("disabled")
+			} else {
+				$('input[name="paid_date_filter"]').addClass("disabled")
+			}
+		});
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>

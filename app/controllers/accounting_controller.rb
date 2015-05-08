@@ -42,6 +42,9 @@ class AccountingController < ApplicationController
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     @tip_contact = params[:tip_contact_id].present? ? Contact.find(params[:tip_contact_id]) : nil
     
+    @paid_date_check = params[:paid_date_check].present? && params[:paid_date_check] == "1" ? true : false
+    @paid_date_filter = @paid_date_check && params[:paid_date_filter].present? ? params[:paid_date_filter] : nil
+    
     @statistics = Order.statistics(@from_date, @to_date, params)
     
     @orders = @statistics[:sell_orders]
