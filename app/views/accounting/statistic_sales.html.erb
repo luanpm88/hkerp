@@ -110,7 +110,7 @@
 			
                     
 			
-			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status], paid_date_check: params[:paid_date_check], paid_date_filter: params[:paid_date_filter]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
 			<%= link_to '<i class="icon-print"></i> Print TIP'.html_safe, {controller: "accounting", action: "statistic_sales", pdf: 1, tip: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
 			
 			<div class="grid simple ">

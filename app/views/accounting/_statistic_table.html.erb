@@ -15,7 +15,11 @@
 							<th class="text-right">Remain</th>
 							<th class="text-right">Tip</th>
 							<% if @paid_date_check && @paid_date_filter.present? %>
-								<th class="text-right">P.A.D</th>
+								<th class="text-right">
+									P.A.D
+									<br />
+									(<%= @paid_date_filter.to_date.strftime("%Y-%m-%d") %>)
+								</th>
 							<% end %>
 						</tr>
 						
@@ -87,7 +91,7 @@
 														<%= order.display_tip_status %>
 													</td>
 													<% if @paid_date_check && @paid_date_filter.present? %>
-														<td class="text-right">
+														<td rowspan="<%= count %>" class="text-right">
 															<%= format_price(order.payments_by_date(@paid_date_filter.to_date).sum(:amount)) %>
 														</td>
 													<% end %>
@@ -142,6 +146,9 @@
 									<%= format_price(@total_tip_amount_notpaid) %>
 								</strong>
 							</td>
+							<% if @paid_date_check && @paid_date_filter.present? %>
+								<td></td>
+							<% end %>
                         </tr>
 						
 						<% if @paid_date_check && @paid_date_filter.present? %>

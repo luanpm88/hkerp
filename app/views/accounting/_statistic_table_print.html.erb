@@ -14,6 +14,12 @@
 							<th class="text-right">Total(+VAT)</th>
 							<th class="text-right">Paid</th>
 							<th class="text-right">Remain</th>
+							<% if @paid_date_check && @paid_date_filter.present? %>
+								<th>Paid on
+								<br />
+								(<%= @paid_date_filter.to_date.strftime("%Y-%m-%d") %>)
+								</th>
+							<% end %>
 						</tr>
 						
 						<%
@@ -71,6 +77,11 @@
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.remain_amount) %>
 													</td>
+													<% if @paid_date_check && @paid_date_filter.present? %>
+														<td rowspan="<%= count %>" class="text-right">
+															<%= format_price(order.payments_by_date(@paid_date_filter.to_date).sum(:amount)) %>
+														</td>
+													<% end %>
 												<% end %>
 												
 											</tr>
@@ -90,7 +101,23 @@
 							<td>
 								<strong class="debt"><%= format_price(@total_notpaid) %></strong>
 							</td>
+							<% if @paid_date_check && @paid_date_filter.present? %>
+								<td></td>
+							<% end %>
                         </tr>
+						
+						<% if @paid_date_check && @paid_date_filter.present? %>
+							<tr>
+								<td class="text-right" colspan="8">
+									Tổng cộng P.A.D:
+								</td>
+								<td class="text-right">
+									<strong class="paid">
+										<%= format_price(@total_PAD_sell_paid) %>
+									</strong><br />									
+								</td>
+							</tr>
+						<% end %>
 						
 						
 					</table>
