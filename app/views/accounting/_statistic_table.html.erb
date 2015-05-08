@@ -91,7 +91,7 @@
 														<%= order.display_tip_status %>
 													</td>
 													<% if @paid_date_check && @paid_date_filter.present? %>
-														<td rowspan="<%= count %>" class="text-right">
+														<td rowspan="<%= count-1 %>" class="text-right">
 															<%= format_price(order.payments_by_date(@paid_date_filter.to_date).sum(:amount)) %>
 														</td>
 													<% end %>
@@ -102,7 +102,7 @@
 										<% end %>
 									<% end %>
 								<tr style="background: #efefef">
-									<td colspan="8">
+									<td colspan="9">
 										Deliveries:
 										<% order.deliveries.each do |d| %>
 											<% d.delivery_details.each do |dd| %>

@@ -159,7 +159,13 @@ com_title = Contact.HK
 </table>
 <p></p>
 
-<h3 style="margin-bottom: 0; text-align: center">BẢNG ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %></h3>
+<h3 style="margin-bottom: 0; text-align: center">
+<% if @paid_date_check && @paid_date_filter.present? %>
+    BẢNG ĐỐI CHIẾU THANH TOÁN - NGÀY <%= @paid_date_filter.to_date.strftime("%d/%m/%Y") %>
+<% else %>
+    BẢNG ĐỐI CHIẾU CÔNG NỢ - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %>
+<% end %>
+</h3>
 <% if !@customer.nil? %>
   <h4 style="margin-top: 20px; text-align: center">Kính gửi: <%= @customer.name %></h4>
 <% end %>

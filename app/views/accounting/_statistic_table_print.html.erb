@@ -42,7 +42,11 @@
 														<br />
 														(<%= order.order_date_formatted %>)
 														
-														
+														<br />
+
+														<% if @supplier.nil? && @customer.nil? %>
+															<%= order.is_purchase ? order.supplier.name : order.customer.name %>
+														<% end %>
 														
 													</td>
 													
