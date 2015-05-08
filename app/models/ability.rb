@@ -273,7 +273,10 @@ class Ability
       end
       can :do_change, Order do |order|
         order.is_sales && ['price_confirmed','confirmed','finished'].include?(order.status.name)
-      end
+      end      
+      can :confirm_order, Order do |order|
+        order.is_sales && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
+      end  
       
       can :create, OrderDetail
       can :read, OrderDetail

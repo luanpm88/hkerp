@@ -724,9 +724,9 @@ class Product < ActiveRecord::Base
   def combination_count_formated(from_date=nil, to_date=nil)
     count = combination_count(from_date, to_date)
     if count > 0
-        "+"+count.to_s
+      "+"+count.to_s
     else
-        count.to_s
+      count.to_s
     end
     
   end
