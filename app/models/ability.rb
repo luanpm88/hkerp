@@ -258,6 +258,16 @@ class Ability
         ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
       end
       
+      can :trash, PaymentRecord do |p|
+        ['confirmed','finished'].include?(p.order.status.name) && p.accountant_id == user.id
+      end
+      
+    end
+    
+    if user.has_role? "accountant_manager"
+      can :trash, PaymentRecord do |p|
+        ['confirmed','finished'].include?(p.order.status.name)
+      end
     end
     
     if user.has_role? "sales_manager"

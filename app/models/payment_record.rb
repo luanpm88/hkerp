@@ -13,7 +13,7 @@ class PaymentRecord < ActiveRecord::Base
   after_save :update_payment_status_name
   
   def self.all_records
-    where(is_tip: false)
+    where.(status: 1).where(is_tip: false)
   end
   
   def update_payment_status_name
@@ -74,6 +74,10 @@ class PaymentRecord < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: self.id}, :class => 'fancybox.iframe ajax_iframe').html_safe
+  end
+  
+  def trash
+    self.update_attribute(:status, 0)
   end
   
 end

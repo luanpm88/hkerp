@@ -20,6 +20,8 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :pay_tip
       post :do_pay_tip
+      
+      get :trash
     end
   end
 

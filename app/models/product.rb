@@ -458,7 +458,7 @@ class Product < ActiveRecord::Base
   end
   
   def trash
-    update_attributes(status: 0)
+    self.update_attribute(:status, 0)
   end
   
   def un_trash

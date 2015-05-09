@@ -38,6 +38,7 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
 
 <div class="order_histories" style="float: right;margin: 10px 0 0 0">
   <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+  <%= link_to 'X Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info btn-xs btn-mini" %>
   <%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
 </div>
 <script>

@@ -295,9 +295,9 @@ class Order < ActiveRecord::Base
       return false
     end
     
-    #order_details.each do |od|
-    #  od.update_price(user)
-    #end
+    order_details.each do |od|
+      od.update_price(user)
+    end
     
     self.set_status('confirmed',user)
     Notification.send_notification(salesperson, 'order_confirmed', self)
@@ -770,7 +770,7 @@ class Order < ActiveRecord::Base
   end
   
   def tipped_amount
-    payment_records.where(is_tip: true).sum :amount
+    all_tip_records.sum :amount
   end
   
   def is_tipped
@@ -1116,7 +1116,11 @@ class Order < ActiveRecord::Base
   end
   
   def all_payment_records
-    payment_records.where(is_tip: false).order("created_at DESC")
+    payment_records.where(status: 1).where(is_tip: false).order("created_at DESC")
+  end
+  
+  def all_tip_records
+    payment_records.where(status: 1).where(is_tip: true).order("created_at DESC")
   end
   
   def is_prices_oudated

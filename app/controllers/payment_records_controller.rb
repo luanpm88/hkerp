@@ -1,7 +1,7 @@
 class PaymentRecordsController < ApplicationController
   load_and_authorize_resource :except => [:pay_tip, :do_pay_tip]
   
-  before_action :set_payment_record, only: [:download_pdf, :show, :edit, :update, :destroy]
+  before_action :set_payment_record, only: [:trash, :download_pdf, :show, :edit, :update, :destroy]
 
   # GET /payment_records
   # GET /payment_records.json
@@ -129,6 +129,20 @@ class PaymentRecordsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to payment_records_url }
       format.json { head :no_content }
+    end
+  end
+  
+  def trash
+    list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
+    
+    respond_to do |format|
+      if @payment_record.trash
+        format.html { redirect_to list_path, notice: 'Delivery was successfully trashed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to list_path, alert: 'Delivery was unsuccessfully trashed.' }
+        format.json { head :no_content }
+      end
     end
   end
 
