@@ -41,7 +41,7 @@
 							  <i class=""></i>
 							  <select name="delivery_status" class="modern_select width100">
 								  <option value="">All</option>
-								  <option value="waiting">Waiting...</option>
+								  <option value="waiting" <%= 'selected="selected"' if ["deliveries"].include?(params[:controller]) %>>Waiting...</option>
 								  <option value="not_delivered">Not Delivered</option>
 								  <option value="combinable">Combinable</option>
 								  <option value="out_of_stock">Out Of Stock</option>
