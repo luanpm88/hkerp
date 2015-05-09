@@ -1,4 +1,6 @@
 class OrdersController < ApplicationController
+  include ApplicationHelper
+  
   load_and_authorize_resource :except => [:datatable]
   
   before_action :set_order, only: [:print_order_fix1, :update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
@@ -257,128 +259,15 @@ class OrdersController < ApplicationController
     result[:items].each_with_index do |item, index|
       
       
-      actions = '<div class="text-right"><div class="btn-group actions">
-                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
-      actions += '<ul class="dropdown-menu">'
-      
-      
-      group_1 = 0
-      if can? :finish_order, item
-        actions += '<li>'+view_context.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id}, data: { confirm: 'Are you sure?'})+'</li>'        
-        group_1 += 1
-      end
-      if can? :pay_order, item
-        actions += '<li>'+view_context.link_to('Pay Order', {controller: "payment_records", action: "new", id: item.id})+'</li>'
-        group_1 += 1
-      end
-      
-      if can? :pay_tip, item
-        actions += '<li>'+view_context.link_to('Pay Tip', {controller: "payment_records", action: "pay_tip", order_id: item.id})+'</li>'
-        group_1 += 1
-      end
-      
-      actions += '<li class="divider"></li>' if group_1 > 0
-      
-      group_3 = 0
-      if can? :confirm_items, item
-        actions += '<li>'+view_context.link_to("Confirm Items", confirm_items_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
-        group_3 += 1
-      end
-      if can? :update_price, item
-        actions += '<li>'+view_context.link_to("Confirm Price", confirm_price_orders_url(id: item.id), data: { confirm: 'Are you sure?' })+'</li>'
-        group_3 += 1
-      end
-      if can? :confirm_order, item
-        actions += '<li>'+view_context.link_to("Confirm Order", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
-        group_3 += 1
-      end
-      if can? :change, item
-        actions += '<li>'+view_context.link_to("Change Items", change_orders_path(:id => item.id))+'</li>'
-        group_3 += 1
-      end      
-      if can? :update_info, item
-        actions += '<li>'+view_context.link_to("Update Info", update_info_orders_path(:id => item.id, page: params[:page]))+'</li>'
-        group_3 += 1
-      end
-      if can? :update_tip, item
-        actions += '<li>'+view_context.link_to('Update Tip', {controller: "orders", action: "update_tip", id: item.id})+'</li>'
-        group_1 += 1
-      end
-      
-      actions += '<li class="divider"></li>' if group_3 > 0
-      
-      
-      group_4 = 0
-      if can? :deliver, item
-        actions += '<li>'+view_context.link_to('Deliver', {controller: "deliveries",action: "deliver", order_id: item.id})+'</li>'
-        group_4 += 1
-      end
-            
-      actions += '<li class="divider"></li>' if group_4 > 0
-      
-      
-      
-      group_5 = 0
-      if can? :read, Delivery
-        if item.all_deliveries.count > 0
-		  item.all_deliveries.each do |delivery|
-            actions += '<li>'
-            actions += view_context.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+delivery.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe')
-            actions += '</li>'
-		  end
-		  
-		  group_5 += 1
-		end
-	  end
-      
-      actions += '<li class="divider"></li>' if group_5 > 0
-      
-      
-      group_2 = 0
-      if can? :read, PaymentRecord
-        if item.all_payment_records.count > 0
-		  item.all_payment_records.each do |recept|
-            actions += '<li>'
-            actions += view_context.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
-            actions += '</li>'
-		  end		  
-		  group_2 += 1
-		end
-	  end
-      
-      actions += '<li class="divider"></li>' if group_2 > 0
-      
-      if can? :order_log, item
-        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Order Logs".html_safe, {controller: "orders", action: "order_log", id: item.id}, title: "Order Logs", target: "_blank")+'</li>'
-      end
-      if can? :show, item
-        actions += '<li>'+view_context.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
-      end
-      if can? :update, item
-        actions += '<li>'+view_context.link_to("Edit", edit_order_path(item), title: "Edit Order")+'</li>'
-      end
-      if can? :destroy, item
-        actions += '<li>'+view_context.link_to("Delete", item, method: :delete, data: { confirm: 'Are you sure?' })+'</li>'
-      end
-      if can? :read, item
-        actions += '<li>'+view_context.link_to('PDF', download_pdf_orders_path(:id => item.id), :target => "_blank")+'</li>'
-      end
-      if can? :print_order, item       
-        actions += '<li>'+view_context.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
-      end
-      
-      if can? :print_order_fix1, item       
-        actions += '<li>'+view_context.link_to('Print Order (raw) Fix1', print_order_fix1_orders_path(:id => item.id), :target => "_blank")+'</li>'
-      end
-     
-      
-      actions += '</ul></div></div>'
+      actions = render_order_actions(item)
       
       result[:result]["data"][index][result[:actions_col]] = actions
     end
     
     render json: result[:result]
   end
+  
+  
   
   def change    
   end

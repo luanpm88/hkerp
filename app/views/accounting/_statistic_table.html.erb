@@ -102,7 +102,13 @@
 										<% end %>
 									<% end %>
 								<tr style="background: #efefef">
+									
 									<td colspan="9">
+										
+										<div class="actions pull-right">
+											<%= render_order_actions(order) %>
+										</div>
+										
 										Deliveries:
 										<% order.deliveries.each do |d| %>
 											<% d.delivery_details.each do |dd| %>
@@ -116,6 +122,8 @@
 											&nbsp;&nbsp;&nbsp;<%= link_to("<i class=\"icon-print\"></i> ".html_safe+recept.created_at.strftime("%Y-%m-%d"), recept, :class => 'fancybox.iframe ajax_iframe') %>
 											
 										<% end %>
+										
+										
 									</td>
 								</tr>
 							<% num += 1 %>
