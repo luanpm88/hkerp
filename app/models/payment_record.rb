@@ -13,7 +13,7 @@ class PaymentRecord < ActiveRecord::Base
   after_save :update_payment_status_name
   
   def self.all_records
-    where.(status: 1).where(is_tip: false)
+    where(status: 1).where(is_tip: false)
   end
   
   def update_payment_status_name
