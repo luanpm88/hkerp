@@ -6,16 +6,17 @@
 							
 							<th class="text-right">Price</th>
 							<th class="text-right">Cost Total</th>
+							<th class="text-right">Tip</th>
 							<th class="text-right">Fare</th>
 							<th class="text-right">Fare VAT</th>
 							
 							
 														
-							<th class="text-center">Status</th>
+							<!--<th class="text-center">Status</th>-->
 							<th class="text-right">Total(+VAT)</th>
 							<th class="text-right">Paid</th>
 							<th class="text-right">Remain</th>
-							<th class="text-right">Tip</th>
+							<!--<th class="text-right">Tip</th>-->
 							<% if @paid_date_check && @paid_date_filter.present? %>
 								<th class="text-right">
 									P.A.D
@@ -46,6 +47,13 @@
 														<br /><%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
 														<br /><br />
 														<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
+														<br /><br />
+														<%= order.display_payment_status %>
+														<% if (order.is_debt || order.is_out_of_date) %>
+															<%= order.debt_remain_days.to_s+' days' %>
+															<br />
+															(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+														<% end %>
 													</td>
 												<% end %>
 												
@@ -65,6 +73,10 @@
 													<%= format_price(od.cost_total) %>
 												</td>
 												<td class="text-right">
+													<%= format_price(od.tip_amount) %>
+													<%= order.display_tip_status %>
+												</td>
+												<td class="text-right">
 													<%= format_price(od.fare) %>
 												</td>
 												<td class="text-right">
@@ -73,14 +85,14 @@
 												
 												
 												<% if index == 0 %>												
-													<td rowspan="<%= count-1 %>" class="text-center">
+													<!--<td rowspan="<%= count-1 %>" class="text-center">
 														<%= order.display_payment_status %>
 														<% if (order.is_debt || order.is_out_of_date) %>
 															<%= order.debt_remain_days.to_s+' days' %>
 															<br />
 															(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
 														<% end %>
-													</td>
+													</td>-->
 													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.total_vat) %>
 														<br />
@@ -92,10 +104,10 @@
 													<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.remain_amount) %>
 													</td>
-													<td rowspan="<%= count-1 %>" class="text-right">
+													<!--<td rowspan="<%= count-1 %>" class="text-right">
 														<%= format_price(order.tip_amount) %>
 														<%= order.display_tip_status %>
-													</td>
+													</td>-->
 													<% if @paid_date_check && @paid_date_filter.present? %>
 														<td rowspan="<%= count-1 %>" class="text-right">
 															<%= format_price(order.payments_by_date(@paid_date_filter.to_date).sum(:amount)) %>
@@ -109,7 +121,7 @@
 									<% end %>
 								<tr style="background: #efefef">
 									
-									<td colspan="10">
+									<td colspan="9">
 										
 										<div class="actions pull-right">
 											<%= render_order_actions(order) %>
@@ -136,8 +148,11 @@
 						<% end %>
 						
 						<tr>
-							<td class="text-right" colspan="8">
+							<td class="text-right" colspan="7">
 								Tổng cộng:
+							</td>
+							<td class="text-right">
+								<strong><%= format_price(@total_with_vat) %></strong>
 							</td>
 							<td class="text-right">
 								<strong class="paid"><%= format_price(@total_paid) %></strong>
@@ -145,30 +160,17 @@
 							<td class="text-right">
 								<strong class="debt"><%= format_price(@total_notpaid) %></strong>
 							</td>
-							<td></td>
                         </tr>
 						
 						<tr>
-							<td class="text-right" colspan="4">
+							<td class="text-right" colspan="2">
 								Tổng cộng FARE:
 							</td>
 							<td class="text-right">
-								<strong class="paid"><%= format_price(@total_fare) %></strong>
+								<strong><%= format_price(@total) %></strong>
 							</td>
 							<td class="text-right">
-								<strong class="paid"><%= format_price(@total_fare_vat) %></strong>
-							</td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-
-						</tr>
-						
-						<tr>
-							<td class="text-right" colspan="10">
-								Tổng cộng TIP:
+								<strong><%= format_price(@total_cost) %></strong>
 							</td>
 							<td class="text-right">
 								<strong class="paid">
@@ -178,14 +180,19 @@
 									<%= format_price(@total_tip_amount_notpaid) %>
 								</strong>
 							</td>
-							<% if @paid_date_check && @paid_date_filter.present? %>
-								<td></td>
-							<% end %>
-                        </tr>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare) %></strong>
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare_vat) %></strong>
+							</td>
+						</tr>
+						
+						
 						
 						<% if @paid_date_check && @paid_date_filter.present? %>
 							<tr>
-								<td class="text-right" colspan="9">
+								<td class="text-right" colspan="10">
 									Tổng cộng P.A.D:
 								</td>
 								<td class="text-right">

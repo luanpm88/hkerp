@@ -58,6 +58,11 @@ class AccountingController < ApplicationController
     @total_fare = @statistics[:total_fare]
     @total_fare_vat = @statistics[:total_fare_vat]
     
+    @total_with_vat = @statistics[:total_sell_with_vat]
+    
+    @total = @statistics[:total_sell]
+    @total_cost = @statistics[:total_cost]
+    
     if params[:pdf] == "1"
       tip = params[:tip] == "1" ? "_tip" : ""
         render  :pdf => "accounting_statistic_sales#{tip}_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
@@ -100,6 +105,9 @@ class AccountingController < ApplicationController
     @total_paid = @statistics[:total_buy_with_vat_paid]
     
     @total_PAD_paid = @statistics[:total_PAD_buy_paid]
+    
+    @total_with_vat = @statistics[:total_buy_with_vat]
+    
     
     if params[:pdf] == "1"
         render  :pdf => "accounting_statistic_purchase_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
