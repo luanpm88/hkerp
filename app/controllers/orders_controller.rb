@@ -257,8 +257,6 @@ class OrdersController < ApplicationController
     result = Order.datatable(params, current_user)
     
     result[:items].each_with_index do |item, index|
-      
-      
       actions = render_order_actions(item)
       
       result[:result]["data"][index][result[:actions_col]] = actions
