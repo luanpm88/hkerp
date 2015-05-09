@@ -6,6 +6,8 @@
 							
 							<th class="text-right">Price</th>
 							<th class="text-right">Cost Total</th>
+							<th class="text-right">Fare</th>
+							<th class="text-right">Fare VAT</th>
 							
 							
 														
@@ -61,8 +63,12 @@
 												</td>
 												<td class="text-right">
 													<%= format_price(od.cost_total) %>
-													<!--<br />
-													Fare:<br /><%= od.fare_formated %>-->
+												</td>
+												<td class="text-right">
+													<%= format_price(od.fare) %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.fare_vat) %>
 												</td>
 												
 												
@@ -103,7 +109,7 @@
 									<% end %>
 								<tr style="background: #efefef">
 									
-									<td colspan="9">
+									<td colspan="10">
 										
 										<div class="actions pull-right">
 											<%= render_order_actions(order) %>
@@ -130,7 +136,7 @@
 						<% end %>
 						
 						<tr>
-							<td class="text-right" colspan="6">
+							<td class="text-right" colspan="8">
 								Tổng cộng:
 							</td>
 							<td class="text-right">
@@ -143,7 +149,25 @@
                         </tr>
 						
 						<tr>
-							<td class="text-right" colspan="8">
+							<td class="text-right" colspan="4">
+								Tổng cộng FARE:
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare) %></strong>
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare_vat) %></strong>
+							</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+
+						</tr>
+						
+						<tr>
+							<td class="text-right" colspan="10">
 								Tổng cộng TIP:
 							</td>
 							<td class="text-right">

@@ -369,6 +369,8 @@ class Order < ActiveRecord::Base
     total_PAD_buy_paid = 0.00
     total_PAD_sell_paid = 0.00
     
+    total_fare = 0.00
+    
     sell_orders = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "finished"})
     
@@ -421,6 +423,8 @@ class Order < ActiveRecord::Base
         
         total_tip_amount_notpaid += order.tip_amount if !order.is_tipped
         total_tip_amount_paid += order.tip_amount if order.is_tipped
+        
+        total_fare += order.fare
       end      
     end
     
@@ -502,7 +506,10 @@ class Order < ActiveRecord::Base
       buy_orders: buy_orders,
       
       total_PAD_sell_paid: total_PAD_sell_paid,
-      total_PAD_buy_paid: total_PAD_buy_paid
+      total_PAD_buy_paid: total_PAD_buy_paid,
+      
+      total_fare: total_fare,
+      total_fare_vat: total_fare - total_fare*(0.25)
     }
   end
   
@@ -1359,6 +1366,20 @@ class Order < ActiveRecord::Base
   def payments_by_date(d)
     all_payment_records.where('paid_date >= ?', d.beginning_of_day)
                         .where('paid_date <= ?', d.end_of_day)
+  end
+  
+  def fare
+    result = 0.00
+    
+    order_details.each do |od|
+      result += od.fare
+    end
+    
+    return result
+  end
+  
+  def fare_vat
+    fare - fare*(0.25)
   end
   
 end

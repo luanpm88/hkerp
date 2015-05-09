@@ -163,8 +163,16 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def fare
-    total_vat - cost_total_vat
+    result = total - cost_total
+    result -= tip_amount if tip_amount.present?
+    
+    return result
   end
+  
+  def fare_vat
+    fare - fare*(0.25)
+  end
+  
   def fare_formated
     Order.format_price(fare)
   end

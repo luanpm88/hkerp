@@ -55,6 +55,9 @@ class AccountingController < ApplicationController
     
     @total_PAD_paid = @statistics[:total_PAD_sell_paid]
     
+    @total_fare = @statistics[:total_fare]
+    @total_fare_vat = @statistics[:total_fare_vat]
+    
     if params[:pdf] == "1"
       tip = params[:tip] == "1" ? "_tip" : ""
         render  :pdf => "accounting_statistic_sales#{tip}_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
