@@ -262,6 +262,11 @@ class Ability
         ['confirmed','finished'].include?(p.order.status.name) && p.accountant_id == user.id
       end
       
+      can :pay_custom, PaymentRecord
+      can :do_pay_custom, PaymentRecord
+      
+      can :datatable, PaymentRecord
+      can :custom_payments, PaymentRecord
     end
     
     if user.has_role? "accountant_manager"

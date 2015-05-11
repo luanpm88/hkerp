@@ -21,7 +21,12 @@ Hkerp::Application.routes.draw do
       get :pay_tip
       post :do_pay_tip
       
+      get :pay_custom
+      post :do_pay_custom
+      
       get :trash
+      get :custom_payments
+      get :datatable
     end
   end
 

@@ -893,7 +893,8 @@ CREATE TABLE payment_records (
     payment_method_id integer,
     is_tip boolean DEFAULT false,
     paid_date timestamp without time zone,
-    status integer DEFAULT 1
+    status integer DEFAULT 1,
+    is_custom boolean DEFAULT false
 );
 
 
@@ -2236,4 +2237,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150507064831');
 INSERT INTO schema_migrations (version) VALUES ('20150507083737');
 
 INSERT INTO schema_migrations (version) VALUES ('20150509030123');
+
+INSERT INTO schema_migrations (version) VALUES ('20150511063535');
 

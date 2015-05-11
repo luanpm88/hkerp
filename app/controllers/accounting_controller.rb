@@ -26,6 +26,10 @@ class AccountingController < ApplicationController
     end
   end
   
+  def custom_payments
+    @payment_records = PaymentRecord.custom_records
+  end
+  
   def statistic_sales
     authorize! :read, Order
     

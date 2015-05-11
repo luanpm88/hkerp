@@ -8,6 +8,18 @@ class PaymentRecordsController < ApplicationController
   def index
     @payment_records = PaymentRecord.all
   end
+  
+  def datatable
+    result = PaymentRecord.datatable(params)
+    
+    result[:items].each_with_index do |item, index|
+      actions = "action"
+      
+      result[:result]["data"][index][result[:actions_col]] = actions
+    end
+    
+    render json: result[:result]
+  end
 
   # GET /payment_records/1
   # GET /payment_records/1.json
@@ -39,12 +51,17 @@ class PaymentRecordsController < ApplicationController
 
   # GET /payment_records/new
   def new
-    @order = Order.find(params[:id])
     @payment_record = PaymentRecord.new
     
+    if params[:order_id].present?
+      @order = Order.find(params[:order_id])      
+      @payment_record.paid_person = @order.is_purchase ? @order.supplier.name : @order.customer.name
+      @payment_record.paid_address = @order.is_purchase ? @order.supplier.address : @order.customer.address
+      @payment_record.amount = @order.remain_amount
+      @payment_record.order_id = @order.id
+    end
+    
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
-    @payment_record.paid_person = @order.is_purchase ? @order.supplier.name : @order.customer.name
-    @payment_record.paid_address = @order.is_purchase ? @order.supplier.address : @order.customer.address
   end
   
   def pay_tip
@@ -70,7 +87,6 @@ class PaymentRecordsController < ApplicationController
     if @order.is_payback
         @payment_record.amount = -@payment_record.amount
     end
-    
     
     list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
     
@@ -103,6 +119,33 @@ class PaymentRecordsController < ApplicationController
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
         format.html { render action: 'pay_tip' }
+        format.json { render json: @payment_record.errors, status: :unprocessable_entity }
+      end
+    end    
+  end
+  
+  def pay_custom
+    @payment_record = PaymentRecord.new
+    
+    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+  end
+  
+  def do_pay_custom
+    @payment_record = PaymentRecord.new(payment_record_params)
+    @payment_record.accountant = current_user
+    @payment_record.is_custom = true
+    
+    if params[:recieve] == "true"
+       @payment_record.amount = -@payment_record.amount.to_f
+    end
+    
+    
+    respond_to do |format|
+      if @payment_record.save
+        format.html { redirect_to custom_payments_payment_records_path, notice: 'Payment record was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @payment_record }
+      else
+        format.html { render action: 'pay_custom' }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
@@ -154,6 +197,6 @@ class PaymentRecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_record_params
-      params.require(:payment_record).permit(:paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
+      params.require(:payment_record).permit(:is_custom, :paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
     end
 end

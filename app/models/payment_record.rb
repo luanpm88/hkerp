@@ -6,6 +6,7 @@ class PaymentRecord < ActiveRecord::Base
   
   validates :note, presence: true
   validates :payment_method, presence: true
+  validates :amount, presence: true
   
   validate :valid_amount
   validate :valid_debt_date
@@ -13,31 +14,66 @@ class PaymentRecord < ActiveRecord::Base
   after_save :update_payment_status_name
   
   def self.all_records
-    where(status: 1).where(is_tip: false)
+    where(status: 1).where(is_tip: false).where(is_custom: false)
+  end
+  
+  def self.custom_records
+    PaymentRecord.where(is_custom: true)
+  end
+  
+  def self.datatable(params)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    
+    @records = PaymentRecord.order("created_at DESC")
+
+    
+    total = @records.count
+    @records = @records.limit(params[:length]).offset(params["start"])
+    data = []
+    
+    actions_col = 3
+    @records.each do |item|
+      
+      item = [
+              item.note,
+              '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>',
+              '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+'</div>',
+              "1",
+            ]
+      data << item
+      
+    end
+    
+    result = {
+              "drawn" => params[:drawn],
+              "recordsTotal" => total,
+              "recordsFiltered" => total
+    }
+    result["data"] = data
+    
+    return {result: result, items: @records, actions_col: actions_col}
   end
   
   def update_payment_status_name
-    order.update_payment_status_name
-    order.update_tip_status_name
-  end
-  
-  
-  def all_payment_records
-    where(is_tip: false)
+    if !order.nil?
+      order.update_payment_status_name
+      order.update_tip_status_name
+    end
   end
   
   def valid_amount
-    if !is_tip       
-      if false
-        errors.add(:amount, "too small")
-      end
+    if !is_tip && !is_custom
       if !order.is_payback && amount.to_f > order.remain_amount.to_f.round(2)
         errors.add(:amount, "can't be greater than remain amount")
       end
       if order.is_payback && amount.to_f > order.remain_amount.to_f.abs.round(2)
         errors.add(:amount, "can't be greater than remain amount")
       end
-    else
+    end
+    
+    if is_tip
       if order.tip_amount.to_f.round(2) != amount.to_f
         errors.add(:amount, "not valid")
       end
@@ -45,7 +81,7 @@ class PaymentRecord < ActiveRecord::Base
   end
   
   def valid_debt_date
-    if !is_tip
+    if !is_tip && !is_custom
       if order.is_deposited && !debt_date.nil?
         if debt_date <= order.order_date
           errors.add(:debt_date, "can't be smaller than order date")

@@ -1069,6 +1069,23 @@
 			"iDisplayLength": 25
 	    });
 		
+		
+		//Datatable products
+	    $('.datatable-custom-payments').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_payment_records_path %>",
+				"data": function ( d ) {
+					//d.manufacturers = $("input[name='manufacturers[]']:checked").map(function () {return this.value;}).get().join(","),
+					//d.category = $("select[name='category']").val()
+				}
+			},
+			"columnDefs": [ { "targets": [0], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+			"iDisplayLength": 25
+	    });
 	    
 	    $('select[name="DataTables_Table_0_length"]').select2();
 	    
@@ -1589,6 +1606,10 @@
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
 			<%= link_to 'Purchase Orders', "/accountings/orders?purchase=1" %>
+		  </li>
+		  
+		  <li<% if ["payment_records"].include?(params[:controller]) && ["custom_payments"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Custom Pay/Recieved', custom_payments_payment_records_path %>			
 		  </li>
 		</ul>
 	    </li>

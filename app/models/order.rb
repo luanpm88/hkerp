@@ -1126,7 +1126,7 @@ class Order < ActiveRecord::Base
   end
   
   def all_payment_records
-    payment_records.where(status: 1).where(is_tip: false).order("created_at DESC")
+    payment_records.where(status: 1).where(is_tip: false).where(is_custom: false).order("created_at DESC")
   end
   
   def all_tip_records

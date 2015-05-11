@@ -15,9 +15,7 @@
 				
 				
                                 <%= form_for(@payment_record) do |f| %>
-				    <%= f.hidden_field :order_id, {value: @order.id} %>
-                                    <%= hidden_field_tag :order_order_date, @order.order_date.to_date %>
-				    
+										<%= f.hidden_field :order_id %>
                                     
                                     <div class="row">
                                       <div class="col-md-6">
@@ -28,7 +26,7 @@
 														<span class="help">(required)</span>
 														<div class="input-with-icon  right">                                       
 																<i class=""></i>
-																<%= f.text_field :amount, :class => "form-control price_input", value: @order.remain_amount_formated %>
+																<%= f.text_field :amount, :class => "form-control price_input" %>
 														</div>
 													</div>
 											</div>
@@ -66,7 +64,7 @@
                                       <div class="col-md-6">
                                         
 										
-										<% if @order.deposit.nil? ||  @order.deposit != 100 %>
+										<% if !@order.nil? && (@order.deposit.nil? ||  @order.deposit != 100) %>
 										
 													<div class="row">
 														<div class="col-md-3">															

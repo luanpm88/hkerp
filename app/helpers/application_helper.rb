@@ -31,7 +31,7 @@ module ApplicationHelper
         group_1 += 1
       end
       if can? :pay_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Order', {controller: "payment_records", action: "new", id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Order', {controller: "payment_records", action: "new", order_id: item.id})+'</li>'
         group_1 += 1
       end
       
