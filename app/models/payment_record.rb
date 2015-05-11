@@ -39,7 +39,7 @@ class PaymentRecord < ActiveRecord::Base
       item = [
               item.note,
               '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>',
-              '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+'</div>',
+              '<div class="text-center">'+item.paid_date.strftime("%Y-%m-%d")+'</div>',
               "1",
             ]
       data << item
