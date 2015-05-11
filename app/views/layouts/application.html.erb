@@ -1585,7 +1585,7 @@
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
 	<% if current_user.has_role? "accountant" %>
-	    <li class="start<% if ["accounting"].include?(params[:controller]) %> active open<% end %>">
+	    <li class="start<% if ["accounting","payment_records"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to orders_url do %>
 		  <i class="icon-list-alt"></i>
 		  <span class="title" onclick="">Accounting</span>
