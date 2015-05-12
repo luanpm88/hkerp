@@ -33,7 +33,7 @@ class PaymentRecord < ActiveRecord::Base
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
     
-    actions_col = 3
+    actions_col = 4
     @records.each do |item|
       
       item = [
