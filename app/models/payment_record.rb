@@ -26,7 +26,7 @@ class PaymentRecord < ActiveRecord::Base
     link_helper = ActionController::Base.helpers
     
     
-    @records = PaymentRecord.custom_records.order("created_at DESC")
+    @records = PaymentRecord.custom_records.order("paid_date DESC, created_at DESC")
 
     
     total = @records.count
