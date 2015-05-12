@@ -133,7 +133,7 @@ class Contact < ActiveRecord::Base
   def html_info_line
     line = "";
     if !address.nil? && !address.empty?
-      line += "<p>" + address + "</p>"
+      line += "<p>" + full_address + "</p>"
     end
     if !phone.nil? && !phone.empty?
       line += "<strong>Phone:</strong> " + phone + " "
