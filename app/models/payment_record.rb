@@ -38,8 +38,8 @@ class PaymentRecord < ActiveRecord::Base
       
       item = [
               item.note,
-              !item.is_recieved ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
               item.is_recieved ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
+              !item.is_recieved ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
               '<div class="text-center">'+item.paid_date.strftime("%Y-%m-%d")+'</div>',
               "1",
             ]
