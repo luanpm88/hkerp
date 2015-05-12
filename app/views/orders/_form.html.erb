@@ -330,8 +330,21 @@
                                    
                                           </div>
                                    </div>
+                                          
+                                   <div class="form-group">
+                                          <label class="form-label"><%= f.label :shipment_contact %></label>
+                                        <span class="help">(required)</span>
+                                          <div class="input-with-icon  right">                                       
+                                            <i class=""></i>
+                                             <input style="width:100%;margin-bottom: 5px;" name="order[shipment_contact_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.shipment_contact_id %>" text="<%= @order.shipment_contact.name if !@order.shipment_contact.nil? %>" />
+                                             
+                                                 <%= f.text_field :shipping_place, :class => "form-control" %>
+                                                 <br />
+                                                 <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                          </div>
+                                   </div>
                                                
-                            
+                                   
                             </div>
                         
                         
@@ -397,14 +410,14 @@
                                   </div>
                          </div>
                          
-                         <div class="form-group">
+                         <!--<div class="form-group">
                               <label class="form-label"><%= f.label :watermark %></label>
                               <span class="help"></span>
                               <div class="input-with-icon  right">                                       
                                 <i class=""></i>
                                 <%= f.text_area :watermark, :class => "form-control" %>
                               </div>
-                        </div>
+                        </div>-->
                         
                       </div>
                       
@@ -437,14 +450,7 @@
                           </div>
                         </div>
                         
-                        <div class="form-group">
-                          <label class="form-label"><%= f.label :shipping_place %></label>
-                          <span class="help"></span>
-                            <div class="input-with-icon  right">                                       
-                              <i class=""></i>
-                              <%= f.text_field :shipping_place, :class => "form-control" %>
-                            </div>
-                        </div>
+                        
                         
                         <div class="form-group">
                           <label class="form-label"><%= f.label :warranty_place %></label>

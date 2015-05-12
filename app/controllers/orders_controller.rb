@@ -403,7 +403,8 @@ class OrdersController < ApplicationController
                                     :supplier_agent_id,
                                     :discount_amount,
                                     :tip_amount,
-                                    :tip_contact_id
+                                    :tip_contact_id,
+                                    :shipment_contact_id
                                   )
     end
     
@@ -422,7 +423,8 @@ class OrdersController < ApplicationController
                                     :supplier_agent_id,
                                     :discount_amount,
                                     :tip_amount,
-                                    :tip_contact_id
+                                    :tip_contact_id,
+                                    :shipment_contact_id
                                   )
     end
     

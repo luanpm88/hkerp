@@ -409,46 +409,62 @@
 		}
     }
 	
-      
+      function updateShipmentAddress() {
+		var cid = $('input[name="order[shipment_contact_id]"]').val();
+		$.ajax({
+			url : '<%= ajax_show_contacts_path %>',
+			type: "GET",
+			data: "id="+cid,
+			success:function(data, textStatus, jqXHR)
+			{
+				$('input[name="order[shipping_place]"]').val(data.address);
+			}
+		});
+	  }
+	  
       function updateOrderCustomerFormInfo(customer_id)
       {
-	if (customer_id != "") {
-	    $.ajax(
-	    {
-		url : '<%= ajax_show_contacts_path %>',
-		type: "GET",
-		data: "id="+customer_id,
-		success:function(data, textStatus, jqXHR)
-		{
-		    $('input[name="order[buyer_company]"]').val(data.name);
-		    $('input[name="order[buyer_tax_code]"]').val(data.tax_code);
-		    $('input[name="order[buyer_phone]"]').val(data.phone);
-		    $('input[name="order[buyer_fax]"]').val(data.fax);
-		    $('input[name="order[buyer_address]"]').val(data.address);
-		    $('input[name="order[shipping_place]"]').val(data.address);		    
-		    $('input[name="order[buyer_email]"]').val(data.email);
-		    
-		    //$('.order-form-agent-select').show();
-		    updateOrderAgentFormInfo(customer_id);
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-			alert("error");
-		}
-	    });
-	}
-	else
-	{
-	    //$('.order-form-agent-select').val("");
-	    //$('.order-form-agent-select').hide();
-	    $('input[name="order[buyer_company]"]').val("");
-	    $('input[name="order[buyer_tax_code]"]').val("");
-	    $('input[name="order[buyer_phone]"]').val("");
-	    $('input[name="order[buyer_fax]"]').val("");
-	    $('input[name="order[buyer_address]"]').val("");
-	    $('input[name="order[shipping_place]"]').val("");
-	    $('input[name="order[buyer_email]"]').val("");
-	}
+			if (customer_id != "") {
+				$.ajax(
+				{
+				url : '<%= ajax_show_contacts_path %>',
+				type: "GET",
+				data: "id="+customer_id,
+				success:function(data, textStatus, jqXHR)
+				{
+					$('input[name="order[buyer_company]"]').val(data.name);
+					$('input[name="order[buyer_tax_code]"]').val(data.tax_code);
+					$('input[name="order[buyer_phone]"]').val(data.phone);
+					$('input[name="order[buyer_fax]"]').val(data.fax);
+					$('input[name="order[buyer_address]"]').val(data.address);
+					//$('input[name="order[shipping_place]"]').val(data.address);		    
+					$('input[name="order[buyer_email]"]').val(data.email);
+					
+					//$('.order-form-agent-select').show();
+					updateOrderAgentFormInfo(customer_id);
+					
+					//update default shipment contact
+					$('input[name="order[shipment_contact_id]"]').select2('data', {id: customer_id, text:$('input[name="order[customer_id]"]').select2('data').text});
+					updateShipmentAddress();
+				},
+				error: function(jqXHR, textStatus, errorThrown)
+				{
+					alert("error");
+				}
+				});
+			}
+			else
+			{
+				//$('.order-form-agent-select').val("");
+				//$('.order-form-agent-select').hide();
+				$('input[name="order[buyer_company]"]').val("");
+				$('input[name="order[buyer_tax_code]"]').val("");
+				$('input[name="order[buyer_phone]"]').val("");
+				$('input[name="order[buyer_fax]"]').val("");
+				$('input[name="order[buyer_address]"]').val("");
+				$('input[name="order[shipping_place]"]').val("");
+				$('input[name="order[buyer_email]"]').val("");
+			}
       }
       
       
@@ -1447,6 +1463,12 @@
 			if ($('input[name="paid_date_filter"]').val() != "") {
 				setTimeout("$('#accounting-statistics-filters-form').submit();", 500);
 			}
+		});
+		
+		
+		//changing shipment contact
+		$('input[name="order[shipment_contact_id]"]').change(function() {
+			updateShipmentAddress();
 		});
       });
 </script>

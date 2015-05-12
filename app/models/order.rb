@@ -22,6 +22,7 @@ class Order < ActiveRecord::Base
   belongs_to :user
   
   belongs_to :tip_contact, :class_name => "Contact"
+  belongs_to :shipment_contact, :class_name => "Contact"
   
   has_many :order_details, :dependent => :destroy
   
