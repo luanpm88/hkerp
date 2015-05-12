@@ -74,6 +74,6 @@ class City < ActiveRecord::Base
   end
   
   def name_with_state
-    city_type.short_name+"."+name.gsub("Quận ","")+", "+state.name
+    city_type.short_name+". "+name.gsub("Quận ","")+", "+state.name
   end
 end
