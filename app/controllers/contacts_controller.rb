@@ -76,10 +76,6 @@ class ContactsController < ApplicationController
 
   end
   
-  def ajax_show    
-    render :layout => nil
-  end
-  
   def ajax_new    
     @contact = Contact.new
     
@@ -120,6 +116,7 @@ class ContactsController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def ajax_show
+    @contact.address = @contact.full_address
     render :json => @contact.to_json
   end
   

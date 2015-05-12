@@ -204,4 +204,14 @@ class Contact < ActiveRecord::Base
     name.gsub(/công ty /i,'').gsub(/TNHH /i,'').gsub(/cổ phần /i,'')
   end
   
+  def full_address
+    ad = ""
+    if city.present?
+      ad += ", "+city.name_with_state
+    end
+    ad = address+ad
+    
+    return ad
+  end
+  
 end
