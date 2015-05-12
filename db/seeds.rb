@@ -32,6 +32,8 @@ PaymentMethod.create(name: "Chuyển khoản", print_name: "CK")
 Tax.create(name: "VAT 0%", rate: 0)
 Tax.create(name: "VAT 10%", rate: 10)
 
+Country.create(name: "Việt Nam")
+
 @HK = Contact.create(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
                 address: "178 Nguyễn Văn Lượng, Phường 17, Quận Gò Vấp, TP HCM",
                 phone: "(08) 3984 7690",

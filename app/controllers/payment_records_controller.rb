@@ -1,7 +1,9 @@
 class PaymentRecordsController < ApplicationController
+  include ApplicationHelper
+  
   load_and_authorize_resource :except => [:pay_tip, :do_pay_tip]
   
-  before_action :set_payment_record, only: [:trash, :download_pdf, :show, :edit, :update, :destroy]
+  before_action :set_payment_record, only: [:edit_pay_custom, :trash, :download_pdf, :show, :edit, :update, :destroy]
 
   # GET /payment_records
   # GET /payment_records.json
@@ -13,7 +15,7 @@ class PaymentRecordsController < ApplicationController
     result = PaymentRecord.datatable(params)
     
     result[:items].each_with_index do |item, index|
-      actions = "action"
+      actions = render_custom_payments_actions(item)
       
       result[:result]["data"][index][result[:actions_col]] = actions
     end
@@ -128,17 +130,16 @@ class PaymentRecordsController < ApplicationController
     @payment_record = PaymentRecord.new
     
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+    @payment_record.is_recieved = false
+  end
+  
+  def edit_pay_custom
   end
   
   def do_pay_custom
     @payment_record = PaymentRecord.new(payment_record_params)
     @payment_record.accountant = current_user
     @payment_record.is_custom = true
-    
-    if params[:recieve] == "true"
-       @payment_record.amount = -@payment_record.amount.to_f
-    end
-    
     
     respond_to do |format|
       if @payment_record.save
@@ -156,7 +157,7 @@ class PaymentRecordsController < ApplicationController
   def update
     respond_to do |format|
       if @payment_record.update(payment_record_params)
-        format.html { redirect_to @payment_record, notice: 'Payment record was successfully updated.' }
+        format.html { redirect_to custom_payments_payment_records_path, notice: 'Payment record was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -170,7 +171,7 @@ class PaymentRecordsController < ApplicationController
   def destroy
     @payment_record.destroy
     respond_to do |format|
-      format.html { redirect_to payment_records_url }
+      format.html { redirect_to custom_payments_payment_records_path }
       format.json { head :no_content }
     end
   end
@@ -197,6 +198,6 @@ class PaymentRecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_record_params
-      params.require(:payment_record).permit(:is_custom, :paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
+      params.require(:payment_record).permit(:is_recieved, :is_custom, :paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
     end
 end

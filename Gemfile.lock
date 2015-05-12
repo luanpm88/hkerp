@@ -61,11 +61,15 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    domain_name (0.5.23)
+      unf (>= 0.0.5, < 1.0.0)
     erubis (2.7.0)
     execjs (2.5.2)
     globalid (0.3.5)
       activesupport (>= 4.1.0)
     hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     i18n (0.7.0)
     jbuilder (1.5.3)
       activesupport (>= 3.0.0)
@@ -80,13 +84,25 @@ GEM
       nokogiri (>= 1.5.9)
     mail (2.6.3)
       mime-types (>= 1.16, < 3)
+    mechanize (2.7.3)
+      domain_name (~> 0.5, >= 0.5.1)
+      http-cookie (~> 1.0)
+      mime-types (~> 2.0)
+      net-http-digest_auth (~> 1.1, >= 1.1.1)
+      net-http-persistent (~> 2.5, >= 2.5.2)
+      nokogiri (~> 1.4)
+      ntlm-http (~> 0.1, >= 0.1.1)
+      webrobots (>= 0.0.9, < 0.2)
     mime-types (2.5)
     mini_magick (4.2.3)
     mini_portile (0.6.2)
     minitest (5.6.0)
     multi_json (1.11.0)
+    net-http-digest_auth (1.4)
+    net-http-persistent (2.9.4)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    ntlm-http (0.1.1)
     orm_adapter (0.5.0)
     pg (0.18.1)
     pg_search (1.0.0)
@@ -160,8 +176,12 @@ GEM
     uglifier (2.7.1)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.6)
     warden (1.2.3)
       rack (>= 1.0)
+    webrobots (0.1.1)
     wicked_pdf (0.11.0)
       rails
     wkhtmltopdf-binary (0.9.9.3)
@@ -178,6 +198,7 @@ DEPENDENCIES
   execjs
   jbuilder (~> 1.2)
   jquery-rails
+  mechanize
   mini_magick
   nokogiri
   pg

@@ -267,6 +267,16 @@ class Ability
       
       can :datatable, PaymentRecord
       can :custom_payments, PaymentRecord
+      
+      can :destroy, PaymentRecord do |p|
+        p.accountant_id == user.id && p.is_custom
+      end
+      can :edit_pay_custom, PaymentRecord do |p|
+        p.accountant_id == user.id && p.is_custom
+      end
+      can :update, PaymentRecord do |p|
+        p.accountant_id == user.id && p.is_custom
+      end
     end
     
     if user.has_role? "accountant_manager"

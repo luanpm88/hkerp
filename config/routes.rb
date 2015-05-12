@@ -1,4 +1,8 @@
 Hkerp::Application.routes.draw do
+  resources :city_types
+  resources :cities
+  resources :states
+  resources :countries
   resources :autotask_details
 
   resources :autotasks
@@ -27,6 +31,8 @@ Hkerp::Application.routes.draw do
       get :trash
       get :custom_payments
       get :datatable
+      
+      get :edit_pay_custom
     end
   end
 

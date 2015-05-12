@@ -68,6 +68,27 @@
                                                                                           <%= f.text_field :name, :class => "form-control" %>
                                                                                   </div>
                                                         </div>
+														
+														
+														<div class="row">                           
+															<div class="col-md-12">
+																 <div class="form-group">
+																	  <label class="form-label"><%= f.label :city %></label>
+																	  <span class="help">(required)</span>
+																	  <div class="input-with-icon  right">                                       
+																			 <i class=""></i>
+																			 
+																			 <input style="width:100%;margin-bottom: 5px;" name="contact[city_id]" url="<%= cities_path(format: "json") %>" class="select2-ajax-states" value="<%= @contact.city_id %>" text="<%= @contact.city.name if !@contact.city.nil? %>" />
+																			 
+																	   
+																	  </div>
+																 </div>
+															</div>
+															<div class="col-md-6">
+																 
+															</div>
+														</div>
+														
                                                         
                                                         <div class="form-group">
                                                           <label class="form-label"><%= f.label :address %></label>

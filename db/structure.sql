@@ -273,6 +273,70 @@ ALTER SEQUENCE checkinouts_id_seq OWNED BY checkinouts.id;
 
 
 --
+-- Name: cities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE cities (
+    id integer NOT NULL,
+    name character varying,
+    state_id integer,
+    city_type_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: cities_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE cities_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: cities_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE cities_id_seq OWNED BY cities.id;
+
+
+--
+-- Name: city_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE city_types (
+    id integer NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: city_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE city_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: city_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE city_types_id_seq OWNED BY city_types.id;
+
+
+--
 -- Name: combination_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -433,7 +497,8 @@ CREATE TABLE contacts (
     representative_phone character varying,
     is_mine boolean DEFAULT false,
     hotline character varying,
-    user_id integer
+    user_id integer,
+    city_id integer
 );
 
 
@@ -454,6 +519,37 @@ CREATE SEQUENCE contacts_id_seq
 --
 
 ALTER SEQUENCE contacts_id_seq OWNED BY contacts.id;
+
+
+--
+-- Name: countries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE countries (
+    id integer NOT NULL,
+    name character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE countries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: countries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
 
 
 --
@@ -894,7 +990,8 @@ CREATE TABLE payment_records (
     is_tip boolean DEFAULT false,
     paid_date timestamp without time zone,
     status integer DEFAULT 1,
-    is_custom boolean DEFAULT false
+    is_custom boolean DEFAULT false,
+    is_recieved boolean DEFAULT false
 );
 
 
@@ -1103,6 +1200,38 @@ ALTER SEQUENCE roles_id_seq OWNED BY roles.id;
 CREATE TABLE schema_migrations (
     version character varying NOT NULL
 );
+
+
+--
+-- Name: states; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE states (
+    id integer NOT NULL,
+    name character varying,
+    country_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: states_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE states_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: states_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE states_id_seq OWNED BY states.id;
 
 
 --
@@ -1447,6 +1576,20 @@ ALTER TABLE ONLY checkinouts ALTER COLUMN id SET DEFAULT nextval('checkinouts_id
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY cities ALTER COLUMN id SET DEFAULT nextval('cities_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY city_types ALTER COLUMN id SET DEFAULT nextval('city_types_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY combination_details ALTER COLUMN id SET DEFAULT nextval('combination_details_id_seq'::regclass);
 
 
@@ -1476,6 +1619,13 @@ ALTER TABLE ONLY contact_types_contacts ALTER COLUMN id SET DEFAULT nextval('con
 --
 
 ALTER TABLE ONLY contacts ALTER COLUMN id SET DEFAULT nextval('contacts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq'::regclass);
 
 
 --
@@ -1601,6 +1751,13 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY taxes ALTER COLUMN id SET DEFAULT nextval('taxes_id_seq'::regclass);
 
 
@@ -1696,6 +1853,22 @@ ALTER TABLE ONLY checkinouts
 
 
 --
+-- Name: cities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY cities
+    ADD CONSTRAINT cities_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: city_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY city_types
+    ADD CONSTRAINT city_types_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: combination_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1733,6 +1906,14 @@ ALTER TABLE ONLY contact_types
 
 ALTER TABLE ONLY contacts
     ADD CONSTRAINT contacts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY countries
+    ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
 
 
 --
@@ -1869,6 +2050,14 @@ ALTER TABLE ONLY products
 
 ALTER TABLE ONLY roles
     ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY states
+    ADD CONSTRAINT states_pkey PRIMARY KEY (id);
 
 
 --
@@ -2239,4 +2428,16 @@ INSERT INTO schema_migrations (version) VALUES ('20150507083737');
 INSERT INTO schema_migrations (version) VALUES ('20150509030123');
 
 INSERT INTO schema_migrations (version) VALUES ('20150511063535');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512015924');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512015947');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512020020');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512020037');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512025921');
+
+INSERT INTO schema_migrations (version) VALUES ('20150512035117');
 

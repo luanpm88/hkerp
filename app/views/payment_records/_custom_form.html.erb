@@ -12,8 +12,9 @@
 				      </div>
 				    </div>
 				<% end %>
-				
-                                <%= form_for(@payment_record, url: {controller: "payment_records", action: "do_pay_custom"}) do |f| %>
+							<% url = @payment_record.id.nil? ? {controller: "payment_records", action: "do_pay_custom"} : nil %>
+                                <%= form_for(@payment_record, url: url) do |f| %>
+
 
                                     
                                     <div class="row">
@@ -26,9 +27,9 @@
                                                         <span class="help">(required)</span>
                                                         <div class="input-with-icon  right">                                       
                                                             <i class=""></i>
-                                                            <select class="modern_select width100" name="recieve">
-                                                              <option value="false">Pay</option>
-                                                              <option value="true">Recieve</option>
+                                                            <select class="modern_select width100" name="payment_record[is_recieved]">
+                                                              <option <%= 'selected=selected' if !@payment_record.is_recieved %> value="false">Pay</option>
+                                                              <option <%= 'selected=selected' if @payment_record.is_recieved %> value="true">Recieve</option>
                                                             </select>
                                                         </div>
                                                     </div>
