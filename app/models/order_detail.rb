@@ -204,7 +204,6 @@ class OrderDetail < ActiveRecord::Base
   def update_price(user)
     params = {}
     if order.is_purchase
-      params[:price] = product.product_price.price.nil? ? 0 : product.product_price.price
       params[:supplier_id] = order.supplier_id
       params[:supplier_price] = self.price
       params[:customer_id] = nil

@@ -34,4 +34,23 @@ class ProductPrice < ActiveRecord::Base
   def customer_name
     customer.nil? ? "" : customer.name
   end
+  
+  def self.calculate_price(supplier_price)
+    price = 0
+    if supplier_price < 500000.00
+      price = supplier_price + 50000.00
+    elsif supplier_price < 1000000.00
+      price = supplier_price + 100000.00
+    elsif
+      price = supplier_price*1.2
+    end
+    
+    return price
+  end
+  
+  def calculate_price
+    if !self.price.present? || self.price.to_f == 0.00
+      self.price = ProductPrice.calculate_price(self.supplier_price)
+    end
+  end
 end

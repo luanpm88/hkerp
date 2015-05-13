@@ -91,6 +91,10 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     @product.user = current_user
+    
+    (1..(10-@product.product_parts.count)).each do |i|
+      @product.product_parts.build
+    end
 
     respond_to do |format|
       if @product.save

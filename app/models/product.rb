@@ -315,12 +315,20 @@ class Product < ActiveRecord::Base
       customer_id: params[:customer_id],
       user_id: user.id,
     )
+    
+    # calculate public price   
+    new_price.calculate_price
+    
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id || new_price.customer_id != self.product_price.customer_id
       new_price.save
       return true
     end
     return true
   end
+  
+  
+  
+  
   
   def category
     categories.order("created_at DESC").first
