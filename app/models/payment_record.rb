@@ -117,4 +117,45 @@ class PaymentRecord < ActiveRecord::Base
     self.update_attribute(:status, 0)
   end
   
+  def self.statistics(from_date, to_date, params)
+    records = PaymentRecord.where("paid_date >= ? AND paid_date <= ?", from_date.beginning_of_day, to_date.end_of_day).order("paid_date DESC, created_at DESC")
+    
+    if params[:payment_method_id].present?
+      records = records.where(payment_method_id: params[:payment_method_id])
+    end
+    
+    
+    total_pay = 0.00
+    total_recieve = 0.00
+    
+    datas = []    
+    records.each do |p|
+      data = {payment_record: p,pay: "", recieve: ""}
+      if p.is_tip
+         total_pay += p.amount
+         data[:pay] = p.amount
+      elsif p.is_custom
+        if p.is_recieved
+          total_recieve += p.amount
+          data[:recieve] = p.amount
+        else
+          total_pay += p.amount
+          data[:pay] = p.amount
+        end
+      else
+        if !p.order.is_purchase || (p.order.is_purchase && p.amount < 0)
+          total_pay += p.amount.abs
+          data[:pay] = p.amount
+        elsif
+          total_recieve += p.amount.abs
+          data[:recieve] = p.amount
+        end
+      end
+      
+      datas << data
+    end
+    
+    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+  end
+  
 end

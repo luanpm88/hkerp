@@ -277,6 +277,8 @@ class Ability
       can :update, PaymentRecord do |p|
         p.accountant_id == user.id && p.is_custom
       end
+      
+      can :statistics, PaymentRecord
     end
     
     if user.has_role? "accountant_manager"

@@ -189,6 +189,18 @@ class PaymentRecordsController < ApplicationController
       end
     end
   end
+  
+  def statistics
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now
+    end
+    
+    @statistics = PaymentRecord.statistics(@from_date, @to_date, params)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

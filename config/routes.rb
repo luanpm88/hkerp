@@ -33,6 +33,7 @@ Hkerp::Application.routes.draw do
       get :datatable
       
       get :edit_pay_custom
+      get :statistics
     end
   end
 
