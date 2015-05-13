@@ -38,7 +38,7 @@ class Product < ActiveRecord::Base
   
   def order_supplier_history(user)
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
-                        .where(orders: {accountant_id: user.id, parent_id: nil, supplier_id: Contact.HK.id})
+                        .where(orders: {salesperson_id: user.id, parent_id: nil, supplier_id: Contact.HK.id})
                         .where(product_id: id)
                         .order("created_at DESC").limit(10)
     @html = "<ul>"
