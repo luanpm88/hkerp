@@ -566,7 +566,7 @@ class Product < ActiveRecord::Base
     
   end
   
-  def product_log(from_date, to_date)
+  def product_log(from_date, to_date, user)
     import_icon = '<i class="icon-download-alt"></i> '.html_safe
     export_icon = '<i class="icon-external-link"></i> '.html_safe
     #Order details, sales and purchases
@@ -678,8 +678,9 @@ class Product < ActiveRecord::Base
               .where('created_at >= ?', from_date)
               .where('created_at <= ?', to_date)
               
-    prices.each do |s|      
-      line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier_name}; Sup.Price: #{s.supplier_price_formated}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
+    prices.each do |s|
+      supplier_price = user.can?(:update_price, s.product) ? s.supplier_price_formated : "####"
+      line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier_name}; Sup.Price: #{supplier_price}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
       history << line
     end
     

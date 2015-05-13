@@ -260,7 +260,7 @@ class ProductsController < ApplicationController
       @to_date =  DateTime.now
     end
     
-    @history = @product.product_log(@from_date, @to_date)
+    @history = @product.product_log(@from_date, @to_date, current_user)
   end
   
   private
