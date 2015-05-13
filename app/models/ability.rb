@@ -51,23 +51,23 @@ class Ability
       
       can :read, Contact
       can :create, Contact
-      can :update, Contact #do |contact|
-      #  contact.user_id == user.id
-      #end
+      can :update, Contact do |contact|
+        contact.user_id == user.id
+      end
       can :ajax_show, Contact
       can :ajax_new, Contact
       can :ajax_create, Contact
       can :ajax_list_agent, Contact
       can :ajax_list_supplier_agent, Contact
       can :ajax_destroy, Contact do |c|
-        c.contact_type.name == 'Agent' && Order.where("agent_id = ? OR supplier_agent_id = ?", c.id, c.id).count == 0
+        c.user_id == user.id && c.contact_type.name == 'Agent' && Order.where("agent_id = ? OR supplier_agent_id = ?", c.id, c.id).count == 0
       end
       
       can :read, Product
       can :create, Product
-      can :update, Product #do |product|
-      #  product.user_id == user.id
-      #end
+      can :update, Product do |product|
+        product.user_id == user.id
+      end
       
       can :read, Category
       can :create, Category
@@ -288,6 +288,8 @@ class Ability
     end
     
     if user.has_role? "sales_manager"
+      can :update, Contact
+      
       can :update_info, Order do |order|
         ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
       end
@@ -318,8 +320,8 @@ class Ability
     if user.has_role? "storage_manager"
       can :create, Delivery
       can :read, Delivery
-      #can :deliver, Delivery
-      #can :update, Delivery
+      
+      can :update, Product
       
       can :download_pdf, Delivery
       
