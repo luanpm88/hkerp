@@ -110,30 +110,7 @@
 			      </div>
 			      
 			      
-			      <div class="form-group" style="display: none">
-                                <label class="form-label"><%= f.label :supplier %></label>
-                                <span class="help"></span>
-                                <div class="input-with-icon  right">                                       
-                                  <i class=""></i>
-                                  <select name="order_detail[supplier_id]" class="modern_select" style="min-width: 400px;">
-                                    <option value="">Select Supplier</option>
-                                    <% Contact.main_contacts.each do |contact| %>
-					<% if contact.is_main %>
-					     <option value="<%= contact.id %>" <% if !@order_detail.supplier.nil? && @order_detail.supplier.id == contact.id %>selected="selected"<% end %>>
-					       <%= contact.name %>
-					     </option>
-					<% end %>
-                                    <% end %>
-                                  </select>
-                                </div>
-                              </div>
 			      
-			      
-
-				  
-				  
-				  
-				  
 				  
 			      <div class="form-group">
 				   <label class="form-label"><%= f.label :price %></label>

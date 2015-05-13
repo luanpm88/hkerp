@@ -1046,7 +1046,8 @@ class Order < ActiveRecord::Base
             quantity: line[:quantity],
             warranty: line[:warranty],
             discount_amount: line[:discount_amount],
-            tip_amount: line[:tip_amount]
+            tip_amount: line[:tip_amount],
+            shipment_amount: line[:shipment_amount]
           )          
         end
       end
@@ -1295,34 +1296,12 @@ class Order < ActiveRecord::Base
     return "<div class=\"#{tip_status}\">#{tip_status}</div>".html_safe
   end
   
-  def is_valid_tip
-    total = 0
-    order_details.each do |od|
-      total += od.tip_amount if !od.tip_amount.nil?
-    end
-    
-    return self.tip_amount - total >= 0.5
+  def tip_amount
+    order_details.where("quantity > 0").sum(:tip_amount)
   end
   
-  def valid_tip
-    if is_valid_tip
-      errors.add(:tip_amount, "is not valid")
-    end    
-  end
-  
-  def is_valid_discount
-    total = 0
-    order_details.each do |od|
-      total += od.discount_amount if !od.discount_amount.nil?
-    end
-    
-    return self.discount_amount - total >= 0.5
-  end
-  
-  def valid_discount
-    if is_valid_discount
-      errors.add(:discount_amount, "is not valid")
-    end    
+  def discount_amount
+    order_details.where("quantity > 0").sum(:discount_amount)
   end
   
   def update_order_status_name

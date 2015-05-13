@@ -401,8 +401,6 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount_amount,
-                                    :tip_amount,
                                     :tip_contact_id,
                                     :shipment_contact_id
                                   )
@@ -421,8 +419,6 @@ class OrdersController < ApplicationController
                                     :customer_po,
                                     :printed_order_number,
                                     :supplier_agent_id,
-                                    :discount_amount,
-                                    :tip_amount,
                                     :tip_contact_id,
                                     :shipment_contact_id
                                   )
@@ -430,13 +426,24 @@ class OrdersController < ApplicationController
     
     def update_tip_params
       params.require(:order).permit(
-                                    :tip_amount,
                                     :tip_contact_id
                                   )
     end
     
     def permit_order_detail_params(params)
-      params.permit(:tip_amount,:discount_amount,:product_price_id, :order_id, :product_id, :quantity, :price, :supplier_price, :product_name, :warranty, :unit, :supplier_id, :product_description)
+      params.permit(:tip_amount,
+                    :discount_amount,
+                    :product_price_id,
+                    :order_id,
+                    :product_id,
+                    :quantity,
+                    :price,
+                    :product_name,
+                    :warranty,
+                    :unit,
+                    :product_description,
+                    :shipment_amount
+                  )
     end
     
     def permit_order_details_params(params)

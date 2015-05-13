@@ -71,6 +71,10 @@
 												</td>
 												<td class="text-right">
 													<%= format_price(od.cost_total) %>
+													<% if od.shipment_amount > 0 %>
+														<label class="col_label"><i class="icon-ambulance"></i>S.cost:</label>
+														<%= format_price(od.shipment_amount) %>
+													<% end %>
 												</td>
 												<td class="text-right">
 													<%= format_price(od.tip_amount) %>

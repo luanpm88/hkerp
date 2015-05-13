@@ -707,17 +707,16 @@ CREATE TABLE order_details (
     product_id integer,
     quantity integer,
     price numeric(16,2),
-    supplier_price numeric(16,2),
     product_name character varying,
     warranty integer,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     unit character varying,
-    supplier_id integer,
     product_description text,
     product_price_id integer,
     discount_amount numeric,
-    tip_amount numeric DEFAULT 0.0
+    tip_amount numeric DEFAULT 0.0,
+    shipment_amount numeric DEFAULT 0.0
 );
 
 
@@ -849,10 +848,8 @@ CREATE TABLE orders (
     printed_order_number text,
     supplier_agent_id integer,
     order_status_name character varying,
-    discount_amount numeric DEFAULT 0,
     price_status_name character varying,
     user_id integer,
-    tip_amount numeric DEFAULT 0.0,
     tip_status_name character varying,
     purchaser_id integer,
     tip_contact_id integer,
@@ -2443,4 +2440,12 @@ INSERT INTO schema_migrations (version) VALUES ('20150512025921');
 INSERT INTO schema_migrations (version) VALUES ('20150512035117');
 
 INSERT INTO schema_migrations (version) VALUES ('20150512063536');
+
+INSERT INTO schema_migrations (version) VALUES ('20150513061215');
+
+INSERT INTO schema_migrations (version) VALUES ('20150513061639');
+
+INSERT INTO schema_migrations (version) VALUES ('20150513062332');
+
+INSERT INTO schema_migrations (version) VALUES ('20150513070607');
 

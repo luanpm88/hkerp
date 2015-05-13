@@ -165,6 +165,7 @@ class OrderDetail < ActiveRecord::Base
   def fare
     result = total - cost_total
     result -= tip_amount if tip_amount.present?
+    result -= shipment_amount if shipment_amount.present?
     
     return result
   end
@@ -194,6 +195,10 @@ class OrderDetail < ActiveRecord::Base
   
   def tip_amount=(new_price)
     self[:tip_amount] = new_price.to_s.gsub(/\,/, '')
+  end
+  
+  def shipment_amount=(new_price)
+    self[:shipment_amount] = new_price.to_s.gsub(/\,/, '')
   end
   
   def update_price(user)

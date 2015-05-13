@@ -20,10 +20,14 @@
                                       </li>                                    
                                       <li class="">
                                         <input class="form-control price_input price" type="text" name="order_details[<%= order_detail.product_id %>][price]" value="<%= order_detail.price %>" />
+                                        <label class="col_label">Unit:</label>
                                         <input class="form-control number_input quantity" type="text" name="order_details[<%= order_detail.product_id %>][quantity]" value="<%= order_detail.quantity %>" />
                                       </li>
-                                      <li class="total text-right">
-                                        <%= format_price(order_detail.total) %>
+                                      <li class="text-right">
+                                        <span class="total"><%= format_price(order_detail.total) %></span>
+                                        <label class="col_label"><i class="icon-ambulance"></i> Shipment Cost:</label>
+                                        <%= text_field_tag "order_details[#{order_detail.product_id}][shipment_amount]", order_detail.shipment_amount, {:class => "form-control price_input line_shipment_amount"} %>
+                                        
                                       </li>
                                         <li class="warranty">
                                             <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][warranty]" value="<%= order_detail.warranty %>" />
