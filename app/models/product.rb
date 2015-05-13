@@ -203,7 +203,7 @@ class Product < ActiveRecord::Base
                 data << item
                 actions_col = 0
       else
-                supplier_price = user.has_role?("purchase_manager") ? product.product_price.supplier_price_formated : "####"
+                supplier_price = user.can(:update_price, product) ? product.product_price.supplier_price_formated : "####"
                 
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
@@ -686,6 +686,7 @@ class Product < ActiveRecord::Base
     #added
     line = {user: self.user, date: self.created_at, note: "Created!", link: "", quantity: ""}
     history << line if from_date.to_datetime <= self.created_at && self.created_at <= to_date.to_datetime
+    
     
     
     return history.sort {|a,b| b[:date] <=> a[:date]}

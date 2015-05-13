@@ -26,6 +26,11 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, :presence => true, :uniqueness => true
   
+  def ability
+    @ability ||= Ability.new(self)
+  end
+  delegate :can?, :cannot?, :to => :ability
+  
   def has_role?(role_sym)
     roles.any? { |r| r.name == role_sym }
   end
