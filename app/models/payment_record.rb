@@ -118,7 +118,7 @@ class PaymentRecord < ActiveRecord::Base
   end
   
   def self.statistics(from_date, to_date, params)
-    records = PaymentRecord.where("paid_date >= ? AND paid_date <= ?", from_date.beginning_of_day, to_date.end_of_day).order("paid_date DESC, created_at DESC")
+    records = PaymentRecord.where(status: 1).where("paid_date >= ? AND paid_date <= ?", from_date.beginning_of_day, to_date.end_of_day).order("paid_date DESC, created_at DESC")
     
     if params[:payment_method_id].present?
       records = records.where(payment_method_id: params[:payment_method_id])
