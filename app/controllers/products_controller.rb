@@ -145,7 +145,7 @@ class ProductsController < ApplicationController
                  product_price_id: @product.product_prices.count > 0 ? @product.product_price.id : 0,
                  price: price,
                  product: @product,
-                 order_supplier_history: @product.order_supplier_history]
+                 order_supplier_history: @product.order_supplier_history(current_user)]
     render :json => @data
   end
   
