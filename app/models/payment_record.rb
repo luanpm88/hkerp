@@ -143,7 +143,7 @@ class PaymentRecord < ActiveRecord::Base
           data[:pay] = p.amount
         end
       else
-        if !p.order.is_purchase || (p.order.is_purchase && p.amount < 0)
+        if p.order.is_purchase || (!p.order.is_purchase && p.amount < 0)
           total_pay += p.amount.abs
           data[:pay] = p.amount
         elsif
