@@ -18,7 +18,7 @@ class ProductsController < ApplicationController
   def datatable
     authorize! :read, Product
     
-    result = Product.datatable(params)
+    result = Product.datatable(params, current_user)
    
     result[:items].each_with_index do |item, index|
       

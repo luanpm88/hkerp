@@ -97,7 +97,7 @@ class Product < ActiveRecord::Base
     self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
-  def self.datatable(params)
+  def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
@@ -203,12 +203,14 @@ class Product < ActiveRecord::Base
                 data << item
                 actions_col = 0
       else
+                supplier_price = user.has_role?("purchase_manager") ? product.product_price.supplier_price_formated : "####"
+                
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+'</div>',
-                        "<div class=\"text-right #{trashed_class}\">"+product.product_price.supplier_price_formated+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+'</div>',
