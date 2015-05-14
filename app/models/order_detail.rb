@@ -207,13 +207,14 @@ class OrderDetail < ActiveRecord::Base
       params[:supplier_id] = order.supplier_id
       params[:supplier_price] = self.price
       params[:customer_id] = nil
+      product.update_price(params,user)
     else
       #params[:price] = self.price
       #params[:supplier_id] = product.product_price.supplier_id
       #params[:supplier_price] = product.product_price.supplier_price
       #params[:customer_id] = order.customer_id
     end
-    product.update_price(params,user)
+    
     
   end
   
