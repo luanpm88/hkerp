@@ -972,7 +972,7 @@ class Order < ActiveRecord::Base
   
   def confirm_price(user)
     order_details.each do |od|
-      if (od.product.product_prices.count == 0 || od.product.product_price.price != od.price) && od.quantity > 0
+      if (od.product.product_prices.count == 0) && od.quantity > 0
         return false
       end
     end

@@ -5,6 +5,7 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
+    params[:type] = params[:type].present? ? params[:type] : 1
     @contacts = Contact.main_contacts(type: params[:type])
     respond_to do |format|
       format.html

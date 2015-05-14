@@ -203,7 +203,7 @@ class Product < ActiveRecord::Base
                 data << item
                 actions_col = 0
       else
-                supplier_price = user.can?(:update_price, product) ? product.product_price.supplier_price_formated : "####"
+                supplier_price = user.can?(:view_supplier_price, product) ? product.product_price.supplier_price_formated : "####"
                 
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
@@ -681,7 +681,7 @@ class Product < ActiveRecord::Base
               .where('created_at <= ?', to_date)
               
     prices.each do |s|
-      supplier_price = user.can?(:update_price, s.product) ? s.supplier_price_formated : "####"
+      supplier_price = user.can?(:view_supplier_price, s.product) ? s.supplier_price_formated : "####"
       line = {user: s.user,date: s.created_at, note: "Price changed: <br />[Supplier: #{s.supplier_name}; Sup.Price: #{supplier_price}; Sel.Price: #{s.price_formated}]", link: "", quantity: ""}
       history << line
     end

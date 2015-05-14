@@ -214,7 +214,10 @@ class Ability
       end
       can :ajax_destroy, OrderDetail do |order_detail|
         order_detail.order.nil? || (order_detail.order.purchaser_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
-      end   
+      end
+      
+      can :view_supplier_price, Product
+      can :view_suppliers, Contact
     end
 
     if user.has_role? "accountant"
