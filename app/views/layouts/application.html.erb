@@ -30,7 +30,7 @@
 <!-- END CORE CSS FRAMEWORK -->
 
 <!-- BEGIN CSS TEMPLATE -->
-<%= stylesheet_link_tag "style.css?v=2" %>
+<%= stylesheet_link_tag "style.css?v=3" %>
 <%= stylesheet_link_tag "responsive.css" %>
 <%= stylesheet_link_tag "custom-icon-set.css" %>
 <!-- END CSS TEMPLATE -->
@@ -189,7 +189,7 @@
 		//}
 	}
 	
-	function update_update_price_form(rel) {
+	function update_update_price_form(rel, first) {
 		$('.update-price-form .parent[rel="'+rel+'"]').each(function() {
 			var rel = $(this).attr("rel");
 			var parent = $(this)
@@ -209,6 +209,7 @@
 			  total_s_price += s_num;
 			});
 			$(this).find('.price').val(total_price);
+			if(!first) $(this).find('.sell_price').val(total_price);
 			$(this).find('.supplier_price').val(total_s_price);
 		})
 	}
@@ -1344,11 +1345,14 @@
 		//update_update_price_form();
 		$('.update-price-form .parent').each(function() {
 			if ($(this).find('.supplier_price').val() == "") {
-				update_update_price_form($(this).attr("rel"));
+				update_update_price_form($(this).attr("rel"), true);
 			}
 		});
 		$('.update-price-form .children input').keyup(function() {
-			update_update_price_form($(this).attr("rel"));
+			update_update_price_form($(this).attr("rel"), false);
+		});
+		$('.update-price-form .parent input.price').keyup(function() {
+			$(this).parents('.parent').find('input.sell_price').val($(this).val());
 		});
 		
 		

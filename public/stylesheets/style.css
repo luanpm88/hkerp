@@ -7785,8 +7785,8 @@ tr.parent td {
     border-bottom: 1px solid #ccc !important;
     border-top: 1px solid #ccc !important;
 }
-.update-price-form input.price,.update-price-form input.supplier_price {
-    min-width: 105px;
+.update-price-form input.price,.update-price-form input.supplier_price,.update-price-form input.sell_price {
+    min-width: 100px;
 }
 .product_order_list ul li {
     width: 13%;

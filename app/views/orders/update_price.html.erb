@@ -35,14 +35,15 @@
                                     <thead>
                                         <tr>
                                             <th>Product Name</th>
-                                            <th>Quantity</th>
+                                            <!--<th>Quantity</th>-->
                                             <th>Current Price</th>
 					    <th>Supplier
 						  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
 						</th>
 					    <th>Supplier Price</th>
-                                            <th>New Price</th>
-											
+                                            <th>Public Price</th>
+											<th>New Sell Price
+											<br />(For this order)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -53,17 +54,18 @@
 													<td>					      
 													  <strong><%= line.product_name %><br /><%= line.product_description %></strong>
 													</td>
-													<td class="text-center">
+													<!--<td class="text-center">
 													  <strong><%= line.quantity %></strong>
 													  
-													</td>													
+													</td>	-->												
 													<td class="text-right">
 													  <strong><%= line.formated_price %></strong>
+													  <br /><%= line.quantity %> <%= line.unit %>
 													  <%= line.product.price_status %>
 													  <%= line.product.price_history_link %>
 													</td>
 													<td>
-													  <input style="width:100%;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
+													  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.short_name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
 													  
 													</td>
 													<td>
@@ -72,13 +74,16 @@
 													<td>
 													  <%= text_field_tag "order_details[#{line.id}][product][price]",line.product.product_price.price, {:class => "form-control price_input price"} %>
 													</td>
+													<td>
+													  <%= text_field_tag "order_details[#{line.id}][new_sell_price]", params["order_details[#{line.id}][new_sell_price]"].present? ? params["order_details[#{line.id}][new_sell_price]"] : line.price, {:class => "form-control price_input sell_price"} %>
+													</td>
 												  </tr>
 												  
 												  
 												  <% line.product.parts.each do |part| %>
 													
 													  <tr class="children child-<%= line.product.id %> quantity-<%= line.quantity %>">
-														<td colspan="2" class="child-td">					      
+														<td class="child-td">					      
 														  <span class="child-pointer">----></span> <%= part.display_name %><br /><%= part.description %>
 														</td>
 
@@ -88,13 +93,14 @@
 														  <%= part.price_history_link %>
 														</td>
 														<td>
-														  <input style="width:100%;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
+														  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
 														  
 														</td>
 														<td><%= text_field_tag "product_parts[#{part.id}][product][supplier_price]",part.product_price.supplier_price, {:class => "form-control price_input supplier_price", rel: line.product_id} %></td>
 														<td>
 														  <%= text_field_tag "product_parts[#{part.id}][product][price]",part.product_price.price, {:class => "form-control price_input price", rel: line.product_id} %>
 														</td>
+														<td></td>
 													  </tr>
 												  
 												  <% end %>
