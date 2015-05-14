@@ -308,7 +308,8 @@ class OrdersController < ApplicationController
       od.product.update_price(line[1][:product], current_user)
       
       pp = Product.find(od.product.id)
-      od.update_attributes(product_price_id: pp.product_price.id, price: line[1][:new_sell_price]) if line[1][:new_sell_price].present?
+      od.update_attribute(:product_price_id, pp.product_price.id)
+      od.update_attribute(:price, line[1][:new_sell_price]) if line[1][:new_sell_price].present?
     end
     
     if !params[:product_parts].nil?
