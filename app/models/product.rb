@@ -324,6 +324,8 @@ class Product < ActiveRecord::Base
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id || new_price.customer_id != self.product_price.customer_id
       new_price.save
       return true
+    else
+      self.product_price.update_attribute("updated_at",Time.now)
     end
     return true
   end
