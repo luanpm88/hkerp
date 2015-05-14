@@ -619,7 +619,7 @@ class Order < ActiveRecord::Base
         @items = @items.where(order_status_name: [nil, "new", "items_confirmed", "price_confirmed"])
       end
       
-      where[:salesperson_id] = user.id if !user.has_role? "sales_manager"
+      where[:salesperson_id] = user.id if !user.can?(:view_all_sales_orders, Order)
     end
     
     @items = @items.joins(:order_status)

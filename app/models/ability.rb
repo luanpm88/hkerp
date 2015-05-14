@@ -318,6 +318,8 @@ class Ability
       can :ajax_destroy, OrderDetail do |order_detail|
         ['new','confirmed','finished'].include?(order_detail.order.status.name)
       end
+      
+      can :view_all_sales_orders, Order
     end
 
     if user.has_role? "storage_manager"
