@@ -45,6 +45,9 @@ class Ability
     end
     
     if user.has_role? "user"
+      if user.ATT_No.present?
+        can :view_attendance, Checkinout        
+      end
       can :read_notification, Notification
       
       can :read, User

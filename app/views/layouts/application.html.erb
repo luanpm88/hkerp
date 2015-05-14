@@ -1793,7 +1793,7 @@
 	    </li>
 	<% end %>
 	
-	<% if can? :read, Checkinout %>
+	<% if can? :view_attendance, Checkinout %>
 	    <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
 	      <%= link_to checkinouts_url do %>
 		<i class="icon-calendar"></i>
