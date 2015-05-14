@@ -391,8 +391,8 @@ class Order < ActiveRecord::Base
       order_ids = payments.map(&:order_id)
       sell_orders = sell_orders.where(id: order_ids)
     else
-      sell_orders = sell_orders.where('order_date >= ?', from_date)
-                                .where('order_date <= ?', to_date)
+      sell_orders = sell_orders.where('order_date >= ?', from_date.beginning_of_day)
+                                .where('order_date <= ?', to_date.end_of_day)
     end    
                   
     
@@ -449,7 +449,7 @@ class Order < ActiveRecord::Base
       order_ids = payments.map(&:order_id)
       buy_orders = buy_orders.where(id: order_ids)
     else
-      sell_orders = sell_orders.where('order_date >= ?', from_date)
+      buy_orders = buy_orders.where('order_date >= ?', from_date)
                                 .where('order_date <= ?', to_date)
     end
     
