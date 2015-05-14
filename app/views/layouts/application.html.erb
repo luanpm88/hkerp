@@ -1717,11 +1717,11 @@
 		  <i class="icon-signout"></i>
 		  <span class="title" onclick="">Sales</span>
 		  <span class="arrow<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && params[:action] != "purchase_orders" %> open<% end %>"></span>
-		  <span class="badge badge-important pull-right alert-level1"><%= Notification.sales_alert %></span>
+		  <span class="badge badge-important pull-right alert-level1"><%= Notification.sales_alert(current_user) %></span>
 		<% end %>
 		<ul class="sub-menu">
 		  <li<% if params[:purchase] != "1" && params[:controller] == "orders" && ["index"].include?(params[:action]) %> class="active"<% end %>>
-			<span class="badge badge-important pull-right alert-level2"><%= Notification.price_confirmed_sales_order_alert %></span>
+			<span class="badge badge-important pull-right alert-level2"><%= Notification.price_confirmed_sales_order_alert(current_user) %></span>
 			<%= link_to 'Customer Orders', orders_url %>
 		  </li>	      
 		</ul>

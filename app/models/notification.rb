@@ -166,7 +166,7 @@ class Notification < ActiveRecord::Base
     end
   end
   
-  def self.sales_delivery_alert
+  def self.sales_delivery_alert(user=nil)
     count = Order.customer_orders
                               .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                               .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
@@ -174,7 +174,7 @@ class Notification < ActiveRecord::Base
     
     return count > 0 ? count : ""
   end
-  def self.purchase_delivery_alert
+  def self.purchase_delivery_alert(user=nil)
     count = Order.purchase_orders
                               .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                               .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
@@ -182,7 +182,7 @@ class Notification < ActiveRecord::Base
     
     return count > 0 ? count : ""
   end
-  def self.delivery_alert
+  def self.delivery_alert(user=nil)
     count = Order
                 .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                 .where("delivery_status_name LIKE ? OR delivery_status_name LIKE ?", '%not_delivered%', '%return_back%')
@@ -190,17 +190,22 @@ class Notification < ActiveRecord::Base
     
     return count > 0 ? count : ""
   end
-  def self.price_confirmed_sales_order_alert
-    count = Order.customer_orders
-                  .joins(:order_status).where(order_statuses: {name: "price_confirmed"}).count
+  def self.price_confirmed_sales_order_alert(user)
+    orders = Order.customer_orders
+                  .joins(:order_status).where(order_statuses: {name: "price_confirmed"})
+    if !user.can?(:view_all_sales_orders, Order)
+      orders = orders.where(salesperson_id: user.id)
+    end
+    
+    count = orders.count
     return count > 0 ? count : ""
   end
-  def self.sales_alert
-    self.price_confirmed_sales_order_alert
+  def self.sales_alert(user)
+    self.price_confirmed_sales_order_alert(user)
   end
   
   
-  def self.items_confirmed_sales_order_alert
+  def self.items_confirmed_sales_order_alert(user=nil)
     count = Order.customer_orders
                   .joins(:order_status).where(order_statuses: {name: "items_confirmed"}).count
     count += Order.customer_orders
@@ -208,11 +213,11 @@ class Notification < ActiveRecord::Base
                   .where("delivery_status_name LIKE ?", '%out_of_stock%').where(parent_id: nil).count
     return count > 0 ? count : ""
   end
-  def self.purchase_alert
+  def self.purchase_alert(user=nil)
     self.items_confirmed_sales_order_alert
   end
   
-  def self.sales_payment_alert
+  def self.sales_payment_alert(user=nil)
     count = Order.customer_orders
                 .joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                 .where("payment_status_name IN (?,?,?)", 'out_of_date', 'not_deposited', 'pay_back').where(parent_id: nil).count
