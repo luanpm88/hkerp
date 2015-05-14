@@ -5,8 +5,18 @@ class ContactsController < ApplicationController
   # GET /contacts
   # GET /contacts.json
   def index
-    params[:type] = params[:type].present? ? params[:type] : 1
-    @contacts = Contact.main_contacts(type: params[:type])
+    @types = params[:types].present? ? params[:types] : []
+    
+    @contacts = Contact.main_contacts.joins(:contact_types)
+    @contacts = @contacts.where(contact_types: {id: @types}) if !@types.empty?
+    
+    if !can?(:view_suppliers, Contact)
+      @contacts = @contacts.where("contact_types.id != ?", ContactType.supplier)
+    end
+    if !can?(:view_agents, Contact)
+      @contacts = @contacts.where("contact_types.id != ?", ContactType.agent)
+    end
+    
     respond_to do |format|
       format.html
       format.json {

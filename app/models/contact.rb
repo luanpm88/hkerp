@@ -30,13 +30,8 @@ class Contact < ActiveRecord::Base
     contact_types.include?(ContactType.agent)
   end
   
-  def self.main_contacts(options = {})    
-    if !options[:type].nil?
-      ct = ContactType.find(options[:type])
-      ct.contacts.where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
-    else
-      Contact.where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
-    end
+  def self.main_contacts
+    self.where.not(:id => ParentContact.select(:contact_id).map(&:contact_id))
   end
   
   def self.import(file)

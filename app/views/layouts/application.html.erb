@@ -1787,10 +1787,8 @@
 		<span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
 	      <% end %>
 	      <ul class="sub-menu">
-			<li<% if params[:controller] == "contacts" && params[:type] == ContactType.customer %> class="active"<% end %>><%= link_to 'Customers', contacts_url(:type => ContactType.customer) %></li>
-			<% if can? :view_suppliers, Contact %>
-				<li<% if params[:controller] == "contacts" && params[:type] == ContactType.supplier %> class="active"<% end %>><%= link_to 'Suppliers', contacts_url(:type => ContactType.supplier) %></li>
-			<% end %>
+			<li<% if params[:controller] == "contacts" %> class="active"<% end %>><%= link_to 'Contacts', contacts_url %></li>
+			
 	      </ul>
 	    </li>
 	<% end %>
