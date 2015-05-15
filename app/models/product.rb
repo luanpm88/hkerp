@@ -311,6 +311,10 @@ class Product < ActiveRecord::Base
   end
   
   def update_price(params, user)
+    if !params[:supplier_price].present?
+      return false
+    end
+    
     new_price = product_prices.new(price: params[:price],
       supplier_price: params[:supplier_price],
       supplier_id: params[:supplier_id],
