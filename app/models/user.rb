@@ -8,8 +8,6 @@ class User < ActiveRecord::Base
   
   mount_uploader :image, ImageUploader
   
-  
-  has_many :sale_orders, :class_name => "Order"
   has_many :contacts
   has_many :products
   
@@ -25,6 +23,8 @@ class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, :presence => true, :uniqueness => true
+  
+  has_many :sales_orders, :class_name => "Order", :foreign_key => "salesperson_id"
   
   def ability
     @ability ||= Ability.new(self)
@@ -134,6 +134,54 @@ class User < ActiveRecord::Base
     backup_cmd += "rm -rf backup/#{dir}"
     
     `#{backup_cmd} &`
+  end
+  
+  def commission_statistics(from_date, to_date, params)
+    orders = sales_orders.where("order_date >= ? AND order_date <= ?",from_date,to_date)
+                        .order("order_date")
+    
+    if params[:paid_status].present? && params[:paid_status] == "paid"
+      orders = orders.where(payment_status_name: "paid")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "not_paid"
+      orders = orders.where("payment_status_name != 'paid'")
+    end    
+    if params[:customer_id].present?
+      orders = orders.where(customer_id: params[:customer_id])
+    end
+    
+    if orders.count == 0
+      return []
+    end
+    
+    
+    #per month statistics
+    data = []
+    current_block = {name: orders.first.order_date.strftime("%Y-%m"), data: []}
+    
+    orders.each do |order|
+      month = order.order_date.strftime("%Y-%m")
+      if current_block[:name] == month
+        current_block[:data] << order
+      else
+        data << current_block        
+        current_block = {name: month, data: []}
+      end            
+    end
+    data << current_block
+    
+    data_1 = []
+    data.each do |block|
+      total_sell = 0.00
+      block[:data].each do |order|
+        total_sell += order.total
+      end
+      block[:total_sell] = total_sell
+      
+      data_1 << block
+    end
+    
+    return data_1
   end
   
 end

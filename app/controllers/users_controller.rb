@@ -104,6 +104,20 @@ class UsersController < ApplicationController
       format.json { head :no_content }
     end
   end
+  
+  def commission_statistics
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now
+    end
+    
+    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+    
+    @statistics = current_user.commission_statistics(@from_date.beginning_of_month, @to_date.end_of_month, params)
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

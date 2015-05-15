@@ -1,0 +1,113 @@
+       <div class="row">
+            <div class="col-md-6">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Commission Program <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                
+                
+                
+                <div class="grid-body no-border">
+                  
+                  
+                  <% if @commission_program.errors.any? %>
+                    <div class="alert alert-error">
+                      <button data-dismiss="alert" class="close"></button>
+                      <div id="error_explanation">
+                        <h5><%= pluralize(@commission_program.errors.count, "error") %> prohibited this commisstion program from being saved:</h5>
+                  
+                        <ul>
+                        <% @commission_program.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                  
+                  <%= form_for(@commission_program) do |f| %>
+                           
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :name %></label>
+                          <span class="help">(required)</span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :name, :class => "form-control" %>
+                          </div>
+                      </div>                     
+                      <div class="form-group">
+                        <label class="form-label"><%= f.label :interval_type %></label>
+                        <span class="help">(required)</span>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <select name="commission_program[interval_type]" class="modern_select">
+                                <option value="month" <%= 'selected="selected"' if @commission_program.interval_type == "month" %>>month</option>
+                                <option value="year" <%= 'selected="selected"' if @commission_program.interval_type == "year" %>>year</option>
+                            </select>
+						</div>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :min_amount %></label>
+                          <span class="help">(required)</span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :min_amount, :class => "form-control price_input" %>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :max_amount %></label>
+                          <span class="help">(required)</span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :max_amount, :class => "form-control price_input" %>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :commission_rate %></label>
+                          <span class="help">(required)</span>
+                              <%= f.text_field :commission_rate, :class => "form-control price_input" %>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :published_at %></label>
+                          <span class="help">(required)</span>
+
+                              <div class="input-append success date col-md-10 no-padding">
+                                    <%= f.text_field :published_at, :class => "form-control" %>
+                                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                              </div>                              
+                          <br style="clear:both" />
+                      </div>                      
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :unpublished_at %></label>
+
+                              <div class="input-append success date col-md-10 no-padding">
+                                    <%= f.text_field :unpublished_at, :class => "form-control" %>
+                                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                              </div> 
+                          <br style="clear:both" />
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :description %></label>
+                          <span class="help">(required)</span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_area :description, :class => "form-control" %>
+                          </div>
+                      </div>
+                      
+                      <div class="form-actions">  
+                        <div class="pull-right">
+                          <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
+                          <%= link_to 'Cancel', commission_programs_path, :class => "btn btn-white btn-cons" %>
+                        </div>
+                      </div>
+				<% end %>
+                </div>
+              </div>
+            </div>		
+      </div>
+
+
+

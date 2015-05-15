@@ -1816,8 +1816,24 @@
 	    </li>
 	<% end %>
 	
+	<% if current_user.has_role? "user" %>
+	    <li <% if params[:controller] == "users" && params[:action] == "commission_statistics" %> class="active open"<% end %>>
+				<%= link_to contacts_url do %>
+				  <i class="icon-money"></i>
+				  <span class="title">Commission</span>
+				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
+				<% end %>
+				<ul class="sub-menu">
+				  <li<% if params[:action] == "commission_statistics" %> class="active"<% end %>>
+					<%= link_to 'Commission Statistics', commission_statistics_users_path %>
+				</li>
+				  
+				</ul>
+	    </li>
+	<% end %>
+	
 	<% if current_user.has_role? "admin" %>
-	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
+	    <li <% if params[:controller] == "users" && params[:action] != "commission_statistics" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
 				  <i class="icon-cogs"></i>
 				  <span class="title">System</span>
@@ -1829,6 +1845,8 @@
 				</ul>
 	    </li>
 	<% end %>
+	
+	
 
       <!--<li class=""> <a href="../frontend/index.html"> <i class="icon-flag"></i>  <span class="title">Frontend</span></a></li>      
       <li class=""> <a href="javascript:;"> <i class="icon-custom-ui"></i> <span class="title">UI Elements</span> <span class="arrow "></span> </a>

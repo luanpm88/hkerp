@@ -29,6 +29,7 @@
 						<%
 						num = 1
 						@orders.each do |order| %>
+						
 							<%
 								count = order.order_details.where("quantity > 0").count+1
 							%>

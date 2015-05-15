@@ -323,6 +323,10 @@ class Ability
       end
       
       can :view_all_sales_orders, Order
+      
+      can :update, CommissionProgram do |cp|
+        cp.user == user
+      end
     end
 
     if user.has_role? "storage_manager"

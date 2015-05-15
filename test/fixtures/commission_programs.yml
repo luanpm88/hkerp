@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  time_interval: 1
+  min_amount: 9.99
+  max_amount: 9.99
+  pushlished_at: 2015-05-14 18:49:50
+
+two:
+  time_interval: 1
+  min_amount: 9.99
+  max_amount: 9.99
+  pushlished_at: 2015-05-14 18:49:50

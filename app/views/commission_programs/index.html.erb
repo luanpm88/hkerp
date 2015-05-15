@@ -1,0 +1,108 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Commission Programs', contacts_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-user"></i>
+                    	<h3>Commission Program - <span class="semi-bold"> Management</span></h3>	
+                </div>
+				
+                <div class="row">                  
+                    <div class="col-md-12">
+                      <%= link_to 'Commission Program', new_commission_program_path, :class => 'btn btn-primary btn-cons' %>
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Programs</span></h4>
+                                <div class="tools">
+				    
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables">
+                                        <thead>
+                                            <tr>                                                
+                                                <th>Name</th>
+                                                
+                                                <th class="text-center">Time</th>
+                                                <th class="text-center">Amount</th>
+                                                <th class="text-center">Interval Type</th>
+                                                <th class="text-center">Description</th>
+                                                <th class="text-center">Status</th>
+                                                <th class="text-right">Action</th>   
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                          <% @commission_programs.each do |commission_program| %>
+                                              <tr>
+                                                  <td><%= commission_program.name %></td>                                                  
+                                                  <td class="text-center">
+                                                    from<br />
+                                                    <strong><%= commission_program.published_at.strftime("%Y-%m-%d") %></strong>
+                                                    <br />to<br />
+                                                    <strong><%= commission_program.unpublished_at.strftime("%Y-%m-%d") %></strong>
+                                                  </td>
+                                                  <td class="text-center">
+                                                    from<br />
+                                                    <strong><%= format_price(commission_program.min_amount) %></strong>
+                                                    <% if commission_program.max_amount.present? %>
+                                                      <br />to<br />
+                                                      <strong><%= format_price(commission_program.max_amount) %></strong>
+                                                    <% end %>
+                                                  </td>
+                                                  <td class="text-center">
+                                                    <%= commission_program.interval_type %>
+                                                  </td>
+                                                  <td class="text-center">
+                                                    <%= commission_program.description %>
+                                                  </td>
+                                                  <td class="text-center">
+                                                    <% if commission_program.status == 1 %>
+                                                      <a href="<%= url_for stop_commission_programs_url(id: commission_program.id) %>" class="btn btn-primary btn-sm btn-mini" type="button" title="Stop this Program">
+                                                        <i class="icon-ok"></i>
+                                                        Enabled
+                                                      </a>
+                                                    <% else %>
+                                                      <a href="<%= url_for start_commission_programs_url(id: commission_program.id) %>" class="btn btn-sm btn-mini" type="button" title="Start this Program">
+                                                        Disabled
+                                                      </a>
+                                                    <% end %>
+                                                  </td>
+                                                  <td class="text-right">
+                                                    
+                                                      <div class="text-right">
+                                                        <div class="btn-group actions">
+                                                          <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">
+                                                            Actions <span class="caret"></span>
+                                                          </button>
+                                                          <ul class="dropdown-menu">
+                                                            <% if can? :update, commission_program %>
+                                                              <li>
+                                                                <%= link_to 'Edit', edit_commission_program_path(commission_program) %>
+                                                              </li>
+                                                            <% end %>
+                                                          </ul>
+                                                        </div>
+                                                      </div>
+                                                      
+                                                  </td>
+                                              </tr>
+                                          <% end %>
+					    
+                                          </tbody>
+                                    </table>
+                            </div>
+                        </div>
+			
+                        
+                    </div>
+                </div>
+

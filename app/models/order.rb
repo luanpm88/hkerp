@@ -1374,6 +1374,9 @@ class Order < ActiveRecord::Base
     
     return result
   end
-
+  
+  def last_payment_record
+    payment_records.order("paid_date DESC").first
+  end
   
 end

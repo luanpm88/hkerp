@@ -7856,3 +7856,9 @@ table.table-border td {
     height: 38px;
     line-height: 38px;
 }
+tr.block_commission_header {
+    background: #888;
+}
+tr.block_commission_header h3 {
+    color: #fff !important;
+}

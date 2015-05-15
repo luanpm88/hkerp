@@ -1,4 +1,11 @@
 Hkerp::Application.routes.draw do
+  resources :commission_programs do
+    collection do
+      get :start
+      get :stop
+    end
+  end
+  
   resources :city_types
   resources :cities
   resources :states
@@ -137,6 +144,12 @@ Hkerp::Application.routes.draw do
         get :download_backup
         get :delete_backup
       end
+    end
+  end
+  
+  resources :users do
+    collection do
+      get :commission_statistics
     end
   end
   

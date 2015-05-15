@@ -410,6 +410,46 @@ ALTER SEQUENCE combinations_id_seq OWNED BY combinations.id;
 
 
 --
+-- Name: commission_programs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE commission_programs (
+    id integer NOT NULL,
+    name text,
+    interval_type character varying,
+    min_amount numeric,
+    max_amount numeric,
+    commission_rate numeric,
+    published_at timestamp without time zone,
+    unpublished_at timestamp without time zone,
+    status integer DEFAULT 0,
+    description text,
+    user_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: commission_programs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE commission_programs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: commission_programs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE commission_programs_id_seq OWNED BY commission_programs.id;
+
+
+--
 -- Name: contact_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1602,6 +1642,13 @@ ALTER TABLE ONLY combinations ALTER COLUMN id SET DEFAULT nextval('combinations_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY commission_programs ALTER COLUMN id SET DEFAULT nextval('commission_programs_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY contact_types ALTER COLUMN id SET DEFAULT nextval('contact_types_id_seq'::regclass);
 
 
@@ -1880,6 +1927,14 @@ ALTER TABLE ONLY combination_details
 
 ALTER TABLE ONLY combinations
     ADD CONSTRAINT combinations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: commission_programs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY commission_programs
+    ADD CONSTRAINT commission_programs_pkey PRIMARY KEY (id);
 
 
 --
@@ -2448,4 +2503,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150513061639');
 INSERT INTO schema_migrations (version) VALUES ('20150513062332');
 
 INSERT INTO schema_migrations (version) VALUES ('20150513070607');
+
+INSERT INTO schema_migrations (version) VALUES ('20150515014950');
 

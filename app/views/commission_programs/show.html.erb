@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Time interval:</strong>
+  <%= @commission_program.time_interval %>
+</p>
+
+<p>
+  <strong>Min amount:</strong>
+  <%= @commission_program.min_amount %>
+</p>
+
+<p>
+  <strong>Max amount:</strong>
+  <%= @commission_program.max_amount %>
+</p>
+
+<p>
+  <strong>Pushlished at:</strong>
+  <%= @commission_program.pushlished_at %>
+</p>
+
+<%= link_to 'Edit', edit_commission_program_path(@commission_program) %> |
+<%= link_to 'Back', commission_programs_path %>
