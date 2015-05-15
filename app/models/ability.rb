@@ -96,6 +96,8 @@ class Ability
       can :update, CheckinoutRequest do |request|
         request.user_id == user.id && request.status == 0
       end
+      
+      can :commission_statistics, User
     end  
     
     if user.has_role? "attendance_manager"
