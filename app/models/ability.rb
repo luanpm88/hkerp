@@ -330,6 +330,9 @@ class Ability
       can :update, CommissionProgram do |cp|
         cp.user == user
       end
+      
+      can :start, CommissionProgram      
+      can :stop, CommissionProgram
     end
 
     if user.has_role? "storage_manager"
