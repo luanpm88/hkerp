@@ -1,24 +1,58 @@
-<p id="notice"><%= notice %></p>
+      <div class="page-title"> <i class="icon-plus-sign-alt"></i>
+        <h3>Commission Program
+        </h3>
+      </div>
+      
 
-<p>
-  <strong>Time interval:</strong>
-  <%= @commission_program.time_interval %>
-</p>
-
-<p>
-  <strong>Min amount:</strong>
-  <%= @commission_program.min_amount %>
-</p>
-
-<p>
-  <strong>Max amount:</strong>
-  <%= @commission_program.max_amount %>
-</p>
-
-<p>
-  <strong>Pushlished at:</strong>
-  <%= @commission_program.pushlished_at %>
-</p>
-
-<%= link_to 'Edit', edit_commission_program_path(@commission_program) %> |
-<%= link_to 'Back', commission_programs_path %>
+	  
+      <div class="row" style="">	  
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Program <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>
+                
+                <div class="grid-body no-border ajax_outer">
+                  
+                  <div style="margin-bottom: 30px">
+                    <label>Name:</label>
+                    <h4><%= @commission_program.name %></h4>
+                  </div>
+                  <div style="margin-bottom: 30px">
+                    
+                  </div>
+                  <div style="margin-bottom: 30px">
+                    <label>Time:</label>
+                    from
+                    <h4 style="display: inline"><%= @commission_program.published_at.strftime("%Y-%m-%d") %></h4>
+                    to
+                    <h4 style="display: inline"><%= @commission_program.unpublished_at.strftime("%Y-%m-%d") %></h4>
+                  </div>
+                  <div style="margin-bottom: 30px">
+                    <label>Amount:</label>
+                    from
+                    <h4 style="display: inline"><%= format_price(@commission_program.min_amount) %></h4>
+                    <% if @commission_program.max_amount.present? %>
+                      to
+                      <h4 style="display: inline"><%= format_price(@commission_program.max_amount) %></h4>
+                    <% end %>
+                  </div>
+                  <div style="margin-bottom: 30px">
+                    <label>Interval Type:</label>
+                    <h4><%= @commission_program.interval_type %></h4>
+                  </div>
+                  <div style="margin-bottom: 30px">
+                    <label>Description:</label>
+                    <p>
+                      <%= @commission_program.description %>
+                    </p>
+                  </div>
+                  
+                  
+                  
+                </div>
+                
+              </div>
+            </div>
+      </div>

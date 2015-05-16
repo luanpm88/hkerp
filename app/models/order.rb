@@ -1380,35 +1380,46 @@ class Order < ActiveRecord::Base
   end
   
   def commission(user)
-    current_month = Time.now.beginning_of_month
-    
     commission = {amount: "####", program: nil}
     
+    # month program
+    current_month = Time.now.beginning_of_month
     if order_date <= current_month
       # get total month sales
-      state = CommissionProgram.statistics(user, order_date.beginning_of_month, order_date.end_of_month)
-      
-      if !state.nil?
-        program = choose_commission_program(state[:total_sell])
+      month_state = CommissionProgram.statistics(user, order_date.beginning_of_month, order_date.end_of_month)      
+      if !month_state.nil?
+        month_program = choose_commission_program(month_state[:total_sell], "month")
         
-        if !program.nil?
-          commission[:amount] = (program.commission_rate/100.00)*self.total
-          commission[:program] = program
-        end        
-      end      
-
+        program = month_program if program.nil? || month_program.commission_rate > program.commission_rate
+      end
+    end
+    
+    # year program
+    current_year = Time.now.beginning_of_year
+    if order_date <= current_year
+      # get total month sales
+      year_state = CommissionProgram.statistics(user, order_date.beginning_of_year, order_date.end_of_year)      
+      if !year_state.nil?
+        year_program = choose_commission_program(year_state[:total_sell], "year")
+        
+        program = year_program if program.nil? || year_program.commission_rate > program.commission_rate
+      end
+    end
+    
+    if !program.nil?
+      commission[:amount] = (program.commission_rate/100.00)*self.total
+      commission[:program] = program
     end
     
     return commission
   end
   
-  def commission_programs
-    programs = CommissionProgram.all_commission_programs.where("published_at <= ? AND unpublished_at >= ?", order_date.beginning_of_day, order_date.end_of_day)
+  def commission_programs(interval_type)
+    programs = CommissionProgram.where(interval_type: interval_type).all_commission_programs.where("published_at <= ? AND unpublished_at >= ?", order_date.beginning_of_day, order_date.end_of_day)
   end
   
-  def choose_commission_program(amount)
-    return commission_programs.where(interval_type: "month")
-                              .where("min_amount <= ? AND max_amount >= ?", amount, amount)
-                              .order("commission_rate DESC").first
+  def choose_commission_program(amount, interval_type)
+    return commission_programs(interval_type).where("min_amount <= ? AND max_amount >= ?", amount, amount)
+                                              .order("commission_rate DESC").first
   end
 end

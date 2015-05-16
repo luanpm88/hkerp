@@ -12,6 +12,8 @@ class CommissionProgramsController < ApplicationController
   # GET /commission_programs/1
   # GET /commission_programs/1.json
   def show
+    
+    render layout: nil
   end
 
   # GET /commission_programs/new

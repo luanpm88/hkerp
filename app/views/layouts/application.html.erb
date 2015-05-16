@@ -1474,6 +1474,8 @@
 		$('input[name="order[shipment_contact_id]"]').change(function() {
 			updateShipmentAddress();
 		});
+		
+		$('.fancybox_link').fancybox({width: "75%",'autoDimensions': false, 'autoSize':false});
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>
