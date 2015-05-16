@@ -151,7 +151,7 @@ class User < ActiveRecord::Base
     end
     
     if orders.count == 0
-      return []
+      return nil
     end
     
     

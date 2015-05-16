@@ -102,13 +102,13 @@
                                 
                                 
                                           <% @statistics.each do |block| %>
-                                              <tr class="block_commission_header">
-                                                <th colspan="7">
-                                                  <h3>
-                                                    <%= block[:name] %>
-                                                  </h3>
-                                                </th>
-                                              </tr>
+														<tr class="block_commission_header">
+														  <th colspan="7">
+															<h3>
+															  <%= block[:name] %>
+															</h3>
+														  </th>
+														</tr>
                                                         <%
                                                         num = 1
                                                         block[:orders].each do |order| %>

@@ -122,7 +122,8 @@ class UsersController < ApplicationController
     
     @statistics = []
     months.each do |month|
-      @statistics << current_user.commission_statistics(month.beginning_of_month, month.end_of_month.end_of_day, params)
+      block = current_user.commission_statistics(month.beginning_of_month, month.end_of_month.end_of_day, params)
+      @statistics << block if !block.nil?
     end
   end
 
