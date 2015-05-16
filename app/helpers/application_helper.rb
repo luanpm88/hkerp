@@ -164,4 +164,19 @@ module ApplicationHelper
       
       return actions.html_safe
   end
+  
+  def get_months_between_time(from_date, to_date)
+	months = []
+
+	(from_date.year..to_date.year).each do |y|
+	  mo_start = (from_date.year == y) ? from_date.month : 1
+	  mo_end = (to_date.year == y) ? to_date.month : 12
+   
+	  (mo_start..mo_end).each do |m|  
+		months << "#{y.to_s}-#{m.to_s}-01".to_date
+	  end
+	end
+	
+	return months
+  end
 end

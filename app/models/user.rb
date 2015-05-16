@@ -156,32 +156,16 @@ class User < ActiveRecord::Base
     
     
     #per month statistics
-    data = []
-    current_block = {name: orders.first.order_date.strftime("%Y-%m"), data: []}
+    data = {name: "Statistics from <strong>#{from_date.strftime("%Y-%m-%d")}</strong> to <strong>#{to_date.strftime("%Y-%m-%d")}</strong>".html_safe,orders: orders}
+    
+    total_sell = 0.00
     
     orders.each do |order|
-      month = order.order_date.strftime("%Y-%m")
-      if current_block[:name] == month
-        current_block[:data] << order
-      else
-        data << current_block        
-        current_block = {name: month, data: []}
-      end            
+      total_sell += order.total
     end
-    data << current_block
+    data[:total_sell] = total_sell
     
-    data_1 = []
-    data.each do |block|
-      total_sell = 0.00
-      block[:data].each do |order|
-        total_sell += order.total
-      end
-      block[:total_sell] = total_sell
-      
-      data_1 << block
-    end
-    
-    return data_1
+    return data
   end
   
 end

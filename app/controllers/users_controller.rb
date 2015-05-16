@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  include ApplicationHelper
+  
   load_and_authorize_resource
   
   before_action :set_user, only: [:show, :edit, :update, :destroy]
@@ -116,7 +118,12 @@ class UsersController < ApplicationController
     
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
-    @statistics = current_user.commission_statistics(@from_date.beginning_of_month, @to_date.end_of_month, params)
+    months = get_months_between_time(@from_date, @to_date)
+    
+    @statistics = []
+    months.each do |month|
+      @statistics << current_user.commission_statistics(month.beginning_of_month, month.end_of_month.end_of_day, params)
+    end
   end
 
   private

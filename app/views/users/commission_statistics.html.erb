@@ -111,7 +111,7 @@
                                               </tr>
                                                         <%
                                                         num = 1
-                                                        block[:data].each do |order| %>
+                                                        block[:orders].each do |order| %>
                                                         
                                                             <%
                                                                 count = order.order_details.where("quantity > 0").count
