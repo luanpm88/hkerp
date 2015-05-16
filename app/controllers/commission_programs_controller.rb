@@ -95,7 +95,7 @@ class CommissionProgramsController < ApplicationController
       @from_date = params[:from_date].to_date
       @to_date =  params[:to_date].to_date.end_of_day
     else
-      @from_date = (DateTime.now - 1.month).beginning_of_month
+      @from_date = (DateTime.now - 3.month).beginning_of_month
       @to_date =  DateTime.now
     end
     
