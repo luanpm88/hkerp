@@ -331,6 +331,7 @@ class Ability
         cp.user == user
       end
       
+      can :create, CommissionProgram   
       can :start, CommissionProgram      
       can :stop, CommissionProgram
     end
