@@ -1,0 +1,243 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+                      <%= link_to 'Commission Statistics', statistics_commission_programs_path %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Commission - <span class="semi-bold"> Statistics</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+			
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= statistics_commission_programs_path %>">
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-3">
+									<h4>From Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
+									</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+								
+								
+									<div class="col-md-3">
+										<h4>Customer</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+											
+                                    <div class="col-md-2">
+                                            <h4>Paid Status</h4>
+                                            <div class="">
+                                                <div class="input-with-icon  right">                                       
+                                                    <i class=""></i>
+                                                    <select name="paid_status" class="modern_select width100">
+                                                        <option value="">All</option>
+                                                        <option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "not_paid" %> value="not_paid">Not Paid</option>
+                                                        <option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="paid">Paid</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                    </div>
+
+							</div>
+						</form>
+						</div>		    
+					</div>
+			
+			
+                    <div class="grid simple ">
+                        <div class="grid-body no-border filters" method="get">
+                            <h4>Commission Statistics from <span class="semi-bold">
+                            <%= @from_date.strftime("%Y-%m") %></span> to <span class="semi-bold"><%= @to_date.strftime("%Y-%m") %></span></h4>
+                            
+                            
+                            
+                            
+                            
+                            
+                            <table class="table table-border">
+                                <tr>
+                                    <th class="text-center">Order</th>
+                                    
+                                    <th>Item</th>
+                                    
+                                    <th class="text-right">Price</th>
+                                    <th class="text-center">Status</th>
+                                    
+                                    <th class="text-right">Total(+VAT)</th>
+                                    <th class="text-right">Total</th>
+                                    <th class="text-right">Commission</th>                                    
+                                </tr>
+                                
+                                
+                                
+                                          <% @statistics.each do |block| %>
+														<tr class="block_commission_header">
+														  <th colspan="7">
+															<h3>
+															  <%= block[:name] %>
+															</h3>
+														  </th>
+														</tr>
+                                                        <%
+                                                        num = 1
+                                                        total_commission = 0.00
+                                                        block[:orders].each do |order| %>
+                                                        
+                                                            <%
+                                                                count = order.order_details.where("quantity > 0").count
+                                                            %>
+                                                            
+                                                            
+                                                                    <% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
+                                                                        <% if od.quantity > 0 %>
+                                                                            <tr>												
+                                                                                <% if index == 0 %>
+                                                                                    <td rowspan="<%= count %>" class="text-center">
+                                                                                    <strong class=""><%= order.order_date_formatted %></strong>
+
+                                                                                        (<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>)
+                                                                                        <br />
+                                                                                        <i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
+                                                                                        
+                                                                                    </td>
+                                                                                <% end %>
+                                                                                
+                                                                                
+                                                                                <td>
+                                                                                    <%= od.product.display_name %>												
+                                                                                </td>
+                                                                                <td class="text-right">
+                                                                                    <%= format_price(od.total) %>
+                                                                                    <div class="text-right">(<%= od.quantity %> <%= od.unit %>)</div>
+                                                                                </td>
+                                                                                
+                                                                                
+                                                                                <% if index == 0 %>
+                                                                                    <td rowspan="<%= count %>" class="text-center">
+                                                                                        <%= order.display_payment_status %>
+                                                                                        <% if (order.is_debt || order.is_out_of_date) %>
+                                                                                            <%= order.debt_remain_days.to_s+' days' %>
+                                                                                            <br />
+                                                                                            (<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+                                                                                        <% end %>
+                                                                                    </td>                                                                                    
+                                                                                    <td rowspan="<%= count %>" class="text-right">
+                                                                                        <%= format_price(order.total_vat) %>
+                                                                                        <br />
+                                                                                        (<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+                                                                                    </td>
+                                                                                    <td rowspan="<%= count %>" class="text-right">
+                                                                                        <%= format_price(order.total) %>                                                                                        
+                                                                                    </td>
+                                                                                    <td rowspan="<%= count %>" class="text-right">
+																						<%
+																							commission_amount = order.commission(current_user)[:amount]
+																							total_commission += commission_amount.to_f
+																						%>
+																						<%= format_price(commission_amount) %>
+																						<br />
+																						<%= order.commission(current_user)[:program].name if !order.commission(current_user)[:program].nil? %>
+																						<br />
+																						<%= order.commission(current_user)[:program].commission_rate.to_s+"%" if !order.commission(current_user)[:program].nil? %>
+                                                                                    </td>
+                                                                                <% end %>
+                                                                                
+                                                                            </tr>
+                                                                            
+                                                                        <% end %>
+                                                                    <% end %>
+                                                                
+                                                            <% num += 1 %>
+                                                        <% end %>
+                                                        
+                                                        <tr>
+                                                            <td class="text-right" colspan="5">
+                                                                Tổng cộng:
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong><%= format_price(block[:total_sell]) %></strong>
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong><%= format_price(total_commission) %></strong>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-right" colspan="6">
+                                                                Đã trả:
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="paid">####</strong>
+                                                            </td>
+
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-right" colspan="6">
+                                                                Còn lại:
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <strong class="debt">####</strong>
+                                                            </td>
+
+                                                        </tr>
+                                  
+                                  
+                                <% end %>
+                                
+                                
+                            </table>
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                            
+                        </div>
+                    </div>
+			
+			
+			
+			
+			
+
+			</div>
+                </div>
+
+<script>
+    $(document).ready(function() {
+		$(".date_select_filter select").select2();
+    });
+</script>
