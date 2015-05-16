@@ -97,7 +97,7 @@ class Ability
         request.user_id == user.id && request.status == 0
       end
       
-      can :commission_statistics, User
+      can :statistics, CommissionProgram
     end  
     
     if user.has_role? "attendance_manager"

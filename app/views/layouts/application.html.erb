@@ -1826,10 +1826,10 @@
 				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
 				<% end %>
 				<ul class="sub-menu">
-					<li<% if params[:action] == "statistics" %> class="active"<% end %>>
+					<li<% if params[:controller] == "commission_programs" && params[:action] == "statistics" %> class="active"<% end %>>
 						<%= link_to 'Statistics', statistics_commission_programs_path %>
 					</li>
-					<li<% if params[:action] == "index" %> class="active"<% end %>>
+					<li<% if params[:controller] == "commission_programs" && params[:action] == "index" %> class="active"<% end %>>
 						<%= link_to 'Programs', commission_programs_path %>
 					</li>
 				  
