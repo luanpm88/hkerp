@@ -98,6 +98,7 @@ class Ability
       end
       
       can :statistics, CommissionProgram
+      can :read, CommissionProgram
     end  
     
     if user.has_role? "attendance_manager"
