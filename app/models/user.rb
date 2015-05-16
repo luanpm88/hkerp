@@ -136,36 +136,6 @@ class User < ActiveRecord::Base
     `#{backup_cmd} &`
   end
   
-  def commission_statistics(from_date, to_date, params)
-    orders = sales_orders.where("order_date >= ? AND order_date <= ?",from_date,to_date)
-                        .order("order_date")
-    
-    if params[:paid_status].present? && params[:paid_status] == "paid"
-      orders = orders.where(payment_status_name: "paid")
-    end
-    if params[:paid_status].present? && params[:paid_status] == "not_paid"
-      orders = orders.where("payment_status_name != 'paid'")
-    end    
-    if params[:customer_id].present?
-      orders = orders.where(customer_id: params[:customer_id])
-    end
-    
-    if orders.count == 0
-      return nil
-    end
-    
-    
-    #per month statistics
-    data = {name: "Statistics from <strong>#{from_date.strftime("%Y-%m-%d")}</strong> to <strong>#{to_date.strftime("%Y-%m-%d")}</strong>".html_safe,orders: orders}
-    
-    total_sell = 0.00
-    
-    orders.each do |order|
-      total_sell += order.total
-    end
-    data[:total_sell] = total_sell
-    
-    return data
-  end
+  
   
 end

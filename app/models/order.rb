@@ -1379,4 +1379,36 @@ class Order < ActiveRecord::Base
     payment_records.order("paid_date DESC").first
   end
   
+  def commission(user)
+    current_month = Time.now.beginning_of_month
+    
+    commission = {amount: "####", program: nil}
+    
+    if order_date <= current_month
+      # get total month sales
+      state = CommissionProgram.statistics(user, order_date.beginning_of_month, order_date.end_of_month)
+      
+      if !state.nil?
+        program = choose_commission_program(state[:total_sell])
+        
+        if !program.nil?
+          commission[:amount] = (program.commission_rate/100.00)*self.total
+          commission[:program] = program
+        end        
+      end      
+
+    end
+    
+    return commission
+  end
+  
+  def commission_programs
+    programs = CommissionProgram.all_commission_programs.where("published_at <= ? AND unpublished_at >= ?", order_date.beginning_of_day, order_date.end_of_day)
+  end
+  
+  def choose_commission_program(amount)
+    return commission_programs.where(interval_type: "month")
+                              .where("min_amount <= ? AND max_amount >= ?", amount, amount)
+                              .order("commission_rate DESC").first
+  end
 end

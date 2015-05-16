@@ -1,4 +1,6 @@
 class CommissionProgramsController < ApplicationController
+  include ApplicationHelper
+  
   before_action :set_commission_program, only: [:start, :stop, :show, :edit, :update, :destroy]
 
   # GET /commission_programs
@@ -83,6 +85,26 @@ class CommissionProgramsController < ApplicationController
         format.html { redirect_to commission_programs_path, alert: 'Commission program was unsuccessfully stopped.' }
         format.json { render json: @commission_program.errors, status: :unprocessable_entity }
       end
+    end
+  end
+  
+  def statistics
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = (DateTime.now - 1.month).beginning_of_month
+      @to_date =  DateTime.now
+    end
+    
+    @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+    
+    months = get_months_between_time(@from_date, @to_date)
+    
+    @statistics = []
+    months.each do |month|
+      block = CommissionProgram.statistics(current_user, month.beginning_of_month, month.end_of_month.end_of_day, params)
+      @statistics << block if !block.nil?
     end
   end
 

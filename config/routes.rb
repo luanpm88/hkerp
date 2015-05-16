@@ -3,6 +3,8 @@ Hkerp::Application.routes.draw do
     collection do
       get :start
       get :stop
+      
+      get :statistics
     end
   end
   
@@ -144,12 +146,6 @@ Hkerp::Application.routes.draw do
         get :download_backup
         get :delete_backup
       end
-    end
-  end
-  
-  resources :users do
-    collection do
-      get :commission_statistics
     end
   end
   
