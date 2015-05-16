@@ -1,4 +1,5 @@
 class CityTypesController < ApplicationController
+  load_and_authorize_resource
   before_action :set_city_type, only: [:show, :edit, :update, :destroy]
 
   # GET /city_types

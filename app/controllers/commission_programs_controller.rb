@@ -1,4 +1,6 @@
 class CommissionProgramsController < ApplicationController
+  load_and_authorize_resource
+  
   include ApplicationHelper
   
   before_action :set_commission_program, only: [:start, :stop, :show, :edit, :update, :destroy]
