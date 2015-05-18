@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   
   def avatar_path(version = nil)
     if self.image_url.nil?
-      return "/img/avatar.jpg"
+      return "public/img/avatar.jpg"
     elsif !version.nil?
       return self.image_url(version)
     else
