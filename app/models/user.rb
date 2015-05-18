@@ -135,7 +135,7 @@ class User < ActiveRecord::Base
     `mkdir backup/#{dir}`
     
     backup_cmd = ""
-    backup_cmd += "pg_dump -a hkerp_development >> backup/#{dir}/data.dump && " if !params[:database].nil?
+    backup_cmd += "pg_dump -a hkerp_production >> backup/#{dir}/data.dump && " if !params[:database].nil?
     backup_cmd += "cp -a uploads backup/#{dir}/ && " if !params[:file].nil?
     backup_cmd += "zip -r backup/#{dir}.zip backup/#{dir} && "
     backup_cmd += "rm -rf backup/#{dir}"
