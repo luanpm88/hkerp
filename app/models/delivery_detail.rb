@@ -21,7 +21,7 @@ class DeliveryDetail < ActiveRecord::Base
     if !serial_numbers.nil?
       serial_numbers.split("\r\n").each do |line|
         item = line.strip
-        if item.length < 40 && item.length > 4
+        if item.length < 80 && item.length > 4
           arr << item
         end      
       end
