@@ -99,6 +99,9 @@ class Ability
       
       can :statistics, CommissionProgram
       can :read, CommissionProgram
+      
+      can :read, City
+      can :read, Country
     end  
     
     if user.has_role? "attendance_manager"
