@@ -107,11 +107,11 @@ class User < ActiveRecord::Base
   pg_search_scope :search,
                 against: [:first_name, :last_name],                
                 using: {
-                  tsearch: {
-                    dictionary: 'english',
-                    any_word: true,
-                    prefix: true
-                  }
+                    tsearch: {
+                      dictionary: 'english',
+                      any_word: true,
+                      prefix: true
+                    }
                 }
   
   def self.full_text_search(q)
@@ -131,7 +131,7 @@ class User < ActiveRecord::Base
     dir += "_db" if !params[:database].nil?
     dir += "_source" if !params[:file].nil?
     
-    `mkdir backup` if !File.directory?("backup")    
+    `mkdir backup` if !File.directory?("backup")
     `mkdir backup/#{dir}`
     
     backup_cmd = ""
