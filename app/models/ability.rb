@@ -157,6 +157,7 @@ class Ability
       end
       
       can :order_log, Order
+      can :avatar, User
     end
 
     if user.has_role? "purchaser"        

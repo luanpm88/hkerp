@@ -149,6 +149,12 @@ Hkerp::Application.routes.draw do
     end
   end
   
+  resources :users do
+    collection do
+      get :avatar
+    end
+  end
+  
   resources :manufacturers
 
   resources :contact_types

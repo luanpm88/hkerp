@@ -83,7 +83,7 @@ class User < ActiveRecord::Base
     return checks
   end
   
-  def avatar(version = nil)
+  def avatar_path(version = nil)
     if self.image_url.nil?
       return "/img/avatar.jpg"
     elsif !version.nil?
@@ -91,7 +91,14 @@ class User < ActiveRecord::Base
     else
       return self.image_url
     end
-  end  
+  end
+  
+  def avatar(version = nil)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    link_helper.url_for(controller: "users", action: "avatar", id: self.id, type: version)
+  end
   
   def self.current_user
     Thread.current[:current_user]
@@ -129,7 +136,7 @@ class User < ActiveRecord::Base
     
     backup_cmd = ""
     backup_cmd += "pg_dump -a hkerp_development >> backup/#{dir}/data.dump && " if !params[:database].nil?
-    backup_cmd += "cp -a public/uploads backup/#{dir}/ && " if !params[:file].nil?
+    backup_cmd += "cp -a uploads backup/#{dir}/ && " if !params[:file].nil?
     backup_cmd += "zip -r backup/#{dir}.zip backup/#{dir} && "
     backup_cmd += "rm -rf backup/#{dir}"
     
