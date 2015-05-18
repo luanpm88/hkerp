@@ -1580,7 +1580,7 @@
 										</div>
 									<% elsif !notification.sender.nil? %>
 										<div class="user-profile">
-											<img width="35" height="35" imgd2x.jpg"="" data-src-retina="" data-src="<%= notification.sender.avatar(:thumb) %>" alt="" src="<%= notification.sender.avatar(:thumb) %>">
+											<img width="35" height="35" data-src-retina="<%= notification.sender.avatar(:thumb2x) %>" data-src="<%= notification.sender.avatar(:thumb) %>" alt="" src="<%= notification.sender.avatar(:thumb) %>">
 										</div>
 									<% end %>
 									<!--<div class="user-profile">
@@ -1604,7 +1604,7 @@
 					</div>				
 				</div>
 				<div class="profile-pic"> 
-					<img src="<%= current_user.avatar(:thumb) %>"  alt="" data-src="<%= current_user.avatar(:thumb) %>" data-src-retina="<%= url_for("/img") %>avatar_small2x.jpg" width="35" height="35" /> 
+					<img src="<%= current_user.avatar(:thumb) %>"  alt="" data-src="<%= current_user.avatar(:thumb) %>" data-src-retina="<%= current_user.avatar(:thumb2x) %>" width="35" height="35" /> 
 				</div>       			
 			</div>
 		 <ul class="nav quick-section ">

@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  mount_uploader :image, ImageUploader
+  mount_uploader :image, AvatarUploader
   
   has_many :contacts
   has_many :products
