@@ -594,7 +594,7 @@ class Order < ActiveRecord::Base
       if params["payment_status"].present? && params["payment_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(
                   "payment_status_name IN (?) OR tip_status_name = ?",
-                  '"not_deposited", "debt", "pay_back"',
+                  '"not_deposited", "debt", "pay_back", "out_of_date"',
                   "not_tipped"
                 )
       end
