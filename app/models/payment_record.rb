@@ -9,7 +9,7 @@ class PaymentRecord < ActiveRecord::Base
   validates :payment_method, presence: true
   validates :amount, presence: true
   
-  validates :type, presence: true
+  validates :type_name, presence: true
   
   
   validate :valid_amount
