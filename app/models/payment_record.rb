@@ -67,7 +67,7 @@ class PaymentRecord < ActiveRecord::Base
   end
   
   def valid_amount
-    if !is_tip && !is_custom
+    if type_name == 'order'
       if !order.is_payback && amount.to_f > order.remain_amount.to_f.round(2)
         errors.add(:amount, "can't be greater than remain amount")
       end
@@ -76,7 +76,7 @@ class PaymentRecord < ActiveRecord::Base
       end
     end
     
-    if is_tip
+    if type_name == 'tip'
       if order.remain_tip != amount.to_f
         errors.add(:amount, "not valid")
       end
@@ -84,7 +84,7 @@ class PaymentRecord < ActiveRecord::Base
   end
   
   def valid_debt_date
-    if !is_tip && !is_custom
+    if type_name == 'order'
       if order.is_deposited && !debt_date.nil?
         if debt_date <= order.order_date
           errors.add(:debt_date, "can't be smaller than order date")
