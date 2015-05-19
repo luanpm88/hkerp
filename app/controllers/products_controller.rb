@@ -112,6 +112,9 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1
   # PATCH/PUT /products/1.json
   def update
+    p product_params
+    
+    
     respond_to do |format|
       if @product.update(product_params)
         @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
