@@ -17,6 +17,12 @@ class PaymentRecord < ActiveRecord::Base
   
   after_save :update_payment_status_name
   
+  def self.custom_records
+    self.where(type_name: 'custom')
+        .where(status: 1)
+        .order("created_at DESC")
+  end
+  
   def self.datatable(params)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
