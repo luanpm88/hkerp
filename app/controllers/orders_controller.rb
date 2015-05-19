@@ -366,8 +366,8 @@ class OrdersController < ApplicationController
     
     return_url = {controller: "accounting", action: "orders"}
     respond_to do |format|
-      if @order.update(update_tip_params)
-        @order.update_order_detail_tips(permit_order_details_params(params[:order_details]))
+      if @order.update_order_detail_tips(permit_order_details_params(params[:order_details])) #@order.update(update_tip_params)
+        
         format.html { redirect_to return_url, notice: 'Order tip was successfully updated.' }
         format.json { head :no_content }
       else

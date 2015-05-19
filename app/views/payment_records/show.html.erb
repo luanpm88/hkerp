@@ -13,7 +13,8 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
 </div>
 
 <div class="order_histories" style="float: left; max-width: 640px">
-  <% @order.payment_records.order("created_at DESC").each do |d| %>
+  
+  <% @order.all_order_payments.each do |d| %>
     <%
       active = d.id == @payment_record.id ? "success" : "white"      
     %>
@@ -21,6 +22,19 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
     <div class="print_group">
       
       <%= link_to d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+      
+    </div>
+
+  <% end %>
+
+  <% @order.all_tip_payments.each do |d| %>
+    <%
+      active = d.id == @payment_record.id ? "success" : "white"      
+    %>
+    
+    <div class="print_group">
+      
+      <%= link_to "[Tip] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
       
     </div>
 

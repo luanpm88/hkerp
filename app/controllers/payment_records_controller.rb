@@ -85,9 +85,10 @@ class PaymentRecordsController < ApplicationController
     @order = Order.find(payment_record_params[:order_id])
     @payment_record = @order.payment_records.new(payment_record_params)
     @payment_record.accountant = current_user
+    @payment_record.type_name = 'order'
     
     if @order.is_payback
-        @payment_record.amount = -@payment_record.amount
+        @payment_record.amount = -@payment_record.amount.abs
     end
     
     list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
@@ -111,7 +112,7 @@ class PaymentRecordsController < ApplicationController
     
     @payment_record = @order.payment_records.new(payment_record_params)
     @payment_record.accountant = current_user
-    @payment_record.is_tip = true    
+    @payment_record.type_name = 'tip'
     
     list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
     
@@ -139,7 +140,7 @@ class PaymentRecordsController < ApplicationController
   def do_pay_custom
     @payment_record = PaymentRecord.new(payment_record_params)
     @payment_record.accountant = current_user
-    @payment_record.is_custom = true
+    @payment_record.type_name = 'custom'
     
     respond_to do |format|
       if @payment_record.save

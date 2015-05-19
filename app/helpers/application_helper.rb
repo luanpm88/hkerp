@@ -99,10 +99,19 @@ module ApplicationHelper
       
       group_2 = 0
       if can? :read, PaymentRecord
-        if item.all_payment_records.count > 0
-		  item.all_payment_records.each do |recept|
+        if item.all_order_payments.count > 0
+		  item.all_order_payments.each do |recept|
             actions += '<li>'
             actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
+            actions += '</li>'
+		  end		  
+		  group_2 += 1
+		end
+        
+        if item.all_tip_payments.count > 0
+		  item.all_tip_payments.each do |recept|
+            actions += '<li>'
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Tip ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
             actions += '</li>'
 		  end		  
 		  group_2 += 1

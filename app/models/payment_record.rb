@@ -3,23 +3,19 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :accountant, :class_name => "User"
   belongs_to :payment_method
   belongs_to :user
+
   
   validates :note, presence: true
   validates :payment_method, presence: true
   validates :amount, presence: true
   
+  validates :type, presence: true
+  
+  
   validate :valid_amount
   validate :valid_debt_date
   
   after_save :update_payment_status_name
-  
-  def self.all_records
-    where(status: 1).where(is_tip: false).where(is_custom: false)
-  end
-  
-  def self.custom_records
-    PaymentRecord.where(is_custom: true)
-  end
   
   def self.datatable(params)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
@@ -75,7 +71,7 @@ class PaymentRecord < ActiveRecord::Base
     end
     
     if is_tip
-      if order.tip_amount.to_f.round(2) != amount.to_f
+      if order.remain_tip != amount.to_f
         errors.add(:amount, "not valid")
       end
     end
@@ -131,10 +127,10 @@ class PaymentRecord < ActiveRecord::Base
     datas = []    
     records.each do |p|
       data = {payment_record: p,pay: "", recieve: ""}
-      if p.is_tip
+      if p.type_name == 'tip'
          total_pay += p.amount
          data[:pay] = p.amount
-      elsif p.is_custom
+      elsif p.type_name == 'custom'
         if p.is_recieved
           total_recieve += p.amount
           data[:recieve] = p.amount
@@ -142,7 +138,7 @@ class PaymentRecord < ActiveRecord::Base
           total_pay += p.amount
           data[:pay] = p.amount
         end
-      else
+      elsif p.type_name == 'order'
         if p.order.is_purchase || (!p.order.is_purchase && p.amount < 0)
           total_pay += p.amount.abs
           data[:pay] = p.amount.abs

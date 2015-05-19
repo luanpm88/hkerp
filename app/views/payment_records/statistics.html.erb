@@ -112,13 +112,18 @@
 													<%= p.paid_date.strftime("%Y-%m-%d, %H:%M") %>
 												</td>
                                                 <td>
-                                                  <% if p.is_tip %>
-                                                    Pay tip [<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
-                                                  <% elsif p.is_custom %>
+                                                  <% if p.type_name == 'tip' %>
+                                                    Pay tip													
+													[<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
+                                                  <% elsif p.type_name == 'custom' %>
                                                     Custom
-                                                  <% else %>
+                                                  <% elsif p.type_name == 'order' %>
                                                     <%= p.order.is_purchase ? "Purchase" : "Sales" %>
-                                                    Order													
+                                                    Order
+													<% if p.amount < 0 %>
+														[Pay back]
+													<% end %>
+													[<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
                                                   <% end %>
                                                   
                                                 </td>

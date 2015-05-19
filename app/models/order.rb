@@ -777,11 +777,11 @@ class Order < ActiveRecord::Base
   end
   
   def paid_amount
-    all_payment_records.sum :amount
+    all_order_payments.sum :amount
   end
   
   def tipped_amount
-    all_tip_records.sum :amount
+    all_tip_payments.sum :amount
   end
   
   def is_tipped
@@ -1127,12 +1127,20 @@ class Order < ActiveRecord::Base
     draft.set_status("draft",user)
   end
   
-  def all_payment_records
-    payment_records.where(status: 1).where(is_tip: false).where(is_custom: false).order("created_at DESC")
+  def all_order_payments
+    payment_records.where(type_name: 'order')
+                  .where(status: 1)
+                  .order("created_at DESC")
+  end  
+  def all_tip_payments
+    payment_records.where(type_name: 'tip')
+                  .where(status: 1)
+                  .order("created_at DESC")
   end
-  
-  def all_tip_records
-    payment_records.where(status: 1).where(is_tip: true).order("created_at DESC")
+  def all_custom_payments
+    payment_records.where(type_name: 'custom')
+                  .where(status: 1)
+                  .order("created_at DESC")
   end
   
   def is_prices_oudated
@@ -1249,7 +1257,7 @@ class Order < ActiveRecord::Base
     end
     
     #payment
-    all_payment_records.each do |p|
+    all_order_payments.each do |p|
       o = p.order
       if o.is_purchase
         if p.amount < 0
@@ -1347,7 +1355,7 @@ class Order < ActiveRecord::Base
   end
   
   def payments_by_date(d)
-    all_payment_records.where('paid_date >= ?', d.beginning_of_day)
+    all_order_payments.where('paid_date >= ?', d.beginning_of_day)
                         .where('paid_date <= ?', d.end_of_day)
   end
   

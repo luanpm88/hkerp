@@ -1029,7 +1029,8 @@ CREATE TABLE payment_records (
     paid_date timestamp without time zone,
     status integer DEFAULT 1,
     is_custom boolean DEFAULT false,
-    is_recieved boolean DEFAULT false
+    is_recieved boolean DEFAULT false,
+    type_name character varying
 );
 
 
@@ -2505,4 +2506,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150513062332');
 INSERT INTO schema_migrations (version) VALUES ('20150513070607');
 
 INSERT INTO schema_migrations (version) VALUES ('20150515014950');
+
+INSERT INTO schema_migrations (version) VALUES ('20150519023308');
 
