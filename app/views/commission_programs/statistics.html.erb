@@ -162,7 +162,7 @@
                                                                                     </td>
                                                                                     <td rowspan="<%= count %>" class="text-right">
 																						<%
-																							commission_amount = order.commission(current_user)[:amount]
+																							commission_amount = order.commission[:amount]
 																							if commission_amount == "####"
 																								total_commission = "####"
 																							else
@@ -171,13 +171,13 @@
 																						%>
 																						<%= format_price(commission_amount) %>
 																						
-																						<% if !order.commission(current_user)[:program].nil? %>
+																						<% if !order.commission[:program].nil? %>
 																							<br />
 																							
-																							<%= link_to order.commission(current_user)[:program].name, order.commission(current_user)[:program], :class => "fancybox_link fancybox.ajax" %>
+																							<%= link_to order.commission[:program].name, order.commission[:program], :class => "fancybox_link fancybox.ajax" %>
 																							
 																							<br />
-																							<%= order.commission(current_user)[:program].commission_rate.to_s+"%" %>
+																							<%= order.commission[:program].commission_rate.to_s+"%" %>
 																						<% end %>
                                                                                     </td>
                                                                                 <% end %>

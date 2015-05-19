@@ -68,7 +68,7 @@ class CommissionProgram < ActiveRecord::Base
     
     orders.each do |order|
       total_sell += order.total
-      #total_commission += order.commission(user)[:amount]
+      #total_commission += order.commission[:amount]
     end
     data[:total_sell] = total_sell
     
