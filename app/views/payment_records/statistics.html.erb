@@ -135,7 +135,7 @@
                                                 </td>
 												
 												<td class="text-center">
-													<% if !p.is_tip && !p.is_custom %>
+													<% if p.type_name == 'order' %>
 														<% if p.order.printed_order_number.present? %>
 															<strong class="finished"><%= p.order.printed_order_number %></strong>
 															<br />

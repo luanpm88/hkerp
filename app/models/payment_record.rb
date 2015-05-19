@@ -40,8 +40,8 @@ class PaymentRecord < ActiveRecord::Base
       
       item = [
               item.note,
-              item.is_recieved ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
-              !item.is_recieved ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
+              !item.is_paid ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
+              item.is_paid ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
               '<div class="text-center">'+item.paid_date.strftime("%Y-%m-%d")+'</div>',
               "1",
             ]
@@ -137,7 +137,7 @@ class PaymentRecord < ActiveRecord::Base
          total_pay += p.amount
          data[:pay] = p.amount
       elsif p.type_name == 'custom'
-        if p.is_recieved
+        if !p.is_paid
           total_recieve += p.amount
           data[:recieve] = p.amount
         else
@@ -157,7 +157,13 @@ class PaymentRecord < ActiveRecord::Base
       datas << data
     end
     
+    
+    
     return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+  end
+  
+  def is_paid
+    amount < 0
   end
   
 end

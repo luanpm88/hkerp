@@ -27,9 +27,9 @@
                                                         <span class="help">(required)</span>
                                                         <div class="input-with-icon  right">                                       
                                                             <i class=""></i>
-                                                            <select class="modern_select width100" name="payment_record[is_recieved]">
-                                                              <option <%= 'selected=selected' if !@payment_record.is_recieved %> value="false">Pay</option>
-                                                              <option <%= 'selected=selected' if @payment_record.is_recieved %> value="true">Recieve</option>
+                                                            <select class="modern_select width100" name="is_recieved">
+                                                              <option <%= 'selected=selected' if params[:is_recieved] == "false" %> value="false">Pay</option>
+                                                              <option <%= 'selected=selected' if params[:is_recieved] == "true" %> value="true">Recieve</option>
                                                             </select>
                                                         </div>
                                                     </div>

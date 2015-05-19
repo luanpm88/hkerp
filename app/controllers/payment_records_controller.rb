@@ -142,6 +142,11 @@ class PaymentRecordsController < ApplicationController
     @payment_record.accountant = current_user
     @payment_record.type_name = 'custom'
     
+    if params[:is_recieved] == "false"
+       @payment_record.amount = -@payment_record.amount.abs
+    end
+    
+    
     respond_to do |format|
       if @payment_record.save
         format.html { redirect_to custom_payments_payment_records_path, notice: 'Payment record was successfully created.' }
