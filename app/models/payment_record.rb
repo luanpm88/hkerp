@@ -41,7 +41,7 @@ class PaymentRecord < ActiveRecord::Base
       item = [
               item.note,
               !item.is_paid ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
-              item.is_paid ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount).to_s+'</div>' : "",
+              item.is_paid ? '<div class="text-right">'+ApplicationController.helpers.format_price(item.amount.abs).to_s+'</div>' : "",
               '<div class="text-center">'+item.paid_date.strftime("%Y-%m-%d")+'</div>',
               "1",
             ]
@@ -141,8 +141,8 @@ class PaymentRecord < ActiveRecord::Base
           total_recieve += p.amount
           data[:recieve] = p.amount
         else
-          total_pay += p.amount
-          data[:pay] = p.amount
+          total_pay += p.amount.abs
+          data[:pay] = p.amount.abs
         end
       elsif p.type_name == 'order'
         if p.order.is_purchase || (!p.order.is_purchase && p.amount < 0)
