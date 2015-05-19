@@ -1394,7 +1394,7 @@ class Order < ActiveRecord::Base
     current_month = Time.now.beginning_of_month
     if order_date <= current_month
       # get total month sales
-      month_state = CommissionProgram.statistics(salesperson, order_date.beginning_of_month, order_date.end_of_month)      
+      month_state = CommissionProgram.sales_statistics(salesperson, order_date.beginning_of_month, order_date.end_of_month)      
       if !month_state.nil?
         month_program = choose_commission_program(month_state[:total_sell], "month")
         
@@ -1406,7 +1406,7 @@ class Order < ActiveRecord::Base
     current_year = Time.now.beginning_of_year
     if order_date <= current_year
       # get total month sales
-      year_state = CommissionProgram.statistics(salesperson, order_date.beginning_of_year, order_date.end_of_year)      
+      year_state = CommissionProgram.sales_statistics(salesperson, order_date.beginning_of_year, order_date.end_of_year)      
       if !year_state.nil?
         year_program = choose_commission_program(year_state[:total_sell], "year")
         

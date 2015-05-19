@@ -38,7 +38,7 @@ class CommissionProgram < ActiveRecord::Base
     end
   end
   
-  def self.statistics(user, from_date, to_date, params=nil)
+  def self.sales_statistics(user, from_date, to_date, params=nil)
     orders = user.sales_orders.joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                               .where("order_date >= ? AND order_date <= ?",from_date,to_date)
                               .order("order_date")
@@ -60,7 +60,7 @@ class CommissionProgram < ActiveRecord::Base
       return nil
     end    
     
-    #per month statistics
+    # statistics
     data = {name: "Statistics from <strong>#{from_date.strftime("%Y-%m-%d")}</strong> to <strong>#{to_date.strftime("%Y-%m-%d")}</strong>".html_safe,orders: orders}
     
     total_sell = 0.00
@@ -71,6 +71,20 @@ class CommissionProgram < ActiveRecord::Base
       #total_commission += order.commission[:amount]
     end
     data[:total_sell] = total_sell
+    
+    return data
+  end
+  
+  def self.statistics(user, from_date, to_date, params=nil)
+    data = self.sales_statistics(user, from_date, to_date, params=nil)
+    
+    total_commission = 0.00
+    if !data.nil?
+      data[:orders].each do |order|
+        total_commission += order.commission[:amount].to_f
+      end
+      data[:total_commission] = total_commission == 0.00 ? "####" : total_commission
+    end
     
     return data
   end

@@ -162,12 +162,7 @@
                                                                                     </td>
                                                                                     <td rowspan="<%= count %>" class="text-right">
 																						<%
-																							commission_amount = order.commission[:amount]
-																							if commission_amount == "####"
-																								total_commission = "####"
-																							else
-																								total_commission += commission_amount
-																							end
+																							commission_amount = order.commission[:amount]																							
 																						%>
 																						<%= format_price(commission_amount) %>
 																						
@@ -198,7 +193,7 @@
                                                                 <strong><%= format_price(block[:total_sell]) %></strong>
                                                             </td>
                                                             <td class="text-right">
-                                                                <strong><%= format_price(total_commission) %></strong>
+                                                                <strong><%= format_price(block[:total_commission]) %></strong>
                                                             </td>
                                                         </tr>
                                                         <tr>
