@@ -64,7 +64,7 @@ class CommissionProgram < ActiveRecord::Base
     end    
     
     # statistics
-    data = {name: "Statistics from <strong>#{from_date.strftime("%Y-%m-%d")}</strong> to <strong>#{to_date.strftime("%Y-%m-%d")}</strong>".html_safe,orders: orders}
+    data = {name: "From <strong>#{from_date.strftime("%Y-%m-%d")}</strong> to <strong>#{to_date.strftime("%Y-%m-%d")}</strong>".html_safe,orders: orders}
     
     total_sell = 0.00
     total_commission = 0.00
