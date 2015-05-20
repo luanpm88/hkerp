@@ -129,7 +129,7 @@
 										</div>
 										
 										Deliveries:
-										<% order.deliveries.each do |d| %>
+										<% order.all_deliveries.each do |d| %>
 											<% d.delivery_details.each do |dd| %>
 												&nbsp;&nbsp;&nbsp;<%= link_to '<i class="icon-print"></i> '.html_safe+dd.delivery.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: dd.delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
 												
@@ -137,9 +137,8 @@
 										<% end %>
 									<br />
 										Recepts:
-										<% order.payment_records.each do |recept| %>
-											&nbsp;&nbsp;&nbsp;<%= link_to("<i class=\"icon-print\"></i> ".html_safe+recept.created_at.strftime("%Y-%m-%d"), recept, :class => 'fancybox.iframe ajax_iframe') %>
-											
+										<% order.all_order_payments.each do |recept| %>
+											&nbsp;&nbsp;&nbsp;<%= link_to("<i class=\"icon-print\"></i> ".html_safe+recept.created_at.strftime("%Y-%m-%d"), recept, :class => 'fancybox.iframe ajax_iframe') %>											
 										<% end %>
 										
 										
