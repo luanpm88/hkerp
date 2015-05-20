@@ -100,6 +100,10 @@ class Ability
       can :statistics, CommissionProgram
       can :read, CommissionProgram
       
+      can :read_commissions, Order do |o|
+        o.salesperson == user
+      end
+      
       can :read, City
       can :read, Country
     end  
@@ -248,6 +252,10 @@ class Ability
         !order.is_tipped && ['finished'].include?(order.status.name)
       end
       
+      can :pay_commission, Order do |order|
+        !order.is_commissioned && ['finished'].include?(order.status.name)
+      end
+      
       can :download_pdf, PaymentRecord
       
       can :update_info, Order do |order|
@@ -341,6 +349,8 @@ class Ability
       can :create, CommissionProgram   
       can :start, CommissionProgram      
       can :stop, CommissionProgram
+      
+      can :manage, CommissionProgram
     end
 
     if user.has_role? "storage_manager"

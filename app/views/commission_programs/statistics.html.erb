@@ -45,7 +45,7 @@
 								</div>
 								
 								
-									<div class="col-md-3">
+									<div class="col-md-2">
 										<h4>Customer</h4>
 										<div class="">
 											<div class="input-with-icon  right">                                       
@@ -68,6 +68,30 @@
                                                 </div>
                                             </div>
                                     </div>
+									
+									<div class="col-md-2">
+										<h4>User</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											
+											<% if can? :manage, CommissionProgram %>
+												<input style="width:100%;margin-bottom: 5px;" name="user_id" url="<%= users_path(all_option: true, format: "json") %>" class="select2-ajax-users" value="<%= @user.id  if !@user.nil? %>" text="<%= @user.name if !@user.nil? %>" data-placeholder="All"/>
+											<% else %>
+												<strong><%= @user.name %></strong>
+											<% end %>
+											</div>
+										</div>
+									</div>
+											
+											<div class="col-md-2 pull-right">
+													<div class="">
+														<h4 style="color:#fff">...</h4>
+														
+															<input type="submit" value="Send" class="btn btn-primary text-center pull-right" />
+														
+													</div>
+											</div>
 
 							</div>
 						</form>
@@ -94,126 +118,135 @@
                                     <th class="text-right">Price</th>
                                     <th class="text-center">Status</th>
                                     
-                                    <th class="text-right">Total(+VAT)</th>
+                                    <!--<th class="text-right">Total(+VAT)</th>-->
                                     <th class="text-right">Total</th>
-                                    <th class="text-right">Commission</th>                                    
+                                    <th class="text-right">Commission</th>
+									<th class="text-right">Paid</th>
+									<th class="text-right">Remain</th>
                                 </tr>
                                 
                                 
                                 
                                           <% @statistics.each do |block| %>
+											
 														<tr class="block_commission_header">
-														  <th colspan="7">
+														  <th colspan="8">
+															
 															<h3>
 															  <%= block[:name] %>
+																
+																<i onclick="$('.num-<%= block[:orders].first.id %>').toggle()" class="icon-th-list pull-right commission-expan"></i>
+																
 															</h3>
+															
 														  </th>
 														</tr>
                                                         <%
                                                         num = 1
                                                         total_commission = 0.00
-                                                        block[:orders].each do |order| %>
                                                         
-                                                            <%
-                                                                count = order.order_details.where("quantity > 0").count
-                                                            %>
-                                                            
-                                                            
-                                                                    <% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
-                                                                        <% if od.quantity > 0 %>
-                                                                            <tr>												
-                                                                                <% if index == 0 %>
-                                                                                    <td rowspan="<%= count %>" class="text-center">
-                                                                                    <strong class=""><%= order.order_date_formatted %></strong>
-
-                                                                                        (<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>)
-                                                                                        <br />
-                                                                                        <i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
-                                                                                        
-                                                                                    </td>
-                                                                                <% end %>
-                                                                                
-                                                                                
-                                                                                <td>
-                                                                                    <%= od.product.display_name %>												
-                                                                                </td>
-                                                                                <td class="text-right">
-                                                                                    <%= format_price(od.total) %>
-                                                                                    <div class="text-right">(<%= od.quantity %> <%= od.unit %>)</div>
-                                                                                </td>
-                                                                                
-                                                                                
-                                                                                <% if index == 0 %>
-                                                                                    <td rowspan="<%= count %>" class="text-center">
-                                                                                        <%= order.display_payment_status %>
-                                                                                        <% if (order.is_debt || order.is_out_of_date) %>
-                                                                                            <%= order.debt_remain_days.to_s+' days' %>
-                                                                                            <br />
-                                                                                            (<%= order.debt_date.to_date if !order.debt_date.nil? %>)
-                                                                                        <% end %>
-                                                                                    </td>                                                                                    
-                                                                                    <td rowspan="<%= count %>" class="text-right">
-                                                                                        <%= format_price(order.total_vat) %>
-                                                                                        <br />
-                                                                                        (<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
-                                                                                    </td>
-                                                                                    <td rowspan="<%= count %>" class="text-right">
-                                                                                        <%= format_price(order.total) %>                                                                                        
-                                                                                    </td>
-                                                                                    <td rowspan="<%= count %>" class="text-right">
-																						<%
-																							commission_amount = order.commission[:amount]																							
-																						%>
-																						<%= format_price(commission_amount) %>
+																	block[:orders].each do |order| %>
+																	
+																		<%
+																			count = order.order_details.where("quantity > 0").count
+																		%>
+																		
+																		
+																				<% order.order_details.where("quantity > 0").each_with_index do |od,index| %>
+																					<% if od.quantity > 0 %>
+																						<tr class="num-<%= block[:orders].first.id %>"<% if true %> style="display: none"<% end %>>												
+																							<% if index == 0 %>
+																								<td rowspan="<%= count %>" class="text-center">
+																								<strong class=""><%= order.order_date_formatted %></strong>
+			
+																									(<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>)
+																									<br />
+																									<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
+																									<br />
+																									<i class="icon-user"></i> <%= order.salesperson.name %>
+																								</td>
+																							<% end %>
+																							
+																							
+																							<td>
+																								<%= od.product.display_name %>												
+																							</td>
+																							<td class="text-right">
+																								<%= format_price(od.total) %>
+																								<div class="text-right">(<%= od.quantity %> <%= od.unit %>)</div>
+																							</td>
+																							
+																							
+																							<% if index == 0 %>
+																								<td rowspan="<%= count %>" class="text-center">
+																									<%= order.display_payment_status %>
+																									<% if (order.is_debt || order.is_out_of_date) %>
+																										<%= order.debt_remain_days.to_s+' days' %>
+																										<br />
+																										(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+																									<% end %>
+																								</td>                                                                                    
+																								<!--<td rowspan="<%= count %>" class="text-right">
+																									<%= format_price(order.total_vat) %>
+																									<br />
+																									(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+																								</td>-->
+																								<td rowspan="<%= count %>" class="text-right">
+																									<%= format_price(order.total) %>                                                                                        
+																								</td>
+																								<td rowspan="<%= count %>" class="text-right">
+																									<%
+																										commission_amount = order.commission[:amount]																							
+																									%>
+																									<%= format_price(commission_amount) %>
+																									
+																									<% if !order.commission[:program].nil? %>
+																										<br />
+																										<%= link_to order.commission[:program].commission_rate.to_s+" %", order.commission[:program], :class => "badge badge-success fancybox_link fancybox.ajax" %>
+																									<% end %>
+																								</td>
+																								<td rowspan="<%= count %>" class="text-right">
+																									<span class="paid">
+																										<%= format_price(order.commissioned_amount) %>
+																									</span>
+																								</td>
+																								<td rowspan="<%= count %>" class="text-right">
+																									<span class="debt">
+																										<%= format_price(order.commission_remain) %>
+																									</span>
+																									
+																									<%= render_order_actions(order) %>
+																								</td>
+																							<% end %>
+																							
+																						</tr>
 																						
-																						<% if !order.commission[:program].nil? %>
-																							<br />
-																							
-																							<%= link_to order.commission[:program].name, order.commission[:program], :class => "fancybox_link fancybox.ajax" %>
-																							
-																							<br />
-																							<%= order.commission[:program].commission_rate.to_s+"%" %>
-																						<% end %>
-                                                                                    </td>
-                                                                                <% end %>
-                                                                                
-                                                                            </tr>
-                                                                            
-                                                                        <% end %>
-                                                                    <% end %>
-                                                                
-                                                            <% num += 1 %>
-                                                        <% end %>
-                                                        
+																					<% end %>
+																				<% end %>
+																			
+																		<% num += 1 %>
+																	<% end %>
+																
+														
+														
                                                         <tr>
-                                                            <td class="text-right" colspan="5">
+                                                            <td class="text-right" colspan="4">
                                                                 Tổng cộng:
                                                             </td>
                                                             <td class="text-right">
                                                                 <strong><%= format_price(block[:total_sell]) %></strong>
                                                             </td>
                                                             <td class="text-right">
-                                                                <strong><%= format_price(block[:total_commission]) %></strong>
+                                                                <strong><%= format_price(block[:total]) %></strong>
+                                                            </td>
+															<td class="text-right">
+                                                                <strong class="paid"><%= format_price(block[:paid]) %></strong>
+                                                            </td>
+															<td class="text-right">
+                                                                <strong class="debt"><%= format_price(block[:debt]) %></strong>
                                                             </td>
                                                         </tr>
-                                                        <tr>
-                                                            <td class="text-right" colspan="6">
-                                                                Đã trả:
-                                                            </td>
-                                                            <td class="text-right">
-                                                                <strong class="paid">####</strong>
-                                                            </td>
-
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="text-right" colspan="6">
-                                                                Còn lại:
-                                                            </td>
-                                                            <td class="text-right">
-                                                                <strong class="debt">####</strong>
-                                                            </td>
-
-                                                        </tr>
+                                                        
                                   
                                   
                                 <% end %>

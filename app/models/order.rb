@@ -593,9 +593,7 @@ class Order < ActiveRecord::Base
       
       if params["payment_status"].present? && params["payment_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(
-                  "payment_status_name IN (?) OR tip_status_name = ?",
-                  '"not_deposited", "debt", "pay_back", "out_of_date"',
-                  "not_tipped"
+                  "payment_status_name IN ('not_deposited', 'pay_back', 'out_of_date')"
                 )
       end
     elsif params[:page].present? && params[:page] == "delivery"
@@ -626,6 +624,7 @@ class Order < ActiveRecord::Base
     #@items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?  && params["delivery_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?  && params["payment_status"] != "waiting" && params["search"]["value"].empty?
+    @items = @items.where("tip_status_name = ?", "#{params["tip_status"]}") if params["tip_status"].present?
     @items = @items.where('extract(year from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["year"]) if params["year"].present?
     @items = @items.where('extract(month from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["month"]) if params["month"].present?
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?
@@ -784,8 +783,20 @@ class Order < ActiveRecord::Base
     all_tip_payments.sum :amount
   end
   
+  def commissioned_amount
+    all_commission_payments.sum :amount
+  end
+  
+  def commission_remain
+    commission[:amount] - commissioned_amount
+  end
+  
   def is_tipped
     tip_amount == tipped_amount
+  end
+  
+  def is_commissioned
+    commission[:amount] == commissioned_amount
   end
   
   def remain_amount
@@ -1142,6 +1153,11 @@ class Order < ActiveRecord::Base
                   .where(status: 1)
                   .order("created_at DESC")
   end
+  def all_commission_payments
+    payment_records.where(type_name: 'commission')
+                  .where(status: 1)
+                  .order("created_at DESC")
+  end
   
   def is_prices_oudated
     order_details.each do |od|
@@ -1388,7 +1404,7 @@ class Order < ActiveRecord::Base
   end
   
   def commission
-    commission = {amount: "####", program: nil}
+    commission = {amount: 0.00, program: nil}
     
     # month program
     current_month = Time.now.beginning_of_month

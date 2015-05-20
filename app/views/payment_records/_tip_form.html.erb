@@ -34,7 +34,7 @@
 																		<th>Tip Amount</th>
 																	</tr>
 																	<% @order.order_details.each do |od| %>
-																		<tr>
+																		<tr class="quantity-<%= od.quantity %>">
 																			<td><%= od.product.display_name %></td>
 																			<td class="text-right"><%= format_price(od.tip_amount) %></td>
 																		</tr>

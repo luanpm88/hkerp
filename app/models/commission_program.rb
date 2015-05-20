@@ -39,9 +39,12 @@ class CommissionProgram < ActiveRecord::Base
   end
   
   def self.sales_statistics(user, from_date, to_date, params=nil)
-    orders = user.sales_orders.joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
+    orders = Order.customer_orders.joins(:order_status).where(order_statuses: {name: ["confirmed","finished"]})
                               .where("order_date >= ? AND order_date <= ?",from_date,to_date)
                               .order("order_date")
+    if !user.nil?
+      orders = orders.where(salesperson_id: user.id)
+    end
     
     if !params.nil?
       if params[:paid_status].present? && params[:paid_status] == "paid"
@@ -78,12 +81,18 @@ class CommissionProgram < ActiveRecord::Base
   def self.statistics(user, from_date, to_date, params=nil)
     data = self.sales_statistics(user, from_date, to_date, params=nil)
     
-    total_commission = 0.00
+    total = 0.00
+    paid = 0.00
+    debt = 0.00
     if !data.nil?
       data[:orders].each do |order|
-        total_commission += order.commission[:amount].to_f
+        total += order.commission[:amount].to_f
+        paid += order.commissioned_amount
+        debt += order.commission_remain
       end
-      data[:total_commission] = total_commission == 0.00 ? "####" : total_commission
+      data[:total] = total
+      data[:paid] = paid
+      data[:debt] = debt
     end
     
     return data

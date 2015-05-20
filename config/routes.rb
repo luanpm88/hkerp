@@ -43,6 +43,9 @@ Hkerp::Application.routes.draw do
       
       get :edit_pay_custom
       get :statistics
+      
+      get :pay_commission
+      post :do_pay_commission
     end
   end
 

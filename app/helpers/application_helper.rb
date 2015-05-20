@@ -40,6 +40,11 @@ module ApplicationHelper
         group_1 += 1
       end
       
+      if can? :pay_commission, item
+        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Commission', {controller: "payment_records", action: "pay_commission", order_id: item.id})+'</li>'
+        group_1 += 1
+      end
+      
       actions += '<li class="divider"></li>' if group_1 > 0
       
       group_3 = 0
@@ -119,6 +124,21 @@ module ApplicationHelper
 	  end
       
       actions += '<li class="divider"></li>' if group_2 > 0
+      
+      
+      group_6 = 0
+      if can? :read_commissions, item
+        if item.all_commission_payments.count > 0
+		  item.all_commission_payments.each do |recept|
+            actions += '<li>'
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Commission ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
+            actions += '</li>'
+		  end		  
+		  group_6 += 1
+		end
+	  end
+      
+      actions += '<li class="divider"></li>' if group_6 > 0
       
       if can? :order_log, item
         actions += '<li>'+ActionController::Base.helpers.link_to("<i class=\"icon-time\"></i> Order Logs".html_safe, {controller: "orders", action: "order_log", id: item.id}, title: "Order Logs", target: "_blank")+'</li>'

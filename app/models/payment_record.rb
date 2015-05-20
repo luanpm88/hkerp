@@ -163,7 +163,7 @@ class PaymentRecord < ActiveRecord::Base
   end
   
   def is_paid
-    amount < 0
+    (type_name == "custom" && amount < 0) || (type_name == "commission" && amount > 0) || (type_name == "tip" && amount > 0) || ((type_name == "order" && order.is_purchase && amount > 0) || (type_name == "order" && !order.is_purchase && amount < 0))
   end
   
 end

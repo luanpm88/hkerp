@@ -235,5 +235,9 @@ class OrderDetail < ActiveRecord::Base
     amount = (self.total/order.total)*order.tip_amount
     self.update_attribute("tip_amount", amount)
   end
+  
+  def commission_amount
+    order.commission[:program].nil? ? 0.00 : (order.commission[:program].commission_rate/100.00)*self.total
+  end
 
 end

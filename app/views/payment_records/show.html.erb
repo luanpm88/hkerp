@@ -38,7 +38,24 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
       
     </div>
 
-  <% end %>
+<% end %>
+
+	  <% if can? :read_commissions, @order %>
+		  <% @order.all_commission_payments.each do |d| %>
+			<%
+			  active = d.id == @payment_record.id ? "success" : "white"      
+			%>
+			
+			<div class="print_group">
+			  
+			  <%= link_to "[Commission] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+			  
+			</div>
+		
+		  <% end %>
+	  <% end %>
+
+
 </div>
 
 <br style="clear: both" />

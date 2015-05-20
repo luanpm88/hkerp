@@ -1,7 +1,7 @@
 class PaymentRecordsController < ApplicationController
   include ApplicationHelper
   
-  load_and_authorize_resource :except => [:pay_tip, :do_pay_tip]
+  load_and_authorize_resource :except => [:pay_commission, :do_pay_commission, :pay_tip, :do_pay_tip]
   
   before_action :set_payment_record, only: [:edit_pay_custom, :trash, :download_pdf, :show, :edit, :update, :destroy]
 
@@ -206,6 +206,41 @@ class PaymentRecordsController < ApplicationController
     end
     
     @statistics = PaymentRecord.statistics(@from_date, @to_date, params)
+  end
+  
+  def pay_commission
+    @order = Order.find(params[:order_id])
+        
+    
+    
+    
+    authorize! :pay_commission, @order
+    @payment_record = PaymentRecord.new
+    
+    @payment_record.paid_person = @order.is_purchase ? @order.purchaser.name : @order.salesperson.name
+    # @payment_record.paid_address = @order.is_purchase ? @order.purchaser.address : @order.salesperson.address    
+    
+    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+  end
+  
+  def do_pay_commission
+    @order = Order.find(payment_record_params[:order_id])
+    
+    authorize! :pay_commission, @order
+    
+    @payment_record = @order.payment_records.new(payment_record_params)
+    @payment_record.accountant = current_user
+    @payment_record.type_name = 'commission'
+    
+    respond_to do |format|
+      if @payment_record.save
+        format.html { redirect_to statistics_commission_programs_path, notice: 'Payment record was successfully created.' }
+        format.json { render action: 'show', status: :created, location: @payment_record }
+      else
+        format.html { render action: 'pay_tip' }
+        format.json { render json: @payment_record.errors, status: :unprocessable_entity }
+      end
+    end    
   end
 
   private

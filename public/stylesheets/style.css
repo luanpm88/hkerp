@@ -7862,3 +7862,6 @@ tr.block_commission_header {
 tr.block_commission_header h3 {
     color: #fff !important;
 }
+.commission-expan {
+    cursor: pointer;
+}

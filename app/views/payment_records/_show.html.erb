@@ -34,7 +34,7 @@
   <tr>
     <td class="maintitle" align="center" style="padding-bottom: 30px;">
       <h1>
-        <% if @order.is_purchase || @payment_record.amount < 0 %>
+        <% if @payment_record.is_paid %>
           PHIẾU CHI
         <% else %>
           PHIẾU THU
@@ -43,7 +43,7 @@
       
     </td>
     <td class="mid middle1" style="padding-bottom: 30px;">
-      <p><label>Ngày thu: </label><%= @payment_record.paid_date.strftime("%d/%m/%Y") %></p>
+      <p><label>Ngày lập phiếu: </label><%= @payment_record.paid_date.strftime("%d/%m/%Y") %></p>
       
       <p><label>Số: </label><%= @order.quotation_code %>-<%= @payment_record.id %></p>
     </td>
@@ -56,7 +56,7 @@
 <table class="top-info" style="margin-top: 0" cellspacing="0">
   <tr>
     <td class="mid" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
-      <p><label>Người <%= @order.is_purchase || @payment_record.amount < 0 ? "nhận" : "nộp" %> tiền: </label> <strong><%= @payment_record.paid_person %></strong></p>
+      <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %> tiền: </label> <strong><%= @payment_record.paid_person %></strong></p>
       <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
       <p><label>Lý do: </label> <%= @payment_record.note %></p>
       <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong></p>
@@ -77,7 +77,7 @@
         
       </td>
       <td width="20%" align="center" valign="top">
-        <p><strong>NGƯỜI <%= @order.is_purchase || @payment_record.amount < 0 ? "NHẬN" : "NỘP" %> TIỀN</strong></p>
+        <p><strong>NGƯỜI <%= @payment_record.is_paid ? "NHẬN" : "NỘP" %> TIỀN</strong></p>
         
       </td>
       <td width="20%" align="center" valign="top">

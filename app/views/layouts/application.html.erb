@@ -273,6 +273,7 @@
 			"ajax": {
 				"url": url,
 				"data": function ( d ) {
+					d.tip_status = $('select[name="tip_status"]').val();
 					d.payment_status = $('select[name="payment_status"]').val();
 					d.delivery_status = $('select[name="delivery_status"]').val();
 					d.order_status = $('select[name="order_status"]').val();
@@ -1280,18 +1281,21 @@
 	    $('.select2-ajax-users').select2({
 		placeholder: "Search for a user",
 		minimumInputLength: 1,
-		ajax: {
-		  url: $('.select2-ajax-users').attr("url"),
-		  dataType: 'json',
-		  data: function (term, page) { // page is the one-based page number tracked by Select2
-		    return {
-		      q: term, //search term
-		    };
-		  },
-		  results: function (data, page) {
-		    return {results: data};
-		  }
-		},
+			ajax: {
+			  url: $('.select2-ajax-users').attr("url"),
+			  dataType: 'json',
+			  data: function (term, page) { // page is the one-based page number tracked by Select2
+				return {
+				  q: term, //search term
+				};
+			  },
+			  results: function (data, page) {
+				return {results: data};
+			  }
+			},
+			initSelection: function (element, callback) {				      
+			  callback({ id: element.val, text: element.attr('text') });
+			}
 	    });
 	    
 	    
@@ -1845,7 +1849,7 @@
 				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
 				<% end %>
 				<ul class="sub-menu">
-				  <li<% if params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
+				  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
 				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup" %></li>
 				</ul>
 	    </li>
