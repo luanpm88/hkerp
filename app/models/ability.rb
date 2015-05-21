@@ -53,6 +53,7 @@ class Ability
       can :read, User
       
       can :read, Contact
+      can :datatable, Contact
       can :create, Contact
       can :update, Contact do |contact|
         contact.user_id == user.id

@@ -1,21 +1,13 @@
 class ContactsController < ApplicationController
+  include ContactsHelper
+  
   load_and_authorize_resource
   before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
 
   # GET /contacts
   # GET /contacts.json
   def index
-    @types = params[:types].present? ? params[:types] : []
-    
-    @contacts = Contact.main_contacts.joins(:contact_types)
-    @contacts = @contacts.where(contact_types: {id: @types}) if !@types.empty?
-    
-    if !can?(:view_suppliers, Contact)
-      @contacts = @contacts.where("contact_types.id != ?", ContactType.supplier)
-    end
-    if !can?(:view_agents, Contact)
-      @contacts = @contacts.where("contact_types.id != ?", ContactType.agent)
-    end
+    @types = [ContactType.customer, ContactType.supplier]
     
     respond_to do |format|
       format.html
@@ -27,7 +19,9 @@ class ContactsController < ApplicationController
 
   # GET /contacts/1
   # GET /contacts/1.json
-  def show    
+  def show
+    
+    render layout: nil
   end
 
   # GET /contacts/new
@@ -137,6 +131,18 @@ class ContactsController < ApplicationController
   
   def ajax_list_supplier_agent
     render :layout => nil
+  end
+  
+  def datatable
+    result = Contact.datatable(params, current_user)
+    
+    result[:items].each_with_index do |item, index|
+      actions = render_contacts_actions(item)
+      
+      result[:result]["data"][index][result[:actions_col]] = actions
+    end
+    
+    render json: result[:result]
   end
 
   private

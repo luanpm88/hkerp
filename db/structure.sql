@@ -538,7 +538,8 @@ CREATE TABLE contacts (
     is_mine boolean DEFAULT false,
     hotline character varying,
     user_id integer,
-    city_id integer
+    city_id integer,
+    contact_types_cache character varying
 );
 
 
@@ -2508,4 +2509,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150513070607');
 INSERT INTO schema_migrations (version) VALUES ('20150515014950');
 
 INSERT INTO schema_migrations (version) VALUES ('20150519023308');
+
+INSERT INTO schema_migrations (version) VALUES ('20150521030440');
 

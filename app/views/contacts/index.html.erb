@@ -23,7 +23,7 @@
 											  <% ContactType.all.each do |ct| %>
 												   <div class="row-fluid contact_types">
 														<div class="checkbox check-success">
-															<%= check_box_tag "types[]", ct.id, @types.include?(ct.id.to_s), {id: "checkbox"+ct.id.to_s, onclick: "$('#contact_filter').submit()" } %>
+															<%= check_box_tag "types[]", ct.id, @types.include?(ct.id.to_s), {id: "checkbox"+ct.id.to_s } %>
 															<label for="checkbox<%= ct.id %>"><%= ct.name %></label>
 														</div>
 												   </div>
@@ -58,91 +58,24 @@
                             </div>
                             <div class="grid-body no-border">
                                  
-                                    <table class="table table-striped no-more-tables">
+                                    <table class="table table-striped no-more-tables datatable-contacts no-filter">
                                         <thead>
                                             <tr>
-                                                <th style="width:1%" >
-                                                    <div class="checkbox check-default">
-							<input id="checkbox10" type="checkbox" value="1" class="checkall">
-							<label for="checkbox10"></label>
-						    </div>
-                                                </th>
-                                                <th colspan="2" width="30%">Name</th>
-                                                <th>Info</th>
-                                                <th width="15%">Agents</th>
-                                                <th style="width: 115px;">Action</th>   
+                                                <th class="text-left">
+                                                    Name
+                                                </th>                                                
+                                                <th class="text-left">Info</th>
+									
+												<th class="text-center">Agents</th>
+												<th class="text-center">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                           
-                                            <% @contacts.each do |contact| %>
-                                              <% if contact.is_main %>
-                                                <tr>
-                                                  <td class="v-align-middle">
-                                                          <div class="checkbox check-default">
-                                                              <input id="checkbox1<%= contact.id %>" type="checkbox" value="<%= contact.id %>">
-                                                              <label for="checkbox1<%= contact.id %>"></label>
-                                                          </div>
-                                                  </td>
-                                                  <td colspan="2"><strong><%= contact.name %></strong></td>
-                                                  <td>
-                                                    <%= contact.html_info_line.html_safe %>
-                                                  </td>
-                                                  <td>
-                                                    <div id="agents-list" class="">
-                                                      <% if !contact.agents.nil? %>
-                                                        <% contact.agents.each do |agent| %>
-                                                          <div class="agent-line">                                                            
-                                                            <%= agent.html_agent_line.html_safe %>
-                                                          </div>
-                                                        <% end %>
-                                                      <% end %>
-                                                    </div>
-                                                  </td>
-                                                  <td>
-                                                          <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, contact, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-                                                          <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_contact_path(contact), :class => "btn btn-info btn-xs btn-mini" %>							                                                              
-                                                          <%= link_to 'X', contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
-                                                  </td>
-                                                </tr>
-                                                
-                                                <% contact.children.each do |child_contact| %>
-                                                  <tr class="child_contact">
-                                                    <td class="v-align-middle">                                                            
-                                                    </td>
-						    <td class="v-align-middle">
-                                                            <div class="checkbox check-default">
-                                                                <input id="checkbox1<%= child_contact.id %>" type="checkbox" value="<%= child_contact.id %>">
-                                                                <label for="checkbox1<%= child_contact.id %>"></label>
-                                                            </div>
-                                                    </td>
-                                                    <td class="name"><%= child_contact.name %></td>
-                                                    <td>
-                                                      <%= child_contact.html_info_line.html_safe %>
-                                                    </td>
-                                                    <td>
-                                                      <div id="agents-list" class="">
-                                                        <% if !child_contact.agents.nil? %>
-                                                          <% child_contact.agents.each do |agent| %>
-                                                            <div class="agent-line">                                                            
-                                                              <%= child_contact.html_agent_line.html_safe %>
-                                                            </div>
-                                                          <% end %>
-                                                        <% end %>
-                                                      </div>
-                                                    </td>
-                                                    <td>
-                                                            <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_contact, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-                                                            <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_contact_path(child_contact), :class => "btn btn-info btn-xs btn-mini" %>							
-                                                            <%= link_to 'x', child_contact, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
-                                                    </td>
-                                                  </tr>
-                                                <% end %>
-                                              <% end %>
-                                            <% end %>
+                                            
 					    
-                                          </tbody>
-                                    </table>
+                                        </tbody>
+									</table>
                             </div>
                         </div>
 			

@@ -1126,6 +1126,26 @@
 			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
 			"iDisplayLength": 25
 	    });
+		
+		//Datatable products
+	    $('.datatable-contacts').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_contacts_path %>",
+				"data": function ( d ) {
+					var types = $(".contact_types input:checkbox:checked").map(function(){
+						return $(this).val();
+					}).get();
+					d.types = types.join(",");
+					//d.category = $("select[name='category']").val()
+				}
+			},
+			"columnDefs": [ { "targets": [0], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+			"iDisplayLength": 25
+	    });
 	    
 	    $('select[name="DataTables_Table_0_length"]').select2();
 	    
@@ -1480,6 +1500,10 @@
 		});
 		
 		$('.fancybox_link').fancybox({width: "75%",'autoDimensions': false, 'autoSize':false});
+		
+		$(".contact_types input:checkbox").click(function() {
+			$('.datatable-contacts').dataTable().fnFilter();
+	    });
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>

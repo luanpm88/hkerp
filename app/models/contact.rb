@@ -14,13 +14,62 @@ class Contact < ActiveRecord::Base
   has_many :companies_contacts, :class_name => "AgentsContact", :foreign_key => "agent_id", :dependent => :destroy
   has_many :companies, :through => :companies_contacts, :source => :contact
   
+  has_many :contact_types_contacts
   
   belongs_to :contact_type
   belongs_to :user
 
   belongs_to :city
+  has_one :state, :through => :city
   
   has_and_belongs_to_many :contact_types
+  
+  after_validation :update_cache
+  
+  def self.datatable(params, user)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers    
+    
+    @records = self.main_contacts
+    @records = @records.where_by_types(params[:types].split(",")) if params[:types].present?
+    if !user.can?(:view_suppliers, Contact)
+      @records = @records.where("contacts.contact_types_cache NOT LIKE '%[#{ContactType.supplier}]%'")
+    end
+    @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    
+    total = @records.count
+    @records = @records.limit(params[:length]).offset(params["start"])
+    data = []
+    
+    actions_col = 3
+    @records.each do |item|
+      item = [
+              ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
+              item.html_info_line.html_safe,
+              item.agent_list_html,
+              '',
+            ]
+      data << item
+      
+    end
+    
+    result = {
+              "drawn" => params[:drawn],
+              "recordsTotal" => total,
+              "recordsFiltered" => total
+    }
+    result["data"] = data
+    
+    return {result: result, items: @records, actions_col: actions_col}
+  end
+  
+  def self.where_by_types(types)
+    wheres = []
+    types.each do |t|
+      wheres << "contacts.contact_types_cache LIKE '%[#{t}]%'"
+    end
+    where("(#{wheres.join(" OR ")})")
+  end
   
   def is_main
     parent.first.nil? && !is_agent
@@ -182,7 +231,12 @@ class Contact < ActiveRecord::Base
   end
   
   pg_search_scope :search,
-                against: [:name],
+                against: [:name, :address, :website, :phone, :mobile, :fax, :email, :tax_code, :note, :account_number, :bank],
+                associated_against: {
+                  city: [:name],
+                  state: [:name],
+                  agents: [:name]
+                },
                 using: {
                   tsearch: {
                     dictionary: 'english',
@@ -207,6 +261,25 @@ class Contact < ActiveRecord::Base
     ad = address+ad
     
     return ad
+  end
+  
+  def agent_list_html
+    html = ""
+    if !agents.nil?
+      agents.each do |agent|
+        html += '<div class="agent-line">'
+        html += agent.html_agent_line.html_safe
+        html += '</div>'
+      end
+    end
+    
+    return html
+  end
+  
+  def update_cache
+    types = contact_types.map{|t| t.id}
+    types_cache = types.empty? ? "" : "["+types.join("][")+"]"
+    self.update_attribute(:contact_types_cache, types_cache)
   end
   
 end
