@@ -7865,3 +7865,6 @@ tr.block_commission_header h3 {
 .commission-expan {
     cursor: pointer;
 }
+.page-content {
+    padding-bottom: 400px;
+}
