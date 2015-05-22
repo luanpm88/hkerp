@@ -56,7 +56,7 @@ class Contact < ActiveRecord::Base
     @records.each do |item|
       item = [
               ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title")+item.html_info_line.html_safe,
-              '<div class="text-center nowrap">'+item.city.system_name+"</div>",
+              '<div class="text-center nowrap">'+item.city_name+"</div>",
               item.agent_list_html,              
               '',
             ]
@@ -72,6 +72,10 @@ class Contact < ActiveRecord::Base
     result["data"] = data
     
     return {result: result, items: @records, actions_col: actions_col}
+  end
+  
+  def city_name
+    city.present? ? city.system_name : ""
   end
   
   def self.where_by_types(types)

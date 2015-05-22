@@ -7,14 +7,20 @@
     </p>
     
     <p>
-      <strong>Tax Code:</strong>
-      <%= @contact.tax_code %>
+      <strong>Address:</strong>
+      <%= @contact.address %>
     </p>
     
     <p>
       <strong>Type:</strong>
-      <%= @contact.contact_type.name %>
+      <%= @contact.contact_types.map{|t| t.name}.join(", ") %>
     </p>
+    
+    <p>
+      <strong>Tax Code:</strong>
+      <%= @contact.tax_code %>
+    </p>   
+    
     
     <p>
       <strong>Phone:</strong>
@@ -36,10 +42,7 @@
       <%= @contact.email %>
     </p>
     
-    <p>
-      <strong>Address:</strong>
-      <%= @contact.address %>
-    </p>
+    
     
     <p>
       <strong>Account Number:</strong>
