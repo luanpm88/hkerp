@@ -81,6 +81,22 @@
 
  	
 <script>
+	function show_city_select_tag() {
+		state = ""
+		if($('#state_id').length > 0) {
+			state = "?state_id="+$('#state_id').val()
+		}
+		$.ajax({
+			url : '<%= select_tag_cities_url %>'+state,
+			type: "GET",
+			success:function(data, textStatus, jqXHR)
+			{		    
+				$(".city_select_box").html(data);
+				$(".city_select_tag").select2();
+			}
+		});
+	}
+	
 	function updateTipAmount(p_box,v_box,t_box) {
 		var total = parseFloat(t_box.html().replace(/,/g,""));
 		var percent = parseFloat(p_box.val().replace(/,/g,""));
@@ -1138,10 +1154,10 @@
 						return $(this).val();
 					}).get();
 					d.types = types.join(",");
-					//d.category = $("select[name='category']").val()
+					d.area_id = $("#area_id").val()
 				}
 			},
-			"columnDefs": [ { "targets": [0], "orderable": false } ],
+			"columnDefs": [ { "targets": [0,1,2,3], "orderable": false } ],
 			"order": [],
 			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
 			"iDisplayLength": 25
@@ -1501,7 +1517,7 @@
 		
 		$('.fancybox_link').fancybox({width: "75%",'autoDimensions': false, 'autoSize':false});
 		
-		$(".contact_types input:checkbox").click(function() {
+		$("#contact_filter input").click(function() {
 			$('.datatable-contacts').dataTable().fnFilter();
 	    });
       });

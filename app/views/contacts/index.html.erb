@@ -15,9 +15,10 @@
 						
 						<form id="contact_filter">
 						  
-						  <div class="col-md-6">
+						  <div class="col-md-5">
 							  <h4>Contact Types</h4>
-							  <div class="">
+							  
+							  <div style="margin-top: 20px;">
 									<div class="input-with-icon right">                                       
 											<i class=""></i>
 											  <% ContactType.all.each do |ct| %>
@@ -32,7 +33,16 @@
 									</div>
 							  </div>
 						  </div>
-						
+							<div class="col-md-4">
+								<h4>Area (State/City/District)</h4>
+								<div class="">
+									<div class="input-with-icon  right">                                       
+									<i class=""></i>
+									<input id="area_id" style="width:100%;margin-bottom: 5px;" name="area_id" url="<%= states_path(format: "json") %>" class="select2-ajax-states" value="" text="" data-placeholder="All"/>
+									</div>
+								</div>
+							</div>
+							
 						</form>
 
 						
@@ -65,9 +75,9 @@
                                                     Name
                                                 </th>                                                
                                                 <th class="text-left">Info</th>
-									
-												<th class="text-center">Agents</th>
-												<th class="text-center">Actions</th>
+												<th class="text-center" width="10%">Area</th>
+												<th class="text-left">Agents</th>
+												<th class="text-right">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>

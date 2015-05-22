@@ -9,7 +9,11 @@ Hkerp::Application.routes.draw do
   end
   
   resources :city_types
-  resources :cities
+  resources :cities do
+    collection do
+      get :select_tag
+    end
+  end
   resources :states
   resources :countries
   resources :autotask_details

@@ -35,18 +35,30 @@ class Contact < ActiveRecord::Base
     if !user.can?(:view_suppliers, Contact)
       @records = @records.where("contacts.contact_types_cache NOT LIKE '%[#{ContactType.supplier}]%'")
     end
+    if params[:area_id].present?
+      area_type = params[:area_id].split("_")[0]
+      area_id = params[:area_id].split("_")[1]
+      if area_type == "c"
+        @records = @records.where(city_id: area_id)
+      elsif area_type == "s"
+        city_ids = State.find(area_id.to_i).cities.map{|c| c.id}
+        @records = @records.where(city_id: city_ids)
+      end      
+    end
+    
     @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
     
     total = @records.count
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
     
-    actions_col = 3
+    actions_col = 4
     @records.each do |item|
       item = [
               ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
               item.html_info_line.html_safe,
-              item.agent_list_html,
+              '<div class="text-center">'+item.city.name_with_state+"</div>",
+              item.agent_list_html,              
               '',
             ]
       data << item

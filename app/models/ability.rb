@@ -106,7 +106,9 @@ class Ability
       end
       
       can :read, City
+      can :read, State
       can :read, Country
+      can :select_tag, City
     end  
     
     if user.has_role? "attendance_manager"

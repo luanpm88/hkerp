@@ -17,6 +17,9 @@ class State < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    result = self.search(q).limit(25).map {|model| {:id => "s_"+model.id.to_s, :text => model.name} }
+    result += City.search(q).limit(25).map {|model| {:id => "c_"+model.id.to_s, :text => model.name_with_state} }
+    
+    return result
   end
 end

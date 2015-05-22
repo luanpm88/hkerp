@@ -13,6 +13,13 @@ class CitiesController < ApplicationController
       }
     end
   end
+  
+  def select_tag
+     @cities = City.all
+     @cities = @cities.where(state_id: params[:state_id]) if params[:state_id].present?
+     
+     render layout: nil
+  end
 
   # GET /cities/1
   # GET /cities/1.json

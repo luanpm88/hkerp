@@ -1,0 +1,6 @@
+<select name="city_id" class="city_select_tag width100">
+  <option value="">All</option>
+  <% @cities.each do |c| %>
+    <option value="<%= c.id %>"><%= c.name %></option>
+  <% end %>
+</select>
