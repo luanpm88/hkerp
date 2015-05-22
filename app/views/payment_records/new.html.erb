@@ -26,7 +26,7 @@
 								<h4>
 									Address:
 									<span class="semi-bold">
-										<%= @order.is_purchase ? @order.supplier.address : @order.customer.address %>
+										<%= @order.is_purchase ? @order.supplier.full_address : @order.customer.full_address %>
 									</span>
 								</h4>
                                 <h4>Total (+VAT):  <span class="semi-bold"><%= @order.formated_total_vat %> VND</span></h4>

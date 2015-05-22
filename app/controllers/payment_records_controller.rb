@@ -58,7 +58,7 @@ class PaymentRecordsController < ApplicationController
     if params[:order_id].present?
       @order = Order.find(params[:order_id])      
       @payment_record.paid_person = @order.is_purchase ? @order.supplier.name : @order.customer.name
-      @payment_record.paid_address = @order.is_purchase ? @order.supplier.address : @order.customer.address
+      @payment_record.paid_address = @order.is_purchase ? @order.supplier.full_address : @order.customer.full_address
       @payment_record.amount = @order.remain_amount
       @payment_record.order_id = @order.id
     end
