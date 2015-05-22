@@ -126,7 +126,7 @@
 						
 						<div class="col-md-4">
 							<h5>Total (+VAT)</h5>
-							<h2 class="text-right main-title"><%= format_price(@statistics[:total_buy_with_vat],false,false,2) %></h2>
+							<h2 class="text-right bold"><%= format_price(@statistics[:total_buy_with_vat],false,false,2) %></h2>
 						</div>
 						
 						<div class="col-md-4">
@@ -141,7 +141,7 @@
 						
 						<div class="col-md-4">
 							<h5>Paid (+VAT)</h5>
-							<h2 class="text-right main-title"><%= format_price(@statistics[:payment_paid_vat],false,false,2) %></h2>
+							<h2 class="text-right bold"><%= format_price(@statistics[:payment_paid_vat],false,false,2) %></h2>
 						</div>
 						
 						<div class="col-md-4">
@@ -156,7 +156,7 @@
 						
 						<div class="col-md-4">
 							<h5>Remain (+VAT)</h5>
-							<h2 class="text-right main-title"><%= format_price(@statistics[:total_buy_with_vat]-@statistics[:payment_paid_vat],false,false,2) %></h2>
+							<h2 class="text-right bold"><%= format_price(@statistics[:total_buy_with_vat]-@statistics[:payment_paid_vat],false,false,2) %></h2>
 						</div>
 						
 						<div class="col-md-4">
