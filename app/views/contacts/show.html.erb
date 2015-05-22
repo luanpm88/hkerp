@@ -1,34 +1,65 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @contact.name %>
-</p>
+<div>
+    <p>
+      <strong>Name:</strong>
+      <%= @contact.name %>
+    </p>
+    
+    <p>
+      <strong>Tax Code:</strong>
+      <%= @contact.tax_code %>
+    </p>
+    
+    <p>
+      <strong>Type:</strong>
+      <%= @contact.contact_type.name %>
+    </p>
+    
+    <p>
+      <strong>Phone:</strong>
+      <%= @contact.phone %>
+    </p>
+    
+    <p>
+      <strong>Mobile:</strong>
+      <%= @contact.mobile %>
+    </p>
+    
+    <p>
+      <strong>Fax:</strong>
+      <%= @contact.fax %>
+    </p>
+    
+    <p>
+      <strong>Email:</strong>
+      <%= @contact.email %>
+    </p>
+    
+    <p>
+      <strong>Address:</strong>
+      <%= @contact.address %>
+    </p>
+    
+    <p>
+      <strong>Account Number:</strong>
+      <%= @contact.account_number %>
+    </p>
+    
+    <p>
+      <strong>Bank:</strong>
+      <%= @contact.bank %>
+    </p>
+    
+    <p>
+      <strong>Website:</strong>
+      <%= @contact.website %>
+    </p>
+    
+    <p>
+      <strong>Note:</strong>
+      <%= @contact.note %>
+    </p>
+    
+</div>
 
-<p>
-  <strong>Phone:</strong>
-  <%= @contact.phone %>
-</p>
-
-<p>
-  <strong>Mobile:</strong>
-  <%= @contact.mobile %>
-</p>
-
-<p>
-  <strong>Fax:</strong>
-  <%= @contact.fax %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @contact.email %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @contact.address %>
-</p>
-
-<%= link_to 'Edit', edit_contact_path(@contact) %> |
-<%= link_to 'Back', contacts_path %>
