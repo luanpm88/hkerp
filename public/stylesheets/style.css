@@ -7868,3 +7868,10 @@ tr.block_commission_header h3 {
 .page-content {
     padding-bottom: 400px;
 }
+.nowrap {
+    white-space: nowrap;
+}
+.main-title {
+    display: block;
+    font-size: 15px;
+}

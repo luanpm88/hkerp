@@ -52,12 +52,11 @@ class Contact < ActiveRecord::Base
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
     
-    actions_col = 4
+    actions_col = 3
     @records.each do |item|
       item = [
-              ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
-              item.html_info_line.html_safe,
-              '<div class="text-center">'+item.city.name_with_state+"</div>",
+              ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title")+item.html_info_line.html_safe,
+              '<div class="text-center nowrap">'+item.city.system_name+"</div>",
               item.agent_list_html,              
               '',
             ]
