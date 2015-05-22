@@ -273,7 +273,7 @@ class Contact < ActiveRecord::Base
     if city.present?
       ad += ", "+city.name_with_state
     end
-    ad = address+ad
+    ad = address+ad if address.present?
     
     return ad
   end
