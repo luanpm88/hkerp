@@ -206,18 +206,17 @@ class Product < ActiveRecord::Base
                 supplier_price = user.can?(:view_supplier_price, product) ? product.product_price.supplier_price_formated : "####"
                 
                 trashed_class =  product.status == 0 ? "trashed" : ""
-                item = ['<div class="checkbox check-default"><input id="checkbox#{product.id}" type="checkbox" value="1"><label for="checkbox#{product.id}"></label></div>',
+                item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.display_status+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'<br />'+product.display_status+'</div>',
                         ''
                       ]
                 data << item
-                actions_col = 8
+                actions_col = 6
       end
                 
     end    
