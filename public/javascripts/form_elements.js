@@ -54,10 +54,10 @@ $(document).ready(function(){
 	
 	//Input mask - Input helper
 	$(function($){
-	   $("#date").mask("99/99/9999");
-	   $("#phone").mask("(999) 999-9999");
-	   $("#tin").mask("99-9999999");
-	   $("#ssn").mask("999-99-9999");
+	   $("#date").inputmask("99/99/9999");
+	   $("#phone").inputmask("(999) 999-9999");
+	   $("#tin").inputmask("99-9999999");
+	   $("#ssn").inputmask("999-99-9999");
 	});
 	
 	//Autonumeric plug-in - automatic addition of dollar signs,etc controlled by tag attributes
