@@ -54,6 +54,9 @@
 <%= javascript_include_tag "bootstrap-timepicker.min.js" %>
 <%= javascript_include_tag "bootstrap-colorpicker.js" %>
 <%= javascript_include_tag "jquery.inputmask.min.js" %>
+<%= javascript_include_tag "inputmask/inputmask.js" %>
+<%= javascript_include_tag "inputmask/jquery.inputmask.js" %>
+<%= javascript_include_tag "inputmask/inputmask.numeric.extensions.js" %>
 <%= javascript_include_tag "autoNumeric.js" %>
 <%= javascript_include_tag "ios7-switch.js" %>
 <%= javascript_include_tag "wysihtml5-0.3.0.js" %>
@@ -81,6 +84,9 @@
 
  	
 <script>
+	function format_price(element) {
+		element.inputmask("decimal", { radixPoint: ".", autoGroup: true, groupSeparator: ",", digits: 2, groupSize: 3 });
+	}
 	function show_city_select_tag() {
 		state = ""
 		if($('#state_id').length > 0) {
@@ -654,7 +660,8 @@
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
 			    //format typping price
-			      $('input.price_input').number( true, 2 );
+			      //$('input.price_input').number( true, 2 );
+				  format_price($('input.price_input'));
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,				  
@@ -725,7 +732,9 @@
 						$('#product-line-items').append(success_box.html());
 					}
 					
-					$('input.price_input').number( true, 2 );
+					//$('input.price_input').number( true, 2 );
+					format_price($('input.price_input'));
+					
 					$('input.number_input').number( true, 0 );
                     $('input.line_discount_percent').number(true, 2);
 					
@@ -857,7 +866,8 @@
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
-			    $('input.price_input').number( true, 2 );
+				format_price($('input.price_input'));
+				
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
@@ -887,7 +897,8 @@
 	    });
 	    
 	    //format typping price
-	    $('input.price_input').number( true, 2 );
+	    //$('input.price_input').number( true, 2 );
+		format_price($('input.price_input'));
 	    
 	    //show order
 	    //action for add agent button
@@ -911,7 +922,9 @@
 			complete: function(jqXHR, textStatus) {
 			    $("#ajax-product-form .modern_select").select2();
 			    //format typping price
-			    $('input.price_input').number( true, 2 );
+			    //$('input.price_input').number( true, 2 );
+				format_price($('input.price_input'));
+				
 			    $('.select2-ajax-categories').select2({
 					placeholder: "Search for a category",
 					minimumInputLength: 1,
@@ -1520,6 +1533,8 @@
 		$("#contact_filter input").click(function() {
 			$('.datatable-contacts').dataTable().fnFilter();
 	    });
+		
+		
       });
 </script>
 <%= javascript_include_tag "form_validations.js" %>
