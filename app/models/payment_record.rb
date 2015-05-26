@@ -17,6 +17,12 @@ class PaymentRecord < ActiveRecord::Base
   
   after_save :update_payment_status_name
   
+  def self.all_order_payments
+    self.where(type_name: 'order')
+            .where(status: 1)
+            .order("created_at DESC")
+  end
+  
   def self.custom_records
     self.where(type_name: 'custom')
         .where(status: 1)
