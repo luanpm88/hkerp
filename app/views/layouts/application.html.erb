@@ -84,6 +84,48 @@
 
  	
 <script>
+	function readURL(input, image) {
+		if (input.files && input.files[0]) {
+			var reader = new FileReader();	
+			reader.onload = function (e) {
+				image.attr('src', e.target.result);
+			}	
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+
+	function uploaderBoxes() {
+		$('.image-boxes .image-box a').click(function(e) {
+			e.preventDefault();
+			$(this).parent().find("input[type='file']").trigger("click")
+		})		
+		$('.image-boxes .image-box input[type="file"]').change(function() {
+			img = $(this).parents('.image-box').find("img.new_picture")
+			icon = $(this).parents('.image-box').find(".current_img")
+			del_icon = $(this).parents('.image-box').find(".delete-but")
+			readURL(this, img);
+			img.removeClass("hidden");
+			icon.addClass("hidden");
+			del_icon.removeClass("hidden");
+			
+			$(this).parents('.image-box').find(".destroy_tag").val("")
+		});
+		$('.image-boxes .image-box .delete-but').click(function(e) {
+			img = $(this).parents('.image-box').find("img.new_picture")
+			icon = $(this).parents('.image-box').find(".current_img")
+			$(this).parent().find("input[type='file']").val("")
+			img.addClass("hidden");
+			icon.removeClass("hidden");
+			
+			$(this).parents('.image-box').find(".current_image_pic").addClass("hidden");
+			$(this).parents('.image-box').find(".current_image_icon").removeClass("hidden");
+			
+			$(this).addClass("hidden");
+			
+			$(this).parents('.image-box').find(".destroy_tag").val(1)
+		})
+	}
+	
 	function format_price(element) {
 		element.inputmask("decimal", { radixPoint: ".", autoGroup: true, groupSeparator: ",", digits: 2, groupSize: 3 });
 	}
@@ -1534,6 +1576,15 @@
 			$('.datatable-contacts').dataTable().fnFilter();
 	    });
 		
+		
+		$('#tab-01 a').click(function (e) {
+			e.preventDefault();
+			$(this).tab('show');
+		});
+		
+		
+		//upload image boxes
+		uploaderBoxes()
 		
       });
 </script>

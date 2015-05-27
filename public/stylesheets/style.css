@@ -7875,3 +7875,42 @@ tr.block_commission_header h3 {
     display: block;
     font-size: 15px;
 }
+.image-box {
+    border: 1px dashed #ccc;
+    display: block;
+    float: left;
+    height: 150px;
+    margin: 0 18px 18px 0;
+    text-align: center;
+    width: 150px;
+    position: relative;
+}
+.image-box i.current_img {
+    color: #bbb;
+    display: inline-block;
+    font-size: 80px;
+}
+.image-box:hover i.current_img {
+    color: #999;
+    font-size: 90px;
+}
+.image-box img.new_picture, .image-box img.current_image_pic {
+    display: inline;
+    max-height: 148px;
+    max-width: 148px;
+}
+.image-box a {
+    display: table-cell;
+    height: 148px;
+    text-align: center;
+    vertical-align: middle;
+    width: 148px;
+}
+.image-box i.delete-but {
+    cursor: pointer;
+    font-size: 24px;
+    position: absolute;
+    right: 2px;
+    top: 0;
+    color: #f35958;
+}

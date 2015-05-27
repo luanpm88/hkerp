@@ -33,14 +33,17 @@ class Product < ActiveRecord::Base
   
   has_many :orders, :through => :order_details
   
+  has_many :product_images
+  accepts_nested_attributes_for :product_images, :reject_if => lambda { |c| c[:filename].blank? }, allow_destroy: true
+  
   before_save :fix_serial_numbers
   
   
   def order_supplier_history(user)
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
-                        .where(orders: {salesperson_id: user.id, parent_id: nil, supplier_id: Contact.HK.id})
-                        .where(product_id: id)
-                        .order("created_at DESC").limit(10)
+                      .where(orders: {salesperson_id: user.id, parent_id: nil, supplier_id: Contact.HK.id})
+                      .where(product_id: id)
+                      .order("created_at DESC").limit(10)
     @html = "<ul>"
     @list.each do |item|
       @html += "<li>"+item.order.customer.name+": <br />Price: <strong>"+item.formated_price+" VND</strong> (#{item.created_at.strftime("%Y-%m-%d")})</li>";
@@ -747,5 +750,7 @@ class Product < ActiveRecord::Base
     end
     
   end
+  
+  
   
 end

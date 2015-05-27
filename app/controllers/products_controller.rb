@@ -77,12 +77,21 @@ class ProductsController < ApplicationController
     (1..10).each do |i|
       @product.product_parts.build
     end
+    
+    (1..12).each do |i|
+      @product.product_images.build
+    end
+    
   end
 
   # GET /products/1/edit
   def edit
     (1..(10-@product.product_parts.count)).each do |i|
       @product.product_parts.build
+    end
+    
+    (1..(12-@product.product_images.count)).each do |i|
+      @product.product_images.build
     end
   end
 
@@ -266,6 +275,8 @@ class ProductsController < ApplicationController
     @history = @product.product_log(@from_date, @to_date, current_user)
   end
   
+  
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
@@ -277,7 +288,8 @@ class ProductsController < ApplicationController
       params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
-                                      product_parts_attributes: [:_destroy, :id, :part_id, :quantity]
+                                      product_parts_attributes: [:_destroy, :id, :part_id, :quantity],
+                                      product_images_attributes: [:_destroy, :id, :filename]
                                     )
     end
 end

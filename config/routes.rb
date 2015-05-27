@@ -1,4 +1,9 @@
 Hkerp::Application.routes.draw do
+  resources :product_images do
+    collection do
+      get :image
+    end
+  end
   resources :commission_programs do
     collection do
       get :start

@@ -1,6 +1,6 @@
        <div class="row">
             <div class="col-md-12">
-              <div class="grid simple">
+              <!--<div class="grid simple">
                 <div class="grid-title no-border">
                   <h4>Product <span class="semi-bold">Details</span></h4>
                   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
@@ -9,7 +9,7 @@
                 
                 
                 
-                <div class="grid-body no-border">
+                <div class="grid-body no-border">-->
                   
                   
                   <% if @product.errors.any? %>
@@ -30,204 +30,246 @@
                  
                   
                   
-				<%= form_for(@product) do |f| %>
-                                
-                        <div class="row column-seperation">
+				<%= form_for(@product, :multipart => true) do |f| %>
+                    
+					
+					
+					<ul class="nav nav-tabs" id="tab-01">
+						 <li class="active"><a href="#general">General</a></li>
+						 <li><a href="#images">Images</a></li>
+						 
+					   </ul>
+					   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+					   <div class="tab-content" style="margin-bottom: 0;">
+						 <div class="tab-pane active" id="general">
+							  
+							  
+							  
+							  
+							  
+							  
+							  
+							  <div class="row column-seperation">
                            
-                            <div class="col-md-6">
-                           
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :name %></label>
-                                    <span class="help">(required)</span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_field :name, :class => "form-control" %>
-                                                            </div>
-                                  </div>
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :product_code %></label>
-                                    <span class="help"></span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_field :product_code, :class => "form-control" %>
-                                                            </div>
-                                  </div>
-				  
-								   <div class="form-group">
-                                    <label class="form-label"><%= f.label :unit %></label>
-                                    <span class="help">(required)</span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_field :unit, :class => "form-control" %>
-                                                            </div>
-                                  </div>
-                                  
-                                  
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :categories %></label>
-									<span class="help">(required)</span>
-                                    
-                                                            <div class="input-with-icon  right">                                                  
-                                                                    <i class=""></i>
-                                                                    
-                                                                    <select id="" class="modern_select" style="width:100%" name="product[category_ids][]">
-                                                                      <option value="">No category</option>
-                                                                      <optgroup label="Categories">
-                                                                        <% Category.all.each do |category| %>
-									   <% if category.children == [] %>
-									      <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
-									   <% end %>
-                                                                        <% end %>
-                                                                      </optgroup>
-                                                                    </select>
-                                                            </div>
-                                  </div>
-                            
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :manufacturer %></label>
-                                    <span class="help">(required)</span>
-                                                            <div class="input-with-icon  right">                                                  
-                                                                    <i class=""></i>
-                                                                    
-                                                                    <select id="" class="modern_select" style="width:100%" name="product[manufacturer_id]">
-                                                                      <option value="">No manufacturer</option>
-                                                                      <optgroup label="Manufacturers">
-                                                                        <% Manufacturer.all.each do |manufacturer| %>
-                                                                          <option value="<%= manufacturer.id %>" <% if !@product.manufacturer.nil? && @product.manufacturer.id == manufacturer.id %>selected="selected"<% end %>><%= manufacturer.name %></option>                                                           
-                                                                        <% end %>
-                                                                      </optgroup>
-                                                                    </select>
-                                                            </div>
-                                  </div>
-			
-				   <!--<div class="form-group">
-						  <label class="form-label"><%= f.label :stock %></label>
-						  
-						  <div class="input-with-icon  right">                                       
-							  <i class=""></i>
-							  <%= f.text_field :stock, :class => "form-control" %>
-						  </div>
-				   </div>-->
-										
-
-											 <div class="form-group">
-												  <label class="form-label"><%= f.label :parts %></label>
-												  <div class="input-with-icon  right">                                       
-														  <i class=""></i>
-															<% @product.product_parts.each_with_index do |part,index| %>
-																 <%= f.fields_for :product_parts, part do |p| %>
-																 
-																   <div class="row parts_select">                           
-																		<div class="col-sm-10 col-md-10">
-																		   <%= p.hidden_field :id %>
-																		   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
-																		   <%= p.text_field :part_id, :class => "width100 select2-ajax-products", url: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
+													   <div class="col-md-6">
+													  
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :name %></label>
+															   <span class="help">(required)</span>
+																					   <div class="input-with-icon  right">                                       
+																							   <i class=""></i>
+																							   <%= f.text_field :name, :class => "form-control" %>
+																					   </div>
+															 </div>
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :product_code %></label>
+															   <span class="help"></span>
+																					   <div class="input-with-icon  right">                                       
+																							   <i class=""></i>
+																							   <%= f.text_field :product_code, :class => "form-control" %>
+																					   </div>
+															 </div>
+											 
+															  <div class="form-group">
+															   <label class="form-label"><%= f.label :unit %></label>
+															   <span class="help">(required)</span>
+																					   <div class="input-with-icon  right">                                       
+																							   <i class=""></i>
+																							   <%= f.text_field :unit, :class => "form-control" %>
+																					   </div>
+															 </div>
+															 
+															 
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :categories %></label>
+															   <span class="help">(required)</span>
+															   
+																					   <div class="input-with-icon  right">                                                  
+																							   <i class=""></i>
+																							   
+																							   <select id="" class="modern_select" style="width:100%" name="product[category_ids][]">
+																								 <option value="">No category</option>
+																								 <optgroup label="Categories">
+																								   <% Category.all.each do |category| %>
+																  <% if category.children == [] %>
+																	 <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
+																  <% end %>
+																								   <% end %>
+																								 </optgroup>
+																							   </select>
+																					   </div>
+															 </div>
+													   
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :manufacturer %></label>
+															   <span class="help">(required)</span>
+																					   <div class="input-with-icon  right">                                                  
+																							   <i class=""></i>
+																							   
+																							   <select id="" class="modern_select" style="width:100%" name="product[manufacturer_id]">
+																								 <option value="">No manufacturer</option>
+																								 <optgroup label="Manufacturers">
+																								   <% Manufacturer.all.each do |manufacturer| %>
+																									 <option value="<%= manufacturer.id %>" <% if !@product.manufacturer.nil? && @product.manufacturer.id == manufacturer.id %>selected="selected"<% end %>><%= manufacturer.name %></option>                                                           
+																								   <% end %>
+																								 </optgroup>
+																							   </select>
+																					   </div>
+															 </div>
+									   
+						   
+																   
+						   
+																		<div class="form-group">
+																			 <label class="form-label"><%= f.label :parts %></label>
+																			 <div class="input-with-icon  right">                                       
+																					 <i class=""></i>
+																					 <% @product.product_parts.each_with_index do |part,index| %>
+																						  <%= f.fields_for :product_parts, part do |p| %>																						  
+																							   <div class="row parts_select">                           
+																									<div class="col-sm-10 col-md-10">
+																									   <%= p.hidden_field :id %>
+																									   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
+																									   <%= p.text_field :part_id, :class => "width100 select2-ajax-products", url: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
+																									</div>
+																									<div class="col-sm-2 col-md-2">
+																										 <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
+																									</div>
+																							   </div>
+																						  <% end %>
+																					 <% end %>
+																			 </div>
 																		</div>
-																		<div class="col-sm-2 col-md-2">
-																			 <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
-																		</div>
-																   </div>
-																 <% end %>
-															<% end %>
-												  </div>
+						   
+																   
+																		
+															  
+																		
+																		
+												  
 											 </div>
-
-										
+													   
+													   
+													   <div class="col-md-6">
 											 
+											  
+						   
+											  
+																			 <%  if can? :update_price, @product %>
+																				   <%= fields_for :product_prices do |builder| %>
+																						 <div class="form-group">
+																							  <label class="form-label"><%= builder.label :price %></label>
+																							  <span class="help"></span>
+																							  <div class="input-with-icon  right">                                       
+																								  <i class=""></i>
+																								  <%= builder.text_field :price, value: @product.product_price.price, :class => "form-control price_input" %>
+																							  </div>
+																						 </div>
+																						 
+																						 <div class="form-group">
+																							  <label class="form-label"><%= builder.label :supplier_price %></label>
+																							  <span class="help"></span>
+																							  <div class="input-with-icon  right">                                       
+																								  <i class=""></i>
+																								  <%= builder.text_field :supplier_price, value: @product.product_price.supplier_price, :class => "form-control price_input" %>
+																							  </div>
+																						 </div>
+																						 
+																						 <div class="form-group">
+																							  <label class="form-label"><%= builder.label :suppiler_id %></label>
+																							  <span class="help"></span>
+																							  <div class="input-with-icon  right">                                       
+																									<i class=""></i>
+																									<input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
+																									<br />
+																									<%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+																							  </div>
+																						 </div>	
+																				   <% end %>
+																			  <% end %>
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :warranty %></label>
+															   <span class="help"></span>
+																					   <div class="input-with-icon  right">                                       
+																							   <i class=""></i>
+																							   <%= f.text_field :warranty, :class => "form-control" %>
+																					   </div>
+															 </div>
+														 
+															 
+											 
+															 <div class="form-group">
+															   <label class="form-label"><%= f.label :description %></label>
+															   <span class="help"></span>
+																   <div class="input-with-icon  right">                                       
+																		   <i class=""></i>
+																		   <%= f.text_area :description, :class => "form-control" %>
+																   </div>
+															 </div>
+											 
+						   
+														 
+														 
+														 
+														 
+													   </div>
+												   </div>
+							  
+							  
+							  
+							  
+							  
+							  
+							  
+							  
+						 </div>
+						 <div class="tab-pane" id="images">
+						   <div class="row">
+							  
+							  
+							  <div class="col-md-12">
 								   
-											 
-											 
-				       
-			      </div>
-                            
-                            
-                            <div class="col-md-6">
-			      
-				   
-				   
-				   <!--<div class="form-group">
-                                    <label class="form-label"><%= f.label :price %></label>
-                                    <span class="help"></span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_field :price, :class => "form-control price_input" %>
-                                                            </div>
-                                  </div>-->
-				   
-				   <%  if can? :update_price, @product %>
-						 <%= fields_for :product_prices do |builder| %>
-							   <div class="form-group">
-									<label class="form-label"><%= builder.label :price %></label>
-									<span class="help"></span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										<%= builder.text_field :price, value: @product.product_price.price, :class => "form-control price_input" %>
-									</div>
-							   </div>
-							   
-							   <div class="form-group">
-									<label class="form-label"><%= builder.label :supplier_price %></label>
-									<span class="help"></span>
-									<div class="input-with-icon  right">                                       
-										<i class=""></i>
-										<%= builder.text_field :supplier_price, value: @product.product_price.supplier_price, :class => "form-control price_input" %>
-									</div>
-							   </div>
-							   
-							   <div class="form-group">
-									<label class="form-label"><%= builder.label :suppiler_id %></label>
-									<span class="help"></span>
-									<div class="input-with-icon  right">                                       
-										  <i class=""></i>
-										  <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
-										  <br />
-										  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-									</div>
-							   </div>	
-						 <% end %>
-                    <% end %>
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :warranty %></label>
-                                    <span class="help"></span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_field :warranty, :class => "form-control" %>
-                                                            </div>
-                                  </div>
-                              
-                                  
-				  
-                                  <div class="form-group">
-                                    <label class="form-label"><%= f.label :description %></label>
-                                    <span class="help"></span>
-										<div class="input-with-icon  right">                                       
-												<i class=""></i>
-												<%= f.text_area :description, :class => "form-control" %>
-										</div>
-                                  </div>
-				  
-								   <!--<div class="form-group">
-                                    <label class="form-label"><%= f.label :serial_numbers %></label>
-                                    <span class="help"></span>
-                                                            <div class="input-with-icon  right">                                       
-                                                                    <i class=""></i>
-                                                                    <%= f.text_area :serial_numbers, :class => "form-control" %>
-                                                            </div>
-                                  </div>-->
-                              
-                              
-                              
-                              
-                            </div>
-                        </div>
-				  <div class="form-actions">  
+								   <div class="image-boxes">
+										<% @product.product_images.each_with_index do |part,index| %>
+											 <%= f.fields_for :product_images, part do |p| %>
+												  <div class="image-box">
+													   <div class="img-actions">
+															<i class="icon-minus-sign delete-but<% if !part.filename.present? %> hidden<% end %>"></i>
+													   </div>
+													   <a href="#" class="">
+															<% if part.filename.present? %>
+																 <img class="current_img current_image_pic" src="<%= part.image %>" />
+															<% end %>
+															<i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
+															<img src="" class="new_picture hidden" />										
+													   </a>
+													   <%= p.hidden_field :id %>
+													   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
+													   <%= p.file_field :filename, :class => "hidden" %>
+												  </div>
+											 <% end %>
+										<% end %>										
+								   </div>
+								   
+							  </div>
+							  
+							  
+						   </div>
+						 </div>
+						 
+					</div>
+					
+					
+					 
+                        
+				  <div class="form-actions" style="margin-top: 0;">  
 					<div class="pull-right">
 					  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
                                           <%= link_to 'Cancel', products_path, :class => "btn btn-white btn-cons" %>
 					</div>
 					</div>
 				<% end %>
-                </div>
-              </div>
+                <!--</div>
+              </div>-->
             </div>		
       </div>
