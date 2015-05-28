@@ -93,7 +93,7 @@ class ProductsController < ApplicationController
     
     @product_images = @product.product_images.order(:display_order)
     (1..(12-@product.product_images.count)).each do |i|
-          @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
+      @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
     end
   end
 
@@ -116,7 +116,7 @@ class ProductsController < ApplicationController
       if @product.save
         @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
         
-        format.html { redirect_to products_url, notice: 'Product was successfully created.' }
+        format.html { redirect_to edit_product_path(@product), notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
         format.html { render action: 'new' }
@@ -134,7 +134,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
-        format.html { redirect_to products_url, notice: 'Product was successfully updated.' }
+        format.html { redirect_to edit_product_path(@product), notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }

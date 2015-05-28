@@ -36,6 +36,7 @@
 					
 					<ul class="nav nav-tabs" id="tab-01">
 						 <li class="active"><a href="#general">General</a></li>
+						 <li><a href="#parts">Product Parts</a></li>
 						 <li><a href="#images">Images</a></li>
 						 
 					   </ul>
@@ -62,6 +63,14 @@
 																					   </div>
 															 </div>
 															 
+															 <div class="form-group">
+																 <label class="form-label"><%= f.label :product_code %></label>
+																 <span class="help"></span>
+																						 <div class="input-with-icon  right">                                       
+																								 <i class=""></i>
+																								 <%= f.text_field :product_code, :class => "form-control" %>
+																						 </div>
+															   </div>
 											 
 															  <div class="form-group">
 															   <label class="form-label"><%= f.label :unit %></label>
@@ -98,26 +107,7 @@
 						   
 																   
 						   
-																		<div class="form-group">
-																			 <label class="form-label"><%= f.label :parts %></label>
-																			 <div class="input-with-icon  right">                                       
-																					 <i class=""></i>
-																					 <% @product.product_parts.each_with_index do |part,index| %>
-																						  <%= f.fields_for :product_parts, part do |p| %>																						  
-																							   <div class="row parts_select">                           
-																									<div class="col-sm-10 col-md-10">
-																									   <%= p.hidden_field :id %>
-																									   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
-																									   <%= p.text_field :part_id, :class => "width100 select2-ajax-products", url: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
-																									</div>
-																									<div class="col-sm-2 col-md-2">
-																										 <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
-																									</div>
-																							   </div>
-																						  <% end %>
-																					 <% end %>
-																			 </div>
-																		</div>
+																		
 						   
 																   
 																		
@@ -130,14 +120,7 @@
 													   
 													   <div class="col-md-6">
 											 
-																	  <div class="form-group">
-																		 <label class="form-label"><%= f.label :product_code %></label>
-																		 <span class="help"></span>
-																								 <div class="input-with-icon  right">                                       
-																										 <i class=""></i>
-																										 <%= f.text_field :product_code, :class => "form-control" %>
-																								 </div>
-																	   </div>
+																	  
 						   
 											  
 																			 <%  if can? :update_price, @product %>
@@ -208,41 +191,87 @@
 							  
 							  
 						 </div>
+													   
+													   
+						 <div class="tab-pane" id="parts">
+							  <div class="row">
+								   <div class="col-md-6">
+										
+										<div class="form-group">
+												  <label class="form-label"><%= f.label :parts %></label>
+												  <div class="input-with-icon  right">                                       
+														  <i class=""></i>
+														  <% @product.product_parts.each_with_index do |part,index| %>
+															   <%= f.fields_for :product_parts, part do |p| %>																						  
+																	<div class="row parts_select">                           
+																		 <div class="col-sm-10 col-md-10">
+																			<%= p.hidden_field :id %>
+																			<%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
+																			<%= p.text_field :part_id, :class => "width100 select2-ajax-products", data: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
+																		 </div>
+																		 <div class="col-sm-2 col-md-2">
+																			  <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
+																		 </div>
+																	</div>
+															   <% end %>
+														  <% end %>
+												  </div>
+										</div>
+										
+								   </div>
+							  </div>
+						 </div>
+													   
+													   
+													   
 						 <div class="tab-pane" id="images">
 						   <div class="row">
 							  
 							  
 							  <div class="col-md-12">
 								   
-								   <ul id="sortable" class="image-boxes">
-										<% @product_images.each_with_index do |part,index| %>
-											 <%= f.fields_for :product_images, part do |p| %>
-												  <li class="image-box ui-state-default">
-													   <div class="img-actions">
-															<i class="icon-minus-sign delete-but<% if !part.filename.present? %> hidden<% end %>"></i>
-													   </div>
-													   <a href="#" class="">
-															<% if part.filename.present? %>
-																 <img class="current_img current_image_pic" src="<%= part.image(:thumb) %>" />
-																 <%= p.hidden_field :created_at %>
-															<% end %>
-															<i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
-															<img src="" class="new_picture hidden" />										
-													   </a>
-													   <%= p.hidden_field :id %>
-													   <%= p.hidden_field :display_order, class: "display_order" %>
-													   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
-													   <%= p.file_field :filename, :class => "hidden" %>
-												  </li>
-											 <% end %>
-										<% end %>										
-								   </ul>
+								   <% if @product.id.nil? %>
+										
+										<p>
+											 Can't upload images until the product is added.
+										</p>
+										
+								   <% else %>
+								   
+											 <ul id="sortable" class="image-boxes">
+												  <% @product_images.each_with_index do |part,index| %>
+													   <%= f.fields_for :product_images, part do |p| %>
+															<li class="image-box ui-state-default">
+																 <div class="img-actions">
+																	  <i class="icon-minus-sign delete-but<% if !part.filename.present? %> hidden<% end %>"></i>
+																 </div>
+																 <a href="#" class="">
+																	  <% if part.filename.present? %>
+																		   <img class="current_img current_image_pic" src="<%= part.image(:thumb) %>" />
+																		   <%= p.hidden_field :created_at %>
+																	  <% end %>
+																	  <i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
+																	  <img src="" class="new_picture hidden" />										
+																 </a>
+																 <%= p.hidden_field :id %>
+																 <%= p.hidden_field :display_order, class: "display_order" %>
+																 <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
+																 <%= p.file_field :filename, :class => "hidden" %>
+															</li>
+													   <% end %>
+												  <% end %>										
+											 </ul>
+								   
+							  <% end %>
 								   
 							  </div>
 							  
 							  
 						   </div>
 						 </div>
+							  
+							  
+						 
 						 
 					</div>
 					
