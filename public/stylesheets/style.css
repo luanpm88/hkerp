@@ -7919,3 +7919,6 @@ tr.block_commission_header h3 {
     top: 0;
     color: #f35958;
 }
+.select2-container.error .select2-choice, textarea.error {
+    border: 1px solid #f35958
+}

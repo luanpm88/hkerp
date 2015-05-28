@@ -80,7 +80,7 @@
 													   <span class="help">(required)</span>
 														 <div class="input-with-icon  right">                                       
 														   <i class=""></i>
-														   <select name="payment_record[payment_method_id]" class="modern_select" style="width: 100%">
+														   <select name="payment_record[payment_method_id]" class="modern_select required" style="width: 100%">
 																   <option value="">Select Method</option>
 																   <% PaymentMethod.all.each do |payment| %>
 																	   <option value="<%= payment.id %>" <% if !@payment_record.payment_method_id.nil? && @payment_record.payment_method_id == payment.id %>selected="selected"<% end %>>
@@ -106,7 +106,7 @@
                                             <span class="help">(required)</span>
                                             <div class="input-with-icon  right">                                       
                                                     <i class=""></i>
-                                                    <%= f.text_area :note, :class => "form-control" %>
+                                                    <%= f.text_area :note, :class => "form-control required" %>
                                             </div>
                                         </div>
 					<div class="form-group">
@@ -137,3 +137,4 @@
                                     </div>
                                       
 				<% end %>
+

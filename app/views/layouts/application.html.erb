@@ -584,7 +584,7 @@
 					minimumInputLength: 1,
 					allowClear: true,
 					ajax: {
-					  url: $('.select2-ajax-cities').attr("url"),
+					  url: $('.select2-ajax-cities').attr("data"),
 					  dataType: 'json',
 					  data: function (term, page) { // page is the one-based page number tracked by Select2
 						return {
@@ -716,7 +716,7 @@
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,				  
 			      ajax: {
-						url: $('.select2-ajax-products').attr("url"),
+						url: $('.select2-ajax-products').attr("data"),
 						dataType: 'json',
 						data: function (term, page) { // page is the one-based page number tracked by Select2
 						  return {
@@ -733,7 +733,7 @@
 					placeholder: "Search for a category",
 					minimumInputLength: 1,
 					ajax: {
-					  url: $('.select2-ajax-suppliers').attr("url"),
+					  url: $('.select2-ajax-suppliers').attr("data"),
 					  dataType: 'json',
 					  data: function (term, page) { // page is the one-based page number tracked by Select2
 							return {
@@ -799,7 +799,7 @@
 					  placeholder: "Search for a product",
 					  minimumInputLength: 1,
 					  ajax: {
-							url: $('.select2-ajax-products').attr("url"),
+							url: $('.select2-ajax-products').attr("data"),
 							dataType: 'json',
 							data: function (term, page) { // page is the one-based page number tracked by Select2
 							  return {
@@ -922,7 +922,7 @@
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-products').attr("url"),
+				url: $('.select2-ajax-products').attr("data"),
 				dataType: 'json',
 				data: function (term, page) { // page is the one-based page number tracked by Select2
 				  return {
@@ -979,7 +979,7 @@
 					placeholder: "Search for a category",
 					minimumInputLength: 1,
 					ajax: {
-					  url: $('.select2-ajax-categories').attr("url"),
+					  url: $('.select2-ajax-categories').attr("data"),
 					  dataType: 'json',
 					  data: function (term, page) { // page is the one-based page number tracked by Select2
 							return {
@@ -996,7 +996,7 @@
 					placeholder: "Search for a category",
 					minimumInputLength: 1,
 					ajax: {
-					  url: $('.select2-ajax-suppliers').attr("url"),
+					  url: $('.select2-ajax-suppliers').attr("data"),
 					  dataType: 'json',
 					  data: function (term, page) { // page is the one-based page number tracked by Select2
 							return {
@@ -1016,7 +1016,7 @@
 			      placeholder: "Search for a manufacturer",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-manufacturers').attr("url"),
+				url: $('.select2-ajax-manufacturers').attr("data"),
 				dataType: 'json',
 				data: function (term, page) { // page is the one-based page number tracked by Select2
 				  return {
@@ -1062,7 +1062,7 @@
 			      placeholder: "Search for a category",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-categories').attr("url"),
+				url: $('.select2-ajax-categories').attr("data"),
 				dataType: 'json',
 				data: function (term, page) { // page is the one-based page number tracked by Select2
 				  return {
@@ -1082,7 +1082,7 @@
 			      placeholder: "Search for a category",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-manufacturers').attr("url"),
+				url: $('.select2-ajax-manufacturers').attr("data"),
 				dataType: 'json',
 				data: function (term, page) { // page is the one-based page number tracked by Select2
 				  return {
@@ -1112,7 +1112,7 @@
 	      placeholder: "Search for a product",
 	      minimumInputLength: 1,
 	      ajax: {
-			url: $('.select2-ajax-products').attr("url"),
+			url: $('.select2-ajax-products').attr("data"),
 			dataType: 'json',
 			data: function (term, page) { // page is the one-based page number tracked by Select2
 			  return {
@@ -1253,7 +1253,7 @@
 			minimumInputLength: 1,
 			allowClear: true,
 			ajax: {
-			  url: $('.select2-ajax-customers').attr("url"),
+			  url: $('.select2-ajax-customers').attr("data"),
 			  dataType: 'json',
 			  data: function (term, page) { // page is the one-based page number tracked by Select2
 				return {
@@ -1275,7 +1275,7 @@
 			minimumInputLength: 1,
 			allowClear: true,
 			ajax: {
-			  url: $('.select2-ajax-states').attr("url"),
+			  url: $('.select2-ajax-states').attr("data"),
 			  dataType: 'json',
 			  data: function (term, page) { // page is the one-based page number tracked by Select2
 				return {
@@ -1297,7 +1297,7 @@
 			minimumInputLength: 1,
 			allowClear: true,
 			ajax: {
-			  url: $('.select2-ajax-cities').attr("url"),
+			  url: $('.select2-ajax-cities').attr("data"),
 			  dataType: 'json',
 			  data: function (term, page) { // page is the one-based page number tracked by Select2
 				return {
@@ -1319,7 +1319,7 @@
 			minimumInputLength: 1,
 			allowClear: true,
 			ajax: {
-			  url: $('.select2-ajax-suppliers').attr("url"),
+			  url: $('.select2-ajax-suppliers').attr("data"),
 			  dataType: 'json',
 			  data: function (term, page) { // page is the one-based page number tracked by Select2
 				return {
@@ -1381,7 +1381,7 @@
 		placeholder: "Search for a user",
 		minimumInputLength: 1,
 			ajax: {
-			  url: $('.select2-ajax-users').attr("url"),
+			  url: $('.select2-ajax-users').attr("data"),
 			  dataType: 'json',
 			  data: function (term, page) { // page is the one-based page number tracked by Select2
 				return {
@@ -1601,7 +1601,15 @@
 		//upload image boxes
 		uploaderBoxes()
 		
-      });
+		//form validation
+		$('form').validate({
+			rules: {
+				url: false
+			}
+		});
+		
+});
+
 </script>
 <%= javascript_include_tag "form_validations.js" %>
 <%= javascript_include_tag "form_elements.js" %>

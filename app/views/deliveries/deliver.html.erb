@@ -76,7 +76,7 @@
 							<div class="input-with-icon  right">                                       
 								<i class=""></i>
 								
-								<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+								<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" data="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
 							</div>
 					    </div>
 					    
@@ -166,7 +166,7 @@
 						<div class="input-with-icon  right">                                       
 							<i class=""></i>
 							
-							<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" url="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
+							<input style="width:100%;margin-bottom: 5px;" name="delivery[delivery_person_id]" data="<%= users_path(format: "json") %>" class="select2-ajax-users" value="<%= @delivery.delivery_person_id if !@delivery.delivery_person_id.nil? %>" text="<%= @delivery.delivery_person.name if !@delivery.delivery_person.nil? %>" />
 							
 						</div>
 				    </div>

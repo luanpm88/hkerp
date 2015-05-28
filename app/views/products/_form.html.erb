@@ -58,24 +58,17 @@
 															   <span class="help">(required)</span>
 																					   <div class="input-with-icon  right">                                       
 																							   <i class=""></i>
-																							   <%= f.text_field :name, :class => "form-control" %>
+																							   <%= f.text_field :name, :class => "form-control required" %>
 																					   </div>
 															 </div>
-															 <div class="form-group">
-															   <label class="form-label"><%= f.label :product_code %></label>
-															   <span class="help"></span>
-																					   <div class="input-with-icon  right">                                       
-																							   <i class=""></i>
-																							   <%= f.text_field :product_code, :class => "form-control" %>
-																					   </div>
-															 </div>
+															 
 											 
 															  <div class="form-group">
 															   <label class="form-label"><%= f.label :unit %></label>
 															   <span class="help">(required)</span>
 																					   <div class="input-with-icon  right">                                       
 																							   <i class=""></i>
-																							   <%= f.text_field :unit, :class => "form-control" %>
+																							   <%= f.text_field :unit, :class => "form-control required" %>
 																					   </div>
 															 </div>
 															 
@@ -84,37 +77,35 @@
 															   <label class="form-label"><%= f.label :categories %></label>
 															   <span class="help">(required)</span>
 															   
-																					   <div class="input-with-icon  right">                                                  
-																							   <i class=""></i>
-																							   
-																							   <select id="" class="modern_select" style="width:100%" name="product[category_ids][]">
-																								 <option value="">No category</option>
-																								 <optgroup label="Categories">
-																								   <% Category.all.each do |category| %>
-																  <% if category.children == [] %>
-																	 <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
-																  <% end %>
-																								   <% end %>
-																								 </optgroup>
-																							   </select>
-																					   </div>
+																 <div class="input-with-icon  right">                                                  
+																		 <i class=""></i>																		 
+																		 <select id="" class="modern_select required" style="width:100%" name="product[category_ids][]">
+																		   <option value="">No category</option>
+																		   <optgroup label="Categories">
+																			 <% Category.all.each do |category| %>
+																				   <% if category.children == [] %>
+																					  <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
+																				   <% end %>
+																			 <% end %>
+																		   </optgroup>
+																		 </select>
+																 </div>
 															 </div>
 													   
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :manufacturer %></label>
 															   <span class="help">(required)</span>
-																					   <div class="input-with-icon  right">                                                  
-																							   <i class=""></i>
-																							   
-																							   <select id="" class="modern_select" style="width:100%" name="product[manufacturer_id]">
-																								 <option value="">No manufacturer</option>
-																								 <optgroup label="Manufacturers">
-																								   <% Manufacturer.all.each do |manufacturer| %>
-																									 <option value="<%= manufacturer.id %>" <% if !@product.manufacturer.nil? && @product.manufacturer.id == manufacturer.id %>selected="selected"<% end %>><%= manufacturer.name %></option>                                                           
-																								   <% end %>
-																								 </optgroup>
-																							   </select>
-																					   </div>
+																 <div class="input-with-icon  right">                                                  
+																		 <i class=""></i>																		 
+																		 <select id="" class="modern_select required" style="width:100%" name="product[manufacturer_id]">
+																		   <option value="">No manufacturer</option>
+																		   <optgroup label="Manufacturers">
+																			 <% Manufacturer.all.each do |manufacturer| %>
+																			   <option value="<%= manufacturer.id %>" <% if !@product.manufacturer.nil? && @product.manufacturer.id == manufacturer.id %>selected="selected"<% end %>><%= manufacturer.name %></option>                                                           
+																			 <% end %>
+																		   </optgroup>
+																		 </select>
+																 </div>
 															 </div>
 									   
 						   
@@ -152,7 +143,14 @@
 													   
 													   <div class="col-md-6">
 											 
-											  
+																	  <div class="form-group">
+																		 <label class="form-label"><%= f.label :product_code %></label>
+																		 <span class="help"></span>
+																								 <div class="input-with-icon  right">                                       
+																										 <i class=""></i>
+																										 <%= f.text_field :product_code, :class => "form-control" %>
+																								 </div>
+																	   </div>
 						   
 											  
 																			 <%  if can? :update_price, @product %>
@@ -238,7 +236,7 @@
 													   </div>
 													   <a href="#" class="">
 															<% if part.filename.present? %>
-																 <img class="current_img current_image_pic" src="<%= part.image %>" />
+																 <img class="current_img current_image_pic" src="<%= part.image(:thumb) %>" />
 																 <%= p.hidden_field :created_at %>
 															<% end %>
 															<i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
@@ -275,3 +273,6 @@
               </div>-->
             </div>		
       </div>
+					   
+					   
+

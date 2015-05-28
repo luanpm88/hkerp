@@ -70,7 +70,7 @@
 										<div class="">
 											<div class="input-with-icon  right">                                       
 											<i class=""></i>
-											<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
+											<input style="width:100%;margin-bottom: 5px;" name="customer_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
 											</div>
 										</div>
 									</div>
