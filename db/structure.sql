@@ -1063,7 +1063,8 @@ CREATE TABLE product_images (
     product_id integer,
     filename character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    display_order integer
 );
 
 
@@ -2560,4 +2561,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150519023308');
 INSERT INTO schema_migrations (version) VALUES ('20150521030440');
 
 INSERT INTO schema_migrations (version) VALUES ('20150527033129');
+
+INSERT INTO schema_migrations (version) VALUES ('20150528015743');
 

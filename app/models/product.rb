@@ -26,7 +26,7 @@ class Product < ActiveRecord::Base
   has_many :product_parts, :dependent => :destroy
   has_many :parts, :through => :product_parts, :source => :part
   
-  accepts_nested_attributes_for :product_parts, :reject_if => lambda { |c| c[:part_id].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :product_parts, :reject_if => lambda { |c| !c[:part_id].present? }, allow_destroy: true
 
   has_many :parent_parts, :class_name => "ProductPart", :foreign_key => "part_id"
   has_many :parent, :through => :parent_parts, :source => :part
@@ -34,7 +34,7 @@ class Product < ActiveRecord::Base
   has_many :orders, :through => :order_details
   
   has_many :product_images
-  accepts_nested_attributes_for :product_images, :reject_if => lambda { |c| c[:filename].blank? }, allow_destroy: true
+  accepts_nested_attributes_for :product_images, :reject_if => lambda { |c| !c[:filename].present? && !c[:created_at].present? }, allow_destroy: true
   
   before_save :fix_serial_numbers
   

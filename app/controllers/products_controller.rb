@@ -79,7 +79,7 @@ class ProductsController < ApplicationController
     end
     
     (1..12).each do |i|
-      @product.product_images.build
+      @product.product_images.build(display_order: i)      
     end
     
   end
@@ -90,8 +90,9 @@ class ProductsController < ApplicationController
       @product.product_parts.build
     end
     
+    @product_images = @product.product_images.order(:display_order)
     (1..(12-@product.product_images.count)).each do |i|
-      @product.product_images.build
+          @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
     end
   end
 
@@ -103,6 +104,11 @@ class ProductsController < ApplicationController
     
     (1..(10-@product.product_parts.count)).each do |i|
       @product.product_parts.build
+    end
+    
+    @product_images = []
+    (1..(12-@product.product_images.count)).each do |i|
+      @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
     end
 
     respond_to do |format|
@@ -289,7 +295,7 @@ class ProductsController < ApplicationController
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
                                       product_parts_attributes: [:_destroy, :id, :part_id, :quantity],
-                                      product_images_attributes: [:_destroy, :id, :filename]
+                                      product_images_attributes: [:created_at, :_destroy, :id, :filename, :display_order]
                                     )
     end
 end

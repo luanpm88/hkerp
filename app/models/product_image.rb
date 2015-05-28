@@ -1,6 +1,8 @@
 class ProductImage < ActiveRecord::Base
   mount_uploader :filename, ProductUploader
   
+  validates :filename, presence: true
+  
   belongs_to :product
   
   

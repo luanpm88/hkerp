@@ -84,6 +84,14 @@
 
  	
 <script>
+	function updateBoxesOrder() {
+		var ord = 1
+		$('.image-boxes .image-box').each(function() {
+			$(this).find(".display_order").val(ord)
+			ord++
+		})
+	}
+	
 	function readURL(input, image) {
 		if (input.files && input.files[0]) {
 			var reader = new FileReader();	
@@ -1574,13 +1582,21 @@
 		
 		$("#contact_filter input").click(function() {
 			$('.datatable-contacts').dataTable().fnFilter();
-	    });
-		
+	    });		
 		
 		$('#tab-01 a').click(function (e) {
 			e.preventDefault();
 			$(this).tab('show');
 		});
+		updateBoxesOrder()
+		$( "#sortable" ).sortable({
+			helper : 'clone',
+			update: function( event, ui ) {
+				updateBoxesOrder()
+			}
+		});
+		$( "#sortable" ).disableSelection();
+		
 		
 		
 		//upload image boxes

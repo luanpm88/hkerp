@@ -229,27 +229,29 @@
 							  
 							  <div class="col-md-12">
 								   
-								   <div class="image-boxes">
-										<% @product.product_images.each_with_index do |part,index| %>
+								   <ul id="sortable" class="image-boxes">
+										<% @product_images.each_with_index do |part,index| %>
 											 <%= f.fields_for :product_images, part do |p| %>
-												  <div class="image-box">
+												  <li class="image-box ui-state-default">
 													   <div class="img-actions">
 															<i class="icon-minus-sign delete-but<% if !part.filename.present? %> hidden<% end %>"></i>
 													   </div>
 													   <a href="#" class="">
 															<% if part.filename.present? %>
 																 <img class="current_img current_image_pic" src="<%= part.image %>" />
+																 <%= p.hidden_field :created_at %>
 															<% end %>
 															<i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
 															<img src="" class="new_picture hidden" />										
 													   </a>
 													   <%= p.hidden_field :id %>
+													   <%= p.hidden_field :display_order, class: "display_order" %>
 													   <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
 													   <%= p.file_field :filename, :class => "hidden" %>
-												  </div>
+												  </li>
 											 <% end %>
 										<% end %>										
-								   </div>
+								   </ul>
 								   
 							  </div>
 							  
