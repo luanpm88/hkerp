@@ -74,14 +74,13 @@
 															 
 															 
 															 <div class="form-group">
-															   <label class="form-label"><%= f.label :categories %></label>
-															   <span class="help">(required)</span>
-															   
+																 <label class="form-label"><%= f.label :categories %></label>
+																 <span class="help">(required)</span>															   
 																 <div class="input-with-icon  right">                                                  
-																		 <i class=""></i>																		 
-																		   <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
-																		   <br />
-																		   <%= link_to "Create new Category", new_category_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
+																	  <i class=""></i>																		 
+																	  <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
+																	  <br />
+																	  <%= link_to "Create new Category", new_category_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
 																 </div>
 															 </div>
 													   
