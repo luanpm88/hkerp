@@ -79,16 +79,9 @@
 															   
 																 <div class="input-with-icon  right">                                                  
 																		 <i class=""></i>																		 
-																		 <select id="" class="modern_select required" style="width:100%" name="product[category_ids][]">
-																		   <option value="">No category</option>
-																		   <optgroup label="Categories">
-																			 <% Category.all.each do |category| %>
-																				   <% if category.children == [] %>
-																					  <option value="<%= category.id %>" <% if @product.categories.include?(category) %>selected="selected"<% end %>><%= category.name %></option>
-																				   <% end %>
-																			 <% end %>
-																		   </optgroup>
-																		 </select>
+																		   <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
+																		   <br />
+																		   <%= link_to "Create new Category", new_category_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
 																 </div>
 															 </div>
 													   
@@ -97,14 +90,9 @@
 															   <span class="help">(required)</span>
 																 <div class="input-with-icon  right">                                                  
 																		 <i class=""></i>																		 
-																		 <select id="" class="modern_select required" style="width:100%" name="product[manufacturer_id]">
-																		   <option value="">No manufacturer</option>
-																		   <optgroup label="Manufacturers">
-																			 <% Manufacturer.all.each do |manufacturer| %>
-																			   <option value="<%= manufacturer.id %>" <% if !@product.manufacturer.nil? && @product.manufacturer.id == manufacturer.id %>selected="selected"<% end %>><%= manufacturer.name %></option>                                                           
-																			 <% end %>
-																		   </optgroup>
-																		 </select>
+																		   <input style="width:100%;margin-bottom: 5px;" name="product[manufacturer_id]" data="<%= manufacturers_path(format: "json") %>" class="select2-ajax-manufacturers" value="<%= @product.manufacturer_id %>" text="<%= @product.manufacturer.name if !@product.manufacturer.nil? %>" />
+																		   <br />
+																		   <%= link_to "Create new Manufacturer", new_manufacturer_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
 																 </div>
 															 </div>
 									   

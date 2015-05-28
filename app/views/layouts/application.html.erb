@@ -1082,16 +1082,16 @@
 			      placeholder: "Search for a category",
 			      minimumInputLength: 1,
 			      ajax: {
-				url: $('.select2-ajax-manufacturers').attr("data"),
-				dataType: 'json',
-				data: function (term, page) { // page is the one-based page number tracked by Select2
-				  return {
-				    q: term, //search term
-				  };
-				},
-				results: function (data, page) {
-				  return {results: data};
-				}
+					url: $('.select2-ajax-manufacturers').attr("data"),
+					dataType: 'json',
+					data: function (term, page) { // page is the one-based page number tracked by Select2
+					  return {
+						q: term, //search term
+					  };
+					},
+					results: function (data, page) {
+					  return {results: data};
+					}
 			      },
 			      initSelection: function (element, callback) {				      
 				callback({ id: element.val, text: element.attr('text') });
@@ -1268,6 +1268,45 @@
 			  callback({ id: element.val(), text: element.attr('text') });
 			}
 	    });
+		
+		$('.select2-ajax-manufacturers').select2({
+			      placeholder: "Search for a category",
+			      minimumInputLength: 1,
+			      ajax: {
+					url: $('.select2-ajax-manufacturers').attr("data"),
+					dataType: 'json',
+					data: function (term, page) { // page is the one-based page number tracked by Select2
+					  return {
+						q: term, //search term
+					  };
+					},
+					results: function (data, page) {
+					  return {results: data};
+					}
+			      },
+			      initSelection: function (element, callback) {				      
+				callback({ id: element.val, text: element.attr('text') });
+			      }
+		});
+		$('.select2-ajax-categories').select2({
+			      placeholder: "Search for a category",
+			      minimumInputLength: 1,
+			      ajax: {
+					url: $('.select2-ajax-categories').attr("data"),
+					dataType: 'json',
+					data: function (term, page) { // page is the one-based page number tracked by Select2
+					  return {
+						q: term, //search term
+					  };
+					},
+					results: function (data, page) {
+					  return {results: data};
+					}
+			      },
+			      initSelection: function (element, callback) {				      
+				callback({ id: element.val, text: element.attr('text') });
+			      }
+		});
 		
 		//ajax select2 for state
 	    $('.select2-ajax-states').select2({
