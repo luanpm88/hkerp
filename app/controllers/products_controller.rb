@@ -79,7 +79,7 @@ class ProductsController < ApplicationController
     end
     
     (1..12).each do |i|
-      @product.product_images.build(display_order: i)      
+      @product_images = @product.product_images.build(display_order: i)      
     end
     
   end
@@ -106,9 +106,8 @@ class ProductsController < ApplicationController
       @product.product_parts.build
     end
     
-    @product_images = []
     (1..(12-@product.product_images.count)).each do |i|
-      @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
+      @product_images = @product.product_images.build(display_order: i+@product.product_images.count)
     end
 
     respond_to do |format|
