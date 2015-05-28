@@ -60,7 +60,7 @@
                                                             <div class="input-with-icon  right">                                                  
                                                                     <i class=""></i>
 								    
-								    <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" url="<%= categories_path(format: "json") %>" class="select2-ajax-categories" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
+								    <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
 								    <br />
 								      <%= link_to "Create new Category", new_category_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
                                                                     
@@ -83,7 +83,7 @@
                                                             <div class="input-with-icon  right">                                                  
                                                                     <i class=""></i>
 								    
-								    <input style="width:100%;margin-bottom: 5px;" name="product[manufacturer_id]" url="<%= manufacturers_path(format: "json") %>" class="select2-ajax-manufacturers" value="<%= @product.manufacturer_id %>" text="<%= @product.manufacturer.name if !@product.manufacturer.nil? %>" />
+								    <input style="width:100%;margin-bottom: 5px;" name="product[manufacturer_id]" data="<%= manufacturers_path(format: "json") %>" class="select2-ajax-manufacturers" value="<%= @product.manufacturer_id %>" text="<%= @product.manufacturer.name if !@product.manufacturer.nil? %>" />
 								      <br />
 								      <%= link_to "Create new Manufacturer", new_manufacturer_url ,class: "btn btn-primary btn-sm btn-small", target: "_blank" %>
 					                                 
@@ -145,7 +145,7 @@
 							   <span class="help"></span>
 							   <div class="input-with-icon  right">                                       
 									 <i class=""></i>
-									 <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
+									 <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
 									 <br />
 									 <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
 							   </div>

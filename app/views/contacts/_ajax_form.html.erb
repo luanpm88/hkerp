@@ -78,7 +78,7 @@
 																	  <div class="input-with-icon  right">                                       
 																			 <i class=""></i>
 																			 
-																			 <input style="width:100%;margin-bottom: 5px;" name="contact[city_id]" url="<%= cities_path(format: "json") %>" class="select2-ajax-cities" value="<%= @contact.city_id %>" text="<%= @contact.city.name_with_state if !@contact.city.nil? %>" />
+																			 <input style="width:100%;margin-bottom: 5px;" name="contact[city_id]" data="<%= cities_path(format: "json") %>" class="select2-ajax-cities" value="<%= @contact.city_id %>" text="<%= @contact.city.name_with_state if !@contact.city.nil? %>" />
 																			 
 																	   
 																	  </div>

@@ -134,7 +134,7 @@
 					     <span class="help"></span>
 					     <div class="input-with-icon  right">                                       
 						       <i class=""></i>
-						       <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
+						       <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
 						       <br />
 						       <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
 					     </div>
