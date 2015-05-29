@@ -43,9 +43,29 @@
 			<div class="form-group">
 				<label class="form-label">Photo</label>
 				<span class="help"></span>
-				<div class="input-with-icon  right">                                       
+				<div class="right">                                       
 					<i class=""></i>
-					<div class="nice"><%= f.file_field :image %></div>
+					<!--<div class="nice"><%= f.file_field :image %></div>-->
+					
+						<ul id="sortable" class="image-boxes">
+											 
+										<li class="image-box ui-state-default">
+											 <div class="img-actions">
+												  <i class="icon-minus-sign delete-but<% if !@user.image.present? %> hidden<% end %>"></i>
+											 </div>
+											 <a href="#" class="">
+												  <% if @user.image.present? %>
+													   <img class="current_img current_image_pic" src="<%= @user.avatar(:thumb) %>" />
+												  <% end %>
+												  <i class="icon-picture current_img current_image_icon<% if @user.image.present? %> hidden<% end %>"></i>
+												  <img src="" class="new_picture hidden" />										
+											 </a>
+											 <%= f.file_field :image, :class => "hidden" %>
+										</li>
+					 
+						</ul>
+						<br style="clear:both" />
+							
 				</div>
 			</div>
 			   

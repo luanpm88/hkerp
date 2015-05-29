@@ -203,7 +203,7 @@ class ProductsController < ApplicationController
   
   def do_update_price
     respond_to do |format|
-      if @product.update_price(params["product_prices"], current_user)       
+      if @product.update_price(params["product_prices"], current_user)
         format.html { redirect_to products_url, notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
