@@ -65,7 +65,7 @@
 													  <%= line.product.price_history_link %>
 													</td>
 													<td>
-													  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.short_name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
+													  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="order_details[<%= line.id %>][product][supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= line.product.product_price.supplier_id if !line.product.product_price.nil? %>" text="<%= line.product.product_price.supplier.short_name if !line.product.product_price.nil? && !line.product.product_price.supplier.nil? %>" />
 													  
 													</td>
 													<td>
@@ -93,7 +93,7 @@
 														  <%= part.price_history_link %>
 														</td>
 														<td>
-														  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" url="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
+														  <input style="width:100%;max-width: 250px;margin-bottom: 5px;" name="product_parts[<%= part.id %>][product][supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= part.product_price.supplier_id if !part.product_price.nil? %>" text="<%= part.product_price.supplier.short_name if !part.product_price.nil? && !part.product_price.supplier.nil? %>" />
 														  
 														</td>
 														<td><%= text_field_tag "product_parts[#{part.id}][product][supplier_price]",part.product_price.supplier_price, {:class => "form-control price_input supplier_price", rel: line.product_id} %></td>
