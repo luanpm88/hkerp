@@ -710,8 +710,8 @@
 			complete: function(jqXHR, textStatus) {
 			    $(".ajax_outer .modern_select").select2();
 			    //format typping price
-			      //$('input.price_input').number( true, 2 );
-				  format_price($('input.price_input'));
+			    //$('input.price_input').number( true, 2 );
+				format_price($('input.price_input'));
 			    $('.select2-ajax-products').select2({
 			      placeholder: "Search for a product",
 			      minimumInputLength: 1,				  
@@ -748,6 +748,7 @@
 					  callback({ id: element.val, text: element.attr('text') });
 					}
 			    });
+				$('#ajax-order-detail-form').validate();
 			}
 		    }
 	    });
@@ -815,6 +816,8 @@
 							callback({ id: element.val, text: element.attr('text') });
 					  }
 					});
+					
+					$('#ajax-order-detail-form').validate();
 				}
 				
 				updateOrderPrices();
@@ -826,10 +829,10 @@
 		    },
 		    error: function(jqXHR, textStatus, errorThrown)
 		    {
-			alert("error");
+				alert("error");
 		    }
 		});
-		e.preventDefault(); //STOP default action
+			e.preventDefault(); //STOP default action
 	    });
 	    
 	    $('.ajax_outer input[name="order_detail[product_id]"]').live("change", function() {
@@ -1642,11 +1645,7 @@
 		uploaderBoxes()
 		
 		//form validation
-		$('form').validate({
-			rules: {
-				url: false
-			}
-		});
+		$('form').validate();
 		
 });
 
