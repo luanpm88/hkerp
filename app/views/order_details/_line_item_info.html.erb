@@ -2,29 +2,35 @@
                                       <td class="name">
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
+                                        <label class="col_label top0">Name/Description:</label>
                                           <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_name]"><%= order_detail.product_name %></textarea>
                                           <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
                                       </td>
                                       <td class="unit">
+                                        <label class="col_label top0">Unit:</label>
                                         <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
                                       </td>                                    
                                       <td class="text-right">
+                                        <label class="col_label top0">Price / Quantity:</label>
                                         <%= format_price(order_detail.price) %> / <%= order_detail.quantity %>
                                       </td>
                                       <td class="total text-right">
+                                        <label class="col_label top0">Total:</label>
                                         <%= format_price(order_detail.total) %>
-                                        <label class="col_label"><i class="icon-ambulance"></i> Shipment Cost:</label>
+                                        <label class="col_label"><i class="icon-ambulance"></i> Ship.Cost:</label>
                                         <%= format_price(order_detail.shipment_amount) %>
                                       </td>
                                         <td class="warranty text-center">
+                                            <label class="col_label top0">Warranty:</label>
                                           <%= order_detail.warranty %>
                                         </td>
                                       <td class="line_discount text-right">
+                                        <label class="col_label top0">Discount:</label>
                                             <%= format_price(order_detail.discount_amount) %>
                                             
                                         </td>
                                       <td class="line_tip text-right">
-                                            
+                                            <label class="col_label top0">Tip:</label>
                                             
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][tip_amount]", order_detail.tip_amount.present? && order_detail.tip_amount > 0 ? order_detail.tip_amount : "" , {placeholder: "VND", :class => "form-control price_input line_tip_amount"} %>
                                             <div class="input-group transparent">

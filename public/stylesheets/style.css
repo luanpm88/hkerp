@@ -7849,7 +7849,7 @@ table.table-border td {
     font-size: 85%;
     font-weight: 700;
     margin: 10px 0 0;
-    text-align: right;
+    text-align: left;
 }
 #product-line-items span.total {
     display: block;
@@ -7924,4 +7924,7 @@ tr.block_commission_header h3 {
 }
 .product_order_list td {
     vertical-align: top;
+}
+.top0 {
+    margin-top: 0;
 }
