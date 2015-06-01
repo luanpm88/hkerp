@@ -27,7 +27,7 @@
                                       </td>
                                       <td class="text-right">
                                         <label class="col_label top0">Total:</label>
-                                        <span class="total"><%= format_price(order_detail.total) %></span>
+                                        <span class="total bold"><%= format_price(order_detail.total) %></span>
                                         <label class="col_label"><i class="icon-ambulance"></i> Ship.Cost:</label>
                                         <%= text_field_tag "order_details[#{order_detail.product_id}][shipment_amount]", order_detail.shipment_amount, {:class => "form-control price_input line_shipment_amount"} %>
                                         
