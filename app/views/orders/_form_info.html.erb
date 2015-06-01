@@ -452,70 +452,79 @@
                         <h4>Products <span class="semi-bold"> Details</span></h4>
                         
                         
-                        <div class="product_order_list">
-                          <ul class="head">
-                            <li class="name">
-                              Name/Description
-                            </li>
-                            <li class="unit text-center">Unit</li>
-                            <li class="price">Price/Quantity</li>                            
-                            <li class="price_total text-right">Total</li>
-                            <li class="warranty text-center">Warranty</li>
-                            <li class="discount text-right">Discount</li>
-                            <li class="discount text-right">Tip</li>
-                          </ul>
-                          <div id="product-line-itemsz">
-                            <% if !@order.order_details.nil? %>
-                                <% @order.order_details.each do |order_detail| %>
-                                  <%= render 'order_details/line_item_info', :order_detail => order_detail %>
-                                <% end %>
-                            <% end %>
-                          </div>      
-                          
-                          <ul class="footer line1">
-                            <li class="name">
-                            </li>
-                            <li class="sum"></li>
-                            <li class="quant"></li>
-                            
-                            <li class="warranty text-right">
+                        <div class="product_order_list table">
+                            <table class="table_order_edit head width100">
+                                   <thead>
+                                          <th class="name">
+                                            Name/Description
+                                          </th>
+                                          <th class="unit text-center">Unit</th>
+                                          <th class="price">Price/Quantity</th>                            
+                                          <th class="price_total text-right">Total</th>
+                                          <th class="warranty text-center">Warranty</th>
+                                          <th class="discount text-right">Discount</th>
+                                          <th class="discount text-right">Tip</th>
+                                   </thead>
                                    
-                            </li>
-                            <li class="discount text-right">
                                    
-                            </li>
-                            <li class="tip text-right">
-                                   <strong>Tip.Total:</strong>
+                                   <tbody id="product-line-itemsz">
+                                     <% if !@order.order_details.nil? %>
+                                         <% @order.order_details.each do |order_detail| %>
+                                           <%= render 'order_details/line_item_info', :order_detail => order_detail %>
+                                         <% end %>
+                                     <% end %>
+                                   </tbody>      
                                    
-                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
-                                   <div class="input-group transparent">
-                                          <span class="input-group-addon ">
-                                            %
-                                          </span>
-                                          <%= text_field_tag :tip_percent, "", {:class => "form-control price_input tip_percent"} %>
-                                   </div>
-                            </li>
-                          </ul>
-                          
-                          <ul class="footer line2">
-                            <li class="name">
-                            </li>
-                            <li class="sum">
-                                   Total<br />
-                                   Discount<br />
-                                   <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span><br />
-                                   Sum.Total</li>
-                            <li class="quant text-right">
-                                  
-                                   <span class="total_not_vat_val total_without_vatz total_not_vatz"><%= @order.formated_total %></span><br />
-                                    <span class="total_discountz"><%= format_price(@order.discount_amount,true,true) %></span><br />
-                                    <span class="total_vatz "><%= @order.vat_amount_formated %></span><br />
-                                   <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
-                            </li>
-                            <li class="warranty text-right"></li>
-                            <li class="discount_total text-right"></li>
-                            <li class="tip text-center"></li>
-                          </ul>
+                                   <tfoot>
+                                          <tr class="footer line1">
+                                                 <td></td>
+                                            <td class="name">
+                                            </td>
+                                            <td class="sum"></td>
+                                            <td class="quant"></td>
+                                            
+                                            <td class="warranty text-right">
+                                                   
+                                            </td>
+                                            <td class="discount text-right">
+                                                   
+                                            </td>
+                                            <td class="tip text-right">
+                                                   <strong>Tip.Total:</strong>
+                                                   
+                                                   <%= f.text_field :tip_amount, :placeholder => "VND", :class => "form-control price_input tip_amount" %>
+                                                   <div class="input-group transparent">
+                                                          <span class="input-group-addon ">
+                                                            %
+                                                          </span>
+                                                          <%= text_field_tag :tip_percent, "", {:class => "form-control price_input tip_percent"} %>
+                                                   </div>
+                                            </td>
+                                          </tr>
+                                          
+                                          <tr class="footer line2">
+                                                 <td></td>
+                                            <td class="name">
+                                            </td>
+                                            <td class="sum">
+                                                   Total<br />
+                                                   Discount<br />
+                                                   <span class="order_tax_name"><%= @order.tax.name if !@order.tax.nil? %></span><br />
+                                                   Sum.Total
+                                                   </td>
+                                            <td class="quant text-right">
+                                                  
+                                                   <span class="total_not_vat_val total_without_vatz total_not_vatz"><%= @order.formated_total %></span><br />
+                                                    <span class="total_discountz"><%= format_price(@order.discount_amount,true,true) %></span><br />
+                                                    <span class="total_vatz "><%= @order.vat_amount_formated %></span><br />
+                                                   <span class="total_with_vatz"><%= @order.formated_total_vat %></span>
+                                            </td>
+                                            <td class="warranty text-right"></td>
+                                            <td class="discount_total text-right"></td>
+                                            <td class="tip text-center"></td>
+                                          </tr>
+                                   </tfoot>
+                            </table>
                         </div>
 
                       </div>

@@ -7922,3 +7922,6 @@ tr.block_commission_header h3 {
 .select2-container.error .select2-choice, textarea.error {
     border: 1px solid #f35958
 }
+.product_order_list td {
+    vertical-align: top;
+}

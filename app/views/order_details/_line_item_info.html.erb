@@ -1,29 +1,29 @@
-                                  <ul class="quantity-<%= order_detail.quantity %>" order_id="<%= order_detail.id %>" rel="<%= order_detail.product_id %>">
-                                      <li class="name">
+                                  <tr class="order_details_line quantity-<%= order_detail.quantity %>" order_id="<%= order_detail.id %>" rel="<%= order_detail.product_id %>">
+                                      <td class="name">
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][id]" value="<%= order_detail.id %>" />
                                         <input type="hidden" name="order_details[<%= order_detail.product_id %>][product_id]" value="<%= order_detail.product_id %>" />
                                           <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_name]"><%= order_detail.product_name %></textarea>
                                           <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
-                                      </li>
-                                      <li class="unit">
+                                      </td>
+                                      <td class="unit">
                                         <input class="form-control text-center" type="text" name="order_details[<%= order_detail.product_id %>][unit]" value="<%= order_detail.unit %>" />
-                                      </li>                                    
-                                      <li class="text-right">
+                                      </td>                                    
+                                      <td class="text-right">
                                         <%= format_price(order_detail.price) %> / <%= order_detail.quantity %>
-                                      </li>
-                                      <li class="total text-right">
+                                      </td>
+                                      <td class="total text-right">
                                         <%= format_price(order_detail.total) %>
                                         <label class="col_label"><i class="icon-ambulance"></i> Shipment Cost:</label>
                                         <%= format_price(order_detail.shipment_amount) %>
-                                      </li>
-                                        <li class="warranty text-center">
+                                      </td>
+                                        <td class="warranty text-center">
                                           <%= order_detail.warranty %>
-                                        </li>
-                                      <li class="line_discount text-right">
+                                        </td>
+                                      <td class="line_discount text-right">
                                             <%= format_price(order_detail.discount_amount) %>
                                             
-                                        </li>
-                                      <li class="line_tip text-right">
+                                        </td>
+                                      <td class="line_tip text-right">
                                             
                                             
                                             <%= text_field_tag "order_details[#{order_detail.product_id}][tip_amount]", order_detail.tip_amount.present? && order_detail.tip_amount > 0 ? order_detail.tip_amount : "" , {placeholder: "VND", :class => "form-control price_input line_tip_amount"} %>
@@ -33,5 +33,5 @@
                                                     </span>
                                                     <%= text_field_tag :line_tip_percent, "", {:class => "form-control price_input line_tip_percent"} %>
                                              </div>
-                                        </li>
-                                  </ul>
+                                        </td>
+                                  </tr>

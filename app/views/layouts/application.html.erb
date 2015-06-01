@@ -380,7 +380,7 @@
 		}
 		
 		//update lines
-		$('#product-line-items ul').each(function() {
+		$('#product-line-items .order_details_line').each(function() {
 			quantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
 			price = parseFloat($(this).find('.price').val().replace(/,/g,""))
 			
@@ -773,13 +773,14 @@
 					$.fancybox.close();
 				  
 					var success_box = $('<div/>').html(data).find("#ajax-success-result");
-					var saved_id = success_box.find("ul").attr("rel");
-					if ($('#product-line-items ul[rel="'+saved_id+'"]').length) {
-						$('#product-line-items ul[rel="'+saved_id+'"]').replaceWith(success_box.html());
+					var saved_id = success_box.find(".order_details_line").attr("rel");
+					if ($('#product-line-items .order_details_line[rel="'+saved_id+'"]').length) {
+						$('#product-line-items .order_details_line[rel="'+saved_id+'"]').replaceWith(success_box.find('tbody').html());
 					}
 					else
 					{
-						$('#product-line-items').append(success_box.html());
+						//alert(success_box.html());
+						$('#product-line-items').append(success_box.find('tbody').html());
 					}
 					
 					//$('input.price_input').number( true, 2 );
@@ -878,7 +879,7 @@
 	    //Delete agent in contact form
 	    $('#product-line-items .delete_product_order_detail').live("click", function(e) {
 			e.preventDefault(); //STOP default action
-			var box = $(this).parents("ul[rel="+$(this).attr("rel")+"]");
+			var box = $(this).parents("tr[rel="+$(this).attr("rel")+"]");
 			var url = $(this).attr("href");
 			
 			if (box.attr("order_id").trim() == "") {
@@ -905,7 +906,7 @@
 	    
 	    var current_line_item_id = 0;
 	    $('.edit-order-detail').live("click", function() {
-	      current_line_item_id = $(this).parents('ul').attr("rel");
+	      current_line_item_id = $(this).parents('.order_details_line').attr("rel");
 	      //alert(current_line_item_id);
 	    });
 	    //action for add agent button
@@ -1513,7 +1514,7 @@
 				updateDiscountPercent($('.discount_percent'),$('.discount_amount'),$('.total_not_vat_val'));
 				
 				$('.line_discount_amount').each(function(){
-					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 			});
 			$('.discount_percent').live("keyup",function() {
@@ -1521,20 +1522,20 @@
 				shareDiscountTotalAmount();
 				
 				$('.line_discount_amount').each(function(){
-					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 			});
 			
 			$('.line_discount_amount').each(function(){
-				updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('ul').find('.total'));
+				updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 			});
 			$('.line_discount_amount').live("keyup",function() {
-				updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('ul').find('.total'));
+				updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				sumDiscountLines();
 				updateDiscountPercent($('.discount_percent'),$('.discount_amount'),$('.total_not_vat_val'));
 			});
 			$('.line_discount_percent').live("keyup",function() {
-				updateDiscountAmount($(this),$(this).parents('ul').find('.line_discount_amount'),$(this).parents('ul').find('.total'));
+				updateDiscountAmount($(this),$(this).parents('.order_details_line').find('.line_discount_amount'),$(this).parents('.order_details_line').find('.total'));
 				sumDiscountLines();
 				updateDiscountPercent($('.discount_percent'),$('.discount_amount'),$('.total_not_vat_val'));
 			});
@@ -1550,7 +1551,7 @@
 				updateTipPercent($('.tip_percent'),$('.tip_amount'),$('.total_not_vat_val'));
 				
 				$('.line_tip_amount').each(function(){
-					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 			});
 			$('.tip_percent').live("keyup",function() {
@@ -1558,20 +1559,20 @@
 				shareTipTotalAmount();
 				
 				$('.line_tip_amount').each(function(){
-					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 			});
 			
 			$('.line_tip_amount').each(function(){
-				updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('ul').find('.total'));
+				updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 			});
 			$('.line_tip_amount').live("keyup",function() {
-				updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('ul').find('.total'));
+				updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				sumTipLines();
 				updateTipPercent($('.tip_percent'),$('.tip_amount'),$('.total_not_vat_val'));
 			});
 			$('.line_tip_percent').live("keyup",function() {
-				updateTipAmount($(this),$(this).parents('ul').find('.line_tip_amount'),$(this).parents('ul').find('.total'));
+				updateTipAmount($(this),$(this).parents('.order_details_line').find('.line_tip_amount'),$(this).parents('.order_details_line').find('.total'));
 				sumTipLines();
 				updateTipPercent($('.tip_percent'),$('.tip_amount'),$('.total_not_vat_val'));
 			});
@@ -1582,12 +1583,12 @@
 				shareDiscountTotalAmount();
 				updateDiscountPercent($('.discount_percent'),$('.discount_amount'),$('.total_not_vat_val'));			
 				$('.line_discount_amount').each(function(){
-					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateDiscountPercent($(this).parent().find('.line_discount_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 				shareTipTotalAmount();
 				updateTipPercent($('.tip_percent'),$('.tip_amount'),$('.total_not_vat_val'));			
 				$('.line_tip_amount').each(function(){
-					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('ul').find('.total'));
+					updateTipPercent($(this).parent().find('.line_tip_percent'),$(this),$(this).parents('.order_details_line').find('.total'));
 				});
 			});
 		}
