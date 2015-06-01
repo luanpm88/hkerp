@@ -149,7 +149,7 @@
 				   <label class="form-label">Product Supplier History</label>
 				   <span class="help"></span>
 				   <div class="order_supplier_history">
-					<%= @order_detail.product.order_supplier_history.html_safe if !@order_detail.product.nil? %>
+					<%= @order_detail.product.order_supplier_history(current_user).html_safe if !@order_detail.product.nil? %>
 				   </div>
 			      </div>
                               
