@@ -10,8 +10,8 @@
                                           <textarea class="form-control width100" name="order_details[<%= order_detail.product_id %>][product_description]"><%= order_detail.product_description %></textarea>
                                           <!--<input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_name]" value="<%= order_detail.product_name %>" />
                                           <input class="form-control" type="text" name="order_details[<%= order_detail.product_id %>][product_description]" value="<%= order_detail.product_description %>" />-->
-                                          <br />
-                                        <%= link_to 'Remove Item', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.product_id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
+                                          <!--<br />-->
+                                        
 
                                       </td>
                                       <td class="unit">
@@ -54,6 +54,10 @@
                                                     </span>
                                                     <%= text_field_tag :line_tip_percent, "", {:class => "form-control price_input line_tip_percent"} %>
                                              </div>
+                                        </td>
+                                        
+                                        <td>
+                                            <%= link_to 'X', ajax_destroy_order_details_url(id: order_detail.id), rel: order_detail.product_id, :class => "btn btn-danger btn-xs btn-mini delete_product_order_detail edit-order-detail", data: { confirm: 'Are you sure?' } %>
                                         </td>
 
                                   </tr>
