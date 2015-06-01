@@ -6,7 +6,7 @@ class Notification < ActiveRecord::Base
   end
   
   def self.send_email(n)
-    #UserMailer.send_notification(n).deliver
+    UserMailer.send_notification(n).deliver
   end
   
   def self.send_notification(current_user, type, item)    
@@ -29,7 +29,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        send_email(n)
+        #send_email(n)
       end
     when 'order_price_confirmed'
       users = User.where(id: item.salesperson_id)
@@ -58,7 +58,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        send_email(n)
+        #send_email(n)
       end
       
       if !item.is_deposited
@@ -82,7 +82,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        send_email(n)
+        #send_email(n)
       end
     
     
@@ -99,7 +99,7 @@ class Notification < ActiveRecord::Base
         
         n.save
         
-        send_email(n)
+        #send_email(n)
       end
       
       
