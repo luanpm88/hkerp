@@ -167,3 +167,8 @@ table {
     bottom: -9000px;
     display: block;
 }
+
+.show_order_page {
+    margin: auto;
+    width: 1000px;
+}

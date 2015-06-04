@@ -6,72 +6,80 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
 
 <%= stylesheet_link_tag "print_html.css" %>
 
-<div class="order_histories" style="float: right">
-<%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-<%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
+
+<div class="show_order_page">
   
-</div>
-
-<div class="order_histories" style="float: left; max-width: 640px">
-  
-  <% @order.all_order_payments.each do |d| %>
-    <%
-      active = d.id == @payment_record.id ? "success" : "white"      
-    %>
-    
-    <div class="print_group">
-      
-      <%= link_to d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
-      
-    </div>
-
-  <% end %>
-
-  <% @order.all_tip_payments.each do |d| %>
-    <%
-      active = d.id == @payment_record.id ? "success" : "white"      
-    %>
-    
-    <div class="print_group">
-      
-      <%= link_to "[Tip] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
-      
-    </div>
-
-<% end %>
-
-	  <% if can? :read_commissions, @order %>
-		  <% @order.all_commission_payments.each do |d| %>
+		<div class="order_histories" style="float: right">
+		<%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+		<%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
+		  
+		</div>
+		
+		<div class="order_histories" style="float: left; max-width: 640px">
+		  
+		  <% @order.all_order_payments.each do |d| %>
 			<%
 			  active = d.id == @payment_record.id ? "success" : "white"      
 			%>
 			
 			<div class="print_group">
 			  
-			  <%= link_to "[Commission] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+			  <%= link_to d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
 			  
 			</div>
 		
 		  <% end %>
-	  <% end %>
-
-
+		
+		  <% @order.all_tip_payments.each do |d| %>
+			<%
+			  active = d.id == @payment_record.id ? "success" : "white"      
+			%>
+			
+			<div class="print_group">
+			  
+			  <%= link_to "[Tip] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+			  
+			</div>
+		
+		<% end %>
+		
+			  <% if can? :read_commissions, @order %>
+				  <% @order.all_commission_payments.each do |d| %>
+					<%
+					  active = d.id == @payment_record.id ? "success" : "white"      
+					%>
+					
+					<div class="print_group">
+					  
+					  <%= link_to "[Commission] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+					  
+					</div>
+				
+				  <% end %>
+			  <% end %>
+		
+		
+		</div>
+		
+		<br style="clear: both" />
+		<% if params[:export_ticket].present? %>
+		  <%= render 'export_ticket' %>
+		<% else %>
+		  <%= render 'show' %>
+		<% end %>
+		  
+		<br style="clear: both" />
+		
+		<div class="order_histories" style="float: right;margin: 10px 0 0 0">
+		  <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+		  <%= link_to 'X Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info btn-xs btn-mini" %>
+		  <%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
+		</div>
+		
+		
 </div>
-
-<br style="clear: both" />
-<% if params[:export_ticket].present? %>
-  <%= render 'export_ticket' %>
-<% else %>
-  <%= render 'show' %>
-<% end %>
-  
-<br style="clear: both" />
-
-<div class="order_histories" style="float: right;margin: 10px 0 0 0">
-  <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-  <%= link_to 'X Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info btn-xs btn-mini" %>
-  <%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
-</div>
+		
+		
 <script>
   $('.show_order').fancybox({
 		    width: "80%",
