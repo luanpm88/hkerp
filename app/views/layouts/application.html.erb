@@ -1131,7 +1131,30 @@
 				  callback({ id: element.val, text: element.attr('text') });
 			}
 	    });
-	    
+		
+	    $('.select2-ajax-customer-pos').select2({
+			allowClear: true,
+			multiple: true,
+	      placeholder: "Search for a product",
+	      minimumInputLength: 1,
+	      ajax: {
+			url: $('.select2-ajax-customer-pos').attr("data"),
+			dataType: 'json',
+			data: function (term, page) { // page is the one-based page number tracked by Select2
+			  return {
+				q: term, //search term
+			  };
+			},
+			results: function (data, page) {
+			  return {results: data};
+			}
+	      }
+	    });
+		if ($('.select2-ajax-customer-pos').length) {
+			dds = JSON.parse($('.select2-ajax-customer-pos').attr("vals"))
+			$('.select2-ajax-customer-pos').select2("data",dds);
+		}		
+		
 	    $('.ajax_outer input[name="supplier_order_detail[product_id]"]').live("change", function() {
 		var product_id = $(this).val();
 		if (product_id != "") {
@@ -1225,6 +1248,22 @@
 				}
 			},
 			"columnDefs": [ { "targets": [0,1,2,3], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+			"iDisplayLength": 25
+	    });
+		
+		//Datatable products
+	    $('.datatable-customer-pos').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_customer_pos_path %>",
+				"data": function ( d ) {
+					
+				}
+			},
+			"columnDefs": [ { "targets": [0,1,2,3,4,5,6], "orderable": false } ],
 			"order": [],
 			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
 			"iDisplayLength": 25
@@ -1850,6 +1889,10 @@
    <!-- BEGIN SIDEBAR MENU -->	
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
+		
+		
+		
+		
 	<% if current_user.has_role? "accountant" %>
 	    <li class="start<% if ["accounting","payment_records"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to orders_url do %>
@@ -1884,6 +1927,26 @@
 		</ul>
 	    </li>
 	<% end %>
+	
+	
+	
+	<% if current_user.has_role?("salesperson") || current_user.has_role?("customer") %>
+	    <li class="start<% if ["customer_pos"].include?(params[:controller]) %> active open<% end %>">
+		<%= link_to orders_url do %>
+		  <i class="icon-signout"></i>
+		  <span class="title" onclick="">Customer</span>
+		  <span class="arrow<% if ["customer_pos"].include?(params[:controller]) %> open<% end %>"></span>
+		  <span class="badge badge-important pull-right alert-level1"></span>
+		<% end %>
+		<ul class="sub-menu">
+		  <li<% if ["customer_pos"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>>
+			<span class="badge badge-important pull-right alert-level2"></span>
+			<%= link_to 'Customer POs', customer_pos_url %>
+		  </li>	      
+		</ul>
+	    </li>
+	<% end %>
+	
 	
 	<% if current_user.has_role? "salesperson" %>
 	    <li class="start<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && ["index"].include?(params[:action]) %> active open<% end %>">

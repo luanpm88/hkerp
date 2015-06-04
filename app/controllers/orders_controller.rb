@@ -33,6 +33,8 @@ class OrdersController < ApplicationController
       
       @order.payment_method_id = -1
       
+      @order.customer_pos << CustomerPo.find(params[:customer_po_id]) if params[:customer_po_id].present?
+      
       if !params[:purchase].nil?
         @order.customer = Contact.HK
       else
@@ -403,7 +405,8 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :tip_contact_id,
-                                    :shipment_contact_id
+                                    :shipment_contact_id,
+                                    :customer_po_ids => []
                                   )
     end
     
@@ -421,7 +424,8 @@ class OrdersController < ApplicationController
                                     :printed_order_number,
                                     :supplier_agent_id,
                                     :tip_contact_id,
-                                    :shipment_contact_id
+                                    :shipment_contact_id,
+                                    :customer_po_ids => []
                                   )
     end
     
@@ -447,8 +451,11 @@ class OrdersController < ApplicationController
                   )
     end
     
-    def permit_order_details_params(params)
+    def permit_order_details_params(params)      
       arr = []
+      
+      return arr if params.nil?
+      
       params.each do |line|
         arr << permit_order_detail_params(line[1])
       end

@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Code:</strong>
+  <%= @customer_po.code %>
+</p>
+
+<p>
+  <strong>Filename:</strong>
+  <%= @customer_po.filename %>
+</p>
+
+<%= link_to 'Edit', edit_customer_po_path(@customer_po) %> |
+<%= link_to 'Back', customer_pos_path %>

@@ -1,4 +1,11 @@
 Hkerp::Application.routes.draw do
+  resources :customer_pos_orders
+  resources :customer_pos do
+    collection do
+      get :datatable
+      get :file
+    end
+  end
   resources :product_images do
     collection do
       get :image

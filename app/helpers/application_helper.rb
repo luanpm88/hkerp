@@ -194,6 +194,31 @@ module ApplicationHelper
       return actions.html_safe
   end
   
+  def render_customer_po_actions(item)
+    actions = '<div class="text-right"><div class="btn-group actions">
+                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
+      actions += '<ul class="dropdown-menu">'
+      
+      
+      group_1 = 0
+      if can? :create, item
+        actions += '<li>'+ActionController::Base.helpers.link_to('Create Order', {controller: "orders", action: "new", customer_po_id: item.id})+'</li>'        
+        group_1 += 1
+      end
+      #if can? :destroy, item
+      #  actions += '<li>'+ActionController::Base.helpers.link_to('Delete', item, method: :delete, data: { confirm: 'Are you sure?'})+'</li>'        
+      #  group_1 += 1
+      #end      
+      
+      #actions += '<li class="divider"></li>' if group_1 > 0
+      
+      
+      
+      actions += '</ul></div></div>'
+      
+      return actions.html_safe
+  end
+  
   def get_months_between_time(from_date, to_date)
 	months = []
 

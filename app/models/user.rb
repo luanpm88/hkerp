@@ -26,6 +26,8 @@ class User < ActiveRecord::Base
   
   has_many :sales_orders, :class_name => "Order", :foreign_key => "salesperson_id"
   
+  has_many :customer_pos
+  
   def ability
     @ability ||= Ability.new(self)
   end

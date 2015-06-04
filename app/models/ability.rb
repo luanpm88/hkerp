@@ -388,5 +388,15 @@ class Ability
       end
     end
     
+    if user.has_role? "attendance_manager"
+      can :create, CustomerPo do |item|
+        item.orders.empty?
+      end
+      can :read, CustomerPo
+      can :datatable, CustomerPo
+      
+      can :file, CustomerPo
+    end
+    
   end
 end

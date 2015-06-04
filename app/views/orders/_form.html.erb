@@ -176,6 +176,22 @@
                                                      </div>
                                           </div>
                                    </div>
+                                
+                                
+                              
+                                   <div class="form-group">
+                                          <label class="form-label"><%= f.label :customer_po %></label>
+                                          <span class="help"></span>
+                                          <div class="input-with-icon  right">                                       
+                                                 <i class=""></i>
+                                                 
+                                                 
+                                                 <input vals="<%= @order.customer_pos_select_value %>" style="width:100%;margin-bottom: 5px;" name="order[customer_po_ids][]" data="<%= customer_pos_path(format: "json") %>" class="select2-ajax-customer-pos" />
+                                                 
+                                           
+                                           
+                                          </div>
+                                   </div>
                               
                     
                               <!--<div class="form-group">

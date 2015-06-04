@@ -41,6 +41,8 @@ class Order < ActiveRecord::Base
   
   has_many :notifications, foreign_key: "item_id", :dependent => :destroy
   
+  has_and_belongs_to_many :customer_pos
+  
   after_save :update_status_names
   
   
@@ -1446,4 +1448,26 @@ class Order < ActiveRecord::Base
     return commission_programs(interval_type).where("min_amount <= ? AND max_amount >= ?", amount, amount)
                                               .order("commission_rate DESC").first
   end
+  
+  def customer_pos_select_value
+    val = []
+    self.customer_pos.each do |cp|
+      node = {}
+      node[:id] = cp.id
+      node[:text] = cp.code
+      
+      val << node
+    end
+    
+    return val.to_json
+  end
+  
+  def po_number
+    if !customer_pos.empty?
+      customer_pos.first.code
+    else
+      self.customer_po
+    end    
+  end
+  
 end
