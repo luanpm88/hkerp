@@ -183,6 +183,8 @@ Hkerp::Application.routes.draw do
       get :ajax_list_supplier_agent
       
       get :datatable
+      
+      get :logo
     end
   end
 

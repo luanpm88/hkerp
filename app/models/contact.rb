@@ -1,4 +1,6 @@
 class Contact < ActiveRecord::Base
+  mount_uploader :image, LogoUploader
+  
   include PgSearch
   
   validates :name, presence: true, :uniqueness => true
@@ -52,10 +54,11 @@ class Contact < ActiveRecord::Base
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
     
-    actions_col = 3
+    actions_col = 4
     @records.each do |item|
       item = [
-              ActionController::Base.helpers.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title")+item.html_info_line.html_safe,
+              link_helper.link_to("<img src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
+              link_helper.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title")+item.html_info_line.html_safe,
               '<div class="text-center nowrap">'+item.city_name+"</div>",
               item.agent_list_html,              
               '',
@@ -295,6 +298,23 @@ class Contact < ActiveRecord::Base
     types = contact_types.map{|t| t.id}
     types_cache = types.empty? ? "" : "["+types.join("][")+"]"
     self.update_attribute(:contact_types_cache, types_cache)
+  end
+  
+  def logo_path(version = nil)
+    if self.image_url.nil?
+      return "public/img/avatar.jpg"
+    elsif !version.nil?
+      return self.image_url(version)
+    else
+      return self.image_url
+    end
+  end
+  
+  def logo(version = nil)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    link_helper.url_for(controller: "contacts", action: "logo", id: self.id, type: version)
   end
   
 end

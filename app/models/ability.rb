@@ -109,6 +109,8 @@ class Ability
       can :read, State
       can :read, Country
       can :select_tag, City
+      
+      can :logo, Contact
     end  
     
     if user.has_role? "attendance_manager"
