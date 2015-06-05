@@ -126,14 +126,13 @@ class Product < ActiveRecord::Base
                   case params["order"]["0"]["column"]
                   when "0"
                     order = "products.id"
-                  when "1"
+                  when "0"
                     order = "categories.name"
-                  when "2"
+                  when "1"
                     order = "manufacturers.name"
-                  when "3"
+                  when "2"
                     order = "products.name"
-                  when "6"
-                    order = "products.stock"
+                  
                   else
                     order = "products.updated_at DESC"
                   end

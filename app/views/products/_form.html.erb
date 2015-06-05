@@ -196,33 +196,39 @@
 						 <div class="tab-pane" id="parts">
 							  <div class="row">
 								   <div class="col-md-12">
+										<% if @product.id.nil? %>
 										
-										<div class="form-group">
-												  <label class="form-label"><%= f.label :parts %></label>
-												  <div class="input-with-icon  right">                                       
-														  <i class=""></i>
-													   <div class="row">
-															<% @product.product_parts.each_with_index do |part,index| %>
-																 <%= f.fields_for :product_parts, part do |p| %>
-																 
-																   <div class="col-md-6">
-																	  <div class="row parts_select">                           
-																		   <div class="col-sm-9 col-md-9">
-																			  <%= p.hidden_field :id %>
-																			  <%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
-																			  <%= p.text_field :part_id, :class => "width100 select2-ajax-products", data: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
-																		   </div>
-																		   <div class="col-sm-3 col-md-3">
-																				<%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
-																		   </div>
-																	  </div>
-																   </div>
-																 <% end %>
-															<% end %>
-													   </div>
+											 <p>
+												  Can't update parts of the product until it is added.
+											 </p>
+											 
+										<% else %>
+												  <div class="form-group">
+															<label class="form-label"><%= f.label :parts %></label>
+															<div class="input-with-icon  right">                                       
+																	<i class=""></i>
+																 <div class="row">
+																	  <% @product.product_parts.each_with_index do |part,index| %>
+																		   <%= f.fields_for :product_parts, part do |p| %>
+																		   
+																			 <div class="col-md-6">
+																				<div class="row parts_select">                           
+																					 <div class="col-sm-9 col-md-9">
+																						<%= p.hidden_field :id %>
+																						<%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
+																						<%= p.text_field :part_id, :class => "width100 select2-ajax-products", data: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
+																					 </div>
+																					 <div class="col-sm-3 col-md-3">
+																						  <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
+																					 </div>
+																				</div>
+																			 </div>
+																		   <% end %>
+																	  <% end %>
+																 </div>
+															</div>
 												  </div>
-										</div>
-										
+										<% end %>
 								   </div>
 							  </div>
 						 </div>
