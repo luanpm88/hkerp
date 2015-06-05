@@ -617,7 +617,13 @@ class Order < ActiveRecord::Base
         @items = @items.where(order_status_name: [nil, "new", "items_confirmed", "price_confirmed"])
       end
       
-      where[:salesperson_id] = user.id if !user.can?(:view_all_sales_orders, Order)
+      if !user.can?(:view_all_sales_orders, Order)
+        if params[:action] != "purchase_orders"
+          where[:salesperson_id] = user.id
+        else
+          where[:purchaser_id] = user.id
+        end        
+      end
     end
     
     @items = @items.joins(:order_status)
