@@ -57,7 +57,7 @@ class Contact < ActiveRecord::Base
     actions_col = 4
     @records.each do |item|
       item = [
-              link_helper.link_to("<img src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
+              link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
               link_helper.link_to(item.name, {controller: "contacts", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title")+item.html_info_line.html_safe,
               '<div class="text-center nowrap">'+item.city_name+"</div>",
               item.agent_list_html,              
