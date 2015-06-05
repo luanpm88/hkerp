@@ -9,7 +9,7 @@
   <tr>
 	<% if @header_com.image.present? %>
 	  <td rowspan="2" width="15%">
-		<img src="<%= params[:action] == "download_pdf" ? "file://"+@header_com.image.to_s : @header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+		<img src="<%= params[:action] == "download_pdf" ? "file://"+@header_com.logo_path(:thumb2x) : @header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
 	  </td>
 	<% end %>
     <td colspan="2">

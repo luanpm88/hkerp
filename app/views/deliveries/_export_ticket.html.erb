@@ -8,9 +8,9 @@
 
 <table class="cominfo">
   <tr>
-    <% if @order.supplier.image.present? %>
+    <% if header_com.image.present? %>
       <td rowspan="2" width="15%">
-        <img src="<%= params[:action] == "download_pdf" ? "file://"+header_com.image.to_s : header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+        <img src="<%= params[:action] == "download_pdf" ? "file://"+header_com.logo_path(:thumb2x) : header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
       </td>
     <% end %>
     <td colspan="2">
@@ -45,7 +45,7 @@
 
 <table class="cols-info">  
   <tr>
-    <td width="14%"></td>
+    <td width="16%"></td>
     <td width="4%"><strong>Số <div class="point2">:</div> </strong></td>
     <td width="20%"><%= @order.quotation_code %>-<%= @delivery.id %></td>
     <td width="10%"><strong>Ngày xuất <div class="point2">:</div> </strong></td>

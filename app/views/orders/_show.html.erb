@@ -7,7 +7,7 @@
   <tr>
     <% if @order.supplier == Contact.HK %>
       <td rowspan="2" width="15%">
-        <img src="<%= params[:action] == "download_pdf" ? "file://"+@order.supplier.image.to_s : @order.supplier.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+        <img src="<%= params[:action] == "download_pdf" ? "file://"+@order.supplier.logo_path(:thumb2x) : @order.supplier.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
       </td>
     <% end %>
     <td colspan="2">
