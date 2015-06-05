@@ -7,9 +7,9 @@
 %>
 <table class="cominfo">
   <tr>
-	<% if @order.supplier.image.present? %>
+	<% if @header_com.image.present? %>
 	  <td rowspan="2" width="15%">
-		<img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+		<img src="<%= params[:action] == "download_pdf" ? "file://"+@header_com.image.to_s : @header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
 	  </td>
 	<% end %>
     <td colspan="2">

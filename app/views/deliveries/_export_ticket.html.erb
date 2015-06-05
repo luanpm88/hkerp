@@ -10,7 +10,7 @@
   <tr>
     <% if @order.supplier.image.present? %>
       <td rowspan="2" width="15%">
-        <img src="http://hoangkhang.com.vn/images/Logo_HK.png" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+        <img src="<%= params[:action] == "download_pdf" ? "file://"+header_com.image.to_s : header_com.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
       </td>
     <% end %>
     <td colspan="2">
@@ -19,10 +19,10 @@
   </tr>
   <tr>
     <td>
-      <p><%= @order.supplier.address %></p>
+      <p><%= header_com.full_address %></p>
       
-      <p><label>ĐT: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
-      <p><label>STK: </label><%= @order.supplier.account_number %> <%= @order.supplier.bank %></p>
+      <p><label>ĐT: </label><%= header_com.phone %> - <label>Fax: </label><%= header_com.fax %> - <label>Hotline: </label><%= header_com.hotline %></p>
+      <p><label>STK: </label><%= header_com.account_number %> <%= header_com.bank %></p>
     </td>
     <td class="top-left" valign="top">
       <p><label>MST: </label><%= header_com.tax_code %></p>
@@ -78,7 +78,7 @@
       </tr>
       <tr>
         <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
-        <td colspan="6"><%= @order.supplier.address %></td>
+        <td colspan="6"><%= @order.supplier.full_address %></td>
       </tr>
       <tr>
         <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
