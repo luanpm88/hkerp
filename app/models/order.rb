@@ -1413,8 +1413,8 @@ class Order < ActiveRecord::Base
     commission = {amount: 0.00, program: nil}
     
     # month program
-    #current_month = Time.now.beginning_of_month
-    #if order_date <= current_month
+    current_month = Time.now.beginning_of_month
+    if order_date <= current_month
       # get total month sales
       month_state = CommissionProgram.sales_statistics(salesperson, order_date.beginning_of_month, order_date.end_of_month)      
       if !month_state.nil?
@@ -1422,11 +1422,11 @@ class Order < ActiveRecord::Base
         
         program = month_program if program.nil? || month_program.commission_rate > program.commission_rate
       end
-    #end
+    end
     
     # year program
-    #current_year = Time.now.beginning_of_year
-    #if order_date <= current_year
+    current_year = Time.now.beginning_of_year
+    if order_date <= current_year
       # get total month sales
       year_state = CommissionProgram.sales_statistics(salesperson, order_date.beginning_of_year, order_date.end_of_year)      
       if !year_state.nil?
@@ -1434,7 +1434,7 @@ class Order < ActiveRecord::Base
         
         program = year_program if program.nil? || year_program.commission_rate > program.commission_rate
       end
-    #end
+    end
     
     if !program.nil?
       commission[:amount] = (program.commission_rate/100.00)*self.total
