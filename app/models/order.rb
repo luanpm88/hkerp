@@ -618,11 +618,7 @@ class Order < ActiveRecord::Base
       end
       
       if !user.can?(:view_all_sales_orders, Order)
-        if params[:action] != "purchase_orders"
-          where[:salesperson_id] = user.id
-        else
-          where[:purchaser_id] = user.id
-        end        
+        @items = @items.where("salesperson_id=? OR purchaser_id=?",user.id,user.id)
       end
     end
     
