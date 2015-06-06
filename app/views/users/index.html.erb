@@ -1,3 +1,50 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Users', users_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>User - <span class="semi-bold"> Management</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <%= link_to 'New Product', new_user_path, :class => 'btn btn-primary btn-cons' %>
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4>Listing  <span class="semi-bold">Products</span></h4>
+                                <div class="tools">
+				    
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables datatable-users no-filter">
+                                        <thead>
+                                            <tr>                                                
+												<th width="1%">Avatar</th>
+												<th>Name</th>
+                                                <th>Rols</th>
+												<th>Actions</th>
+                                            </tr>
+                                        </thead>                                        
+                                    </table>
+                            </div>
+                        </div>
+			
+                    </div>
+		    
+                </div>
+
+
+
+
 <h1>Listing users</h1>
 
 <table>

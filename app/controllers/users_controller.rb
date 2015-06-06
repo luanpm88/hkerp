@@ -111,6 +111,18 @@ class UsersController < ApplicationController
     send_file @user.avatar_path(params[:type]), :disposition => 'inline'
   end
   
+  def datatable
+    result = User.datatable(params, current_user)
+    
+    result[:items].each_with_index do |item, index|
+      actions = render_users_actions(item)
+      
+      result[:result]["data"][index][result[:actions_col]] = actions
+    end
+    
+    render json: result[:result]
+  end
+  
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user

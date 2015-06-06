@@ -238,6 +238,69 @@ class Ability
       can :view_supplier_price, Product
       can :view_suppliers, Contact
     end
+    
+    if user.has_role? "purchase_manager"        
+      can :show, Order
+      can :pricing_orders, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :update_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :do_update_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed'
+      end
+      can :confirm_price, Order do |order|
+        order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
+      end
+      
+      can :update_price, Product
+      can :do_update_price, Product
+      
+      can :trash, Product do |product|
+        product.status == 1 && product.calculated_stock == 0
+      end        
+      can :un_trash, Product do |product|
+        product.status == 0
+      end
+
+      can :purchase_orders, Order
+      can :view_list, Order
+      can :create, Order do |order|
+        order.is_purchase || order.id.nil?
+      end
+      can :confirm_order, Order do |order|
+        order.is_purchase && ['new','items_confirmed','price_confirmed'].include?(order.status.name)
+      end
+      can :update, Order do |order|
+        order.is_purchase && order.status.name == 'new'
+      end
+      can :destroy, Order do |order|
+        order.is_purchase && ["new"].include?(order.status.name)
+      end
+      
+      can :change, Order do |order|
+        order.is_purchase && ['confirmed'].include?(order.status.name)
+      end
+      can :do_change, Order do |order|
+        order.is_purchase && ['confirmed'].include?(order.status.name)
+      end
+
+      can :create, OrderDetail
+      can :read, OrderDetail
+      can :update, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.status.name == 'new')
+      end
+      can :destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? || (order_detail.order.status.name == 'new')
+      end
+      can :ajax_destroy, OrderDetail do |order_detail|
+        order_detail.order.nil? || (['new','confirmed'].include?(order_detail.order.status.name))
+      end
+      
+      can :view_supplier_price, Product
+      can :view_suppliers, Contact
+    end
 
     if user.has_role? "accountant"
       can :read, Order

@@ -1192,6 +1192,22 @@
 			"iDisplayLength": 25
 	    });
 		
+		//Datatable products
+	    $('.datatable-users').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_users_path %>",
+				"data": function ( d ) {
+					
+				}
+			},
+			"columnDefs": [ { "targets": [0,1,2,3], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[25, 50, 75, 100], [25, 50, 75, 100]],
+			"iDisplayLength": 25
+	    });
+		
 		
 		//Datatable products
 	    $('.datatable-custom-payments').dataTable( {

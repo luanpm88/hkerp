@@ -142,7 +142,50 @@ class User < ActiveRecord::Base
     
     `#{backup_cmd} &`
   end
+
+                
+  def self.datatable(params, user)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers    
+    
+    @records = self.all
+    
+    #@records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    
+    total = @records.count
+    @records = @records.limit(params[:length]).offset(params["start"])
+    data = []
+    
+    actions_col = 4
+    @records.each do |item|
+      item = [
+              link_helper.link_to("<img width='60' src='#{item.avatar(:thumb)}' />".html_safe, {controller: "users", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
+              link_helper.link_to(item.name, {controller: "users", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
+              '<div class="text-center nowrap">'+item.roles_name+"</div>",
+              '',              
+              '',
+            ]
+      data << item
+      
+    end
+    
+    result = {
+              "drawn" => params[:drawn],
+              "recordsTotal" => total,
+              "recordsFiltered" => total
+    }
+    result["data"] = data
+    
+    return {result: result, items: @records, actions_col: actions_col}
+    
+  end
   
-  
+  def roles_name
+    names = []
+    roles.each do |r|
+      names << r.name
+    end
+    return names.join("<br />").html_safe
+  end
   
 end

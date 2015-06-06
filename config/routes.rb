@@ -157,6 +157,8 @@ Hkerp::Application.routes.draw do
         
         get :download_backup
         get :delete_backup
+        
+        get :datatable
       end
     end
   end
