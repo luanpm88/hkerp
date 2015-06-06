@@ -50,7 +50,7 @@
 										<div class="">
 											<div class="input-with-icon  right">                                       
 											<i class=""></i>
-											<input style="width:100%;margin-bottom: 5px;" name="customer_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
+											<input style="width:100%;margin-bottom: 5px;" name="customer_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
 											</div>
 										</div>
 									</div>
@@ -76,7 +76,7 @@
 											<i class=""></i>
 											
 											<% if can? :manage, CommissionProgram %>
-												<input style="width:100%;margin-bottom: 5px;" name="user_id" url="<%= users_path(all_option: true, format: "json") %>" class="select2-ajax-users" value="<%= @user.id  if !@user.nil? %>" text="<%= @user.name if !@user.nil? %>" data-placeholder="All"/>
+												<input style="width:100%;margin-bottom: 5px;" name="user_id" data="<%= users_path(all_option: true, format: "json") %>" class="select2-ajax-users" value="<%= @user.id  if !@user.nil? %>" text="<%= @user.name if !@user.nil? %>" data-placeholder="All"/>
 											<% else %>
 												<strong><%= @user.name %></strong>
 											<% end %>
