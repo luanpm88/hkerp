@@ -150,19 +150,35 @@ class User < ActiveRecord::Base
     
     @records = self.all
     
-    #@records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    
+    if !params["order"].nil?
+      case params["order"]["0"]["column"]
+      when "1"
+        order = "users.first_name"
+      when "4"
+        order = "users.created_at"      
+      else
+        order = "users.first_name"
+      end
+      order += " "+params["order"]["0"]["dir"]
+    else
+      order = "users.first_name"
+    end
+    @records = @records.order(order) if !order.nil?
     
     total = @records.count
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
     
-    actions_col = 4
+    actions_col = 5
     @records.each do |item|
       item = [
               link_helper.link_to("<img width='60' src='#{item.avatar(:thumb)}' />".html_safe, {controller: "users", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
-              link_helper.link_to(item.name, {controller: "users", action: "show", id: item.id}, class: "fancybox.ajax show_order main-title"),
-              '<div class="text-center nowrap">'+item.roles_name+"</div>",
-              '',              
+              link_helper.link_to(item.name, {controller: "users", action: "edit", id: item.id}, class: "main-title")+item.quick_info,
+              '<div class="text-center">'+item.roles_name+"</div>",
+              '<div class="text-center">'+item.ATT_No.to_s+"</div>",
+              '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+"</div>", 
               '',
             ]
       data << item
@@ -183,9 +199,16 @@ class User < ActiveRecord::Base
   def roles_name
     names = []
     roles.each do |r|
-      names << r.name
+      names << "<span class=\"badge badge-info #{r.name}\">#{r.name}</span>"
     end
     return names.join("<br />").html_safe
+  end
+  
+  def quick_info
+    info = email
+    info += "<br />Mobile: #{mobile}" if mobile.present?
+    
+    return info.html_safe
   end
   
 end

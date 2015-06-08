@@ -10,7 +10,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <%= link_to 'New Product', new_user_path, :class => 'btn btn-primary btn-cons' %>
+                        <%= link_to 'New User', new_user_path, :class => 'btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Products</span></h4>
@@ -25,13 +25,15 @@
                             </div>
                             <div class="grid-body no-border">
                                  
-                                    <table class="table table-striped no-more-tables datatable-users no-filter">
+                                    <table class="table no-more-tables datatable-users no-filter">
                                         <thead>
                                             <tr>                                                
 												<th width="1%">Avatar</th>
 												<th>Name</th>
-                                                <th>Rols</th>
-												<th>Actions</th>
+                                                <th class="text-center">Rols</th>
+												<th class="text-center">ATT_No</th>
+												<th class="text-center">Joined Date</th>
+												<th class="text-right">Actions</th>
                                             </tr>
                                         </thead>                                        
                                     </table>
@@ -44,33 +46,3 @@
 
 
 
-
-<h1>Listing users</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Image</th>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @users.each do |user| %>
-      <tr>
-        <td>
-          <img src="<%= user.avatar(:thumb) %>" />
-        </td>
-        <td><%= user.name %></td>
-        <td><%= link_to 'Show', user %></td>
-        <td><%= link_to 'Edit', edit_user_path(user) %></td>
-        <td><%= link_to 'Destroy', user, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New User', new_user_path %>

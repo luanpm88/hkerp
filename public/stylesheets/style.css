@@ -7928,3 +7928,12 @@ tr.block_commission_header h3 {
 .top0 {
     margin-top: 0;
 }
+.width30 {
+    width: 30%;
+}
+.badge.admin {
+    background: #ce4844;
+}
+.badge.attendance_manager, .badge.sales_manager, .badge.accountant_manager, .badge.storage_manager {
+    background: #aa6708;
+}

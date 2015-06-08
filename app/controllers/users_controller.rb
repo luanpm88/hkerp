@@ -23,6 +23,7 @@ class UsersController < ApplicationController
   def show
     authorize! :manage, User
     
+    render layout: nil
   end
 
   # GET /users/new
@@ -44,7 +45,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       if @user.save
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        format.html { redirect_to users_path, notice: 'User was successfully created.' }
         format.json { render action: 'show', status: :created, location: @user }
       else
         format.html { render action: 'new' }
@@ -65,7 +66,7 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       if @user.update(new_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
+        format.html { redirect_to users_path, notice: 'User was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -131,6 +132,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:email, :first_name, :last_name, :ATT_No, :image, :password, :password_confirmation, :role_ids => [])
+      params.require(:user).permit(:mobile, :email, :first_name, :last_name, :ATT_No, :image, :password, :password_confirmation, :role_ids => [])
     end
 end
