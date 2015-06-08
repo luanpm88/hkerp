@@ -47,16 +47,10 @@
                                                                <span class="help">(required)</span>
                                                                  <div class="input-with-icon  right">                                       
                                                                    <i class=""></i>
-                                                                      <table>
-                                                                             <tr>
-                                                                                    <td class="width100">
-                                                                                           <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers required" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
-                                                                                    </td>
-                                                                                    <td>
-                                                                                           <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                                                                                    </td>
-                                                                             </tr>
-                                                                      </table>
+                                                                      <div class="input-with_add_but">
+                                                                             <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                             <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers required" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
+                                                                      </div>
                                                                  </div>
                                                             </div>
                                                         <% else %>
@@ -118,16 +112,10 @@
                                                                   <span class="help">(required)</span>
                                                                   <div class="input-with-icon  right">                                       
                                                                          <i class=""></i>
-                                                                         <table>
-                                                                             <tr>
-                                                                                    <td class="width100">
-                                                                                           <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers required" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
-                                                                                    </td>
-                                                                                    <td>
-                                                                                           <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-                                                                                    </td>
-                                                                             </tr>
-                                                                         </table>
+                                                                             <div class="input-with_add_but">
+                                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                                    <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers required" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
+                                                                             </div>
                                                                   </div>
                                                                </div>
                                                         <% end %>

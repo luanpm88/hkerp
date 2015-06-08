@@ -7940,3 +7940,22 @@ tr.block_commission_header h3 {
 .width140px {
     width: 140px;
 }
+.input-with_add_but {
+    position: relative;
+}
+.input-with_add_but .btn {
+    display: block;
+    height: 35px;
+    padding: 8px 0 8px 32px;
+    position: absolute;
+    text-align: center;
+    z-index: 1;
+    right: 0
+}
+.input-with_add_but .btn i {
+    margin: 0;
+    color: #ccc;
+}
+.input-with_add_but .select2-container {
+    padding-right: 32px;
+}
