@@ -165,10 +165,10 @@ class Ability
         order_detail.order.salesperson_id == user.id
       end
       can :update, OrderDetail do |order_detail|
-        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
+        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order_detail.order.status.name))
       end
       can :ajax_destroy, OrderDetail do |order_detail|
-        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','confirmed'].include?(order_detail.order.status.name))
+        order_detail.order.nil? || (order_detail.order.salesperson_id == user.id && ['new','items_confirmed','price_confirmed','confirmed'].include?(order_detail.order.status.name))
       end
       
       can :order_log, Order
