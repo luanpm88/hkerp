@@ -21,8 +21,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    authorize! :manage, User
-    
     render layout: nil
   end
 
