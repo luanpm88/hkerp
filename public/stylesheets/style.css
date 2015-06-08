@@ -7937,3 +7937,6 @@ tr.block_commission_header h3 {
 .badge.attendance_manager, .badge.sales_manager, .badge.accountant_manager, .badge.storage_manager {
     background: #aa6708;
 }
+.width140px {
+    width: 140px;
+}
