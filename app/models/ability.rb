@@ -111,6 +111,8 @@ class Ability
       can :select_tag, City
       
       can :logo, Contact
+      
+      can :show, User
     end  
     
     if user.has_role? "attendance_manager"
