@@ -113,6 +113,7 @@ class Ability
       can :logo, Contact
       
       can :show, User
+      can :avatar, User
     end  
     
     if user.has_role? "attendance_manager"
@@ -171,7 +172,7 @@ class Ability
       end
       
       can :order_log, Order
-      can :avatar, User
+      
     end
 
     if user.has_role? "purchaser"        
