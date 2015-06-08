@@ -105,9 +105,13 @@ class CommissionProgramsController < ApplicationController
     
     months = get_months_between_time(@from_date, @to_date)
     
-    @user = nil
+    
     if can? :manage, CommissionProgram
-      @user = User.find(params[:user_id]) if params[:user_id].present?
+      if params[:user_id].present?
+        @user = User.find(params[:user_id])
+      else
+        @user = current_user
+      end
     else
       @user = current_user
     end
