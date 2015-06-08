@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :contacts
   has_many :products
   
-  has_many :assignments
+  has_many :assignments, :dependent => :destroy
   has_many :roles, :through => :assignments
   
   has_many :checkinouts, primary_key: 'ATT_No', foreign_key: 'user_id'
@@ -198,7 +198,7 @@ class User < ActiveRecord::Base
   
   def roles_name
     names = []
-    roles.each do |r|
+    roles.order("name").each do |r|
       names << "<span class=\"badge badge-info #{r.name}\">#{r.name}</span>"
     end
     return names.join("<br />").html_safe
