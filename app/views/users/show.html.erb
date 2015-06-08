@@ -1,4 +1,53 @@
-<p id="notice"><%= notice %></p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+    <div class="row">
+      <div class="col-md-6" style="margin: auto;float: none">
+      
+      
+                  <div class=" tiles white col-md-12 no-padding">
+					<div class="tiles green cover-pic-wrapper">						
+						<div class="overlayer bottom-right">
+							<div class="overlayer-wrapper">
+									<div class="padding-10 hidden-xs">									
+										<button class="btn btn-primary btn-small" type="button"><i class="icon-ok"></i>&nbsp;&nbsp;Following</button> <button class="btn btn-primary btn-small" type="button">Add</button>
+									</div>
+								</div>
+						</div>
+                        <img alt="" src="/img/cover_pic.png">
+					</div>
+					<div class="tiles white">
+			
+						<div class="row">
+							<div class="col-md-4 col-sm-4">
+								<div class="user-profile-pic">	
+									<img width="69" height="69" alt="" src="<%= @user.avatar(:thumb) %>" data-src="<%= @user.avatar(:thumb) %>" data-src-retina="<%= @user.avatar(:thumb2x) %>">
+								</div>
+								 <div class="user-mini-description text-right">
+                                    <%= @user.roles_name %>
+									<!--<h3 class="text-success semi-bold">
+									###
+									</h3>
+									<h5>Followers</h5>
+									<h3 class="text-success semi-bold">
+									###
+									</h3>
+									<h5>Following</h5>-->
+								</div>
+							</div>
+							<div class="col-md-7 user-description-box  col-sm-7">
+								<h4 class="semi-bold no-margin"><%= @user.name %></h4>
+								<h6 class="no-margin"><%= @user.email %></h6>
+								<br>
+								<p><i class="icon-phone"></i><%= @user.mobile %></p>
+								<!--<p><i class="icon-globe"></i>www.google.com</p>
+								<p><i class="icon-file-alt"></i>Download Resume</p>
+								<p><i class="icon-envelope"></i>Send Message</p>-->
+							</div>
+											
+						</div>
+				
+                        
+                      </div>
+					</div>
+				</div>
+      </div>
+    </div>

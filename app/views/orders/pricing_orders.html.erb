@@ -61,7 +61,7 @@
                                                 <%= order.order_details.count %>
                                           </td>
                                           <td class="text-center">
-                                                <%= order.salesperson_name %>
+											<%= link_to(order.salesperson_name, {controller: "users", action: "show", id: order.salesperson.id}, class: "fancybox.ajax fancybox_link") %>
                                           </td>
                                           <td class="text-center">
                                                 <%= order.order_date_formatted %>

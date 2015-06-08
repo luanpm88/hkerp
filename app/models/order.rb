@@ -650,9 +650,9 @@ class Order < ActiveRecord::Base
       end
       
       if !item.is_purchase
-        staff_col = item.salesperson_name
+        staff_col = link_helper.link_to(item.salesperson_name, {controller: "users", action: "show", id: item.salesperson.id}, class: "fancybox.ajax fancybox_link")
       else
-        staff_col = item.purchaser_name
+        staff_col = link_helper.link_to(item.purchaser_name, {controller: "users", action: "show", id: item.purchaser.id}, class: "fancybox.ajax fancybox_link")
       end
       
       
