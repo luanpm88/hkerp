@@ -12,13 +12,15 @@
 		</div>      
       
 		<div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
 						<h4>Category <span class="semi-bold">Details</span></h4>
 						<div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
                 </div>
                 
+		<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, multipart: true }) do |f| %>
+				
                 <div class="grid-body no-border">
                   
 						<% if devise_error_messages! != "" %>
@@ -31,127 +33,157 @@
 						<% end %>
                  
                   
-						<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, multipart: true }) do |f| %>
+						
 								   
-					   
-								<div class="form-group">
-									<label class="form-label">Photo</label>
-									<span class="help"></span>
-									<div class="right">                                       
-										<i class=""></i>
-										<!--<div class="nice"><%= f.file_field :image %></div>-->
-										
-											<ul id="sortable" class="image-boxes">
-																 
-													<li class="image-box ui-state-default">
-															<div class="img-actions">
-																	<i class="icon-minus-sign delete-but<% if !@user.image.present? %> hidden<% end %>"></i>
-															</div>
-															<a href="#" class="">
-																	<% if @user.image.present? %>
-																		 <img class="current_img current_image_pic" src="<%= @user.avatar(:thumb2x) %>" />
-																	<% end %>
-																	<i class="icon-picture current_img current_image_icon<% if @user.image.present? %> hidden<% end %>"></i>
-																	<img src="" class="new_picture hidden" />										
-															</a>
-															<%= f.file_field :image, :class => "hidden" %>
-													</li>
-										 
-											</ul>
-											<br style="clear:both" />
+								<div class="row">
+										<div class="col-md-2">
+												<div class="form-group">
+													<label class="form-label">Photo</label>
+													<span class="help"></span>
+													<div class="right">                                       
+														<i class=""></i>
+														<!--<div class="nice"><%= f.file_field :image %></div>-->
+														
+															<ul id="sortable" class="image-boxes">
+																				 
+																	<li class="image-box ui-state-default">
+																			<div class="img-actions">
+																					<i class="icon-minus-sign delete-but<% if !@user.image.present? %> hidden<% end %>"></i>
+																			</div>
+																			<a href="#" class="">
+																					<% if @user.image.present? %>
+																						 <img class="current_img current_image_pic" src="<%= @user.avatar(:thumb2x) %>" />
+																					<% end %>
+																					<i class="icon-picture current_img current_image_icon<% if @user.image.present? %> hidden<% end %>"></i>
+																					<img src="" class="new_picture hidden" />										
+																			</a>
+																			<%= f.file_field :image, :class => "hidden" %>
+																	</li>
+														 
+															</ul>
+															<br style="clear:both" />
+																
+													</div>
+												</div>
+								
+										</div>
+									   
+										<div class="col-md-5">
 												
-									</div>
-								</div>
-					   
-					   
-								<div class="form-group">
-										<label class="form-label"><%= f.label :email %></label>
-										<span class="help">(required)</span>
-										<div class="input-with-icon  right">                                       
-												<i class=""></i>
-												<%= f.email_field :email, :autofocus => true, :class => "form-control" %>
+												<div class="form-group">
+														<label class="form-label"><%= f.label :email %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon  right">                                       
+																<i class=""></i>
+																<%= f.email_field :email, :autofocus => true, :class => "form-control" %>
+														</div>
+												</div>
+											  
+												<div class="form-group">
+														<label class="form-label"><%= f.label :first_name %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon  right">                                       
+																<i class=""></i>
+																<%= f.text_field :first_name, :autofocus => true, :class => "form-control" %>
+														</div>
+												</div>
+											  
+												<div class="form-group">
+														<label class="form-label"><%= f.label :last_name %></label>
+														<span class="help">(required)</span>
+														<div class="input-with-icon  right">                                       
+																<i class=""></i>
+																<%= f.text_field :last_name, :autofocus => true, :class => "form-control" %>
+														</div>
+												</div>
+												
+												<div class="form-group">
+														<label class="form-label"><%= f.label :mobile %></label>
+														<span class="help"></span>
+														<div class="input-with-icon right">                                       
+																<i class=""></i>
+																<%= f.text_field :mobile, :autofocus => true, :class => "form-control" %>
+														</div>
+												</div>
+												
+												<div class="form-group">
+														<label class="form-label"><%= f.label :phone_ext %></label>
+														<span class="help"></span>
+														<div class="input-with-icon right">                                       
+																<i class=""></i>
+																<%= f.text_field :phone_ext, :autofocus => true, :class => "form-control" %>
+														</div>
+												</div>
+											  
+												
+											  
+												<% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+														<div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+												<% end %>
+											  
+												
+											  
+										</div>
+										<div class="col-md-5">
+												
+											  
+												
+												
+												<div class="form-group">
+														<label class="form-label"><%= f.label :password %></label>
+														<span class="help">(leave blank if you don't want to change it)</span>
+														<div class="input-with-icon right">                                       
+																<i class=""></i>
+																<%= f.password_field :password, :autocomplete => "off", :class => "form-control" %>
+														</div>
+												</div>
+												
+												<div class="form-group">
+														<label class="form-label"><%= f.label :password_confirmation %></label>
+														<span class="help"></span>
+														<div class="input-with-icon right">                                       
+																<i class=""></i>
+																<%= f.password_field :password_confirmation, :class => "form-control" %>
+														</div>
+												</div>
+											  
+												<div class="form-group">
+														<label class="form-label"><%= f.label :current_password %></label>
+														<span class="help">(required to confirm your changes)</span>
+														<div class="input-with-icon  right">                                       
+																<i class=""></i>
+																<%= f.password_field :current_password, :class => "form-control required" %>
+														</div>
+												</div>
+											  
+											  
+												
 										</div>
 								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :first_name %></label>
-										<span class="help">(required)</span>
-										<div class="input-with-icon  right">                                       
-												<i class=""></i>
-												<%= f.text_field :first_name, :autofocus => true, :class => "form-control" %>
-										</div>
+						<div class="form-actions">  
+								<div class="pull-right">					  
+										<%= f.submit "Update", :class => "btn btn-success btn-cons" %>
+										<%= link_to "Back", :back, :class => "btn btn-white btn-cons" %>
 								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :last_name %></label>
-										<span class="help">(required)</span>
-										<div class="input-with-icon  right">                                       
-												<i class=""></i>
-												<%= f.text_field :last_name, :autofocus => true, :class => "form-control" %>
-										</div>
-								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :phone_ext %></label>
-										<span class="help"></span>
-										<div class="input-with-icon right">                                       
-												<i class=""></i>
-												<%= f.text_field :phone_ext, :autofocus => true, :class => "form-control" %>
-										</div>
-								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :mobile %></label>
-										<span class="help"></span>
-										<div class="input-with-icon right">                                       
-												<i class=""></i>
-												<%= f.text_field :mobile, :autofocus => true, :class => "form-control" %>
-										</div>
-								</div>
-							  
-								<% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
-										<div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
-								<% end %>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :password %></label>
-										<span class="help">(leave blank if you don't want to change it)</span>
-										<div class="input-with-icon right">                                       
-												<i class=""></i>
-												<%= f.password_field :password, :autocomplete => "off", :class => "form-control" %>
-										</div>
-								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :password_confirmation %></label>
-										<span class="help"></span>
-										<div class="input-with-icon right">                                       
-												<i class=""></i>
-												<%= f.password_field :password_confirmation, :class => "form-control" %>
-										</div>
-								</div>
-							  
-								<div class="form-group">
-										<label class="form-label"><%= f.label :current_password %></label>
-										<span class="help">(we need your current password to confirm your changes)</span>
-										<div class="input-with-icon  right">                                       
-												<i class=""></i>
-												<%= f.password_field :current_password, :class => "form-control" %>
-										</div>
-								</div>
-							  
-							  
-								<div class="form-actions">  
-										<div class="pull-right">					  
-												<%= f.submit "Update", :class => "btn btn-success btn-cons" %>
-												<%= link_to "Back", :back, :class => "btn btn-white btn-cons" %>
-										</div>
-								</div>
-						<% end %>
+						</div>
 				
                 </div>
+				
+				
+				
+				
+				
               </div>
-            </div>		
+			  
+		<% end %>
+			  
+			  
+            </div>
+				
+				
+				
+				
+				
       </div>
       
       
