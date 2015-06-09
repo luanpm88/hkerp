@@ -216,10 +216,11 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
+                        "",
                         ''
                       ]
                 data << item
-                actions_col = 7
+                actions_col = 8
       end
                 
     end    
