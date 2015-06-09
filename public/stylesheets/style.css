@@ -7608,7 +7608,7 @@ ul.filter {
 }
 .hidden, .quantity-0 {
     position: absolute;
-    bottom: -9000px;
+    top: -9000px;
     display: block;
 }
 .product_order_list .warranty, .product_order_list .quantity {
