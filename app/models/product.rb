@@ -263,7 +263,7 @@ class Product < ActiveRecord::Base
     
     img = product_images.order("display_order").first
     
-    return link_helper.url_for(controller: "product_images", action: "image", id: img.id)   
+    return link_helper.url_for(controller: "product_images", action: "image", id: img.id, :type => "thumb")   
   end
   
   def serial_numbers_extracted
