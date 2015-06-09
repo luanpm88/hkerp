@@ -52,7 +52,7 @@
 																			</div>
 																			<a href="#" class="">
 																					<% if @user.image.present? %>
-																						 <img class="current_img current_image_pic" src="<%= @user.avatar(:thumb2x) %>" />
+																						 <img class="current_img current_image_pic" src="<%= @user.avatar(:square2x) %>" />
 																					<% end %>
 																					<i class="icon-picture current_img current_image_icon<% if @user.image.present? %> hidden<% end %>"></i>
 																					<img src="" class="new_picture hidden" />										

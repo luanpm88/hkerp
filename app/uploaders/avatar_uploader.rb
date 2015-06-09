@@ -38,6 +38,12 @@ class AvatarUploader < CarrierWave::Uploader::Base
    version :thumb2x do
      process :resize_to_fit => [312, 312]
    end
+   version :square do
+     process :resize_to_fill => [100, 100]
+   end
+   version :square2x do
+     process :resize_to_fill => [312, 312]
+   end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
