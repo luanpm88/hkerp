@@ -9,7 +9,52 @@
                     	<h3>Product - <span class="semi-bold"> Management</span></h3>	
                 </div>
                 <div class="row">
-                    <div class="col-md-9">
+					<div class="col-md-12">
+						<div class="grid simple ">
+							<div class="grid-body no-border filters">
+							<h3>Filters</h3>
+							
+							<div class="row">
+								<div class="col-md-3">
+									<h4>Category<br /><span class="filter-cat-clear">Clear select</span></h4>
+									<p style="margin-bottom: 20px">
+										<select class="modern_select" style="width:100%" name="category">
+										<option value="">All category</option>
+										<optgroup label="Categories">
+										<% Category.all.each do |category| %>
+										   <% if category.children == [] %>
+											<option value="<%= category.id %>"><%= category.name %></option>
+										   <% end %>
+										<% end %>
+										</optgroup>
+										</select>
+									</p>
+								</div>
+								<div class="col-md-9">
+									<h4>Manufacturers<br /><span class="filter-manu-clear">Clear select</span></h4>
+									<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
+											<% Manufacturer.all.order(:name).each do |manufacturer| %>
+												<option value="<%= manufacturer.id %>"><%= manufacturer.name %></option>
+											<% end %>
+									</select>
+									<div class="filter-manu-scroll">
+										
+										<!--<ul class="filter">
+											<% Manufacturer.all.order(:name).each do |manufacturer| %>
+												<li>
+													<div class="checkbox check-success">
+														<input id="manu_checkbox<%= manufacturer.id %>" type="checkbox" value="<%= manufacturer.id %>" name="manufacturers[]" />
+														<label for="manu_checkbox<%= manufacturer.id %>"><%= manufacturer.name %></label>
+													</div>
+												</li>
+											<% end %>
+										</ul>-->
+									</div>
+									</div>
+							</div>
+						</div>
+					</div>
+                    <div class="col-md-12">
 			<%= link_to 'New Product', new_product_path, :class => 'btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
@@ -34,6 +79,7 @@
 												<th>Sup.Price</th>
                                                 <th>Price</th>
 												<th>Stock</th>
+												<th>Status</th>
                                                 <th>Action</th>   
                                             </tr>
                                         </thead>                                        
@@ -42,37 +88,5 @@
                         </div>
 			
                     </div>
-		    <div class="col-md-3">
-			<div class="grid simple ">
-			    <div class="grid-body no-border filters">
-				<h3>Filters</h3>
-				<h4>Category<br /><span class="filter-cat-clear">Clear select</span></h4>
-				<p style="margin-bottom: 20px">
-				    <select class="modern_select" style="width:100%" name="category">
-					<option value="">All category</option>
-					<optgroup label="Categories">
-					<% Category.all.each do |category| %>
-					   <% if category.children == [] %>
-						<option value="<%= category.id %>"><%= category.name %></option>
-					   <% end %>
-					<% end %>
-					</optgroup>
-				    </select>
-				</p>
-				<h4>Manufacturers<br /><span class="filter-manu-clear">Clear select</span></h4>
-				<div class="filter-manu-scroll">
-				    <ul class="filter">
-					<% Manufacturer.all.order(:name).each do |manufacturer| %>
-					    <li>
-						<div class="checkbox check-success">
-						    <input id="manu_checkbox<%= manufacturer.id %>" type="checkbox" value="<%= manufacturer.id %>" name="manufacturers[]" />
-						    <label for="manu_checkbox<%= manufacturer.id %>"><%= manufacturer.name %></label>
-						</div>
-					    </li>
-					<% end %>
-				    </ul>
-				</div>
-			    </div>
-			</div>
-		    </div>
+					
                 </div>

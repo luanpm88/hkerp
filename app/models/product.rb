@@ -144,7 +144,7 @@ class Product < ActiveRecord::Base
     
     
     where = "true"    
-    where += " AND products.manufacturer_id IN (#{params["manufacturers"]})" if params["manufacturers"].present?
+    where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present?
     where += " AND categories.id = #{params["category"]}" if params["category"].present?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
@@ -214,11 +214,12 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'<br />'+product.display_status+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
                         ''
                       ]
                 data << item
-                actions_col = 6
+                actions_col = 7
       end
                 
     end    
@@ -349,7 +350,7 @@ class Product < ActiveRecord::Base
   
   def is_price_outdated
     # if empty stock for 30 days
-    (!product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 60) || product_price.nil? || product_price.price.nil?
+    (!product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100) || product_price.nil? || product_price.price.nil?
   end
   
   def price_status

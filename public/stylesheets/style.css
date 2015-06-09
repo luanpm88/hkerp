@@ -7565,6 +7565,7 @@ ul.my-friends li .profile-pic{
 ul.filter li {
     list-style: none;
     padding-left: 0;
+    float: left
 }
 ul.filter {
     padding-left: 0;
@@ -7768,7 +7769,7 @@ input.disabled {
 .active {
     color: #3c763d;
 }
-.trashed {
+.trashed *, .trashed {
     color: #ccc;
 }
 .price-history {
