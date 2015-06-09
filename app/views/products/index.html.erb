@@ -16,9 +16,9 @@
 							
 							<div class="row">
 								<div class="col-md-3">
-									<h4>Category<br /><span class="filter-cat-clear">Clear select</span></h4>
+									<h4>Categories <span class="filter-cat-clear">Clear select</span></h4>
 									<p style="margin-bottom: 20px">
-										<select class="modern_select" style="width:100%" name="category">
+										<select class="modern_select" style="width:100%" name="categories[]" multiple="multiple">
 										<option value="">All category</option>
 										<optgroup label="Categories">
 										<% Category.all.each do |category| %>
@@ -31,7 +31,7 @@
 									</p>
 								</div>
 								<div class="col-md-9">
-									<h4>Manufacturers<br /><span class="filter-manu-clear">Clear select</span></h4>
+									<h4>Manufacturers <span class="filter-manu-clear">Clear select</span></h4>
 									<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
 											<% Manufacturer.all.order(:name).each do |manufacturer| %>
 												<option value="<%= manufacturer.id %>"><%= manufacturer.name %></option>

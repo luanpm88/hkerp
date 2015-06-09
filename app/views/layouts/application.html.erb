@@ -1188,8 +1188,8 @@
 			"ajax": {
 				"url": "<%= datatable_products_path %>",
 				"data": function ( d ) {
-				d.manufacturers =  $("select[name='manufacturers[]']").val(),
-				d.category = $("select[name='category']").val()
+					d.manufacturers =  $("select[name='manufacturers[]']").val(),
+					d.categories = $("select[name='categories[]']").val()
 				}
 			},
 			"columnDefs": [ { "targets": [3,4,5,6], "orderable": false } ],
@@ -1262,12 +1262,12 @@
 			$('.datatable-products').dataTable().fnFilter();
 			$("select[name='manufacturers[]']").select2('data', null);
 	    });
-	    $("select[name='category']").change(function() {
+	    $("select[name='categories[]']").change(function() {
 		$('.datatable-products').dataTable().fnFilter();
 	    });
 	    $(".filter-cat-clear").click(function() {
-		$("select[name='category']").select2("val","");
-		$('.datatable-products').dataTable().fnFilter();
+			$("select[name='categories[]']").select2('data',null);
+			$('.datatable-products').dataTable().fnFilter();
 	    });
 	    
 	    //auto update customer info
