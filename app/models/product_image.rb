@@ -6,7 +6,7 @@ class ProductImage < ActiveRecord::Base
   
   def image_path(version = nil)
     if self.filename_url.nil?
-      return "public/img/avatar.jpg"
+      return "public/img/photo.png"
     elsif !version.nil?
       return self.filename_url(version)
     else
