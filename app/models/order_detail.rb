@@ -219,6 +219,7 @@ class OrderDetail < ActiveRecord::Base
       #params[:supplier_id] = product.product_price.supplier_id
       #params[:supplier_price] = product.product_price.supplier_price
       #params[:customer_id] = order.customer_id
+      product.product_price
     end
     
     
