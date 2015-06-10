@@ -236,7 +236,7 @@
 					  <i class=""></i>
 						 <div class="input-with_add_but">
 							  <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-							  <input style="width:100%;margin-bottom: 5px;" name="contact[parent_ids][]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-contacts required" value="<%= @contact.parent.first.id if !@contact.parent.first.nil? %>" text="<%= @contact.parent.first.name if !@contact.parent.first.nil? %>" />
+							  <input style="width:100%;margin-bottom: 5px;" name="contact[parent_ids][]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-contacts" value="<%= @contact.parent.first.id if !@contact.parent.first.nil? %>" text="<%= @contact.parent.first.name if !@contact.parent.first.nil? %>" />
 						 </div>
 					</div>
 			   </div>

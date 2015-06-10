@@ -297,7 +297,9 @@ class Order < ActiveRecord::Base
     end
     
     order_details.each do |od|
-      od.update_price(user)
+      pp = od.update_price(user)
+
+      od.update_attribute(:product_price_id, pp.id)
     end
     
     self.set_status('confirmed',user)
