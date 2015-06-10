@@ -1,0 +1,8 @@
+<div class="agent-line" rel="<%= agent.id %>">
+    <span class="pull-right">
+        <%= link_to 'Edit', ajax_edit_contacts_path(:id => agent.id), :class => "btn btn-primary btn-xs btn-mini fancybox.ajax add-agent-button" %>
+        <%= link_to 'X', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent", data: { confirm: 'Are you sure?' } %>					
+   </span>
+    <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
+    <%= agent.html_agent_line.html_safe %>
+</div>

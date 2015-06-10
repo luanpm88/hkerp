@@ -28,10 +28,11 @@
                   <% end %>
                     
                  
+					
                   
-                  
-				<%= form_for(@contact, html: { multipart: true }) do |f| %>
+				<%= form_for(@contact,  html: { multipart: true }) do |f| %>
                            
+						   
                            
                     <div class="row column-seperation">
                            
@@ -261,14 +262,17 @@
                         <div id="agents-list" class="col-md-12">
                           <% if !@contact.agents.nil? %>
                             <% @contact.agents.each do |agent| %>
-                              <div class="agent-line">
-				   <span>
-					<%= link_to 'Delete', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent", data: { confirm: 'Are you sure?' } %>					
-				   </span>
-				   
-				   <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
-				   <%= agent.html_agent_line.html_safe %>				
-                              </div>
+							  
+							  <%= render "agent_line", agent: agent %>
+							
+                              <!--<div class="agent-line">
+								   <span>
+										<%= link_to 'Edit', ajax_edit_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini fancybox.ajax add-agent-button" %>
+										<%= link_to 'Delete', ajax_destroy_contacts_path(:id => agent.id), :class => "btn btn-danger btn-xs btn-mini delete_agent", data: { confirm: 'Are you sure?' } %>					
+								   </span>				   
+								   <input type="hidden" name="contact[agent_ids][]" value="<%= agent.id %>" />
+								   <%= agent.html_agent_line.html_safe %>				
+                              </div>-->
                             <% end %>
                           <% end %>
                         </div>

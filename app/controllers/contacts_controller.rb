@@ -2,7 +2,7 @@ class ContactsController < ApplicationController
   include ContactsHelper
   
   load_and_authorize_resource
-  before_action :set_contact, only: [:show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
+  before_action :set_contact, only: [:ajax_edit, :ajax_update, :show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
 
   # GET /contacts
   # GET /contacts.json
@@ -85,14 +85,34 @@ class ContactsController < ApplicationController
     @contact = Contact.new
     
     if (!params[:type_id].nil?)
-      @contact.contact_type = ContactType.find_by_id(params[:type_id])
+      @contact.contact_types << ContactType.find_by_id(params[:type_id])
     end
     if (!params[:company_id].nil?)
       @contact.companies << Contact.find_by_id(params[:company_id])
     end
     
+    render :layout => nil
+  end
+  
+  def ajax_edit
     
     render :layout => nil
+  end
+  
+  # PATCH/PUT /contacts/1
+  # PATCH/PUT /contacts/1.json
+  def ajax_update
+    params[:contact][:contact_type_ids] ||= []
+    
+    respond_to do |format|
+      if @contact.update(contact_params)
+        format.html { render action: 'ajax_show', :layout => nil, :id => @contact.id }
+        format.json { head :no_content }
+      else
+        format.html { render action: 'ajax_edit' }
+        format.json { render json: @contact.errors, status: :unprocessable_entity }
+      end
+    end
   end
   
   def ajax_create
@@ -102,7 +122,7 @@ class ContactsController < ApplicationController
     respond_to do |format|
       if @contact.save
         format.html { render action: 'ajax_show', :layout => nil, :id => @contact.id }
-        format.json { render action: 'show', status: :created, location: @contact }
+        format.json { head :no_content }
       else
         format.html { render action: 'ajax_new', :layout => nil }
         format.json { render json: @contact.errors, status: :unprocessable_entity }

@@ -177,7 +177,9 @@ Hkerp::Application.routes.draw do
     collection do
       post :import
       get :ajax_new
+      get :ajax_edit
       post :ajax_create
+      patch :ajax_update
       get :ajax_show
       get :ajax_destroy
       get :ajax_show

@@ -614,27 +614,33 @@
 	    
 	    $.ajax(
 	    {
-		url : formURL,
-		type: "POST",
-		data : postData,
-		success:function(data, textStatus, jqXHR)
-		{
-		    if($('<div/>').html(data).find("#ajax-success-result").length)
-		    {
-		      $.fancybox.close();
-		      $('#agents-list').append($('<div/>').html(data).find("#ajax-success-result").html());
-		    }
-		    else
-		    {
-		      $('.fancybox-inner').html(data);
-		      $('.fancybox-inner').scrollTop(0)
-		      $(".ajax_outer .modern_select").select2({allowClear: true});
-		    }		    
-		},
-		error: function(jqXHR, textStatus, errorThrown)
-		{
-		    alert("error");
-		}
+			url : formURL,
+			type: "POST",
+			data : postData,
+			success:function(data, textStatus, jqXHR)
+			{
+				var success_box = $('<div/>').html(data).find("#ajax-success-result")
+				if(success_box.length)
+				{
+					$.fancybox.close();
+					agent_id = success_box.find('.agent-line').attr("rel")
+					if ($('.agent-line[rel='+agent_id+']').length) {
+						$('.agent-line[rel='+agent_id+']').html(success_box.find('.agent-line').clone())
+					} else {
+						$('#agents-list').append($('<div/>').html(data).find("#ajax-success-result").html());
+					}
+				}
+				else
+				{
+				  $('.fancybox-inner').html(data);
+				  $('.fancybox-inner').scrollTop(0);
+				  $(".ajax_outer .modern_select").select2({allowClear: true});
+				}		    
+			},
+			error: function(jqXHR, textStatus, errorThrown)
+			{
+				alert("error");
+			}
 	    });
 	    e.preventDefault(); //STOP default action
 	});

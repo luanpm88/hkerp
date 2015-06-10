@@ -28,10 +28,10 @@
                   <% end %>
                     
                  
+                  <% action = params[:action] == 'ajax_edit' ? "ajax_update" : "ajax_create" %>
                   
-                  
-		<%= form_for(@contact, :url => {:action => "ajax_create"}, :html => {:id => "ajax-contact-form"}) do |f| %>
-                         
+		<%= form_for(@contact, url: {action: action}, :html => {:id => "ajax-contact-form"}) do |f| %>
+                         <%= hidden_field_tag("id", @contact.id) if !@contact.id.nil? %>
 			 <% if !@contact.companies.nil? %>
 			      <% @contact.companies.each do |company| %>
 				   <input type="hidden" name="contact[company_ids][]" value="<%= company.id %>" />
@@ -52,7 +52,7 @@
 																		   <div class="row-fluid contact_types">
 																				<div class="checkbox check-success">
 																					 <%= check_box_tag "contact[contact_type_ids][]", ct.id, @contact.contact_types.include?(ct), {id: "checkbox"+ct.id.to_s} %>
-																				  <label for="checkbox<%= ct.id %>"><%= ct.name %></label>
+																					 <label for="checkbox<%= ct.id %>"><%= ct.name %></label>
 																				</div>
 																		   </div>
 																	  <% end %>
@@ -221,7 +221,7 @@
                                         </div>
               </div>
               
-              <div class="form-group">
+              <!--<div class="form-group">
                 <label class="form-label"><%= f.label :agents %></label>
                 <span class="help"></span>
                 <div class="input-with-icon  right">                                       
@@ -244,7 +244,7 @@
 			      <%= link_to 'Add agent', ajax_new_contacts_path(:type_id => ContactType.agent, :company_id => @contact.id), :class => "btn btn-white btn-cons fancybox.ajax add-agent-button", :id => "add-agent-button" %>
                         </div>
                 </div>
-              </div>
+              </div>-->
             
           </div>
                         
