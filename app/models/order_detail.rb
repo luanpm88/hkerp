@@ -18,6 +18,12 @@ class OrderDetail < ActiveRecord::Base
   
   has_many :delivery_details
   
+  after_save :update_order_cache_total
+  
+  def update_order_cache_total
+    order.update_cache_total if !order.nil?
+  end
+  
   def total
     price * quantity
   end

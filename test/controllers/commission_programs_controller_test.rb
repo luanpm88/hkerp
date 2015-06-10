@@ -18,7 +18,7 @@ class CommissionProgramsControllerTest < ActionController::TestCase
 
   test "should create commission_program" do
     assert_difference('CommissionProgram.count') do
-      post :create, commission_program: { max_amount: @commission_program.max_amount, min_amount: @commission_program.min_amount, pushlished_at: @commission_program.pushlished_at, time_interval: @commission_program.time_interval }
+      post :create, commission_program: { max_amount: @commission_program.max_amount, min_amount: @commission_program.min_amount, published_at: @commission_program.published_at, interval_type: @commission_program.interval_type }
     end
 
     assert_redirected_to commission_program_path(assigns(:commission_program))
@@ -35,7 +35,7 @@ class CommissionProgramsControllerTest < ActionController::TestCase
   end
 
   test "should update commission_program" do
-    patch :update, id: @commission_program, commission_program: { max_amount: @commission_program.max_amount, min_amount: @commission_program.min_amount, pushlished_at: @commission_program.pushlished_at, time_interval: @commission_program.time_interval }
+    patch :update, id: @commission_program, commission_program: { max_amount: @commission_program.max_amount, min_amount: @commission_program.min_amount, published_at: @commission_program.published_at, interval_type: @commission_program.interval_type }
     assert_redirected_to commission_program_path(assigns(:commission_program))
   end
 

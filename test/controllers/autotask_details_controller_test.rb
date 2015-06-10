@@ -18,7 +18,7 @@ class AutotaskDetailsControllerTest < ActionController::TestCase
 
   test "should create autotask_detail" do
     assert_difference('AutotaskDetail.count') do
-      post :create, autotask_detail: { autotask_id: @autotask_detail.autotask_id, item_count: @autotask_detail.item_count, time_interval: @autotask_detail.time_interval }
+      post :create, autotask_detail: { autotask_id: @autotask_detail.autotask_id, item_count: @autotask_detail.item_count }
     end
 
     assert_redirected_to autotask_detail_path(assigns(:autotask_detail))
@@ -35,7 +35,7 @@ class AutotaskDetailsControllerTest < ActionController::TestCase
   end
 
   test "should update autotask_detail" do
-    patch :update, id: @autotask_detail, autotask_detail: { autotask_id: @autotask_detail.autotask_id, item_count: @autotask_detail.item_count, time_interval: @autotask_detail.time_interval }
+    patch :update, id: @autotask_detail, autotask_detail: { autotask_id: @autotask_detail.autotask_id, item_count: @autotask_detail.item_count }
     assert_redirected_to autotask_detail_path(assigns(:autotask_detail))
   end
 

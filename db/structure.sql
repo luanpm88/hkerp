@@ -595,71 +595,6 @@ ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
 
 
 --
--- Name: customer_pos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE customer_pos (
-    id integer NOT NULL,
-    code character varying,
-    filename character varying,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    user_id integer
-);
-
-
---
--- Name: customer_pos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE customer_pos_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: customer_pos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE customer_pos_id_seq OWNED BY customer_pos.id;
-
-
---
--- Name: customer_pos_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE customer_pos_orders (
-    id integer NOT NULL,
-    order_id integer,
-    customer_po_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: customer_pos_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE customer_pos_orders_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: customer_pos_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE customer_pos_orders_id_seq OWNED BY customer_pos_orders.id;
-
-
---
 -- Name: deliveries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -960,7 +895,8 @@ CREATE TABLE orders (
     tip_status_name character varying,
     purchaser_id integer,
     tip_contact_id integer,
-    shipment_contact_id integer
+    shipment_contact_id integer,
+    cache_total numeric
 );
 
 
@@ -1778,20 +1714,6 @@ ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY customer_pos ALTER COLUMN id SET DEFAULT nextval('customer_pos_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY customer_pos_orders ALTER COLUMN id SET DEFAULT nextval('customer_pos_orders_id_seq'::regclass);
-
-
---
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
 ALTER TABLE ONLY deliveries ALTER COLUMN id SET DEFAULT nextval('deliveries_id_seq'::regclass);
 
 
@@ -2089,22 +2011,6 @@ ALTER TABLE ONLY contacts
 
 ALTER TABLE ONLY countries
     ADD CONSTRAINT countries_pkey PRIMARY KEY (id);
-
-
---
--- Name: customer_pos_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY customer_pos_orders
-    ADD CONSTRAINT customer_pos_orders_pkey PRIMARY KEY (id);
-
-
---
--- Name: customer_pos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY customer_pos
-    ADD CONSTRAINT customer_pos_pkey PRIMARY KEY (id);
 
 
 --
@@ -2660,11 +2566,7 @@ INSERT INTO schema_migrations (version) VALUES ('20150527033129');
 
 INSERT INTO schema_migrations (version) VALUES ('20150528015743');
 
-INSERT INTO schema_migrations (version) VALUES ('20150603011705');
-
-INSERT INTO schema_migrations (version) VALUES ('20150603012013');
-
-INSERT INTO schema_migrations (version) VALUES ('20150603020814');
-
 INSERT INTO schema_migrations (version) VALUES ('20150604092249');
+
+INSERT INTO schema_migrations (version) VALUES ('20150610035056');
 

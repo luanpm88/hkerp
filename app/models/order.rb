@@ -42,7 +42,7 @@ class Order < ActiveRecord::Base
   has_many :notifications, foreign_key: "item_id", :dependent => :destroy
   
   after_save :update_status_names
-  
+
   
   def valid_debt_date
     if !deposit.nil? && deposit > 0 && !debt_date.nil?
@@ -1441,11 +1441,15 @@ class Order < ActiveRecord::Base
   end
   
   def commission_programs(interval_type)
-    programs = CommissionProgram.where(interval_type: interval_type).all_commission_programs.where("published_at <= ? AND unpublished_at >= ?", order_date.beginning_of_day, order_date.end_of_day)
+    programs = CommissionProgram.where(status: 1).where(interval_type: interval_type).all_commission_programs.where("published_at <= ? AND unpublished_at >= ?", order_date.beginning_of_day, order_date.end_of_day)
   end
   
   def choose_commission_program(amount, interval_type)
     return commission_programs(interval_type).where("min_amount <= ? AND max_amount >= ?", amount, amount)
                                               .order("commission_rate DESC").first
+  end
+  
+  def update_cache_total
+    self.update_attribute(:cache_total, self.total)
   end
 end
