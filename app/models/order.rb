@@ -299,7 +299,7 @@ class Order < ActiveRecord::Base
     order_details.each do |od|
       pp = od.update_price(user)
 
-      od.update_attribute(:product_price_id, pp.id)
+      od.update_attribute(:product_price_id, pp.id) if pp.nil?
     end
     
     self.set_status('confirmed',user)
@@ -560,6 +560,8 @@ class Order < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
+    app_helper = ApplicationController.helpers
+    
     if !params["order"].nil? && !params["order"]["0"].nil?
       case params[:page]
       when "delivery"      
@@ -669,10 +671,10 @@ class Order < ActiveRecord::Base
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  '<div class="text-center">'+item.display_status+'</div>',
-                  "<div class=\"text-center\">#{item.display_payment_status}</div>",
-                  "<div class=\"text-center\">#{item.display_delivery_status}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
-                  ''
+                  '<div class="text-center">'+item.display_order_status_name+'</div>',
+                  "<div class=\"text-center\">#{item.display_payment_status_name}</div>",
+                  "<div class=\"text-center\">#{item.display_delivery_status_name}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
+                  '',
                 ]
           data << row
           actions_col = 7
@@ -684,8 +686,8 @@ class Order < ActiveRecord::Base
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+debt_time+'</div>',
-                  '<div class="text-center">'+item.display_status+item.display_delivery_status+'</div>',
-                  "<div class=\"text-center\">#{item.display_payment_status}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status}</div>",                                                      
+                  '<div class="text-center">'+item.display_order_status_name+item.display_delivery_status_name+'</div>',
+                  "<div class=\"text-center\">#{item.display_payment_status_name}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status_name}</div>",                                                      
                   ''
                 ]
           data << row
@@ -698,8 +700,8 @@ class Order < ActiveRecord::Base
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
-                  "<div class=\"text-center\">#{item.display_price_status}#{item.display_delivery_status}#{item.display_payment_status}</div>",                  
-                  '<div class="text-center">'+item.display_status+'</div>',
+                  "<div class=\"text-center\">#{item.display_price_status_name}#{item.display_delivery_status_name}#{item.display_payment_status_name}</div>",                  
+                  '<div class="text-center">'+item.display_order_status_name+'</div>',
                   ''
                 ]
           data << row
@@ -774,6 +776,14 @@ class Order < ActiveRecord::Base
   def display_delivery_status
     str = ""
     delivery_status.each do |s|
+      str += "<div class=\"#{s}\">#{s}</div>"
+    end
+    return str.html_safe
+  end
+  
+  def display_delivery_status_name
+    str = ""
+    delivery_status_name.split(",").each do |s|
       str += "<div class=\"#{s}\">#{s}</div>"
     end
     return str.html_safe
@@ -863,6 +873,7 @@ class Order < ActiveRecord::Base
     return "<div class=\"#{payment_status}\">#{payment_status}</div>".html_safe
   end
   
+  
   def save_as_new(order_params)
       new_params = order_params.dup
       new_params[:order_detail_ids] = []
@@ -948,6 +959,23 @@ class Order < ActiveRecord::Base
       "<div class=\"#{status.name}\">#{status.name}</div>".html_safe
     end
   end
+  
+  def display_order_status_name
+    if self.status.nil?
+    else
+      "<div class=\"#{order_status_name}\">#{order_status_name}</div>".html_safe
+    end
+  end
+  
+  def display_payment_status_name
+    if self.status.nil?
+    else
+      "<div class=\"#{payment_status_name}\">#{payment_status_name}</div>".html_safe
+    end
+  end
+  
+  
+
   
   def out_of_stock_details
     str = ""
@@ -1190,6 +1218,10 @@ class Order < ActiveRecord::Base
     return "<div class=\"#{price_status}\">#{price_status}</div>".html_safe
   end
   
+  def display_price_status_name
+    return "<div class=\"#{price_status_name}\">#{price_status_name}</div>".html_safe
+  end
+  
   def is_price_updated
     if price_status == "price_updated"
         return true
@@ -1322,6 +1354,10 @@ class Order < ActiveRecord::Base
   
   def display_tip_status
     return "<div class=\"#{tip_status}\">#{tip_status}</div>".html_safe
+  end
+  
+  def display_tip_status_name
+    return "<div class=\"#{tip_status_name}\">#{tip_status_name}</div>".html_safe
   end
   
   def tip_amount

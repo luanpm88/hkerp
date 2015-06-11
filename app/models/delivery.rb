@@ -11,6 +11,7 @@ class Delivery < ActiveRecord::Base
   validate :valid_delivery_details
   
   after_save :update_delivery_status_name
+  after_destroy :update_delivery_status_name
   
   def update_delivery_status_name
     order.update_delivery_status_name
