@@ -16,6 +16,7 @@ class PaymentRecord < ActiveRecord::Base
   validate :valid_debt_date
   
   after_save :update_payment_status_name
+  after_destroy :update_payment_status_name
   
   def self.all_order_payments
     self.where(type_name: 'order')

@@ -627,7 +627,8 @@ class Order < ActiveRecord::Base
     end
     
     @items = @items.joins(:order_status)
-    @items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
+    #@items = @items.where(order_statuses: {name: params["order_status"]}) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
+    @items = @items.where(order_status_name: params["order_status"]) if params["order_status"].present? && params["order_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("delivery_status_name LIKE ?", "%#{params["delivery_status"]}%") if params["delivery_status"].present?  && params["delivery_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("payment_status_name LIKE ?", "%#{params["payment_status"]}%") if params["payment_status"].present?  && params["payment_status"] != "waiting" && params["search"]["value"].empty?
     @items = @items.where("tip_status_name = ?", "#{params["tip_status"]}") if params["tip_status"].present?
