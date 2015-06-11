@@ -145,6 +145,8 @@ Hkerp::Application.routes.draw do
       
       get :update_tip
       patch :do_update_tip
+      
+      get :order_actions
     end
   end
 

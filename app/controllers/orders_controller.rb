@@ -1,9 +1,9 @@
 class OrdersController < ApplicationController
   include ApplicationHelper
   
-  load_and_authorize_resource :except => [:datatable]
+  load_and_authorize_resource :except => [:order_actions, :datatable]
   
-  before_action :set_order, only: [:print_order_fix1, :update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
+  before_action :set_order, only: [:order_actions, :print_order_fix1, :update_tip, :do_update_tip,  :order_log, :finish_order, :update_info, :do_update_info, :confirm_price, :do_update_price, :update_price, :do_change, :change, :pdf_preview, :show, :edit, :update, :destroy, :download_pdf, :print_order, :confirm_order]
 
   # GET /orders
   # GET /orders.json
@@ -256,11 +256,11 @@ class OrdersController < ApplicationController
     
     result = Order.datatable(params, current_user)
     
-    result[:items].each_with_index do |item, index|
-      actions = render_order_actions(item)
-      
-      result[:result]["data"][index][result[:actions_col]] = actions
-    end
+    #result[:items].each_with_index do |item, index|
+    #  actions = render_order_actions(item)
+    #  
+    #  result[:result]["data"][index][result[:actions_col]] = actions
+    #end
     
     render json: result[:result]
   end
@@ -379,6 +379,11 @@ class OrdersController < ApplicationController
   
   def order_log
     @logs = @order.order_log
+  end
+  
+  def order_actions
+    
+    render layout: nil
   end
 
   private

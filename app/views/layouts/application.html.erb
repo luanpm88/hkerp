@@ -84,6 +84,23 @@
 
  	
 <script>
+	
+	function loadOrderActions(button) {
+		var oid = button.attr("rel")
+		
+		button.removeClass("not_loaded")
+		
+		//alert($('.order-actions-'+oid).length)
+		$.ajax({
+			url : '<%= order_actions_orders_url %>'+'?id='+oid,
+			type: "GET",
+			success:function(data, textStatus, jqXHR)
+			{		    
+				$('.order-actions-'+oid).html(data)
+			}
+		});
+	}
+	
 	function updateBoxesOrder() {
 		var ord = 1
 		$('.image-boxes .image-box').each(function() {
@@ -1722,6 +1739,10 @@
 		
 		//form validation
 		$('form').validate();
+		
+		$(document).on("click", '.order-actions-button.not_loaded', function() {
+			loadOrderActions($(this));
+		});
 		
 });
 
