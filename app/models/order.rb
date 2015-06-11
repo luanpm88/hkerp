@@ -664,10 +664,14 @@ class Order < ActiveRecord::Base
       
       printed_order_number = item.printed_order_number.present? ? "<br /><strong class=\"finished\">#{item.printed_order_number}</strong>" : ""
       
+      first_col = link_helper.link_to(item.quotation_code, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")
+      first_col += ("<br />"+item.customer_po).html_safe if item.customer_po.present?
+      first_col += printed_order_number.html_safe if item.printed_order_number.present?
+      
       case params[:page]
       when "delivery"
           row = [
-                  item.quotation_code+printed_order_number,              
+                  first_col,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -681,7 +685,7 @@ class Order < ActiveRecord::Base
       when "accounting"
         debt_time = item.is_debt || item.is_out_of_date ? item.debt_remain_days.to_s+'<br />days' : ""
           row = [
-                  item.quotation_code+printed_order_number,              
+                  first_col,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -695,7 +699,7 @@ class Order < ActiveRecord::Base
       else
           
           row = [
-                  item.quotation_code+printed_order_number,              
+                  first_col,              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,              
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
                   "<div class=\"text-center\">#{staff_col}</div>",
