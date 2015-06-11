@@ -19,7 +19,7 @@ module ApplicationHelper
     number > 0 ? "+"+number.to_s : number.to_s
   end
   
-  def empty_order_actions(item)
+  def render_order_actions(item)
 	  actions = '<div class="text-right"><div class="btn-group actions">
                     <button rel="'+item.id.to_s+'" class="not_loaded order-actions-button btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu order-actions-'+item.id.to_s+'">'
@@ -29,7 +29,7 @@ module ApplicationHelper
       return actions.html_safe
   end
   
-  def render_order_actions(item)
+  def order_action_items(item)
     #actions = '<div class="text-right"><div class="btn-group actions">
     #                <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
     #  actions += '<ul class="dropdown-menu">'

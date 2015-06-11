@@ -679,7 +679,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-center">'+item.display_order_status_name+'</div>',
                   "<div class=\"text-center\">#{item.display_payment_status_name}</div>",
                   "<div class=\"text-center\">#{item.display_delivery_status_name}<strong>#{item.items_delivered}</strong>/#{item.items_total}</div>",
-                  app_helper.empty_order_actions(item)
+                  app_helper.render_order_actions(item)
                 ]
           data << row
           actions_col = 7
@@ -693,7 +693,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-center">'+debt_time+'</div>',
                   '<div class="text-center">'+item.display_order_status_name+item.display_delivery_status_name+'</div>',
                   "<div class=\"text-center\">#{item.display_payment_status_name}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status_name}</div>",                                                      
-                  app_helper.empty_order_actions(item)
+                  app_helper.render_order_actions(item)
                 ]
           data << row
           actions_col = 7
@@ -707,7 +707,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   "<div class=\"text-center\">#{item.display_price_status_name}#{item.display_delivery_status_name}#{item.display_payment_status_name}</div>",                  
                   '<div class="text-center">'+item.display_order_status_name+'</div>',
-                  ''
+                  app_helper.render_order_actions(item)
                 ]
           data << row
           actions_col = 7
