@@ -58,8 +58,8 @@
 					
 				<div class="row">
 					<div class="col-md-12">
-			<%= link_to 'New Product', new_product_path, :class => 'btn btn-primary btn-cons' %>
-                        <div class="grid simple ">
+						<%= link_to 'New Product', new_product_path(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page', title: "New Product" %>
+                        <div class="grid simple" style="margin-top: 10px">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Products</span></h4>
                                 <div class="tools">

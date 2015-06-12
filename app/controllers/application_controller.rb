@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     if devise_controller? && resource_name == :user && action_name == 'new'
       "login"
     else
-      "application"
+      params[:tab_page].present? ? "content" : "application"
     end
   end
   
@@ -48,6 +48,10 @@ class ApplicationController < ActionController::Base
         |u| u.permit(registration_params) 
       }
     end
+  end
+  
+  def after_update_path_for(resource)
+    request.env['omniauth.origin'] || stored_location_for(resource) || root_path
   end
     
 end

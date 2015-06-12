@@ -17,8 +17,11 @@
 					<div class="grid simple ">
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "index"})%>">
+							<% if params[:tab_page] %>
+								<%= hidden_field_tag "tab_page", 1 %>
+							<% end %>
 							<div class="row accounting-statistics-filters">
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<h4>From Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -31,7 +34,7 @@
 									</div>
 									</div>
 								</div>
-								<div class="col-md-3">
+								<div class="col-md-2">
 									<h4>To Date</h4>
 									<div class="date_select_filter">
 									<div class="input-with-icon  right">
@@ -65,6 +68,15 @@
 											</div>
 										</div>
 									</div>
+								
+								<div class="col-md-2 pull-right">
+													<div class="">
+														<h4 style="color:#fff">...</h4>
+														
+															<input type="submit" value="Send" class="pull-right btn btn-primary text-center" />
+														
+													</div>
+											</div>
 								
 							</div>
 						</form>

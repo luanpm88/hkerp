@@ -150,7 +150,7 @@ Hkerp::Application.routes.draw do
     end
   end
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => "registrations" }
   scope "/admin" do
     resources :users do
       collection do
@@ -293,4 +293,5 @@ Hkerp::Application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
+
 end

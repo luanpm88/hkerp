@@ -7960,3 +7960,34 @@ tr.block_commission_header h3 {
 .input-with_add_but .select2-container {
     padding-right: 32px;
 }
+.main-frame {
+    width: 100%;
+    border: none;
+    background: #fff;
+    padding: 5px;
+}
+.main-content-frame .grid.simple .grid-title, .main-content-frame .grid.simple .grid-body {
+    padding: 0;
+}
+.main-content-frame .table {
+    width: 100% !important;
+}
+.main-content-frame {
+    background: #fff;
+    padding: 1px !important;
+}
+#main-tab li .but {
+    cursor: pointer;
+    float: right;
+    font-size: 18px;
+    padding-left: 10px;
+}
+#main-tab li .but:hover {
+    color: #fb3c4a;
+}
+.main-content-frame .form-actions {
+    background: #fff;
+}
+.main-content-frame .breadcrumb {
+    display: none;
+}

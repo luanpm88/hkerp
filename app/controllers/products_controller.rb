@@ -7,8 +7,11 @@ class ProductsController < ApplicationController
   # GET /products.json
   def index
     @products = Product.order("name").all
+    
+    
+    
     respond_to do |format|
-      format.html
+      format.html { render layout: "content" if params[:tab_page].present? }
       format.json {
         render json: Product.full_text_search(params[:q])
       }
@@ -83,6 +86,7 @@ class ProductsController < ApplicationController
       @product_images << @product.product_images.build(display_order: i)      
     end
     
+     render layout: "content" if params[:tab_page].present?
   end
 
   # GET /products/1/edit

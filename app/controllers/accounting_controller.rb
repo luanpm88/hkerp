@@ -14,6 +14,8 @@ class AccountingController < ApplicationController
     @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
     
     @statistics = Order.statistics(@from_date, @to_date, {supplier_id: params[:supplier_id], customer_id: params[:customer_id]})
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def orders
