@@ -17,6 +17,9 @@
 					<div class="grid simple ">
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= statistics_commission_programs_path %>">
+						<% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-3">
 									<h4>From Date</h4>
@@ -202,7 +205,7 @@
 																									
 																									<% if !order.commission[:program].nil? %>
 																										<br />
-																										<%= link_to order.commission[:program].commission_rate.to_s+" %", order.commission[:program], :class => "badge badge-success fancybox_link fancybox.ajax" %>
+																										<%= link_to order.commission[:program].commission_rate.to_s+" %", {controller: "commission_programs", action: "show", id: order.commission[:program].id, tab_page: 1}, title: order.commission[:program].name, :class => "tab_page badge badge-success fancybox.ajax" %>
 																									<% end %>
 																								</td>
 																								<td rowspan="<%= count %>" class="text-right">

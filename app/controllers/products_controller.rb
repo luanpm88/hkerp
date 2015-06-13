@@ -32,31 +32,31 @@ class ProductsController < ApplicationController
       
       
       if can? :update, item
-        actions += '<li>'+view_context.link_to("Edit", edit_product_path(item))+'</li>'
+        actions += '<li>'+view_context.link_to("Edit", edit_product_path(id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Edit: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :create, ProductStockUpdate
-        actions += '<li>'+view_context.link_to("Update Stock (Nhập Kho)", new_product_stock_update_path(product_id: item.id))+'</li>'
+        actions += '<li>'+view_context.link_to("Update Stock (Nhập Kho)", new_product_stock_update_path(product_id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Update Stock: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :combine_parts, item
-        actions += '<li>'+view_context.link_to("Combine Parts", {controller: "combinations", action: "new", product_id: item.id})+'</li>'
+        actions += '<li>'+view_context.link_to("Combine Parts", {controller: "combinations", action: "new", product_id: item.id, tab_page: 1}, psrc: products_url(tab_page: 1), title: "Combine Parts: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :de_combine_parts, item
-        actions += '<li>'+view_context.link_to("De-combine Parts", {controller: "combinations", action: "new", product_id: item.id, combined: false})+'</li>'
+        actions += '<li>'+view_context.link_to("De-combine Parts", {controller: "combinations", action: "new", product_id: item.id, combined: false, tab_page: 1}, psrc: products_url(tab_page: 1), title: "De-Combine Parts: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :product_log, item
-        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Product Logs".html_safe, {controller: "products", action: "product_log", id: item.id}, title: "Product Logs", target: "_blank")+'</li>'
+        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Product Logs".html_safe, {controller: "products", action: "product_log", id: item.id, tab_page: 1}, title: "Product Logs", target: "_blank", class: "tab_page")+'</li>'
       end
       if can? :ajax_product_prices, item
         actions += '<li>'+item.price_history_link(false)+'</li>'
       end
       if can? :update_price, item
-        actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id})+'</li>'
+        actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id, tab_page: 1}, psrc: products_url(tab_page: 1), title: "Update Price: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :trash, item
-        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Trash'.html_safe, {controller: "products", action: "trash", id: item.id}, method: :patch)+'</li>'
+        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Trash'.html_safe, {controller: "products", action: "trash", id: item.id, tab_page: 1}, method: :patch)+'</li>'
       end
       if can? :un_trash, item
-        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Un-Trash'.html_safe, {controller: "products", action: "un_trash", id: item.id}, method: :patch)+'</li>'
+        actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Un-Trash'.html_safe, {controller: "products", action: "un_trash", id: item.id, tab_page: 1}, method: :patch)+'</li>'
       end
      
       
@@ -99,6 +99,8 @@ class ProductsController < ApplicationController
     (1..(12-@product.product_images.count)).each do |i|
       @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
     end
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # POST /products
@@ -120,10 +122,10 @@ class ProductsController < ApplicationController
       if @product.save
         @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
         
-        format.html { redirect_to edit_product_path(@product), notice: 'Product was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @product.id, tab_page: 1} : edit_product_path(@product), notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: [:tab_page] }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
@@ -138,10 +140,10 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         @product.update_price(params["product_prices"], current_user) if can? :update_price, @product
-        format.html { redirect_to edit_product_path(@product), notice: 'Product was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @product.id, tab_page: 1} : edit_product_path(@product), notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'edit', tab_page: [:tab_page] }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
@@ -202,16 +204,16 @@ class ProductsController < ApplicationController
   end
   
   def update_price
-    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_update_price
     respond_to do |format|
       if @product.update_price(params["product_prices"], current_user)
-        format.html { redirect_to products_url, notice: 'Product was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "update_price", id: @product.id, tab_page: 1} : products_url, notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: [:tab_page] }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
@@ -220,10 +222,10 @@ class ProductsController < ApplicationController
   def trash
     respond_to do |format|
       if @product.trash       
-        format.html { redirect_to products_url, notice: 'Product was successfully trashed.' }
+        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
-        format.html { redirect_to products_url, alert: 'Product was unsuccessfully trashed.' }
+        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, alert: 'Product was unsuccessfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       end
     end
@@ -232,10 +234,10 @@ class ProductsController < ApplicationController
   def un_trash
     respond_to do |format|
       if @product.un_trash       
-        format.html { redirect_to products_url, notice: 'Product was successfully trashed.' }
+        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
-        format.html { redirect_to products_url, alert: 'Product was unsuccessfully trashed.' }
+        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, alert: 'Product was unsuccessfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       end
     end
@@ -284,6 +286,8 @@ class ProductsController < ApplicationController
     end
     
     @history = @product.product_log(@from_date, @to_date, current_user)
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   

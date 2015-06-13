@@ -31,7 +31,9 @@
                         
                         
                   <%= form_for(@product_stock_update) do |f| %>
-                  
+                  <% if params[:tab_page] %>
+						 <%= hidden_field_tag "tab_page", 1 %>
+					<% end %>
                     <div class="row column-seperation">
                            
                             <div class="col-md-6">
@@ -51,7 +53,7 @@
                                     <span class="help">(required)</span>
                                     <div class="input-with-icon  right">                                       
                                         <i class=""></i>
-                                        <select class="modern_select" name="product_stock_update[is_import]">
+                                        <select class="modern_select required" name="product_stock_update[is_import]">
                                           <option <% if @product_stock_update.is_import == 1 %>selected="selected"<% end %> value="1">Import</option>
                                           <option <% if @product_stock_update.is_import == 0 %>selected="selected"<% end %> value="0">Export</option>
                                         </select>
@@ -63,7 +65,7 @@
                                     <span class="help">(required)</span>
                                     <div class="input-with-icon  right">                                       
                                         <i class=""></i>
-                                        <%= f.text_field :quantity, :class => "form-control number_input" %>
+                                        <%= f.text_field :quantity, :class => "form-control number_input required" %>
                                     </div>
                                 </div>
                                 
@@ -81,7 +83,7 @@
                                     <span class="help">required</span>
                                     <div class="input-with-icon  right">                                       
                                         <i class=""></i>
-                                        <%= f.text_field :note, :class => "form-control" %>
+                                        <%= f.text_field :note, :class => "form-control required" %>
                                     </div>
                                 </div>
                                 

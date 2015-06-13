@@ -13,6 +13,9 @@
                   
                   
                   <% if @commission_program.errors.any? %>
+					   
+						 
+					 
                     <div class="alert alert-error">
                       <button data-dismiss="alert" class="close"></button>
                       <div id="error_explanation">
@@ -28,13 +31,15 @@
                   <% end %>
                   
                   <%= form_for(@commission_program) do |f| %>
-                           
+                           <% if !params[:tab_page].nil? %>
+							  <%= hidden_field_tag "tab_page", params[:tab_page] %>
+						 <% end %>
                       <div class="form-group">
                           <label class="form-label"><%= f.label :name %></label>
                           <span class="help">(required)</span>
                           <div class="input-with-icon  right">                                       
                               <i class=""></i>
-                              <%= f.text_field :name, :class => "form-control" %>
+                              <%= f.text_field :name, :class => "form-control required" %>
                           </div>
                       </div>                     
                       <div class="form-group">
@@ -42,7 +47,7 @@
                         <span class="help">(required)</span>
 						<div class="input-with-icon  right">                                       
 							<i class=""></i>
-                            <select name="commission_program[interval_type]" class="modern_select">
+                            <select name="commission_program[interval_type]" class="modern_select required">
                                 <option value="month" <%= 'selected="selected"' if @commission_program.interval_type == "month" %>>month</option>
                                 <option value="year" <%= 'selected="selected"' if @commission_program.interval_type == "year" %>>year</option>
                             </select>
@@ -53,7 +58,7 @@
                           <span class="help">(required)</span>
                           <div class="input-with-icon  right">                                       
                               <i class=""></i>
-                              <%= f.text_field :min_amount, :class => "form-control price_input" %>
+                              <%= f.text_field :min_amount, :class => "form-control price_input required" %>
                           </div>
                       </div>
                       <div class="form-group">
@@ -61,29 +66,29 @@
                           <span class="help">(required)</span>
                           <div class="input-with-icon  right">                                       
                               <i class=""></i>
-                              <%= f.text_field :max_amount, :class => "form-control price_input" %>
+                              <%= f.text_field :max_amount, :class => "form-control price_input required" %>
                           </div>
                       </div>
                       <div class="form-group">
                           <label class="form-label"><%= f.label :commission_rate %></label>
                           <span class="help">(required)</span>
-                              <%= f.text_field :commission_rate, :class => "form-control price_input" %>
+                              <%= f.text_field :commission_rate, :class => "form-control price_input required" %>
                       </div>
                       <div class="form-group">
                           <label class="form-label"><%= f.label :published_at %></label>
                           <span class="help">(required)</span>
 
                               <div class="input-append success date col-md-10 no-padding">
-                                    <%= f.text_field :published_at, :class => "form-control" %>
+                                    <%= f.text_field :published_at, :class => "form-control required" %>
                                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                               </div>                              
                           <br style="clear:both" />
                       </div>                      
                       <div class="form-group">
                           <label class="form-label"><%= f.label :unpublished_at %></label>
-
+						 <span class="help">(required)</span>
                               <div class="input-append success date col-md-10 no-padding">
-                                    <%= f.text_field :unpublished_at, :class => "form-control" %>
+                                    <%= f.text_field :unpublished_at, :class => "form-control required" %>
                                     <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                               </div> 
                           <br style="clear:both" />
@@ -93,7 +98,7 @@
                           <span class="help">(required)</span>
                           <div class="input-with-icon  right">                                       
                               <i class=""></i>
-                              <%= f.text_area :description, :class => "form-control" %>
+                              <%= f.text_area :description, :class => "form-control required" %>
                           </div>
                       </div>
                       

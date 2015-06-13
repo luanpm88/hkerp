@@ -15,7 +15,9 @@
 							<% url = @payment_record.id.nil? ? {controller: "payment_records", action: "do_pay_custom"} : nil %>
                                 <%= form_for(@payment_record, url: url) do |f| %>
 
-
+									<% if params[:tab_page] %>
+										<%= hidden_field_tag "tab_page", 1 %>
+									<% end %>
                                     
                                     <div class="row">
                                       <div class="col-md-6">

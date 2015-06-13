@@ -31,7 +31,9 @@
                   
                   
                   <%= form_for(@category) do |f| %>
-                           
+                           <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+						 <% end %>
                       <div class="form-group">
                         <label class="form-label"><%= f.label :name %></label>
                         <span class="help">(required)</span>
@@ -69,7 +71,7 @@
 				  <div class="form-actions">  
 					<div class="pull-right">
 					  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
-                                          <%= link_to 'Cancel', categories_path, :class => "btn btn-white btn-cons" %>
+                                          <%= link_to 'Cancel', categories_path, :class => "btn btn-white btn-cons cancel-but" %>
 					</div>
 					</div>
 				<% end %>

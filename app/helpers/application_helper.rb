@@ -39,21 +39,21 @@ module ApplicationHelper
       
       group_1 = 0
       if can? :finish_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id}, data: { confirm: 'Are you sure?'})+'</li>'        
+        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Finish Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?'})+'</li>'        
         group_1 += 1
       end
       if can? :pay_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Order', {controller: "payment_records", action: "new", order_id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Order', {controller: "payment_records", action: "new", order_id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Pay Order [#{item.quotation_code}]")+'</li>'
         group_1 += 1
       end
       
       if can? :pay_tip, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Tip', {controller: "payment_records", action: "pay_tip", order_id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Tip', {controller: "payment_records", action: "pay_tip", order_id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Pay Tip [#{item.quotation_code}]")+'</li>'
         group_1 += 1
       end
       
       if can? :pay_commission, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Commission', {controller: "payment_records", action: "pay_commission", order_id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Pay Commission', {controller: "payment_records", action: "pay_commission", order_id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Pay Commission [#{item.quotation_code}]")+'</li>'
         group_1 += 1
       end
       
@@ -61,27 +61,32 @@ module ApplicationHelper
       
       group_3 = 0
       if can? :confirm_items, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Items", confirm_items_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Items", confirm_items_orders_path(:id => item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Confirm Items [#{item.quotation_code}]", data: { confirm: 'Are you sure?' })+'</li>'
         group_3 += 1
       end
       if can? :update_price, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Price", confirm_price_orders_url(id: item.id), data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Update Price", update_price_orders_url(id: item.id, tab_page:1), psrc: pricing_orders_orders_url(tab_page:1), class: "tab_page", title: "Update Price [#{item.quotation_code}]")+'</li>'
         group_3 += 1
       end
+      if can? :update_price, item
+        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Price", confirm_price_orders_url(id: item.id, tab_page:1), psrc: pricing_orders_orders_url(tab_page:1), class: "tab_page", title: "Confirm Price [#{item.quotation_code}]", data: { confirm: 'Are you sure?' })+'</li>'
+        group_3 += 1
+      end
+      
       if can? :confirm_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Order", confirm_order_orders_path(:id => item.id), data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Order", confirm_order_orders_path(:id => item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Confirm Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?' })+'</li>'
         group_3 += 1
       end
       if can? :change, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Change Items", change_orders_path(:id => item.id))+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Change Items", change_orders_path(:id => item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Change Items [#{item.quotation_code}]")+'</li>'
         group_3 += 1
       end      
       if can? :update_info, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Update Info", update_info_orders_path(:id => item.id, page: params[:page]))+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Update Info", update_info_orders_path(:id => item.id, page: params[:page], tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Update Info [#{item.quotation_code}]")+'</li>'
         group_3 += 1
       end
       if can? :update_tip, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Update Tip', {controller: "orders", action: "update_tip", id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Update Tip', {controller: "orders", action: "update_tip", id: item.id, tab_page:1}, psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Update Tip [#{item.quotation_code}]")+'</li>'
         group_1 += 1
       end
       
@@ -90,7 +95,7 @@ module ApplicationHelper
       
       group_4 = 0
       if can? :deliver, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Deliver', {controller: "deliveries",action: "deliver", order_id: item.id})+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Deliver', {controller: "deliveries",action: "deliver", order_id: item.id, tab_page:1}, psrc: (item.is_purchase ? deliveries_url(purchase: true, tab_page: 1) : deliveries_url(tab_page: 1)), class: "tab_page", title: "#{(item.is_purchase ? "Purchase" : "Sales")} Deliver [#{item.quotation_code}]")+'</li>'
         group_4 += 1
       end
             
@@ -103,7 +108,7 @@ module ApplicationHelper
         if item.all_deliveries.count > 0
 		  item.all_deliveries.each do |delivery|
             actions += '<li>'
-            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+delivery.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: delivery.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe')
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+delivery.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: delivery.id, :export_ticket => true, tab_page: 1}, psrc: (item.is_purchase ? deliveries_url(purchase: true, tab_page: 1) : deliveries_url(tab_page: 1)), title: "#{(item.is_purchase ? "Purchase" : "Sales")} Delivery [#{item.quotation_code}]", :class => 'tab_page')
             actions += '</li>'
 		  end
 		  
@@ -119,7 +124,7 @@ module ApplicationHelper
         if item.all_order_payments.count > 0
 		  item.all_order_payments.each do |recept|
             actions += '<li>'
-            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: recept.id}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", title: "Recept [#{item.quotation_code}]", :class => 'tab_page')
             actions += '</li>'
 		  end		  
 		  group_2 += 1
@@ -128,7 +133,7 @@ module ApplicationHelper
         if item.all_tip_payments.count > 0
 		  item.all_tip_payments.each do |recept|
             actions += '<li>'
-            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Tip ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Tip ("+recept.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: recept.id}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", title: "Tip [#{item.quotation_code}]", :class => 'tab_page')
             actions += '</li>'
 		  end		  
 		  group_2 += 1
@@ -143,7 +148,7 @@ module ApplicationHelper
         if item.all_commission_payments.count > 0
 		  item.all_commission_payments.each do |recept|
             actions += '<li>'
-            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Commission ("+recept.created_at.strftime("%Y-%m-%d")+")", recept, :class => 'fancybox.iframe ajax_iframe')
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Commission ("+recept.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: recept.id}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", title: "Commission [#{item.quotation_code}]", :class => 'tab_page')
             actions += '</li>'
 		  end		  
 		  group_6 += 1
@@ -153,13 +158,13 @@ module ApplicationHelper
       actions += '<li class="divider"></li>' if group_6 > 0
       
       if can? :order_log, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("<i class=\"icon-time\"></i> Order Logs".html_safe, {controller: "orders", action: "order_log", id: item.id}, title: "Order Logs", target: "_blank")+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("<i class=\"icon-time\"></i> Order Logs".html_safe, {controller: "orders", action: "order_log", id: item.id, tab_page: 1}, class: "tab_page", title: "Order Logs [#{item.quotation_code}]", target: "_blank")+'</li>'
       end
       if can? :show, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("View", item, title: "Edit Order", class: "fancybox.iframe show_order")+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("View", {controller: "orders", action: "show", id: item.id, tab_page: 1}, title: "Order [#{item.quotation_code}]", class: "tab_page")+'</li>'
       end
       if can? :update, item
-        actions += '<li>'+ActionController::Base.helpers.link_to("Edit", edit_order_path(item), title: "Edit Order")+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Edit", edit_order_path(id: item.id, tab_page: 1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), title: "Edit Order [#{item.quotation_code}]", class: "tab_page")+'</li>'
       end
       if can? :destroy, item
         actions += '<li>'+ActionController::Base.helpers.link_to("Delete", item, method: :delete, data: { confirm: 'Are you sure?' })+'</li>'

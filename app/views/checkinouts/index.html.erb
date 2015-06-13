@@ -76,7 +76,7 @@
 					      <td style="text-align: center"><%= current_user.addition_time_formatted(@month, @year).html_safe %></td>
                                               <td style="text-align: center"><%= current_user.checkinouts_by_month(@month, @year).count %></td>
                                               <td style="text-align: center"><%= @state %></td>
-                                              <td><a href="<%= detail_checkinouts_url(user_id: current_user.id, month: @month, year: @year) %>" class="btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
+                                              <td><a title="Attendance Details: <%= current_user.name %>" href="<%= detail_checkinouts_url(user_id: current_user.id, month: @month, year: @year,  tab_page: 1) %>" class="tab_page btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
                                             </tr>
                                           </tbody>
                                     </table>
@@ -119,7 +119,7 @@
 					      <td style="text-align: center"><%= user.addition_time_formatted(@month, @year).html_safe %></td>
                                               <td style="text-align: center"><%= user.checkinouts_by_month(@month, @year).count %></td>
                                               <td style="text-align: center"><%= @state %></td>
-                                              <td><a href="<%= detail_checkinouts_url(user_id: user.id, month: @month, year: @year) %>" class="btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
+                                              <td><a  title="Attendance Details: <%= user.name %>" href="<%= detail_checkinouts_url(user_id: user.id, month: @month, year: @year, tab_page: 1) %>" class="tab_page btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
                                             </tr>
                                           <% end %>
                                           </tbody>

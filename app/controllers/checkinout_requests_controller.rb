@@ -12,6 +12,7 @@ class CheckinoutRequestsController < ApplicationController
   # GET /checkinout_requests/1
   # GET /checkinout_requests/1.json
   def show
+    render layout: "content"
   end
 
   # GET /checkinout_requests/new
@@ -23,10 +24,13 @@ class CheckinoutRequestsController < ApplicationController
     @checkinout_request.check_time = params[:check_time].nil? ? Time.zone.now : params[:check_time]
     @checkinout_request.check_time = @checkinout_request.check_time.change({hour: 7, min: 30})
     @checkinout_request.send_request_notification
+    
+    render layout: "content"
   end
 
   # GET /checkinout_requests/1/edit
   def edit
+    render layout: "content"
   end
 
   # POST /checkinout_requests

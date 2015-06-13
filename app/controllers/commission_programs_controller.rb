@@ -9,18 +9,28 @@ class CommissionProgramsController < ApplicationController
   # GET /commission_programs.json
   def index
     @commission_programs = CommissionProgram.all_commission_programs
+    
+    
   end
 
   # GET /commission_programs/1
   # GET /commission_programs/1.json
   def show
+    if params[:tab_page].present?
+      render layout: "content"
+    else
+      render layout: "none"
+    end
     
-    render layout: nil
   end
 
   # GET /commission_programs/new
   def new
     @commission_program = CommissionProgram.new
+    
+    if params[:tab_page].present?
+      render layout: "content"
+    end
   end
 
   # GET /commission_programs/1/edit
@@ -35,10 +45,10 @@ class CommissionProgramsController < ApplicationController
     
     respond_to do |format|
       if @commission_program.save
-        format.html { redirect_to commission_programs_path, notice: 'Commission program was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @commission_program.id, tab_page: 1} : commission_programs_path, notice: 'Commission program was successfully created.' }
         format.json { render action: 'show', status: :created, location: @commission_program }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @commission_program.errors, status: :unprocessable_entity }
       end
     end
@@ -121,6 +131,10 @@ class CommissionProgramsController < ApplicationController
     months.each do |month|
       block = CommissionProgram.statistics(@user, month.beginning_of_month, month.end_of_month.end_of_day, params)
       @statistics << block if !block.nil?
+    end
+    
+    if params[:tab_page].present?
+      render layout: "content"
     end
   end
 

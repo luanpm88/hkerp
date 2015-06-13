@@ -15,7 +15,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-			<%= link_to 'New Category', new_category_path, :class => 'btn btn-primary btn-cons' %>
+						<%= link_to 'New Category', new_category_path(tab_page: 1), psrc: categories_url(tab_page: 1), title: "New Category", :class => 'tab_page btn btn-primary btn-cons' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Categories</span></h4>
@@ -61,8 +61,8 @@
 						     
 							<td>
 							    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, category, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(category), :class => "btn btn-info btn-xs btn-mini" %>							
-							    <%= link_to 'X', category, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+							    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: category.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{category.name}", :class => "tab_page btn btn-info btn-xs btn-mini" %>							
+							    <%= link_to 'X', {action: "destroy", id: category.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
 							</td>
 						    </tr>
 						    
@@ -80,9 +80,8 @@
 								
 							     
 								<td>
-								    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_1, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(child_1), :class => "btn btn-info btn-xs btn-mini" %>							
-								    <%= link_to 'X', child_1, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_1.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_1.name}", :class => "tab_page btn btn-info btn-xs btn-mini" %>							
+									<%= link_to 'X', {action: "destroy", id: child_1.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
 								</td>
 							    </tr>
 							    
@@ -100,9 +99,8 @@
 									
 								     
 									<td>
-									    <%= link_to '<i class="icon-zoom-in"></i>'.html_safe, child_2, :class => "btn btn-success btn-xs btn-mini tmp_hide" %>
-									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(child_2), :class => "btn btn-info btn-xs btn-mini" %>							
-									    <%= link_to 'X', child_2, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_2.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_2.name}", :class => "tab_page btn btn-info btn-xs btn-mini" %>							
+							    <%= link_to 'X', {action: "destroy", id: child_2.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
 									</td>
 								    </tr>
 							    <% end %>

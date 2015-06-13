@@ -12,7 +12,7 @@
   
 		  <div class="order_histories" style="float: right">
 		  <%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-			<%= link_to '<< Back'.html_safe, @list_path, :class => "btn btn-info btn-xs btn-mini" %>
+			
 		  </div>
 		  
 		  
@@ -52,8 +52,8 @@
 		  
 		  <div class="order_histories" style="float: right;margin: 10px 0 0 0">
 			<%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-			<%= link_to 'X Trash'.html_safe, {controller: "deliveries", action: "trash", :id => @delivery.id}, :class => "btn btn-info btn-xs btn-mini" %>
-			<%= link_to '<< Back'.html_safe, @list_path, :class => "btn btn-info btn-xs btn-mini" %>
+			<%= link_to 'X Trash'.html_safe, {controller: "deliveries", action: "trash", :id => @delivery.id, tab_page: 1}, :class => "btn btn-info btn-xs btn-mini" %>
+			
 		  </div>
 		  
 </div>

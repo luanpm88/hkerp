@@ -92,6 +92,7 @@ Hkerp::Application.routes.draw do
   end
 
   get 'home/index'
+  get 'home/close_tab'
 
   resources :checkinouts do
     collection do

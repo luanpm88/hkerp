@@ -119,7 +119,7 @@ class PaymentRecord < ActiveRecord::Base
   def payment_record_link
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
-    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: self.id}, :class => 'fancybox.iframe ajax_iframe').html_safe
+    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: self.id, tab_page: 1}, :class => 'tab_page', title: "Recept [#{order.quotation_code}]").html_safe
   end
   
   def trash

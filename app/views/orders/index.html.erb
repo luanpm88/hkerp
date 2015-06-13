@@ -10,7 +10,7 @@
                 </div>
 		
 		
-		<%= link_to 'New Customer Order', new_order_path, :class => 'btn btn-primary btn-cons' %>
+		<%= link_to 'New Customer Order', new_order_path(tab_page: 1), title: "New Customer Order", psrc: orders_url(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page' %>
 		
 		
 

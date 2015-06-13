@@ -51,7 +51,7 @@
                                                 </div>
                                           </td>
                                           <td>
-                                            <%= link_to order.customer.short_name, order, :class => "fancybox.iframe show_order" %>
+                                            <%= link_to order.customer.short_name, {controller: "orders", action: "show", id: order.id, tab_page: 1}, title: "Order #{order.quotation_code}", :class => "tab_page" %>
 											<%= order.display_description %>
                                           </td>
                                           <td class="text-right">
@@ -78,39 +78,9 @@
                                           
                                                   
                                                   
-						    <div class="btn-group actions">
-							    <button class="btn btn-mini btn-white dropdown-toggle btn-demo-space" data-toggle="dropdown">Actions<span class="caret"></span></button>
-	  
-							    <ul class="dropdown-menu">							      
-								<%  if can? :update_price, order %>
-								    <li><%= link_to "Update Price", {action: "update_price", :id => order.id} %></li>									
-								<% end %>
-								<%  if can? :confirm_price, order %>
-									<li><%= link_to "Confirm Price", {action: "confirm_price", :id => order.id} %></li>
-								<% end %>
-								<%  if can? :create, Order %>
-								  <li>
-								      <%= link_to 'New Purchase Order', new_order_path(:purchase => 1), target: "_blank" %>
-								  </li>
-								<% end %>								
-								<li class="divider"></li>
-								<%  if can? :show, order %>
-									<li><%= link_to "View", order, title: "Edit Order", class: "fancybox.iframe show_order" %></li>
-								<% end %>
-								<%  if can? :update, order %>
-									<li><%= link_to "Edit", edit_order_path(order), title: "Edit Order" %></li>
-								<% end %>
-								<%  if can? :destroy, order %>
-									<li><%= link_to "Delete", order, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-								<% end %>
-								<%  if can? :read, order %>
-									<li><%= link_to 'PDF', download_pdf_orders_path(:id => order.id), :target => "_blank" %></li>
-									<li><%= link_to 'Print Order (raw)', print_order_orders_path(:id => order.id), :target => "_blank" %></li>
-								<% end %>
-							    
-							    
-							    </ul>
-						    </div>
+											<%= render_order_actions(order) %>
+											
+											
                                           </td>
                                         </tr>
                                         <% if order.is_out_of_stock %>

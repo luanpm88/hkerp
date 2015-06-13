@@ -32,7 +32,9 @@
                   
 				<%= form_for(@contact,  html: { multipart: true }) do |f| %>
                            
-						   
+						 <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+						 <% end %>
                            
                     <div class="row column-seperation">
                            
@@ -47,7 +49,7 @@
 																	  <% ContactType.all.each do |ct| %>
 																		   <div class="row-fluid contact_types">
 																				<div class="checkbox check-success">
-																					 <%= check_box_tag "contact[contact_type_ids][]", ct.id, @contact.contact_types.include?(ct), {id: "checkbox"+ct.id.to_s} %>
+																					 <%= check_box_tag "contact[contact_type_ids][]", ct.id, @contact.contact_types.include?(ct), {id: "checkbox"+ct.id.to_s, class: "required"} %>
 																				  <label for="checkbox<%= ct.id %>"><%= ct.name %></label>
 																				</div>
 																		   </div>

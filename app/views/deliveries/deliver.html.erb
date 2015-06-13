@@ -53,7 +53,9 @@
 				<%= form_for(@delivery) do |f| %>
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
 				    <%= f.hidden_field :is_return, {value: 1} %>
-				    
+				    <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
 				    <% if @order.has_return_items %>
 				    
 					    <h2>Return Items</h2>
@@ -142,7 +144,9 @@
 				<%= form_for(@delivery) do |f| %>
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
 				    <%= f.hidden_field :is_return, {value: 0} %>
-				    
+				    <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
 					<div class="form-group">
                                                    
 					

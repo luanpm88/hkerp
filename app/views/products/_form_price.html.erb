@@ -31,7 +31,9 @@
                   
                   
 			<%= form_for(@product, url: {action: "do_update_price"}) do |f| %>
-                        
+                        <% if params[:tab_page] %>
+						 <%= hidden_field_tag "tab_page", 1 %>
+					<% end %>
                           <%= hidden_field_tag "id", @product.id %>
                                 
                         <div class="row column-seperation">

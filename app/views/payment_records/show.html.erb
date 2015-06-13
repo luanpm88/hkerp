@@ -1,7 +1,12 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
 <%
-list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
+list_path = "#"
+if !@payment_record.order.nil?
+	list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting", action: "orders", purchase: true) : url_for(controller: "accounting", action: "orders")
+end
+
+		
 %>
 
 <%= stylesheet_link_tag "print_html.css" %>
@@ -11,9 +16,10 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
   
 		<div class="order_histories" style="float: right">
 		<%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-		<%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
-		  
+	  
 		</div>
+		
+<% if !@payment_record.order.nil? %>
 		
 		<div class="order_histories" style="float: left; max-width: 640px">
 		  
@@ -56,39 +62,30 @@ list_path = @payment_record.order.is_purchase ? url_for(controller: "accounting"
 					</div>
 				
 				  <% end %>
-			  <% end %>
+		<% end %>
 		
 		
 		</div>
+<% end %>		
+		
 		
 		<br style="clear: both" />
-		<% if params[:export_ticket].present? %>
-		  <%= render 'export_ticket' %>
-		<% else %>
-		  <%= render 'show' %>
-		<% end %>
+		
+		
+		
+		<div style="overflow: auto">
+		
+			  <%= render 'show' %>
+		</div>
 		  
 		<br style="clear: both" />
-		
+
+
+
 		<div class="order_histories" style="float: right;margin: 10px 0 0 0">
-		  <%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+		  <%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
 		  <%= link_to 'X Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info btn-xs btn-mini" %>
-		  <%= link_to '<< Back', list_path, :class => "btn btn-info btn-xs btn-mini" %>
 		</div>
 		
 		
 </div>
-		
-		
-<script>
-  $('.show_order').fancybox({
-		    width: "80%",
-		    height: "100%",
-		    autoSize: false,
-		    ajax: {
-			complete: function(jqXHR, textStatus) {
-			    //$(".ajax_outer .modern_select").select2();
-			}
-		    }
-	    });
-</script>

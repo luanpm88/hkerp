@@ -28,10 +28,10 @@ class ProductPartsController < ApplicationController
 
     respond_to do |format|
       if @product_part.save
-        format.html { redirect_to @product_part, notice: 'Product part was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : @product_part, notice: 'Product part was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product_part }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @product_part.errors, status: :unprocessable_entity }
       end
     end

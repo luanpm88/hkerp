@@ -7867,7 +7867,6 @@ tr.block_commission_header h3 {
     cursor: pointer;
 }
 .page-content {
-    padding-bottom: 400px;
 }
 .nowrap {
     white-space: nowrap;
@@ -7990,4 +7989,28 @@ tr.block_commission_header h3 {
 }
 .main-content-frame .breadcrumb {
     display: none;
+}
+.print_preview label {
+    display: inline
+}
+.print_preview * {
+    color: #000;
+}
+.print_preview h2 {
+    font-size: 26px;
+}
+.print_preview table {
+    width: 100%;
+}
+.main-content-frame .fancybox-inner .page-title {
+    padding: 0 15px;
+}
+.main-content-frame .fancybox-skin {
+    background: #fff;
+}
+.main-content-frame .fancybox-wrap {
+    top: 20px !important;
+}
+.main-content-frame .fancybox-inner .row_no_margin {
+    margin: 1px 11px !important;
 }

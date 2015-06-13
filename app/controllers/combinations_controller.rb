@@ -19,6 +19,8 @@ class CombinationsController < ApplicationController
     
     
     @product = Product.find(params[:product_id])
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # GET /combinations/1/edit
@@ -50,7 +52,7 @@ class CombinationsController < ApplicationController
       if @combination.save
         @combination.update_stock_after
         
-        format.html { redirect_to products_url, notice: 'Combination was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : products_url, notice: 'Combination was successfully created.' }
         format.json { render action: 'show', status: :created, location: @combination }
       else
         format.html { render action: 'new' }

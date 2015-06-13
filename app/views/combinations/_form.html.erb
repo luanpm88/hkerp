@@ -35,6 +35,10 @@
                     <%= form_for(@combination) do |f| %>
 								<%= f.hidden_field :product_id %>
                                 <%= f.hidden_field :combined, value: @combination.combined %>
+								<% if params[:tab_page] %>
+															<%= hidden_field_tag "tab_page", 1 %>
+													   <% end %>
+					
 								<div class="row column-seperation">
                                   
                                   <div class="col-md-6">                           

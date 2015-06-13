@@ -1,31 +1,57 @@
 <script>
 	function reloadTab(tid) {
-		$('iframe#'+tid).attr("src",$('iframe#'+tid).attr("src"))
+		//if ($('iframe#tab_sales_deliveries').contents().find('.dataTable').length) {
+		//	$('iframe#tab_sales_deliveries').contents().find('.dataTable').dataTable().fnFilter();
+		//} else {
+			$('iframe#'+tid).attr("src",$('iframe#'+tid).attr("src"))
+		//}
+		
 	}
 	function closeTab(tid) {
-        if($('#main-tab a[rel="'+tid+'"]').parent().hasClass("active")) {
-          $('#main-tab li:first-child a').tab('show')
-        }
-        
+		//open parent		
+		var pname = $("#main-tab li.active a").attr("pname")
+		var psrc = $("#main-tab li.active a").attr("psrc")
+		
+		if (typeof(pname) != 'undefined') {
+		  openTab(psrc,pname)
+		}
+		
+		//close current
+		var active = $('#main-tab a[rel="'+tid+'"]').parent().hasClass("active")		
         $('#main-tab a[rel="'+tid+'"]').parent().remove()
 		$('.tab-content div#'+tid).remove()
+		
+		if(active) {
+          $('#main-tab li:last-child a').tab('show')
+        }
         
         $(document).scrollTop(0);
+		
+		clearInterval(tabs[tid])
 	}
-	function openTab(tsrc, tname) {
-		var tid = "tab_"+tname.replace(/\s/g, "_").replace(/[^a-zA-Z0-9\_]/g, "")
+	var tabs = Array()
+	function openTab(tsrc, tname, psrc, pname) {
+		if (typeof(tname) == 'undefined' || tname == 'undefined') {
+			tname = $('a[href="'+tsrc+'"]').html().trim();
+		}
 		
+		var tid = "tab_"+tname.replace(/\s/g, "_").replace(/[^a-zA-Z0-9\_]/g, "").toLowerCase();
 		
-		
-		if($('a[rel="'+tid+'"]').length == 0) {
-		  $('#main-tab').append('<li class=""><a rel="'+tid+'" href="#'+tid+'">'+tname+'<i class="but but-del icon-remove-sign"></i><i class="but but-reload icon-refresh"></i></a></li>')
+		if($('a[tsrc="'+tsrc+'"]').length == 0) {
+			
+			var parent = ""
+			if (psrc) {
+				parent = ' psrc="'+psrc+'" pname="'+pname+'" '
+			}
+			
+		  $('#main-tab').append('<li class=""><a tsrc="'+tsrc+'" tname="'+tname+'" '+parent+' rel="'+tid+'" href="#'+tid+'">'+tname+'<i class="but but-del icon-remove-sign"></i><i class="but but-reload icon-refresh"></i></a></li>')
 		  $('.tab-content').append('<div id="'+tid+'" class="tab-pane"><iframe class="main-frame" id="'+tid+'" seamless="seamless" scrolling="no" src="'+tsrc+'"></iframe></div>')
 			$('#main-tab a').click(function (e) {
 				  e.preventDefault();
 				  $(this).tab('show');
 			});
 		  $('#main-tab a[rel="'+tid+'"]').tab('show')
-		  resizeIframe($('iframe#'+tid))
+			tabs[tid] = resizeIframe(tid)
 		  
 			$('#main-tab a[rel="'+tid+'"]').parent().find(".but-del").click(function (e) {
                 closeTab(tid)
@@ -40,17 +66,21 @@
 		  
 		  
 		}
-		//alert(tid)
+		$(document).scrollTop(0);
 	}
 	
-	function resizeIframe(obj) {
+	function resizeIframe(tid) {
+		
+		var obj = $('iframe#'+tid)
 		var lastHeight = 0, curHeight = 0, $frame = obj;
-		setInterval(function(){
+		iid = setInterval(function(){
 		  curHeight = $frame.contents().find('body').height();
 		  if ( curHeight != lastHeight ) {
-			$frame.css('height', (lastHeight = curHeight) + 'px' );
+			$frame.css('height', ((lastHeight = curHeight)+465) + 'px' );
 		  }
 		},500);
+		
+		return iid
     }
 	
 	function loadOrderActions(button) {
@@ -555,60 +585,62 @@
 	$('table').not('.no-filter').filterTable();
 	
 	//action for add agent button
-	$('#add-agent-button,.add-agent-button').fancybox({
-		width: "100%",
-		height: "100%",
-		autoSize: false,
-		ajax: {
-		    complete: function(jqXHR, textStatus) {
-				$(".ajax_outer .modern_select").select2({allowClear: true});
-				
-				//ajax select2 for city
-				$('.select2-ajax-cities').select2({
-					placeholder: "Search for a state",
-					minimumInputLength: 1,
-					allowClear: true,
-					ajax: {
-					  url: $('.select2-ajax-cities').attr("data"),
-					  dataType: 'json',
-					  data: function (term, page) { // page is the one-based page number tracked by Select2
-						return {
-						  q: term, //search term
-						};
-					  },
-					  results: function (data, page) {
-						return {results: data};
-					  }
-					},
-					initSelection: function (element, callback) {				      
-					  callback({ id: element.val(), text: element.attr('text') });
-					}
-				});
-				
-				//ajax select2 for contacts
-				$('.select2-ajax-contacts').select2({
-					placeholder: "Search for a contact",
-					minimumInputLength: 1,
-					allowClear: true,
-					ajax: {
-					  url: $('.select2-ajax-contacts').attr("data"),
-					  dataType: 'json',
-					  data: function (term, page) { // page is the one-based page number tracked by Select2
-						return {
-						  q: term, //search term
-						};
-					  },
-					  results: function (data, page) {
-						return {results: data};
-					  }
-					},
-					initSelection: function (element, callback) {				      
-					  callback({ id: element.val(), text: element.attr('text') });
-					}
-				});
-		    }
-		}
-	});
+	//$('#add-agent-button,.add-agent-button').fancybox({
+	//	width: "100%",
+	//	height: "auto",
+	//	autoSize: false,
+	//	ajax: {
+	//	    complete: function(jqXHR, textStatus) {
+	//			$(".ajax_outer .modern_select").select2({allowClear: true});
+	//			
+	//			//ajax select2 for city
+	//			$('.select2-ajax-cities').select2({
+	//				placeholder: "Search for a state",
+	//				minimumInputLength: 1,
+	//				allowClear: true,
+	//				ajax: {
+	//				  url: $('.select2-ajax-cities').attr("data"),
+	//				  dataType: 'json',
+	//				  data: function (term, page) { // page is the one-based page number tracked by Select2
+	//					return {
+	//					  q: term, //search term
+	//					};
+	//				  },
+	//				  results: function (data, page) {
+	//					return {results: data};
+	//				  }
+	//				},
+	//				initSelection: function (element, callback) {				      
+	//				  callback({ id: element.val(), text: element.attr('text') });
+	//				}
+	//			});
+	//			
+	//			//ajax select2 for contacts
+	//			$('.select2-ajax-contacts').select2({
+	//				placeholder: "Search for a contact",
+	//				minimumInputLength: 1,
+	//				allowClear: true,
+	//				ajax: {
+	//				  url: $('.select2-ajax-contacts').attr("data"),
+	//				  dataType: 'json',
+	//				  data: function (term, page) { // page is the one-based page number tracked by Select2
+	//					return {
+	//					  q: term, //search term
+	//					};
+	//				  },
+	//				  results: function (data, page) {
+	//					return {results: data};
+	//				  }
+	//				},
+	//				initSelection: function (element, callback) {				      
+	//				  callback({ id: element.val(), text: element.attr('text') });
+	//				}
+	//			});
+	//			
+	//			$('#ajax-contact-form').validate();
+	//	    }
+	//	}
+	//});
 	
 	//submit ajax form
 	//callback handler for form submit
@@ -642,6 +674,52 @@
 				  $('.fancybox-inner').html(data);
 				  $('.fancybox-inner').scrollTop(0);
 				  $(".ajax_outer .modern_select").select2({allowClear: true});
+				
+					//ajax select2 for city
+					$('.select2-ajax-cities').select2({
+						placeholder: "Search for a state",
+						minimumInputLength: 1,
+						allowClear: true,
+						ajax: {
+						  url: $('.select2-ajax-cities').attr("data"),
+						  dataType: 'json',
+						  data: function (term, page) { // page is the one-based page number tracked by Select2
+							return {
+							  q: term, //search term
+							};
+						  },
+						  results: function (data, page) {
+							return {results: data};
+						  }
+						},
+						initSelection: function (element, callback) {				      
+						  callback({ id: element.val(), text: element.attr('text') });
+						}
+					});
+					
+					//ajax select2 for contacts
+					$('.select2-ajax-contacts').select2({
+						placeholder: "Search for a contact",
+						minimumInputLength: 1,
+						allowClear: true,
+						ajax: {
+						  url: $('.select2-ajax-contacts').attr("data"),
+						  dataType: 'json',
+						  data: function (term, page) { // page is the one-based page number tracked by Select2
+							return {
+							  q: term, //search term
+							};
+						  },
+						  results: function (data, page) {
+							return {results: data};
+						  }
+						},
+						initSelection: function (element, callback) {				      
+						  callback({ id: element.val(), text: element.attr('text') });
+						}
+					});
+					
+					$('#ajax-contact-form').validate();
 				}		    
 			},
 			error: function(jqXHR, textStatus, errorThrown)
@@ -717,7 +795,7 @@
 	    //action for add agent button
 	    $('#add-product-order-line-button').fancybox({
 		    width: "100%",
-		    height: "100%",
+		    height: "auto",
 		    autoSize: false,
 		    ajax: {
 			complete: function(jqXHR, textStatus) {
@@ -1101,7 +1179,7 @@
 			    });
 			    
 			    $('.select2-ajax-manufacturers').select2({
-			      placeholder: "Search for a category",
+			      placeholder: "Search for a manufacturer",
 				  allowClear: true,
 			      minimumInputLength: 1,
 			      ajax: {
@@ -1332,7 +1410,7 @@
 	    });
 		
 		$('.select2-ajax-manufacturers').select2({
-			      placeholder: "Search for a category",
+			      placeholder: "Search for a manufacturer",
 			      minimumInputLength: 1,
 				  allowClear: true,
 			      ajax: {
@@ -1514,12 +1592,7 @@
 		$('input.line_discount_percent').number(true, 2);
 		
 		
-		//notification
-		update_notification();
-		setInterval('update_notification()', 10000);
-		$('.notification_button').on("click", function() {
-			setTimeout('read_notification()', 5000);
-		});
+		
 		
 		
 		//update prices
@@ -1718,12 +1791,20 @@
 			$(this).tab('show');
 		});
 		
-		$(document).on("click",".tab_page",function(e) {
-			e.preventDefault()			
+		$(document).on("click",".tab_page", function(e) {
+			e.preventDefault()
+			
+			pname = false
+			psrc = false
+			if (typeof($(this).attr("psrc")) != 'undefined') {
+				pname = $(this).attr("pname")
+				psrc = $(this).attr("psrc")
+			}
+			
 			if($('body.main-frame-page').length) {
-              openTab($(this).attr("href"), $(this).attr("title"))
+              openTab($(this).attr("href"), $(this).attr("title"),psrc,pname)
             } else {
-              parent.openTab($(this).attr("href"), $(this).attr("title"))
+              parent.openTab($(this).attr("href"), $(this).attr("title"),psrc,pname)
             }
 		})
         

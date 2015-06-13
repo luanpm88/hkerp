@@ -1,0 +1,7 @@
+<%= javascript_include_tag "jquery-1.8.3.min.js" %>
+
+<script>
+    var cid = window.parent.$("#main-tab li.active a").attr("href").replace("#","")
+  
+    parent.closeTab(cid)
+</script>

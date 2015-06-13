@@ -30,7 +30,9 @@
                   
                   
                   <%= form_for(@order, :url => do_change_orders_url(id: @order.id)) do |f| %>
-
+                     <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
                     <div class="row column-seperation">
                            
                             <div class="col-md-6">
@@ -416,7 +418,7 @@
                         <div class="form-actions">  
                           <div class="pull-right">
                               <input type="Submit" class="btn btn-success btn-cons" value="Change" />
-                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons cancel-but" %>
                           </div>
                         </div>
                   <% end %>

@@ -84,7 +84,14 @@
 <%= render "layouts/head_script" %>
 
 <script>
-	
+	$(document).ready(function() {
+		//notification
+		update_notification();
+		setInterval('update_notification()', 10000);
+		$('.notification_button').on("click", function() {
+			setTimeout('read_notification()', 5000);
+		});
+	});
 </script>
 
 <%= javascript_include_tag "form_validations.js" %>
@@ -296,27 +303,27 @@
 		  <span class="badge badge-important pull-right alert-level1"><%= Notification.accounting_alert %></span>
 		<% end %>
 		<ul class="sub-menu">
-		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings?tab_page=1", class: "tab_page", title: "Accounting: Statistics" %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings?tab_page=1", class: "tab_page" %></li>
 		  
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', "/accounting/statistic_sales" %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', "/accounting/statistic_sales?tab_page=1", class: "tab_page" %></li>
 		  
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase" %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
 		  
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["statistics"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path %>			
+			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>			
 		  </li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
-			<%= link_to 'Sales Orders', "/accountings/orders" %>			
+			<%= link_to 'Sales Orders', "/accountings/orders?tab_page=1", class: "tab_page" %>			
 		  </li>
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
-			<%= link_to 'Purchase Orders', "/accountings/orders?purchase=1" %>
+			<%= link_to 'Purchase Orders', "/accountings/orders?purchase=1&tab_page=1", class: "tab_page" %>
 		  </li>
 		  
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["custom_payments"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path %>			
+			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path(tab_page: 1), class: "tab_page" %>			
 		  </li>
 		</ul>
 	    </li>
@@ -333,7 +340,7 @@
 		<ul class="sub-menu">
 		  <li<% if params[:purchase] != "1" && params[:controller] == "orders" && ["index"].include?(params[:action]) %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.price_confirmed_sales_order_alert(current_user) %></span>
-			<%= link_to 'Customer Orders', orders_url %>
+			<%= link_to 'Customer Orders', orders_url(tab_page: 1), class: "tab_page" %>
 		  </li>	      
 		</ul>
 	    </li>
@@ -351,11 +358,11 @@
 		    
 		    <li<% if ["pricing_orders"].include?(params[:action]) %> class="active"<% end %>>
 				<span class="badge badge-important pull-right alert-level2"><%= Notification.items_confirmed_sales_order_alert %></span>
-				<%= link_to 'Pricing Orders', pricing_orders_orders_url %>
+				<%= link_to 'Pricing Orders', pricing_orders_orders_url(tab_page:1), class: "tab_page" %>
 				
 		    </li>
 		    
-		    <li<% if ["orders"].include?(params[:controller]) && (params[:purchase] == "1" || ["purchase_orders"].include?(params[:action])) %> class="active"<% end %>><%= link_to 'Purchase Orders', purchase_orders_orders_path %></li>
+		    <li<% if ["orders"].include?(params[:controller]) && (params[:purchase] == "1" || ["purchase_orders"].include?(params[:action])) %> class="active"<% end %>><%= link_to 'Supplier Orders', purchase_orders_orders_path(tab_page:1), class: "tab_page" %></li>
 		</ul>
 	    </li>
 	<% end %>
@@ -373,19 +380,19 @@
 		    <% if current_user.has_role?("storage_manager") %>
 			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			    <span class="badge badge-important pull-right alert-level2"><%= Notification.sales_delivery_alert %></span>
-				<%= link_to 'Sales Delivery', deliveries_url %>
+				<%= link_to 'Sales Deliveries', deliveries_url(tab_page:1), class: "tab_page" %>
 				
 			</li>		    
 			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_delivery_alert %></span>
-			    <%= link_to 'Purchase Delivery', deliveries_url(purchase: true) %>
+			    <%= link_to 'Purchase Deliveries', deliveries_url(purchase: true, tab_page:1), class: "tab_page" %>
 			</li>
 		    <% end %>
 		    
-		    <li<% if ["products"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Product list', products_url(tab_page: 1), class: "tab_page", title: "Product List" %></li>
-		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url %></li>
-		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url %></li>
-			<li<% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url %></li>
+		    <li<% if ["products"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Product list', products_url(tab_page: 1), class: "tab_page" %></li>
+		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url(tab_page:1), class: "tab_page" %></li>
+		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url(tab_page:1), class: "tab_page" %></li>
+			<li<% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url(tab_page:1), class: "tab_page" %></li>
 		</ul>
 	    </li>
 	<% end %>
@@ -398,7 +405,7 @@
 		<span class="arrow<% if params[:controller] == "contacts" %> open<% end %>"></span>
 	      <% end %>
 	      <ul class="sub-menu">
-			<li<% if params[:controller] == "contacts" %> class="active"<% end %>><%= link_to 'Contacts', contacts_url %></li>
+			<li<% if params[:controller] == "contacts" %> class="active"<% end %>><%= link_to 'Contacts', contacts_url(tab_page:1), class: "tab_page" %></li>
 			
 	      </ul>
 	    </li>
@@ -413,14 +420,14 @@
 	      <% end %>
 	      <ul class="sub-menu">
 		  <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
-		      <%= link_to 'Monthly Attendance Reports', checkinouts_url %>
+		      <%= link_to 'Monthly Attendance Reports', checkinouts_url(tab_page:1), class: "tab_page" %>
 		  </li>	    	    
 		  <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
-		      <%= link_to 'Attendance Requests', checkinout_requests_url %>
+		      <%= link_to 'Attendance Requests', checkinout_requests_url(tab_page:1), class: "tab_page" %>
 		  </li>
 		    <% if can? :import, Checkinout %>
 			<li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
-			    <%= link_to 'Import', import_checkinouts_url %>
+			    <%= link_to 'Import', import_checkinouts_url(tab_page:1), class: "tab_page" %>
 			</li>
 		    <% end %>
 	      </ul>
@@ -436,10 +443,10 @@
 				<% end %>
 				<ul class="sub-menu">
 					<li<% if params[:controller] == "commission_programs" && params[:action] == "statistics" %> class="active"<% end %>>
-						<%= link_to 'Statistics', statistics_commission_programs_path %>
+						<%= link_to 'Statistics', statistics_commission_programs_path(tab_page:1), class: "tab_page" %>
 					</li>
 					<li<% if params[:controller] == "commission_programs" && params[:action] == "index" %> class="active"<% end %>>
-						<%= link_to 'Programs', commission_programs_path %>
+						<%= link_to 'Programs', commission_programs_path(tab_page:1), class: "tab_page" %>
 					</li>
 				  
 				</ul>
@@ -454,8 +461,8 @@
 				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
 				<% end %>
 				<ul class="sub-menu">
-				  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path %></li>
-				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup" %></li>
+				  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path(tab_page:1), class: "tab_page" %></li>
+				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup?tab_page=1", class: "tab_page" %></li>
 				</ul>
 	    </li>
 	<% end %>

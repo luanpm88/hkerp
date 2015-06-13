@@ -16,6 +16,10 @@
 				
                                 <%= form_for(@payment_record) do |f| %>
 										<%= f.hidden_field :order_id %>
+										
+										<% if params[:tab_page] %>
+										<%= hidden_field_tag "tab_page", 1 %>
+									<% end %>
                                     
                                     <div class="row">
                                       <div class="col-md-6">

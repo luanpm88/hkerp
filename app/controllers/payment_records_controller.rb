@@ -11,6 +11,10 @@ class PaymentRecordsController < ApplicationController
     @payment_records = PaymentRecord.all
   end
   
+  def custom_payments
+     render layout: "content" if params[:tab_page].present?
+  end
+  
   def datatable
     result = PaymentRecord.datatable(params)
     
@@ -26,17 +30,26 @@ class PaymentRecordsController < ApplicationController
   # GET /payment_records/1
   # GET /payment_records/1.json
   def show
-    @order = @payment_record.order
+    if !@payment_record.order.nil?
+      @order = @payment_record.order    
+      @hk = @order.supplier
+    else
+      @hk = Contact.HK
+    end
     
-    @hk = @order.supplier
-    render :layout => nil
+    
+    
+    render :layout => "none"
   end
   
   def download_pdf
-    @order = @payment_record.order
-    
-    @hk = @order.supplier
-    render  :pdf => "payment_"+@order.quotation_code+"-"+@payment_record.id.to_s,
+    if !@payment_record.order.nil?
+      @order = @payment_record.order    
+      @hk = @order.supplier
+    else
+      @hk = Contact.HK
+    end
+    render  :pdf => "custom_payment_-"+@payment_record.id.to_s,
             :template => 'payment_records/show.pdf.erb',
             :layout => nil,
             :footer => {
@@ -54,6 +67,7 @@ class PaymentRecordsController < ApplicationController
   # GET /payment_records/new
   def new
     @payment_record = PaymentRecord.new
+    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
     
     if params[:order_id].present?
       @order = Order.find(params[:order_id])      
@@ -61,18 +75,20 @@ class PaymentRecordsController < ApplicationController
       @payment_record.paid_address = @order.is_purchase ? @order.supplier.full_address : @order.customer.full_address
       @payment_record.amount = @order.remain_amount
       @payment_record.order_id = @order.id
+      
+      
     end
-    
-    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+    render layout: "content" if params[:tab_page].present?
   end
   
   def pay_tip
     @order = Order.find(params[:order_id])
-    
     authorize! :pay_tip, @order
     
     @payment_record = PaymentRecord.new(is_tip: true)
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # GET /payment_records/1/edit
@@ -87,6 +103,7 @@ class PaymentRecordsController < ApplicationController
     @payment_record.accountant = current_user
     @payment_record.type_name = 'order'
     
+    
     if @order.is_payback
         @payment_record.amount = -@payment_record.amount.abs
     end
@@ -96,10 +113,10 @@ class PaymentRecordsController < ApplicationController
     respond_to do |format|
       if @payment_record.save
         @order.update_attributes(debt_date: @payment_record.debt_date)
-        format.html { redirect_to @payment_record, notice: 'Payment record was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : @payment_record, notice: 'Payment record was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
@@ -118,10 +135,10 @@ class PaymentRecordsController < ApplicationController
     
     respond_to do |format|
       if @payment_record.save
-        format.html { redirect_to list_path, notice: 'Payment record was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? @payment_record : list_path, notice: 'Payment record was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
-        format.html { render action: 'pay_tip' }
+        format.html { render action: 'pay_tip', tab_page: params[:tab_page] }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
@@ -132,9 +149,13 @@ class PaymentRecordsController < ApplicationController
     
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
     @payment_record.is_recieved = false
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def edit_pay_custom
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_pay_custom
@@ -149,10 +170,10 @@ class PaymentRecordsController < ApplicationController
     
     respond_to do |format|
       if @payment_record.save
-        format.html { redirect_to custom_payments_payment_records_path, notice: 'Payment record was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? @payment_record : @payment_record, notice: 'Payment record was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
-        format.html { render action: 'pay_custom' }
+        format.html { render action: 'pay_custom',  tab_page: params[:tab_page]}
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
@@ -166,7 +187,7 @@ class PaymentRecordsController < ApplicationController
         format.html { redirect_to custom_payments_payment_records_path, notice: 'Payment record was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'edit',  tab_page: params[:tab_page] }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end
@@ -206,6 +227,8 @@ class PaymentRecordsController < ApplicationController
     end
     
     @statistics = PaymentRecord.statistics(@from_date, @to_date, params)
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def pay_commission
@@ -221,6 +244,8 @@ class PaymentRecordsController < ApplicationController
     # @payment_record.paid_address = @order.is_purchase ? @order.purchaser.address : @order.salesperson.address    
     
     @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_pay_commission
@@ -234,10 +259,10 @@ class PaymentRecordsController < ApplicationController
     
     respond_to do |format|
       if @payment_record.save
-        format.html { redirect_to statistics_commission_programs_path, notice: 'Payment record was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? @payment_record : statistics_commission_programs_path, notice: 'Payment record was successfully created.' }
         format.json { render action: 'show', status: :created, location: @payment_record }
       else
-        format.html { render action: 'pay_tip' }
+        format.html { render action: 'pay_commission',  tab_page: params[:tab_page] }
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    

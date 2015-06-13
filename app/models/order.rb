@@ -665,7 +665,7 @@ class Order < ActiveRecord::Base
       
       printed_order_number = item.printed_order_number.present? ? "<br /><strong class=\"finished\">#{item.printed_order_number}</strong>" : ""
       
-      first_col = link_helper.link_to(item.quotation_code, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order")
+      first_col = link_helper.link_to(item.quotation_code, {controller: "orders", action: "show", id: item.id, tab_page: 1}, class: "tab_page", title: "Order [#{item.quotation_code}]")
       first_col += ("<br />"+item.customer_po).html_safe if item.customer_po.present?
       first_col += printed_order_number.html_safe if item.printed_order_number.present?
       
@@ -673,7 +673,7 @@ class Order < ActiveRecord::Base
       when "delivery"
           row = [
                   first_col,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id, tab_page: 1}, class: "tab_page main-title", title: "Order [#{item.quotation_code}]")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+item.display_order_status_name+'</div>',
@@ -687,7 +687,7 @@ class Order < ActiveRecord::Base
         debt_time = item.is_debt || item.is_out_of_date ? item.debt_remain_days.to_s+'<br />days' : ""
           row = [
                   first_col,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,                                
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id, tab_page: 1}, class: "tab_page main-title", title: "Order [#{item.quotation_code}]")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+debt_time+'</div>',
@@ -701,7 +701,7 @@ class Order < ActiveRecord::Base
           
           row = [
                   first_col,              
-                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id}, class: "fancybox.iframe show_order main-title")+item.display_description,              
+                  link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id, tab_page: 1}, class: "tab_page main-title", title: "Order [#{item.quotation_code}]")+item.display_description,              
                   '<div class="text-right">'+item.formated_total_vat+'</div>',
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
@@ -1271,7 +1271,7 @@ class Order < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    link = link_helper.link_to(self.quotation_code, {controller: "orders", action: "show", id: self.id}, title: "View Order", class: "fancybox.iframe show_order")
+    link = link_helper.link_to(self.quotation_code, {controller: "orders", action: "show", id: self.id, tab_page: 1}, title: "Order [#{quotation_code}]", class: "tab_page")
     
     return link.html_safe
   end

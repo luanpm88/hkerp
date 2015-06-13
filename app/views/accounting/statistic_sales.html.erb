@@ -17,6 +17,9 @@
 					<div class="grid simple ">
 						<div class="grid-body no-border filters" method="get">
 						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "statistic_sales"})%>">
+							<% if params[:tab_page] %>
+								<%= hidden_field_tag "tab_page", 1 %>
+							<% end %>
 							<div class="row accounting-statistics-filters">
 								<div class="col-md-3">
 									<h4>From Date</h4>

@@ -33,6 +33,10 @@
                     <% if !params[:purchase].nil? %>
                         <input type="hidden" name="purchase" value="<%= params[:purchase] %>">
                     <% end %>
+                    
+                    <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
 
                     <div class="row column-seperation">
                            
@@ -48,7 +52,7 @@
                                                                  <div class="input-with-icon  right">                                       
                                                                    <i class=""></i>
                                                                       <div class="input-with_add_but">
-                                                                             <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                             <%= link_to '<i class="icon-plus"></i>'.html_safe, new_contact_path(:type_id => ContactType.supplier, tab_page: 1), title: "New Contact", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
                                                                              <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers required" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
                                                                       </div>
                                                                  </div>
@@ -113,7 +117,7 @@
                                                                   <div class="input-with-icon  right">                                       
                                                                          <i class=""></i>
                                                                              <div class="input-with_add_but">
-                                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, new_contact_path(:type_id => ContactType.supplier, tab_page: 1), title: "New Contact", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
                                                                                     <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers required" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
                                                                              </div>
                                                                   </div>
@@ -421,10 +425,8 @@
                         <div class="form-actions">  
                           <div class="pull-right">
                               <input type="submit" class="btn btn-success btn-cons" value="Save" />
-                              <% if can? :confirm_items, @order %>
-                                   <input name="confirm_items" type="submit" class="btn btn-info btn-cons" value="Save and Confirm Items" />
-                              <% end %>
-                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons" %>
+                             
+                              <%= link_to 'Cancel', orders_path, :class => "btn btn-white btn-cons cancel-but" %>
                           </div>
                         </div>
                   <% end %>

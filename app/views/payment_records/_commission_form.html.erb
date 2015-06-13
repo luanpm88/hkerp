@@ -17,7 +17,10 @@
 										<%= f.hidden_field :order_id, {value: @order.id} %>
 										<%= f.hidden_field :is_tip, {value: true} %>
 										<%= hidden_field_tag :order_order_date, @order.order_date.to_date %>
-				    
+										
+										<% if params[:tab_page] %>
+											<%= hidden_field_tag "tab_page", 1 %>
+										<% end %>
                                     
                                     <div class="row">
                                       <div class="col-md-6">
@@ -80,7 +83,7 @@
 													   <span class="help">(required)</span>
 														 <div class="input-with-icon  right">                                       
 														   <i class=""></i>
-														   <select name="payment_record[payment_method_id]" class="modern_select" style="width: 100%">
+														   <select name="payment_record[payment_method_id]" class="modern_select required" style="width: 100%">
 																   <option value="">Select Method</option>
 																   <% PaymentMethod.all.each do |payment| %>
 																	   <option value="<%= payment.id %>" <% if !@payment_record.payment_method_id.nil? && @payment_record.payment_method_id == payment.id %>selected="selected"<% end %>>

@@ -8,7 +8,7 @@ class ManufacturersController < ApplicationController
   def index
     @manufacturers = Manufacturer.all
     respond_to do |format|
-      format.html
+      format.html  {render layout: "content" if params[:tab_page].present?}
       format.json {
         render json: Manufacturer.full_text_search(params[:q])
       }
@@ -23,10 +23,12 @@ class ManufacturersController < ApplicationController
   # GET /manufacturers/new
   def new
     @manufacturer = Manufacturer.new
+    render layout: "content" if params[:tab_page].present?
   end
 
   # GET /manufacturers/1/edit
   def edit
+    render layout: "content" if params[:tab_page].present?
   end
 
   # POST /manufacturers
@@ -37,10 +39,10 @@ class ManufacturersController < ApplicationController
 
     respond_to do |format|
       if @manufacturer.save
-        format.html { redirect_to manufacturers_url, notice: 'Manufacturer was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @manufacturer.id, tab_page: 1} : manufacturers_url, notice: 'Manufacturer was successfully created.' }
         format.json { render action: 'show', status: :created, location: @manufacturer }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @manufacturer.errors, status: :unprocessable_entity }
       end
     end
@@ -51,10 +53,10 @@ class ManufacturersController < ApplicationController
   def update
     respond_to do |format|
       if @manufacturer.update(manufacturer_params)
-        format.html { redirect_to manufacturers_url, notice: 'Manufacturer was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @manufacturer.id, tab_page: 1} : manufacturers_url, notice: 'Manufacturer was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'edit', tab_page: params[:tab_page] }
         format.json { render json: @manufacturer.errors, status: :unprocessable_entity }
       end
     end
@@ -65,7 +67,7 @@ class ManufacturersController < ApplicationController
   def destroy
     @manufacturer.destroy
     respond_to do |format|
-      format.html { redirect_to manufacturers_url }
+      format.html { redirect_to manufacturers_url(tab_page: params[:tab_page]) }
       format.json { head :no_content }
     end
   end

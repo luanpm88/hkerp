@@ -47,7 +47,7 @@
     <td class="mid middle1" style="padding-bottom: 30px;">
       <p><label>Ngày lập phiếu: </label><%= @payment_record.paid_date.strftime("%d/%m/%Y") %></p>
       
-      <p><label>Số: </label><%= @order.quotation_code %>-<%= @payment_record.id %></p>
+      <p><label>Số: </label><%= @order.quotation_code+"-" if !@order.nil? %><%= @payment_record.id %></p>
     </td>
   </tr>
   
@@ -62,8 +62,8 @@
       <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
       <p><label>Lý do: </label> <%= @payment_record.note %></p>
       <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong></p>
-      <p><label>Viết bằng chữ: </label><%= @order.docso(@payment_record.amount.abs) %></p>
-      <p><label>Kèm theo: </label> Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p>
+      <p><label>Viết bằng chữ: </label><%= Order.new.docso(@payment_record.amount.abs) %></p>
+      <% if !@order.nil? %><p><label>Kèm theo: </label> Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p><% end %>
       
     </td>    
   </tr>

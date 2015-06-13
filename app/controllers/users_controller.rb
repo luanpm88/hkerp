@@ -21,7 +21,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    render layout: nil
+    if params[:tab_page].present?
+      render layout: "content"
+    else
+      render layout: "none"
+    end
   end
 
   # GET /users/new

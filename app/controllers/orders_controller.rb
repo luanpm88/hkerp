@@ -10,13 +10,16 @@ class OrdersController < ApplicationController
   def index
     #Find Customer orders
     @orders = Order.customer_orders
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # GET /orders/1
   # GET /orders/1.json
   def show
     @hk = @order.supplier
-    render :layout => nil
+    
+    render :layout => "none"
   end
 
   # GET /orders/new
@@ -80,14 +83,14 @@ class OrdersController < ApplicationController
       if @order.save
         @order.set_status('new', current_user)
         if !@order.is_purchase
-          format.html { redirect_to list_path, notice: 'Order was successfully created.' }
+          format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
         else
-          format.html { redirect_to purchase_orders_orders_path, notice: 'Order was successfully created.' }
+          format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : purchase_orders_orders_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
         end
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -103,14 +106,14 @@ class OrdersController < ApplicationController
           @order.update_order_details(permit_order_details_params(params[:order_details]))
           
           if !params[:confirm].nil?
-            format.html { redirect_to confirm_order_orders_url(id: @order.id) }
+            format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : confirm_order_orders_url(id: @order.id) }
             format.json { head :no_content }
           else
-            format.html { redirect_to list_path, notice: 'Order was successfully updated.' }
+            format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order was successfully updated.' }
             format.json { head :no_content }
           end          
         else
-          format.html { render action: 'edit' }
+          format.html { render action: 'edit', tab_page: params[:tab_page] }
           format.json { render json: @order.errors, status: :unprocessable_entity }
         end
       end
@@ -121,7 +124,7 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url }
+      format.html { redirect_to orders_url(tab_page: 1) }
       format.json { head :no_content }
     end
   end
@@ -196,16 +199,17 @@ class OrdersController < ApplicationController
     #Find Customer orders
     @orders = Order.purchase_orders
     
+    render layout: "content" if params[:tab_page].present?
   end
   
   def confirm_order
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
       if @order.confirm_order(current_user)        
-        format.html { redirect_to list_path, notice: 'Order was successfully confimed.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order was successfully confimed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to edit_order_path(@order), alert: 'Order was unsuccessfully confimed. Check the order again.' }
+        format.html { redirect_to edit_order_path(@order, tab_page: params[:tab_page]), alert: 'Order was unsuccessfully confimed. Check the order again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -216,10 +220,10 @@ class OrdersController < ApplicationController
     
     respond_to do |format|
       if @order.confirm_items(current_user)     
-        format.html { redirect_to list_path, notice: 'Order Items was successfully confimed.' }
+        format.html { redirect_to  params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order Items was successfully confimed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to edit_order_path(@order), alert: 'Order Items was unsuccessfully confimed. Check the order again.' }
+        format.html { redirect_to edit_order_path(@order, tab_page: params[:tab_page]), alert: 'Order Items was unsuccessfully confimed. Check the order again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -228,10 +232,10 @@ class OrdersController < ApplicationController
   def confirm_price    
     respond_to do |format|
       if @order.confirm_price(current_user)      
-        format.html { redirect_to pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : pricing_orders_orders_url, notice: 'Order Prices was successfully confimed.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to update_price_orders_url(id: @order.id), alert: 'Order Price was unsuccessfully confimed. Check the prices again.' }
+        format.html { redirect_to update_price_orders_url(id: @order.id, tab_page: 1), alert: 'Order Price was unsuccessfully confimed. Check the prices again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -242,10 +246,10 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.finish_order(current_user)
         return_url = {controller: "accounting", action: "orders"}        
-        format.html { redirect_to return_url, notice: 'Order was successfully finished.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : return_url, notice: 'Order was successfully finished.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to update_info_orders_path(:id => @order.id, accounting: true), alert: 'Order was unsuccessfully finished. You must update printed order number.' }
+        format.html { redirect_to update_info_orders_path(:id => @order.id, accounting: true, tab_page: params[:tab_page]), alert: 'Order was unsuccessfully finished. You must update printed order number.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -267,7 +271,8 @@ class OrdersController < ApplicationController
   
   
   
-  def change    
+  def change
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_change
@@ -283,10 +288,10 @@ class OrdersController < ApplicationController
         
         @order.update_order_details(permit_order_details_params(params[:order_details]))       
         
-        format.html { redirect_to orders_path, notice: 'Order was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : orders_path, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'change' }
+        format.html { render action: 'change', tab_page: params[:tab_page] }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -298,6 +303,8 @@ class OrdersController < ApplicationController
   end
   
   def update_price
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_update_price
@@ -320,10 +327,10 @@ class OrdersController < ApplicationController
     end
     
     respond_to do |format|
-      if !params[:confirm].nil?
-        format.html { redirect_to confirm_price_orders_url(id: @order.id) }
-      end
-      format.html { redirect_to update_price_orders_url(id: @order.id), notice: 'The prices was successfully updated.' }
+      #if !params[:confirm].nil?
+      #  format.html { redirect_to confirm_price_orders_url(id: @order.id, tab_page: params[:tab_page]) }
+      #end
+      format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : update_price_orders_url(id: @order.id), notice: 'The prices was successfully updated.' }
       format.json { render action: 'show', status: :created, location: @order }          
     end
   end
@@ -335,6 +342,8 @@ class OrdersController < ApplicationController
     @order.debt_date = (@order.debt_date).strftime("%Y-%m-%d") if !@order.debt_date.nil?
     @order.debt_days = (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil?
     @order.shipping_date = (@order.shipping_date).strftime("%Y-%m-%d")
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_update_info
@@ -349,16 +358,17 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.update(update_info_params)
         @order.update_order_details_info(permit_order_details_params(params[:order_details]))
-        format.html { redirect_to redirect_url, notice: 'Order was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : redirect_url, notice: 'Order was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { redirect_to update_info_orders_url(id: @order.id), alert: 'Order was unsuccessfully updated. Check the information again.' }
+        format.html { redirect_to update_info_orders_url(id: @order.id, tab_page: params[:tab_page]), alert: 'Order was unsuccessfully updated. Check the information again.' }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
   end
   
-  def update_tip    
+  def update_tip
+    render layout: "content" if params[:tab_page].present?
   end
   
   def do_update_tip
@@ -368,10 +378,10 @@ class OrdersController < ApplicationController
     respond_to do |format|
       if @order.update_order_detail_tips(permit_order_details_params(params[:order_details])) #@order.update(update_tip_params)
         
-        format.html { redirect_to return_url, notice: 'Order tip was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : return_url, notice: 'Order tip was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render "update_tip" }
+        format.html { render "update_tip", tab_page: params[:tab_page] }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -379,6 +389,8 @@ class OrdersController < ApplicationController
   
   def order_log
     @logs = @order.order_log
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def order_actions

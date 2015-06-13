@@ -17,7 +17,7 @@ class Combination < ActiveRecord::Base
   def valid_quantity
     p = Product.find(product_id)
     if combined.nil? || combined
-      if quantity > p.max_combinable || quantity == 0
+      if quantity.nil? || quantity > p.max_combinable || quantity == 0
           errors.add(:quantity, "is not valid")
       end
     else

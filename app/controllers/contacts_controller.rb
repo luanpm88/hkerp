@@ -20,13 +20,27 @@ class ContactsController < ApplicationController
   # GET /contacts/1
   # GET /contacts/1.json
   def show
-    
-    render layout: nil
+    if params[:tab_page].present?
+      render layout: "content"
+    else
+      render layout: "none"
+    end
   end
 
   # GET /contacts/new
   def new
-    @contact = Contact.new    
+    @contact = Contact.new
+    
+    if (!params[:type_id].nil?)
+      @contact.contact_types << ContactType.find_by_id(params[:type_id])
+    end
+    if (!params[:company_id].nil?)
+      @contact.companies << Contact.find_by_id(params[:company_id])
+    end
+    
+    if params[:tab_page].present?
+      render layout: "content"
+    end
   end
 
   # GET /contacts/1/edit
@@ -41,10 +55,10 @@ class ContactsController < ApplicationController
 
     respond_to do |format|
       if @contact.save       
-        format.html { redirect_to contacts_url, notice: 'Contact was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show",id: @contact.id,tab_page: 1} : contacts_url, notice: 'Contact was successfully created.' }
         format.json { render action: 'show', status: :created, location: @contact }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end
@@ -57,10 +71,10 @@ class ContactsController < ApplicationController
     
     respond_to do |format|
       if @contact.update(contact_params)
-        format.html { redirect_to contacts_url, notice: 'Contact was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show",id: @contact.id,tab_page: 1} : contacts_url, notice: 'Contact was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'edit', tab_page: params[:tab_page] }
         format.json { render json: @contact.errors, status: :unprocessable_entity }
       end
     end

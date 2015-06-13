@@ -60,7 +60,7 @@
                                                           <i class=""></i>
                                                             
                                                             <div class="input-with_add_but">
-                                                                <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                <%= link_to '<i class="icon-plus"></i>'.html_safe, new_contact_path(tab_page: 1), title: "New Contact", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
                                                                 <input style="width:100%;margin-bottom: 5px;" name="order[tip_contact_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.tip_contact_id %>" text="<%= @order.tip_contact.name if !@order.tip_contact.nil? %>" />
                                                             </div>
                                                         </div>
@@ -120,7 +120,7 @@
                                                            <div class="input-with-icon  right">                                       
                                                              <i class=""></i>
                                                                 <div class="input-with_add_but">                                                                    
-                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, new_contact_path(tab_page: 1), title: "New Contact", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
                                                                     <input style="width:100%;margin-bottom: 5px;" name="order[shipment_contact_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @order.shipment_contact_id %>" text="<%= @order.shipment_contact.name if !@order.shipment_contact.nil? %>" />
                                                                 </div>
                                                            </div>

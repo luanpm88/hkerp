@@ -17,10 +17,14 @@ class ProductStockUpdatesController < ApplicationController
   def new
     @product_stock_update = ProductStockUpdate.new(product_id: params[:product_id])
     @product = Product.find(params[:product_id])
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # GET /product_stock_updates/1/edit
   def edit
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # POST /product_stock_updates
@@ -33,10 +37,10 @@ class ProductStockUpdatesController < ApplicationController
     
     respond_to do |format|
       if @product_stock_update.save
-        format.html { redirect_to products_url, notice: 'Product stock update was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : products_url, notice: 'Product stock update was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product_stock_update }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @product_stock_update.errors, status: :unprocessable_entity }
       end
     end

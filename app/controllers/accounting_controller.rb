@@ -26,6 +26,8 @@ class AccountingController < ApplicationController
     else
       @orders = Order.accounting_sales_orders
     end
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   def custom_payments
@@ -84,6 +86,8 @@ class AccountingController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+    else
+      render layout: "content" if params[:tab_page].present?
     end
   end
   
@@ -129,6 +133,8 @@ class AccountingController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+    else
+      render layout: "content" if params[:tab_page].present?
     end
   end
   

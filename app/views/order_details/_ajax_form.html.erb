@@ -1,4 +1,4 @@
-       <div class="row" style="margin: 0">	  
+       <div class="row row_no_margin" style="margin: 0">	  
             <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
@@ -69,10 +69,12 @@
 					<span class="help">(required)</span>
 					<div class="input-with-icon  right">                                       
 					     <i class=""></i>
-					     <input style="width:100%;margin-bottom: 5px;" name="order_detail[product_id]" data="<%= products_path(format: "json") %>" class="select2-ajax-products required" value="<%= @order_detail.product_id %>" text="<%= @order_detail.product_name %>" />
+						 
+						 <div class="input-with_add_but">
+							  <%= link_to '<i class="icon-plus"></i>'.html_safe, new_product_path(tab_page: 1), title: "New Product", :class => 'btn btn-sm btn-small btn-white tab_page' %>
+							  <input style="width:100%;margin-bottom: 5px;" name="order_detail[product_id]" data="<%= products_path(format: "json") %>" class="select2-ajax-products required" value="<%= @order_detail.product_id %>" text="<%= @order_detail.product_name %>" />
+						 </div>
 					     
-					     <br />
-					     <%= link_to "Create new Product", ajax_new_products_path ,class: "btn btn-primary btn-sm btn-small fancybox.ajax ajax_add_product" %>
 					  
 					</div>
 				   </div>

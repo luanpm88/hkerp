@@ -10,7 +10,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-			<%= link_to 'New Pay/Recieve Record', pay_custom_payment_records_path, :class => 'btn btn-primary btn-cons' %>
+						<%= link_to 'New Pay/Recieve Record', pay_custom_payment_records_path(tab_page:1), :class => 'btn btn-primary btn-cons tab_page', title: "New Pay/Recieve Record", pname: "Custom Pay/Recieve", psrc: custom_payments_payment_records_path(tab_page:1) %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Products</span></h4>

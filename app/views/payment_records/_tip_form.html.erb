@@ -17,7 +17,9 @@
 										<%= f.hidden_field :order_id, {value: @order.id} %>
 										<%= f.hidden_field :is_tip, {value: true} %>
 										<%= hidden_field_tag :order_order_date, @order.order_date.to_date %>
-				    
+										<% if params[:tab_page] %>
+											<%= hidden_field_tag "tab_page", 1 %>
+										<% end %>
                                     
                                     <div class="row">
                                       <div class="col-md-6">

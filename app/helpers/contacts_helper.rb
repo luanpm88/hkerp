@@ -6,7 +6,7 @@ module ContactsHelper
       actions += '<ul class="dropdown-menu">'      
       
       if can? :update, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Edit', {controller: "contacts", action: "edit", id: item.id})+'</li>'        
+        actions += '<li>'+ActionController::Base.helpers.link_to('Edit', {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, psrc: contacts_url(tab_page: 1), title: "Edit: #{item.short_name}", class: "tab_page")+'</li>'        
       end
       
       actions += '</ul></div></div>'
