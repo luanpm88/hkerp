@@ -7963,7 +7963,6 @@ tr.block_commission_header h3 {
     width: 100%;
     border: none;
     background: #fff;
-    padding: 5px;
 }
 .main-content-frame .grid.simple .grid-title, .main-content-frame .grid.simple .grid-body {
     padding: 0;
@@ -7973,7 +7972,7 @@ tr.block_commission_header h3 {
 }
 .main-content-frame {
     background: #fff;
-    padding: 1px !important;
+    padding: 15px !important;
 }
 #main-tab li .but {
     cursor: pointer;
@@ -8013,4 +8012,7 @@ tr.block_commission_header h3 {
 }
 .main-content-frame .fancybox-inner .row_no_margin {
     margin: 1px 11px !important;
+}
+#main-tab > li {
+    height: 50px;
 }

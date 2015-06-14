@@ -45,7 +45,7 @@
 			}
 			
 		  $('#main-tab').append('<li class=""><a tsrc="'+tsrc+'" tname="'+tname+'" '+parent+' rel="'+tid+'" href="#'+tid+'">'+tname+'<i class="but but-del icon-remove-sign"></i><i class="but but-reload icon-refresh"></i></a></li>')
-		  $('.tab-content').append('<div id="'+tid+'" class="tab-pane"><iframe class="main-frame" id="'+tid+'" seamless="seamless" scrolling="no" src="'+tsrc+'"></iframe></div>')
+		  $('.tab-content').append('<div id="'+tid+'" class="tab-pane"><iframe class="main-frame" id="'+tid+'" seamless="seamless" scrolling="yes" src="'+tsrc+'"></iframe></div>')
 			$('#main-tab a').click(function (e) {
 				  e.preventDefault();
 				  $(this).tab('show');
@@ -67,6 +67,9 @@
 		  
 		}
 		$(document).scrollTop(0);
+		if($(document).width() <= 750) {
+			$('#main-menu-toggle').trigger("click");
+		}
 	}
 	
 	function resizeIframe(tid) {
@@ -76,7 +79,7 @@
 		iid = setInterval(function(){
 		  curHeight = $frame.contents().find('body').height();
 		  if ( curHeight != lastHeight ) {
-			$frame.css('height', ((lastHeight = curHeight)+465) + 'px' );
+			$frame.css('height', ((lastHeight = curHeight)+65) + 'px' );
 		  }
 		},500);
 		
