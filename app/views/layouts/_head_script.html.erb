@@ -67,7 +67,7 @@
 		  
 		}
 		$(document).scrollTop(0);
-		if($(document).width() <= 750) {
+		if($(window).width() <= 750 && $('.page-sidebar').css("display") == "block") {
 			$('#main-menu-toggle').trigger("click");
 		}
 	}

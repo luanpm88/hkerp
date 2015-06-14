@@ -8016,3 +8016,6 @@ tr.block_commission_header h3 {
 #main-tab > li {
     height: 50px;
 }
+.main-frame {
+    overflow-y: hidden;
+}
