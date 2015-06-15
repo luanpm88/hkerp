@@ -174,7 +174,8 @@ table {
 
 .show_order_page {
     margin: auto;
-    width: 995px;
+    max-width: 995px;
+    min-width: 700px;
 }
 body {
   margin: 0;

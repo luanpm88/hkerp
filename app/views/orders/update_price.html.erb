@@ -24,7 +24,9 @@
                 <div class="grid-body no-border">
                   <%= form_for(@order, :url => url_for(:action => 'do_update_price')) do |f| %>
                     <%= hidden_field_tag :id, @order.id %>
-                    
+                    <% if !params[:tab_page].nil? %>
+                            <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                     <% end %>
                     <div class="row column-seperation">
                            
                             <div class="col-md-12">
