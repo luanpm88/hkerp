@@ -686,7 +686,7 @@ class Order < ActiveRecord::Base
       when "accounting"
         debt_time = item.is_debt || item.is_out_of_date ? item.debt_remain_days.to_s+'<br />days' : ""
           row = [
-                  first_col,              
+                  '<div class="nowrap">'+first_col+'</div>',              
                   link_helper.link_to(name_col, {controller: "orders", action: "show", id: item.id, tab_page: 1}, class: "tab_page main-title", title: "Order [#{item.quotation_code}]")+item.display_description,                                
                   "<div class=\"text-center\">#{staff_col}</div>",
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
