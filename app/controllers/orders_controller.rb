@@ -21,12 +21,6 @@ class OrdersController < ApplicationController
     
     render layout: "content"
   end
-  
-  def show_iframe
-    @hk = @order.supplier
-    
-    render :layout => "none"
-  end
 
   # GET /orders/new
   def new   
