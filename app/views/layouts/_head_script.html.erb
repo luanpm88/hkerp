@@ -59,6 +59,14 @@
 			$('#main-tab a[rel="'+tid+'"]').parent().find(".but-reload").click(function (e) {
                 reloadTab(tid)
 			});
+			
+			
+
+			$('iframe#'+tid).load(function(){
+				$(document).scrollTop(0);
+			});
+
+
 		} else {
 		  $('#main-tab a[rel="'+tid+'"]').tab('show')
 		  
