@@ -8,7 +8,7 @@
 			  <%= render_order_actions(@order, "big") %>
 			</div>
 			
-			<div class="order_histories" style="float: left; max-width: 640px">
+			<div class="order_histories" style="float: left">
 			  <% @order.order_history_lines.each do |line_order| %>
 				<% if @order.id == line_order.id %>
 				  <%= link_to line_order.created_at.strftime("%d/%m/%Y %H:%M:%S"), line_order, :class => "btn btn-success fancybox.iframe show_order" %>

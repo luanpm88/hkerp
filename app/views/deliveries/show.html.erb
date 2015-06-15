@@ -17,7 +17,7 @@
 		  
 		  
 		  
-		  <div class="order_histories" style="float: left; max-width: 640px">
+		  <div class="order_histories" style="float: left">
 			<% @order.all_deliveries.each do |d| %>
 			  <%
 				active = d.id == @delivery.id
