@@ -39,7 +39,7 @@ module ApplicationHelper
       
       group_1 = 0
       if can? :finish_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "", title: "Finish Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?'})+'</li>'        
+        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Finish Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?'})+'</li>'        
         group_1 += 1
       end
       if can? :pay_order, item
