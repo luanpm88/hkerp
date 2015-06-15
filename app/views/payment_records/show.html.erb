@@ -9,13 +9,13 @@ end
 		
 %>
 
-<%= stylesheet_link_tag "print_html.css?v=3" %>
+<%= stylesheet_link_tag "print_html.css?v=4" %>
 
 
 <div class="show_order_page">
-  
+  <div style="margin-bottom: 5px;display: inline-block; width: 100%">
 		<div class="order_histories" style="float: right">
-		<%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+		<%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info", :target => "_blank" %>
 	  
 		</div>
 		
@@ -30,7 +30,7 @@ end
 			
 			<div class="print_group">
 			  
-			  <%= link_to d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+			  <%= link_to d.display_name, {:id => d.id}, :class => "btn btn-#{active}" %>
 			  
 			</div>
 		
@@ -43,7 +43,7 @@ end
 			
 			<div class="print_group">
 			  
-			  <%= link_to "[Tip] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+			  <%= link_to "[Tip] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active}" %>
 			  
 			</div>
 		
@@ -57,7 +57,7 @@ end
 					
 					<div class="print_group">
 					  
-					  <%= link_to "[Commission] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active} btn-xs btn-mini fancybox.iframe show_order" %>
+					  <%= link_to "[Commission] "+d.display_name, {:id => d.id}, :class => "btn btn-#{active}" %>
 					  
 					</div>
 				
@@ -67,7 +67,7 @@ end
 		
 		</div>
 <% end %>		
-		
+  </div>
 		
 		<br style="clear: both" />
 		
@@ -78,13 +78,13 @@ end
 			  <%= render 'show' %>
 		</div>
 		  
-		<br style="clear: both" />
+		
 
 
 
 		<div class="order_histories" style="float: right;margin: 10px 0 0 0">
-		  <%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-		  <%= link_to 'X Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info btn-xs btn-mini" %>
+		  <%= link_to 'Create PDF', download_pdf_payment_records_path(:id => @payment_record.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info", :target => "_blank" %>
+		  <%= link_to '<i class="icon-trash color-white"></i> Trash'.html_safe, {controller: "payment_records", action: "trash", :id => @payment_record.id}, :class => "btn btn-info" %>
 		</div>
 		
 		

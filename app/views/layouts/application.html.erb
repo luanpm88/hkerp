@@ -30,7 +30,7 @@
 <!-- END CORE CSS FRAMEWORK -->
 
 <!-- BEGIN CSS TEMPLATE -->
-<%= stylesheet_link_tag "style.css?v=11" %>
+<%= stylesheet_link_tag "style.css?v=12" %>
 <%= stylesheet_link_tag "responsive.css" %>
 <%= stylesheet_link_tag "custom-icon-set.css" %>
 <!-- END CSS TEMPLATE -->
@@ -629,7 +629,7 @@
           </ul>
           <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
           <div class="tab-content">
-            <div class="tab-pane active" id="tab1hellowWorld">
+            <div class="tab-pane active" id="tab1hellowWorld" style="padding: 19px !important">
 				<% if notice %><p class="alert alert-success"><%= notice %></p><% end %>
 				<% if alert %><p class="alert"><%= alert %></p><% end %>
 				<%= yield %> 

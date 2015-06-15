@@ -19,9 +19,9 @@ module ApplicationHelper
     number > 0 ? "+"+number.to_s : number.to_s
   end
   
-  def render_order_actions(item)
+  def render_order_actions(item, size=nil)
 	  actions = '<div class="text-right"><div class="btn-group actions">
-                    <button rel="'+item.id.to_s+'" class="not_loaded order-actions-button btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
+                    <button rel="'+item.id.to_s+'" class="not_loaded order-actions-button btn btn-'+(!size.nil? ? size : "mini")+' btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu order-actions-'+item.id.to_s+'">'
       actions += '<li class="loading"><a href="#">loading...</a></li>'        
       actions += '</ul></div></div>'
@@ -39,7 +39,7 @@ module ApplicationHelper
       
       group_1 = 0
       if can? :finish_order, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "tab_page", title: "Finish Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?'})+'</li>'        
+        actions += '<li>'+ActionController::Base.helpers.link_to('Finish Order', {controller: "orders", action: "finish_order", id: item.id, tab_page:1}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", class: "", title: "Finish Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?'})+'</li>'        
         group_1 += 1
       end
       if can? :pay_order, item

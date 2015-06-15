@@ -4,14 +4,14 @@
 @list_path = @delivery.order.is_purchase ? deliveries_url(purchase: true) : deliveries_url
 %>
 
-<%= stylesheet_link_tag "print_html.css?v=3" %>
+<%= stylesheet_link_tag "print_html.css?v=4" %>
 
 
 
 <div class="show_order_page">
-  
+<div style="margin-bottom: 5px;display: inline-block; width: 100%">
 		  <div class="order_histories" style="float: right">
-		  <%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
+		  <%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info", :target => "_blank" %>
 			
 		  </div>
 		  
@@ -31,16 +31,16 @@
 				</h4>
 				
 				<% if d.is_return != 1 %>
-				<%= link_to "Export", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class} btn-xs btn-mini fancybox.iframe show_order" %>
-				<%= link_to "Warranty", d, :class => "btn btn-#{w_class} btn-xs btn-mini fancybox.iframe show_order" %>
+				<%= link_to "Export", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class}" %>
+				<%= link_to "Warranty", d, :class => "btn btn-#{w_class}" %>
 				<% else %>
-				<%= link_to "Return", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class} btn-xs btn-mini fancybox.iframe show_order" %>
+				<%= link_to "Return", {:id => d.id, :export_ticket => true}, :class => "btn btn-#{t_class}" %>
 				<% end %>
 			  </div>
 		  
 			<% end %>
 		  </div>
-		  
+</div>
 		  <br style="clear: both" />
 		  <% if params[:export_ticket].present? %>
 			<%= render 'export_ticket' %>
@@ -48,11 +48,11 @@
 			<%= render 'show' %>
 		  <% end %>
 			
-		  <br style="clear: both" />
+		  
 		  
 		  <div class="order_histories" style="float: right;margin: 10px 0 0 0">
-			<%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-			<%= link_to 'X Trash'.html_safe, {controller: "deliveries", action: "trash", :id => @delivery.id, tab_page: 1}, :class => "btn btn-info btn-xs btn-mini" %>
+			<%= link_to 'Create PDF', download_pdf_deliveries_path(:id => @delivery.id, :export_ticket => params[:export_ticket]), :class => "btn btn-info", :target => "_blank" %>
+			<%= link_to '<i class="icon-trash color-white"></i> Trash'.html_safe, {controller: "deliveries", action: "trash", :id => @delivery.id, tab_page: 1}, :class => "btn btn-info" %>
 			
 		  </div>
 		  

@@ -1,6 +1,12 @@
   body {
     background: #f9f9f9;
   }
+  * {
+    color: #333;
+  }
+  label {
+    display: inline;
+  }
   .page {
       background: #fff none repeat scroll 0 0;
       border: 1px solid #ccc;
@@ -10,7 +16,10 @@
   .page * {
     font-family: "Times New Roman";
     font-size: 18px;    
-  }  
+  }
+  .cominfo p {
+    margin-bottom: 0;
+  }
   .cominfo h2 {
     font-size: 26px;
     margin-bottom: 0;
@@ -20,7 +29,7 @@
     margin-top: 0;
   }
   .cominfo img {
-    margin-top: 0 !important;
+    margin-top: 10px !important;
     width: 145px !important;
   }
   .top-info {
@@ -52,6 +61,7 @@
         clear: both;
         padding-left: 150px;
         min-height: 22px;
+        line-height: 20px;
     }
   
   .middle2 label {
@@ -95,30 +105,7 @@
       text-align: center;
   }
   
-  .btn-primary {
-    background-image: linear-gradient(to bottom, #428BCA 0px, #2D6CA2 100%);
-    background-repeat: repeat-x;
-    border-color: #2B669A;
-}
-.btn {
-    background-color: #D1DADE;
-    background-image: none !important;
-    border: medium none;
-    box-shadow: none;
-    color: #5E5E5E;
-    cursor: pointer;
-    display: inline-block;
-    font: 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
-    margin-bottom: 10px;
-    padding: 7px 12px 9px;
-    text-align: center;
-    text-shadow: none;
-    transition: all 0.12s linear 0s !important;
-    vertical-align: middle;
-    margin-top: 0;
-    text-decoration: none;
-    
-}
+ 
 .paid-box label {
     display: block;
     float: left;

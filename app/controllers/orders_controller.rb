@@ -19,6 +19,12 @@ class OrdersController < ApplicationController
   def show
     @hk = @order.supplier
     
+    render layout: "content"
+  end
+  
+  def show_iframe
+    @hk = @order.supplier
+    
     render :layout => "none"
   end
 

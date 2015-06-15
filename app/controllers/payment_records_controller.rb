@@ -39,7 +39,7 @@ class PaymentRecordsController < ApplicationController
     
     
     
-    render :layout => "none"
+    render :layout => "content"
   end
   
   def download_pdf

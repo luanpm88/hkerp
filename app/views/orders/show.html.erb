@@ -1,28 +1,26 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
-<%= stylesheet_link_tag "print_html.css?v=3" %>
+<%= stylesheet_link_tag "print_html.css?v=4" %>
 
 <div class="show_order_page">
-	  <div class="order_histories" style="float: right">
-		<%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-		<%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" if can? :print_order, @order %>
-	  </div>
-	  
-	  <div class="order_histories" style="float: left; max-width: 640px">
-		<% @order.order_history_lines.each do |line_order| %>
-		  <% if @order.id == line_order.id %>
-			<%= link_to line_order.created_at.strftime("%d/%m/%Y %H:%M:%S"), line_order, :class => "btn btn-success btn-xs btn-mini fancybox.iframe show_order" %>
-		  <% else %>
-			<%= link_to line_order.created_at.strftime("%d/%m/%Y %H:%M:%S"), line_order, :class => "btn btn-white btn-xs btn-mini fancybox.iframe show_order" %>
-		  <% end %>
-		<% end %>
+	  <div style="margin-bottom: 5px;display: inline-block; width: 100%">
+			<div class="order_histories" style="float: right">
+			  <%= render_order_actions(@order, "big") %>
+			</div>
+			
+			<div class="order_histories" style="float: left; max-width: 640px">
+			  <% @order.order_history_lines.each do |line_order| %>
+				<% if @order.id == line_order.id %>
+				  <%= link_to line_order.created_at.strftime("%d/%m/%Y %H:%M:%S"), line_order, :class => "btn btn-success fancybox.iframe show_order" %>
+				<% else %>
+				  <%= link_to line_order.created_at.strftime("%d/%m/%Y %H:%M:%S"), line_order, :class => "btn btn-white fancybox.iframe show_order" %>
+				<% end %>
+			  <% end %>
+			</div>
 	  </div>
 	  <br style="clear: both" />
 	  <%= render 'show' %>
-	  <div class="order_histories" style="float: right;margin: 10px 0 0 0">
-		<%= link_to 'Create PDF', download_pdf_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" %>
-		<%= link_to 'Print Order', print_order_orders_path(:id => @order.id), :class => "btn btn-info btn-xs btn-mini", :target => "_blank" if can? :print_order, @order %>
-	  </div>
+	  
 </div>
 	  <br style="clear: both" />
 	  

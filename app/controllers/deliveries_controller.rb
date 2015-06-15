@@ -33,7 +33,7 @@ class DeliveriesController < ApplicationController
     @order = @delivery.order
     
     @hk = @order.supplier
-    render :layout => nil
+    render :layout => "content"
   end
   
   def download_pdf
