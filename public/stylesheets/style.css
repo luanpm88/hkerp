@@ -8038,3 +8038,7 @@ tr.block_commission_header h3 {
 .color-white {
     color: #fff;
 }
+.round-ava {
+    border-radius: 40px;
+    border: solid 5px #fff;
+}

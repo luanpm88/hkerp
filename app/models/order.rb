@@ -657,7 +657,7 @@ class Order < ActiveRecord::Base
       end
       
       if !item.is_purchase
-        staff_col = link_helper.link_to(item.salesperson_name, {controller: "users", action: "show", id: item.salesperson.id}, class: "fancybox.ajax fancybox_link")
+        staff_col = link_helper.link_to("<img class=\"round-ava\" src=\"#{item.salesperson.avatar(:square)}\" width=\"40\" />".html_safe, {controller: "users", action: "show", id: item.salesperson.id}, title: item.salesperson_name, class: "fancybox.ajax fancybox_link")
       else
         staff_col = link_helper.link_to(item.purchaser_name, {controller: "users", action: "show", id: item.purchaser.id}, class: "fancybox.ajax fancybox_link")
       end
