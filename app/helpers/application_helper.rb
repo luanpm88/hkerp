@@ -21,7 +21,7 @@ module ApplicationHelper
   
   def render_order_actions(item, size=nil)
 	  actions = '<div class="text-right"><div class="btn-group actions">
-                    <button rel="'+item.id.to_s+'" class="not_loaded order-actions-button btn btn-'+(!size.nil? ? size : "mini")+' btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
+                    <button rel="'+item.id.to_s+'" class="not_loaded order-actions-button btn btn-'+(!size.nil? ? size : "mini")+' btn-white dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu order-actions-'+item.id.to_s+'">'
       actions += '<li class="loading"><a href="#">loading...</a></li>'        
       actions += '</ul></div></div>'
