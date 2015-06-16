@@ -22,7 +22,11 @@
                        <div class="grid-body no-border">
                         
                                           <%= form_tag do |f| %>
-                                          
+												
+												<% if params[:tab_page] %>
+													<%= hidden_field_tag "tab_page", 1 %>
+												<% end %>
+									
 													   <div class="form-group">
                                                             <div class="input-with-icon  right">                                       
                                                                     <i class=""></i>
