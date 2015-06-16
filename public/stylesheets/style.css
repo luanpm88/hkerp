@@ -8011,9 +8011,9 @@ tr.block_commission_header h3 {
 .main-content-frame .fancybox-skin {
     background: #fff;
 }
-.main-content-frame .fancybox-wrap {
+/*.main-content-frame .fancybox-wrap {
     top: 20px !important;
-}
+}*/
 .main-content-frame .fancybox-inner .row_no_margin {
     margin: 1px 11px !important;
 }
