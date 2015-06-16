@@ -613,17 +613,19 @@ class Order < ActiveRecord::Base
     else
       if params[:purchase]
         @items = self.purchase_orders
+        if !user.can?(:view_all_sales_orders, Order)
+          @items = @items.where("purchaser_id=?",user.id)
+        end
       else
         @items = self.customer_orders
+        if !user.can?(:view_all_sales_orders, Order)
+          @items = @items.where("salesperson_id=?",user.id)
+        end
       end
       
       if params["order_status"].present? && params["order_status"] == "waiting" && params["search"]["value"].empty?
         @items = @items.where(order_status_name: [nil, "new", "items_confirmed", "price_confirmed"])
-      end
-      
-      if !user.can?(:view_all_sales_orders, Order)
-        @items = @items.where("salesperson_id=? OR purchaser_id=?",user.id,user.id)
-      end
+      end     
     end
     
     @items = @items.joins(:order_status)
