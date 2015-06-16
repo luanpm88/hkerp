@@ -144,8 +144,8 @@ class Product < ActiveRecord::Base
     
     
     where = "true"    
-    where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present?
-    where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present?
+    where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? && !params["search"]["value"].present?
+    where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present? && !params["search"]["value"].present?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
     @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?    
