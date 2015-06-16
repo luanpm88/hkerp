@@ -30,7 +30,9 @@
                     
 
                   <%= form_for(@checkinout_request) do |f| %>
-                           
+                         <% if params[:tab_page] %>
+							  <%= hidden_field_tag "tab_page", 1 %>
+						  <% end %>
                       <div class="form-group">
                         <label class="form-label">User</label>
                         <span class="help"></span>
