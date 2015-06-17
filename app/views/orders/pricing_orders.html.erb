@@ -61,7 +61,7 @@
                                                 <%= order.order_details.count %>
                                           </td>
                                           <td class="text-center">
-											<%= link_to("<img class=\"round-ava\" src=\"#{order.salesperson.avatar(:square)}\" width=\"40\" />".html_safe, {controller: "users", action: "show", id: order.salesperson.id}, title: order.salesperson_name, class: "fancybox.ajax fancybox_link") %>
+											<%= link_to("<img class=\"round-ava\" src=\"#{order.salesperson.avatar(:square)}\" width=\"40\" /><br /><span class=\"user-name\" />#{order.salesperson.short_name}</span>".html_safe, {controller: "users", action: "show", id: order.salesperson.id}, title: order.salesperson_name, class: "fancybox.ajax fancybox_link") %>
                                           </td>
                                           <td class="text-center">
                                                 <%= order.order_date_formatted %>

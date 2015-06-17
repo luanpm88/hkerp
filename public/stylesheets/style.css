@@ -8040,5 +8040,14 @@ tr.block_commission_header h3 {
 }
 .round-ava {
     border-radius: 40px;
-    border: solid 5px #fff;
+    border: solid 2px #fff;
+}
+.user-name {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #e5e9ec;
+    border-radius: 10px;
+    color: #333;
+    font-size: 11px;
+    padding: 0 5px;
+    white-space: nowrap;
 }

@@ -43,6 +43,14 @@ class User < ActiveRecord::Base
     end
   end
   
+  def short_name
+    if !first_name.nil?
+      first_name + " " + last_name.split(" ").first
+    else
+      email.gsub(/@(.+)/,'')
+    end
+  end
+  
   def add_role(role)
     if self.has_role?(role.name)
       return false

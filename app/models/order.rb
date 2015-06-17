@@ -657,9 +657,9 @@ class Order < ActiveRecord::Base
       end
       
       if !item.is_purchase
-        staff_col = link_helper.link_to("<img class=\"round-ava\" src=\"#{item.salesperson.avatar(:square)}\" width=\"40\" />".html_safe, {controller: "users", action: "show", id: item.salesperson.id}, title: item.salesperson_name, class: "fancybox.ajax fancybox_link")
+        staff_col = link_helper.link_to("<img class=\"round-ava\" src=\"#{item.salesperson.avatar(:square)}\" width=\"40\" /><br /><span class=\"user-name\" />#{item.salesperson.short_name}</span>".html_safe, {controller: "users", action: "show", id: item.salesperson.id}, title: item.salesperson_name, class: "fancybox.ajax fancybox_link")
       else
-        staff_col = link_helper.link_to("<img class=\"round-ava\" src=\"#{item.purchaser.avatar(:square)}\" width=\"40\" />".html_safe, {controller: "users", action: "show", id: item.purchaser.id}, title: item.purchaser_name, class: "fancybox.ajax fancybox_link")
+        staff_col = link_helper.link_to("<img class=\"round-ava\" src=\"#{item.purchaser.avatar(:square)}\" width=\"40\" /><br /><span class=\"user-name\" />#{item.purchaser.short_name}</span>".html_safe, {controller: "users", action: "show", id: item.purchaser.id}, title: item.purchaser_name, class: "fancybox.ajax fancybox_link")
       end
       
       
