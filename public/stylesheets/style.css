@@ -7976,7 +7976,7 @@ tr.block_commission_header h3 {
 }
 .main-content-frame {
     background: #fff;
-    padding: 15px !important;
+    padding: 26px !important;
 }
 #main-tab li .but {
     cursor: pointer;
@@ -8031,16 +8031,16 @@ tr.block_commission_header h3 {
     padding: 0 !important;
 }
 .page-content .content {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 70px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 65px;
 }
 .color-white {
     color: #fff;
 }
 .round-ava {
     border-radius: 40px;
-    border: solid 2px #fff;
+    border: solid 1px #fff;
 }
 .user-name {
     background: #fff none repeat scroll 0 0;
@@ -8050,4 +8050,8 @@ tr.block_commission_header h3 {
     font-size: 11px;
     padding: 0 5px;
     white-space: nowrap;
+}
+.avatar-big {
+    border: 2px solid #fff;
+    border-radius: 50px;
 }

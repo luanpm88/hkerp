@@ -30,7 +30,7 @@
 <!-- END CORE CSS FRAMEWORK -->
 
 <!-- BEGIN CSS TEMPLATE -->
-<%= stylesheet_link_tag "style.css?v=15" %>
+<%= stylesheet_link_tag "style.css?v=16" %>
 <%= stylesheet_link_tag "responsive.css" %>
 <%= stylesheet_link_tag "custom-icon-set.css" %>
 <!-- END CSS TEMPLATE -->
@@ -189,7 +189,7 @@
 						<div class="username">
 						    <span class="badge badge-important notification_count"></span> 
 							Logged in as <span class="bold">
-							<%= current_user.name %>
+							<%= current_user.short_name %>
 						      </span>
 						</div>						
 					</div> 
@@ -291,8 +291,8 @@
 		<img src="<%= current_user.avatar(:square) %>"  alt="" data-src="<%= current_user.avatar(:square) %>" data-src-retina="<%= current_user.avatar(:square2x) %>" width="69" height="69" />
 	</div>
     <div class="user-info">
-      <div class="greeting">Welcome</div>
-      <div class="username"><%= current_user.first_name %> <span class="semi-bold"><%= current_user.last_name %></span></div>
+      <div class="greeting" style="font-weight: normal">Welcome</div>
+      <div class="username"><span class="semi-bold"><%= current_user.short_name %></span></div>
       <div class="status">Status<a href="#"><div class="status-icon green"></div>Online</a></div>
     </div>
    </div>
