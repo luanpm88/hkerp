@@ -8055,3 +8055,11 @@ tr.block_commission_header h3 {
     border: 2px solid #fff;
     border-radius: 50px;
 }
+.grid.simple .form-actions{
+	margin-right:-15px !important;
+	margin-left:-15px !important;
+    margin-bottom: 0 !important;
+}
+.tab-content {
+    margin-bottom: 0;
+}
