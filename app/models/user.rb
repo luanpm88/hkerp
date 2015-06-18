@@ -234,29 +234,12 @@ class User < ActiveRecord::Base
     #Order details, sales and purchases
     s_orders = sales_orders.where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
-    
-    s_orders.each do |o|
-      if o.parent.nil?
-        action = "Created"
-      else
-        action = "Updated"
-      end
-      
-      next_order = ""
-      if !o.next_order.nil?
-        next_order = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
-      end
-      
-      
-      line = {user: self, date: o.created_at, note: "#{action} sales order for [#{o.customer.name}]; status: [<span class=\"#{o.order_status_name}\">#{o.order_status_name}</span>]#{next_order}", link: o.order_link, quantity: nil}
-
-      history << line
-    end
-    
     p_orders = purchase_orders.where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
     
-    p_orders.each do |o|
+    orders = s_orders + p_orders
+    
+    orders.each do |o|
       if o.parent.nil?
         action = "Created"
         order_link = o.first_order.order_link
@@ -265,6 +248,8 @@ class User < ActiveRecord::Base
         order_link = o.next_order.order_link
       end
       
+      order_type = o.is_purchase ? "purchase" : "sales"
+      
       current_status = "[<span class=\"#{o.first_order.order_status_name}\">#{o.first_order.order_status_name}</span>]"
       
       next_status = ""
@@ -272,7 +257,7 @@ class User < ActiveRecord::Base
         next_status = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
       end
       
-      line = {user: self, date: o.created_at, note: "#{action} purchase order to [#{o.customer.name}]; status: #{current_status}#{next_status}", link: order_link, quantity: nil}
+      line = {user: self, date: o.created_at, note: "#{action} #{order_type} order to [#{o.customer.name}]; status: #{current_status}#{next_status}", link: order_link, quantity: nil}
 
       history << line
     end
