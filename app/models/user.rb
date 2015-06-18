@@ -259,7 +259,7 @@ class User < ActiveRecord::Base
         next_status = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
       end
       
-      line = {user: self, date: o.created_at, note: "#{action} #{order_type} #{to_from} | status: #{current_status}#{next_status}", link: order_link, quantity: nil}
+      line = {user: self, date: o.created_at, note: "#{action} #{order_type} #{to_from}<br />status: #{current_status}#{next_status}", link: order_link, quantity: nil}
 
       history << line
     end
