@@ -299,7 +299,7 @@ class Order < ActiveRecord::Base
     order_details.each do |od|
       pp = od.update_price(user)
 
-      od.update_attribute(:product_price_id, pp.id) if pp.nil?
+      od.update_attribute(:product_price_id, pp.id) if !pp.nil?
     end
     
     self.set_status('confirmed',user)
