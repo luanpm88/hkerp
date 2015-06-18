@@ -250,6 +250,8 @@ class User < ActiveRecord::Base
       
       order_type = o.is_purchase ? "purchase" : "sales"
       
+      to_from = o.is_purchase ? "order to [#{o.supplier.name}]" : "order from [#{o.customer.name}]"
+      
       current_status = "[<span class=\"#{o.first_order.order_status_name}\">#{o.first_order.order_status_name}</span>]"
       
       next_status = ""
@@ -257,7 +259,7 @@ class User < ActiveRecord::Base
         next_status = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
       end
       
-      line = {user: self, date: o.created_at, note: "#{action} #{order_type} order to [#{o.customer.name}]; status: #{current_status}#{next_status}", link: order_link, quantity: nil}
+      line = {user: self, date: o.created_at, note: "#{action} #{order_type} #{to_from} | status: #{current_status}#{next_status}", link: order_link, quantity: nil}
 
       history << line
     end
