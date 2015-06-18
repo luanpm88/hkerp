@@ -232,7 +232,10 @@ module ApplicationHelper
       actions += '<ul class="dropdown-menu">'      
       
       if can? :update, item
-        actions += '<li>'+ActionController::Base.helpers.link_to('Edit', {controller: "users", action: "edit", id: item.id})+'</li>'        
+        actions += '<li>'+ActionController::Base.helpers.link_to('Edit', {controller: "users", action: "edit", id: item.id, tab_page: 1}, title: "Edit: #{item.name}", class: "tab_page")+'</li>'        
+      end
+      if can? :activity_log, item
+        actions += '<li>'+ActionController::Base.helpers.link_to('Activity Logs', {controller: "users", action: "activity_log", id: item.id, tab_page: 1}, title: "Activity Logs: #{item.name}", class: "tab_page")+'</li>'        
       end
       
       actions += '</ul></div></div>'

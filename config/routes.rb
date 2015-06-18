@@ -169,6 +169,7 @@ Hkerp::Application.routes.draw do
   resources :users do
     collection do
       get :avatar
+      get :activity_log
     end
   end
   

@@ -1174,7 +1174,7 @@ class Order < ActiveRecord::Base
     end
 
     draft.parent = self
-    draft.set_status("draft",user)
+    #draft.set_status("draft",user)
   end
   
   def all_order_payments
@@ -1496,5 +1496,31 @@ class Order < ActiveRecord::Base
   
   def update_cache_total
     self.update_attribute(:cache_total, self.total)
+  end
+  
+  def next_order
+    if self.parent.nil?
+      return nil
+    end
+    
+    orders = self.parent.drafts.order(:created_at)
+    
+    orders.each do |o|
+      if o.created_at > self.created_at
+        return o
+      end      
+    end
+    
+    return self.parent
+  end
+  
+  def first_order
+    if self.parent.nil?
+      p = self
+    else
+      p = self.parent
+    end
+    
+    return p.drafts.order("created_at DESC").empty? ? self : p.drafts.order("created_at DESC").first
   end
 end

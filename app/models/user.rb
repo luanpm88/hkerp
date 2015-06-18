@@ -25,6 +25,10 @@ class User < ActiveRecord::Base
   validates :email, :presence => true, :uniqueness => true
   
   has_many :sales_orders, :class_name => "Order", :foreign_key => "salesperson_id"
+  has_many :purchase_orders, :class_name => "Order", :foreign_key => "purchaser_id"
+  
+  has_many :deliveries, foreign_key: 'creator_id'
+  has_many :payment_records, foreign_key: 'accountant_id'
   
   def ability
     @ability ||= Ability.new(self)
@@ -217,6 +221,151 @@ class User < ActiveRecord::Base
     info += "<br />Mobile: #{mobile}" if mobile.present?
     
     return info.html_safe
+  end
+  
+  def activity_log(from_date, to_date)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    history = []
+    
+    import_icon = '<i class="icon-download-alt"></i> '.html_safe
+    export_icon = '<i class="icon-external-link"></i> '.html_safe
+    #Order details, sales and purchases
+    s_orders = sales_orders.where('orders.order_date >= ?', from_date)
+                      .where('orders.order_date <= ?', to_date)
+    
+    s_orders.each do |o|
+      if o.parent.nil?
+        action = "Created"
+      else
+        action = "Updated"
+      end
+      
+      next_order = ""
+      if !o.next_order.nil?
+        next_order = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
+      end
+      
+      
+      line = {user: self, date: o.created_at, note: "#{action} sales order for [#{o.customer.name}]; status: [<span class=\"#{o.order_status_name}\">#{o.order_status_name}</span>]#{next_order}", link: o.order_link, quantity: nil}
+
+      history << line
+    end
+    
+    p_orders = purchase_orders.where('orders.order_date >= ?', from_date)
+                      .where('orders.order_date <= ?', to_date)
+    
+    p_orders.each do |o|
+      if o.parent.nil?
+        action = "Created"
+        order_link = o.first_order.order_link
+      else
+        action = "Updated"
+        order_link = o.next_order.order_link
+      end
+      
+      current_status = "[<span class=\"#{o.first_order.order_status_name}\">#{o.first_order.order_status_name}</span>]"
+      
+      next_status = ""
+      if !o.next_order.nil?
+        next_status = " => [<span class=\"#{o.next_order.order_status_name}\">#{o.next_order.order_status_name}</span>]"
+      end
+      
+      line = {user: self, date: o.created_at, note: "#{action} purchase order to [#{o.customer.name}]; status: #{current_status}#{next_status}", link: order_link, quantity: nil}
+
+      history << line
+    end
+    
+    #Deliveries
+    ds = deliveries.where('deliveries.created_at >= ?', from_date)
+                  .where('deliveries.created_at <= ?', to_date)
+       
+    ds.each do |d|
+      quantity = d.delivery_details.count(:quantity)
+      
+      if d.order.is_purchase
+        action = "Recieved"
+        to_from = "from supplier [#{d.order.supplier.name}]"        
+        icon = import_icon
+        
+        if d.is_return == 1
+          action = "Returned"
+          to_from = "to supplier [#{d.order.supplier.name}]"        
+          icon = export_icon
+        end
+        
+      else
+        action = "Delivered"
+        to_from = "to customer [#{d.order.customer.name}]"        
+        icon = export_icon
+        
+        if d.is_return == 1
+          action = "Recieved Returned"
+          to_from = "from customer [#{d.order.supplier.name}]"        
+          icon = import_icon
+        end
+      end
+      
+      
+      line = {user: d.creator, date: d.created_at, note: "#{action} items #{to_from}", link: d.delivery_link, quantity: icon+quantity.to_s}
+      
+      history << line
+    end
+    
+    #Deliveries
+    ps = payment_records.where('payment_records.created_at >= ?', from_date)
+                  .where('payment_records.created_at <= ?', to_date)
+       
+    ps.each do |p|
+  
+      if p.type_name == "order" || p.type_name == "tip"  || p.type_name == "commission"
+        if p.order.is_purchase
+          action = "Paid #{p.type_name}"
+          to_from = "to supplier [#{p.order.supplier.name}]"        
+          icon = export_icon
+          
+          if p.amount < 0
+            action = "Recieved back #{p.type_name}"
+            to_from = "from supplier [#{p.order.supplier.name}]"        
+            icon = import_icon
+          end
+          
+        else
+          action = "Recieved #{p.type_name}"
+          to_from = "from customer [#{p.order.customer.name}]"        
+          icon = import_icon
+          
+          if p.amount < 0
+            action = "Paid back #{p.type_name}"
+            to_from = "to customer [#{p.order.customer.name}]"        
+            icon = export_icon
+          end
+        end
+      end
+      
+      if p.type_name == "custom"
+        if p.amount < 0
+          action = "Custom Paid"
+          to_from = ""        
+          icon = export_icon
+        else
+          action = "Custom Recieved"
+          to_from = ""        
+          icon = import_icon
+        end
+      end
+        
+      
+      
+      line = {user: p.accountant, date: p.created_at, note: "#{action} payment #{to_from}", link: p.payment_record_link, quantity: icon+ApplicationController.helpers.format_price(p.amount.abs)}
+      
+      history << line
+    end
+    
+    
+    
+    return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
 end

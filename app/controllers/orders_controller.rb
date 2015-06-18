@@ -203,6 +203,8 @@ class OrdersController < ApplicationController
   end
   
   def confirm_order
+    @order.save_draft(current_user)
+    
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     respond_to do |format|
       if @order.confirm_order(current_user)        
@@ -242,6 +244,7 @@ class OrdersController < ApplicationController
   end
   
   def finish_order
+    @order.save_draft(current_user)
     
     respond_to do |format|
       if @order.finish_order(current_user)
@@ -308,6 +311,8 @@ class OrdersController < ApplicationController
   end
   
   def do_update_price
+    @order.save_draft(current_user)
+    
     @order.update_attributes(purchaser_id: current_user.id)    
     
     params[:order_details].each do |line|

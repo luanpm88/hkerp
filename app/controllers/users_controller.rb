@@ -3,7 +3,7 @@ class UsersController < ApplicationController
   
   load_and_authorize_resource
   
-  before_action :set_user, only: [:avatar, :show, :edit, :update, :destroy]
+  before_action :set_user, only: [:activity_log, :avatar, :show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -38,6 +38,8 @@ class UsersController < ApplicationController
   # GET /users/1/edit
   def edit
     authorize! :manage, User
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   # POST /users
@@ -124,6 +126,20 @@ class UsersController < ApplicationController
     end
     
     render json: result[:result]
+  end
+  
+  def activity_log
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now
+    end
+    
+    @history = @user.activity_log(@from_date, @to_date)
+    
+    render layout: "content" if params[:tab_page].present?
   end
   
   private
