@@ -219,7 +219,7 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
                         "<div class=\"text-center\"><img src=\"#{product.image}\" width=\"60\" /></div>",
-                        product.user.nil? ? "" : "<div class=\"text-center\">"+link_helper.link_to("<img class=\"round-ava\" src=\"#{product.user.avatar(:square)}\" width=\"35\" /><br /><span class=\"user-name\" />#{product.user.short_name}</span>".html_safe, {controller: "users", action: "show", id: product.user.id}, title: product.user.name, class: "fancybox.ajax fancybox_link")+'</div>',
+                        product.user.nil? ? "" : "<div class=\"text-center\">"+product.user.staff_col+'</div>',
                         ''
                       ]
                 data << item

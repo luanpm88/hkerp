@@ -353,4 +353,11 @@ class User < ActiveRecord::Base
     return history.sort {|a,b| b[:date] <=> a[:date]}
   end
   
+  def staff_col
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+    
+    link_helper.link_to("<img class=\"round-ava\" src=\"#{self.avatar(:square)}\" width=\"35\" /><br /><span class=\"user-name\" />#{self.short_name}</span>".html_safe, {controller: "users", action: "show", id: self.id}, title: self.name, class: "fancybox.ajax fancybox_link")
+  end
+  
 end
