@@ -122,7 +122,7 @@ class Ability
       can :avatar, User
       
       can :update_public_price, Product do |p|
-        p.id.nil? || (p.user == user && p.product_price.user == user) || p.product_price.nil?
+        p.id.nil? || (p.user == user && p.product_price.user == user) || p.product_price.id.nil?
       end
       
       can :activity_log, User do |u|
