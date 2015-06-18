@@ -87,7 +87,8 @@ class Product < ActiveRecord::Base
                 against: [:name, :product_code],
                 associated_against: {
                   categories: :name,
-                  manufacturer: :name
+                  manufacturer: :name,
+                  user: [:first_name, :last_name]
                 },
                 using: {
                   tsearch: {
