@@ -240,9 +240,12 @@
 					<div class="iconset top-settings-dark "></div> 	
 				</a>
 				<ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
-                  <li>
-				<%= link_to 'Edit profile', edit_user_registration_path(tab_page: 1), class: "tab_page", title: "Edit Profile" %>
-		  </li>
+					<li>
+						<%= link_to 'Edit profile', edit_user_registration_path(tab_page: 1), class: "tab_page", title: "Edit Profile" %>
+					</li>
+					<li>
+						<%= link_to 'Activity Logs', activity_log_users_url(tab_page: 1), class: "tab_page", title: "Activity Logs" %>
+					</li>
                   <!--<li>		    
 					<a href="email.html"> My Inbox&nbsp;&nbsp;<span class="badge badge-important animated bounceIn">2</span></a>
                   </li>-->

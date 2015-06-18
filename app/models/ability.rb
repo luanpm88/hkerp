@@ -124,6 +124,10 @@ class Ability
       can :update_public_price, Product do |p|
         p.id.nil? || (p.user == user && p.product_price.user == user)
       end
+      
+      can :activity_log, User do |u|
+        u == user
+      end
     end  
     
     if user.has_role? "attendance_manager"
