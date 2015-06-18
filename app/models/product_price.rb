@@ -1,7 +1,9 @@
 class ProductPrice < ActiveRecord::Base
-  validates :supplier_id, presence: true
-  validates :supplier_price, presence: true
-  validates :price, presence: true
+  #validates :supplier_id, presence: true
+  #validates :supplier_price, presence: true
+  #validates :price, presence: true
+  
+  validate :not_empty_price
   
   belongs_to :product
   belongs_to :supplier, :class_name => "Contact"
@@ -10,6 +12,12 @@ class ProductPrice < ActiveRecord::Base
   belongs_to :user
   
   has_many :product_prices
+  
+  def not_empty_price
+    if price.to_f == 0.00 && supplier_price.to_f == 0.00 && supplier_id.nil?
+       errors.add(:price, "can't be empty")
+    end
+  end
   
   def price=(new_price)
     self[:price] = new_price.to_s.gsub(/[\,]/, '')

@@ -120,6 +120,10 @@ class Ability
       
       can :show, User
       can :avatar, User
+      
+      can :update_public_price, Product do |p|
+        p.id.nil? || (p.user == user && p.product_price.user == user)
+      end
     end  
     
     if user.has_role? "attendance_manager"
@@ -198,6 +202,7 @@ class Ability
       
       can :update_price, Product
       can :do_update_price, Product
+      can :update_public_price, Product
       
       can :trash, Product do |product|
         product.status == 1 && product.calculated_stock == 0

@@ -8,7 +8,7 @@ class Product < ActiveRecord::Base
   validates :categories, presence: true
   validates :manufacturer, presence: true
   
-  #validate :check_valid_serial_numbers
+  
   
   has_and_belongs_to_many :categories
   belongs_to :manufacturer
@@ -37,6 +37,7 @@ class Product < ActiveRecord::Base
   accepts_nested_attributes_for :product_images, :reject_if => lambda { |c| !c[:filename].present? && !c[:created_at].present? }, allow_destroy: true
   
   before_save :fix_serial_numbers
+  
   
   
   def order_supplier_history(user)
@@ -325,16 +326,26 @@ class Product < ActiveRecord::Base
   end
   
   def update_price(params, user)
-    if !params[:supplier_price].present?
-      return false
-    end
+    #if !params[:supplier_price].present?
+    #  return false
+    #end
     
-    new_price = product_prices.new(price: params[:price],
+    new_price = product_prices.new(
+      price: params[:price],
       supplier_price: params[:supplier_price],
       supplier_id: params[:supplier_id],
       customer_id: params[:customer_id],
       user_id: user.id,
     )
+    
+    if !user.can? :update_public_price, self
+      new_price.price = nil
+    end
+    
+    if !user.can? :update_price, self
+      new_price.supplier_price = nil
+      new_price.supplier_id = nil
+    end
     
     # calculate public price   
     new_price.calculate_price
@@ -349,10 +360,6 @@ class Product < ActiveRecord::Base
     return p.product_price
   end
   
-  
-  
-  
-  
   def category
     categories.order("created_at DESC").first
   end
@@ -362,8 +369,28 @@ class Product < ActiveRecord::Base
   end
   
   def is_price_outdated
+    if product_price.nil?
+       return true
+    end
+    
+    if product_price.price.nil? || product_price.price.to_f == 0.00
+       return true
+    end
+    
+    if product_price.supplier_price.nil? || product_price.supplier_price.to_f == 0.00
+       return true
+    end
+    
+    if product_price.supplier_id.nil?
+       return true
+    end
+    
     # if empty stock for 30 days
-    (!product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100) || product_price.nil? || product_price.price.nil?
+    if (!product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100)
+      return true
+    end
+    
+    return false
   end
   
   def price_status
