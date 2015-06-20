@@ -45,6 +45,7 @@ class ProductPrice < ActiveRecord::Base
   
   def self.calculate_price(supplier_price)
     price = 0
+    return false if supplier_price.to_f == 0.0
     if supplier_price < 500000.00
       price = supplier_price + 50000.00
     elsif supplier_price < 1000000.00
