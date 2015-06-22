@@ -57,7 +57,7 @@ class ProductPrice < ActiveRecord::Base
   end
   
   def calculate_price
-    if self.price.to_f == 0.00 || self.supplier_price.to_f == 0.0
+    if self.price.to_f == 0.00 && self.supplier_price.to_f != 0.0
       self.price = ProductPrice.calculate_price(self.supplier_price)
     end
   end
