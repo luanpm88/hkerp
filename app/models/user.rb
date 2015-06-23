@@ -245,16 +245,18 @@ class User < ActiveRecord::Base
       if o.parent.nil?
         action = "Created"
         order_link = o.first_order.order_link
+        current_status = "[<span class=\"#{o.first_order.order_status_name}\">#{o.first_order.order_status_name}</span>]"
       else
         action = "Updated"
         order_link = o.next_order.order_link
+        current_status = "[<span class=\"#{o.order_status_name}\">#{o.order_status_name}</span>]"
       end
       
       order_type = o.is_purchase ? "purchase" : "sales"
       
       to_from = o.is_purchase ? "order to [#{o.supplier.name}]" : "order from [#{o.customer.name}]"
       
-      current_status = "[<span class=\"#{o.order_status_name}\">#{o.order_status_name}</span>]"
+      
       
       next_status = ""
       if !o.next_order.nil?
