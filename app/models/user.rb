@@ -235,11 +235,11 @@ class User < ActiveRecord::Base
     s_orders = sales_orders.where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
                       .where.not(parent_id: nil)
-    p_orders = purchase_orders.where('orders.order_date >= ?', from_date)
-                      .where('orders.order_date <= ?', to_date)
-                      .where.not(parent_id: nil)
+    #p_orders = purchase_orders.where('orders.order_date >= ?', from_date)
+    #                  .where('orders.order_date <= ?', to_date)
+    #                  .where.not(parent_id: nil)
     
-    orders = s_orders + p_orders
+    orders = s_orders # + p_orders
     
     orders.each do |o|
       if o.parent.nil?
