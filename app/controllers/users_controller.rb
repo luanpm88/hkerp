@@ -107,7 +107,7 @@ class UsersController < ApplicationController
   def delete_backup
     `rm #{"backup/"+params[:filename].gsub("backup/","")}`
     respond_to do |format|
-      format.html { redirect_to backup_users_path }
+      format.html { redirect_to backup_users_path(tab_page: params[:tab_page]) }
       format.json { head :no_content }
     end
   end

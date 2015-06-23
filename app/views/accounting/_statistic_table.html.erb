@@ -45,7 +45,8 @@
 														<strong class="finished"><%= order.printed_order_number %></strong>
 													<br />
 														(<%= order.order_date_formatted %>)
-														<br /><%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>
+														<br />
+														<%= order.order_link %>														
 														<br /><br />
 														<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
 														<br /><br />
@@ -128,18 +129,18 @@
 											<%= render_order_actions(order) %>
 										</div>
 										
-										Deliveries:
-										<% order.all_deliveries.each do |d| %>
-
-												&nbsp;&nbsp;&nbsp;<%= link_to '<i class="icon-print"></i> '.html_safe+d.created_at.strftime("%Y-%m-%d"), {controller: "deliveries", action: "show", id: d.id, :export_ticket => true}, :class => 'fancybox.iframe ajax_iframe' %>
-
-										<% end %>
-									<br />
-										Recepts:
-										<% order.all_order_payments.each do |recept| %>
-											&nbsp;&nbsp;&nbsp;<%= link_to("<i class=\"icon-print\"></i> ".html_safe+recept.created_at.strftime("%Y-%m-%d"), recept, :class => 'fancybox.iframe ajax_iframe') %>											
-										<% end %>
-										
+										<div>
+											<% order.all_deliveries.each do |d| %>
+	
+													<%= d.delivery_link %>&nbsp;&nbsp;&nbsp;
+	
+											<% end %>
+										</div>
+										<div>
+											<% order.all_order_payments.each do |recept| %>
+													<%= recept.payment_record_link %>&nbsp;&nbsp;&nbsp;
+											<% end %>
+										</div>
 										
 									</td>
 								</tr>

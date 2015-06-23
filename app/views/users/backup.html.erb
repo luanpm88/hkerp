@@ -84,7 +84,7 @@
                                         backing up...
                                       <% else %>
                                         <%= link_to 'Download', "/admin/users/download_backup?filename="+filename, :class => "btn btn-primary btn-xs btn-mini" %>
-                                        <%= link_to 'Delete', "/admin/users/delete_backup?filename="+filename, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+                                        <%= link_to 'Delete', "/admin/users/delete_backup?filename="+filename+"&tab_page=1", data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
                                       <% end %>                                      
                                     </td>
                                   </tr>

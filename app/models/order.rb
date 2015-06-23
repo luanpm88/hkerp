@@ -1269,11 +1269,13 @@ class Order < ActiveRecord::Base
     self[:tip_amount] = new_price.to_s.gsub(/\,/, '')
   end
   
-  def order_link
+  def order_link(text=nil)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    link = link_helper.link_to(self.quotation_code, {controller: "orders", action: "show", id: self.id, tab_page: 1}, title: "Order [#{quotation_code}]", class: "tab_page")
+    text = text.nil? ? self.quotation_code : text
+    
+    link = link_helper.link_to(text, {controller: "orders", action: "show", id: self.id, tab_page: 1}, title: "Order [#{quotation_code}]", class: "tab_page")
     
     return link.html_safe
   end

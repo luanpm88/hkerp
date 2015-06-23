@@ -162,7 +162,7 @@
 																								<td rowspan="<%= count %>" class="text-center">
 																								<strong class=""><%= order.order_date_formatted %></strong>
 			
-																									(<%= link_to order.quotation_code, order, class: "fancybox.iframe show_order" %>)
+																									(<%= order.order_link %>)
 																									<br />
 																									<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
 																									<br />
