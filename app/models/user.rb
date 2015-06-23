@@ -234,8 +234,10 @@ class User < ActiveRecord::Base
     #Order details, sales and purchases
     s_orders = sales_orders.where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
+                      .where("parent_id IS NOT NULL")
     p_orders = purchase_orders.where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
+                      .where("parent_id IS NOT NULL")
     
     orders = s_orders + p_orders
     
