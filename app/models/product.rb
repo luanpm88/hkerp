@@ -632,7 +632,7 @@ class Product < ActiveRecord::Base
               .joins(:delivery)
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(deliveries: {status: 1})
-              .where(orders: {order_status_id: statuses.map(&:id)})
+              .where(orders: {order_status_id: statuses.map(&:id), parent_id: nil})
               .where('orders.order_date >= ?', from_date)
               .where('orders.order_date <= ?', to_date)
     
