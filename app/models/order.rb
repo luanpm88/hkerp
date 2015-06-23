@@ -1523,6 +1523,6 @@ class Order < ActiveRecord::Base
       p = self.parent
     end
     
-    return p.drafts.order("created_at DESC").empty? ? self : p.drafts.order("created_at DESC").first
+    return p.drafts.order("created_at DESC").empty? ? self : p.drafts.order("created_at").first
   end
 end
