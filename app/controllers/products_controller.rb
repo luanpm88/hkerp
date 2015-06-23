@@ -44,7 +44,7 @@ class ProductsController < ApplicationController
         actions += '<li>'+view_context.link_to("De-combine Parts", {controller: "combinations", action: "new", product_id: item.id, combined: false, tab_page: 1}, psrc: products_url(tab_page: 1), title: "De-Combine Parts: #{item.display_name}", class: "tab_page")+'</li>'
       end
       if can? :product_log, item
-        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Product Logs".html_safe, {controller: "products", action: "product_log", id: item.id, tab_page: 1}, title: "Product Logs", target: "_blank", class: "tab_page")+'</li>'
+        actions += '<li>'+view_context.link_to("<i class=\"icon-time\"></i> Product Logs".html_safe, {controller: "products", action: "product_log", id: item.id, tab_page: 1}, title: "Product Logs #{item.display_name}", target: "_blank", class: "tab_page")+'</li>'
       end
       if can? :ajax_product_prices, item
         actions += '<li>'+item.price_history_link(false)+'</li>'
