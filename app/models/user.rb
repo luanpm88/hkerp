@@ -254,7 +254,7 @@ class User < ActiveRecord::Base
       
       to_from = o.is_purchase ? "order to [#{o.supplier.name}]" : "order from [#{o.customer.name}]"
       
-      current_status = "[<span class=\"#{o.first_order.order_status_name}\">#{o.first_order.order_status_name}</span>]"
+      current_status = "[<span class=\"#{o.order_status_name}\">#{o.order_status_name}</span>]"
       
       next_status = ""
       if !o.next_order.nil?
