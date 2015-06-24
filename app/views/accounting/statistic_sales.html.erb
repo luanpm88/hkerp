@@ -83,7 +83,7 @@
 										<div class="">
 											<div class="input-with-icon  right">                                       
 											<i class=""></i>
-											<input style="width:100%;margin-bottom: 5px;" name="tip_contact_id" url="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @tip_contact.id if !@tip_contact.nil? %>" text="<%= @tip_contact.name if !@tip_contact.nil? %>" data-placeholder="All"/>
+											<input style="width:100%;margin-bottom: 5px;" name="tip_contact_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @tip_contact.id if !@tip_contact.nil? %>" text="<%= @tip_contact.name if !@tip_contact.nil? %>" data-placeholder="All"/>
 											</div>
 										</div>
 									</div>
