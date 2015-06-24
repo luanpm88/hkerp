@@ -216,7 +216,7 @@
 		
 		var tip_amount = parseFloat(tip_amount_box.val().replace(/,/g,""))
 		var total = parseFloat($('.total_not_vat_val').html().replace(/,/g,""))
-		
+		//alert(total)
 		$('.line_tip').each(function() {
 			var da_box = $(this).find('.line_tip_amount');
 			var total_box = $(this).parent().find('.total');
