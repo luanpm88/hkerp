@@ -564,11 +564,16 @@ class Order < ActiveRecord::Base
     
     if !params["order"].nil? && !params["order"]["0"].nil?
       case params[:page]
-      when "delivery"      
-
+      when "accounting"      
+        case params["order"]["0"]["column"]
+        when "0"
+          order_by = "orders.printed_order_number"
+        end
         
       else
         case params["order"]["0"]["column"]
+        when "0"
+          order_by = "orders.printed_order_number"
         when "4"
           order_by = "orders.debt_date"
         else
@@ -582,6 +587,11 @@ class Order < ActiveRecord::Base
     else
         order_by = "orders.created_at DESC"
     end
+    
+    if params[:order_by].present?
+      order_by = "orders."+params[:order_by]+" "+params[:order_by_cend]
+    end
+    
     
     where = {}    
     where[:customer_id] = params["customer_id"] if params["customer_id"].present?

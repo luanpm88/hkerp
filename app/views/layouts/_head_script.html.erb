@@ -380,9 +380,11 @@
 					d.year = $('#filter_date_1i').val();
 					d.month = $('#filter_date_2i').val();
 					d.day = $('#filter_date_3i').val();
+					d.order_by = $('select[name="order_by"]').val();
+					d.order_by_cend = $('select[name="order_by_cend"]').val();
 				}
 			},
-			"columnDefs": [ { "targets": [0,1,2,3,4,5,6,7], "orderable": false } ],
+			"columnDefs": [ { "targets": [1,2,3,4,5,6,7], "orderable": false } ],
 			"order": [],
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10			
