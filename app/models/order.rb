@@ -1283,7 +1283,7 @@ class Order < ActiveRecord::Base
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    text = text.nil? ? self.quotation_code : text
+    text = text.nil? ? "<i class=\"icon-file-text-alt\"></i> ".html_safe+self.quotation_code : text
     
     link = link_helper.link_to(text, {controller: "orders", action: "show", id: self.id, tab_page: 1}, title: "Order [#{quotation_code}]", class: "tab_page")
     

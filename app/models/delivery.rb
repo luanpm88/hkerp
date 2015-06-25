@@ -152,4 +152,6 @@ class Delivery < ActiveRecord::Base
     self.update_attribute("status", 0)
   end
   
+  
+  
 end

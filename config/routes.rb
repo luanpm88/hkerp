@@ -225,6 +225,8 @@ Hkerp::Application.routes.draw do
       get :ajax_product_prices
       
       get :product_log
+      
+      get :warranty_check
     end
   end
   

@@ -793,6 +793,35 @@ class Product < ActiveRecord::Base
     end
     
   end
-
+  
+  def self.find_by_serial_number(serial_number)
+    products = Product.joins(:delivery_details => :delivery)
+                      .where(deliveries: {status: 1})
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+  end
+  
+  def find_deliveries_by_serial_number(serial_number)
+    deliveries = Delivery.joins(:delivery_details)
+                      .where(status: 1)
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+  end
+  
+  def find_serial_numbers_by_serial_number(serial_number)
+    dds = DeliveryDetail.joins(:delivery)
+                      .where(deliveries: {status: 1})
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+    
+    ss = []
+    dds.each do |dd|
+      sa = Product.extract_serial_numbers(dd.serial_numbers)
+      sa.each do |s|
+        if s.downcase.include? serial_number.downcase.strip
+          ss << s
+        end        
+      end
+    end
+    
+    return ss
+  end
   
 end
