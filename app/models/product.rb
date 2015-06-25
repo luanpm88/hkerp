@@ -84,7 +84,7 @@ class Product < ActiveRecord::Base
   #end
   
   pg_search_scope :search,
-                against: [:name, :product_code],
+                against: [:name, :product_code, :description],
                 associated_against: {
                   categories: :name,
                   manufacturer: :name,
@@ -169,7 +169,7 @@ class Product < ActiveRecord::Base
                 
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
-                col_2 = product.name+" "+product.product_code+"<br />"+product.product_log_link
+                col_2 = product.name+" "+product.product_code+"<br />"+product.product_log_link+"<div>"+product.description+"</div>"
                 col_3 = product.statistic_stock(from_date).to_s
                 
                 ic = product.import_count(from_date, to_date)
@@ -213,7 +213,7 @@ class Product < ActiveRecord::Base
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+'</div>',
+                        "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+"<div>"+product.description+"</div>"+'</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
