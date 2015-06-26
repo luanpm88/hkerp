@@ -798,6 +798,7 @@ class Product < ActiveRecord::Base
     products = Product.joins(:delivery_details => :delivery)
                       .where(deliveries: {status: 1})
                       .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
   end
   
   def find_deliveries_by_serial_number(serial_number)
@@ -805,12 +806,14 @@ class Product < ActiveRecord::Base
                       .where(status: 1)
                       .where(delivery_details: {product_id: self.id})
                       .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
   end
   
   def find_serial_numbers_by_serial_number(serial_number)
     dds = delivery_details.joins(:delivery)
                       .where(deliveries: {status: 1})
                       .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
     
     ss = []
     dds.each do |dd|
