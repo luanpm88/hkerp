@@ -90,9 +90,11 @@
             <td><%= @count %></td>
             <td>
               <% if !order_detail.product.product_image.nil? %>
-                <img src="<%= params[:action] == "download_pdf" ? "file://"+order_detail.product.product_image.image_path(:thumb) : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+                <a class="fancybox_image" href="<%= order_detail.product.image %>.png">
+                  <img src="<%= params[:action] == "download_pdf" ? "file://"+order_detail.product.product_image.image_path(:thumb) : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+                </a>
               <% else %>
-                <img src="<%= params[:action] == "download_pdf" ? "file://"+Rails.root.to_s+"/public/img/photo.png" : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+                  <img src="<%= params[:action] == "download_pdf" ? "file://"+Rails.root.to_s+"/public/img/photo.png" : order_detail.product.image(:thumb) %>" width="70" valign="top" />
               <% end %>
             </td>
             <td style="text-align: left;">

@@ -218,7 +218,7 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
-                        "<div class=\"text-center\"><img src=\"#{product.image(:thumb)}\" width=\"60\" /></div>",
+                        "<div class=\"text-center\"><a class=\"fancybox_image\" href=\"#{product.image}.png\"><img src=\"#{product.image(:thumb)}\" width=\"60\" /></a></div>",
                         product.user.nil? ? "" : "<div class=\"text-center\">"+product.user.staff_col+'</div>',
                         ''
                       ]
