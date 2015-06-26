@@ -66,7 +66,7 @@
 <table class="list" cellspacing="0">
   <tr>
     <th>STT<br />No.</th>
-    <th width="55%" style="max-width: 50%;">Mô tả<br />Description</th>
+    <th width="55%" style="max-width: 50%;" colspan="2">Mô tả<br />Description</th>
     <th>Bảo hành<br />Warranty<br />(Đơn vị)</th>
     <th>Số lượng<br />Quantity<br />(Đơn vị)</th>
     <th>Đơn giá<br />Unit Price<br />VNĐ</th>
@@ -75,7 +75,7 @@
   </tr>
   <tr class="num_note">
     <td>(1)</td>
-    <td width="30%">(2)</td>
+    <td width="30%" colspan="2">(2)</td>
     <td>(3)</td>
     <td>(4)</td>
     <td>(5)</td>
@@ -88,7 +88,15 @@
         <% @count = @count + 1 if order_detail.quantity > 0 %>
           <tr class="quantity-<%= order_detail.quantity %>">
             <td><%= @count %></td>
+            <td>
+              <% if !order_detail.product.product_image.nil? %>
+                <img src="<%= params[:action] == "download_pdf" ? "file://"+order_detail.product.product_image.image_path(:thumb) : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+              <% else %>
+                <img src="<%= params[:action] == "download_pdf" ? "file://"+Rails.root.to_s+"/public/img/photo.png" : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+              <% end %>
+            </td>
             <td style="text-align: left;">
+              
               <%= order_detail.product_name %><br />
               <%= order_detail.product_description %>
             </td>
@@ -102,21 +110,21 @@
     <% end %>
   
   <tr>
-    <td colspan="5" style="text-align: right">Cộng tiền hàng</td>
+    <td colspan="6" style="text-align: right">Cộng tiền hàng</td>
     <td style="text-align: right"><%= format_price(@order.total, true, true) %></td>
 
   </tr>
   
   <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
     <tr>
-      <td colspan="5" style="text-align: right">Giảm giá</td>
+      <td colspan="6" style="text-align: right">Giảm giá</td>
       <td style="text-align: right"><%= format_price(@order.discount_amount, true, true) %></td>
   
     </tr>
   <% end %>
   
   <tr>
-    <td colspan="5" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
+    <td colspan="6" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
     <td style="text-align: right"><%= format_price(@order.vat_amount, true, true) %></td>
 
   </tr>
@@ -124,7 +132,7 @@
   
 
   <tr>
-    <td colspan="5" style="text-align: right">Tổng cộng tiền thanh toán</td>
+    <td colspan="6" style="text-align: right">Tổng cộng tiền thanh toán</td>
     <td style="text-align: right"><%= format_price(@order.total_vat, true, true) %></td>
 
   </tr>

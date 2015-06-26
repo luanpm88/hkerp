@@ -258,15 +258,18 @@ class Product < ActiveRecord::Base
     return arr
   end
   
+  def product_image
+    product_images.order("display_order").first
+  end
+  
   def image(type=nil)
-    return "/img/photo.png" if product_images.empty?
+    return "/img/photo.png" if product_image.nil?
     
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
     
-    img = product_images.order("display_order").first
     
-    return link_helper.url_for(controller: "product_images", action: "image", id: img.id, :type => type)   
+    return link_helper.url_for(controller: "product_images", action: "image", id: product_image.id, :type => type)   
   end
   
   def serial_numbers_extracted
