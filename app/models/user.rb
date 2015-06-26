@@ -147,12 +147,18 @@ class User < ActiveRecord::Base
     `mkdir backup/#{dir}`
     
     backup_cmd = ""
-    backup_cmd += "pg_dump -a hkerp_production >> backup/#{dir}/data.dump && " if !params[:database].nil?
+    backup_cmd += "pg_dump -a hkerp_#{params[:environment]} >> backup/#{dir}/data.dump && " if params[:database].present? && params[:environment].present?
     backup_cmd += "cp -a uploads backup/#{dir}/ && " if !params[:file].nil?
     backup_cmd += "zip -r backup/#{dir}.zip backup/#{dir} && "
     backup_cmd += "rm -rf backup/#{dir}"
     
     `#{backup_cmd} &`
+    
+    if !File.directory?(dir)
+      `rm -rf backup/#{dir}`
+    end
+    
+    
   end
 
                 
@@ -364,6 +370,35 @@ class User < ActiveRecord::Base
     link_helper = ActionController::Base.helpers
     
     link_helper.link_to("<img class=\"round-ava\" src=\"#{self.avatar(:square)}\" width=\"35\" /><br /><span class=\"user-name\" />#{self.short_name}</span>".html_safe, {controller: "users", action: "show", id: self.id}, title: self.name, class: "fancybox.ajax fancybox_link")
+  end
+  
+  def self.restore_system(params)
+    `mkdir tmp` if !File.directory?("tmp")
+    `mkdir tmp/backup` if !File.directory?("tmp/backup")
+    
+    file_upload = params[:upload]
+    
+    # SAVE TO TMP
+    name =  file_upload['datafile'].original_filename
+    directory = "tmp/backup"
+    # create the file path
+    path = File.join(directory, name)
+    # write the file
+    File.open(path, "wb") { |f| f.write(file_upload['datafile'].read) }
+    
+    # CHECK PACKAGE
+    `rm -rf tmp/backup/backup && unzip #{path} -d tmp/backup/`
+    
+    if File.directory?("tmp/backup/backup/#{name.gsub(".zip","")}/uploads") && params[:file].present?
+      `rm -rf uploads && mkdir uploads && cp -a tmp/backup/backup/#{name.gsub(".zip","")}/uploads/. uploads/`
+    end
+    
+    if File.exist?("tmp/backup/backup/#{name.gsub(".zip","")}/data.dump") && params[:database].present? && params[:environment].present?
+      `rake mytask:drop_all_table && rake db:migrate && psql hkerp_#{params[:environment]} < tmp/backup/backup/#{name.gsub(".zip","")}/data.dump`
+    end
+    
+    `rm -rf tmp/backup/backup && rm #{path}`
+    
   end
   
 end

@@ -98,6 +98,15 @@ class UsersController < ApplicationController
     
     @files = Dir.glob("backup/*").sort{|a,b| b <=> a}
     
+    render layout: "content" if params[:tab_page].present?
+    # render layout = nil
+  end
+  
+  def restore
+    if params[:restore]
+      User.restore_system(params)
+    end
+    render layout: "content" if params[:tab_page].present?
   end
   
   def download_backup

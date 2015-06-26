@@ -158,6 +158,9 @@ Hkerp::Application.routes.draw do
         get :backup
         post :backup
         
+        get :restore
+        post :restore
+        
         get :download_backup
         get :delete_backup
         

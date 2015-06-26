@@ -35,7 +35,7 @@ Tax.create(name: "VAT 10%", rate: 10)
 Country.create(name: "Việt Nam")
 
 @HK = Contact.create(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
-                address: "178 Nguyễn Văn Lượng, Phường 17, Quận Gò Vấp, TP HCM",
+                address: "138/10 Đường số 20, P. 5, Q. Gò Vấp, TP. HCM",
                 phone: "(08) 3984 7690",
                 fax: "(08) 3984 7691",
                 hotline: "(08) 2212 9454",
@@ -45,16 +45,6 @@ Country.create(name: "Việt Nam")
                 contact_type_id: ContactType.supplier,
                 is_mine: true
               )
-
-Contact.where(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang").first.children.create(name: "Chi Nhánh: Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
-                address: "140/17/38 Lê Đức Thọ, Phường 6, Quận Gò Vấp, TP HCM",
-                phone: "(08) 3984 7690",
-                fax: "(08) 3984 7691",
-                hotline: "(08) 2212 9454",
-                tax_code: "0306146736",
-                website: "www.hoangkhang.com.vn",
-                email: "info@hoangkhang.com.vn",
-                contact_type_id: ContactType.supplier)
 
 Role.create(name: "admin")
 Role.create(name: "user")
@@ -129,6 +119,9 @@ user.destroy
 User.all.each do |user|
         user.add_role Role.where(name: "user").first
 end
+
+user = User.where(:email => "admin@hoangkhang.com.vn").first
+user.add_role Role.where(name: "admin").first
 
 OrderStatus.create(name: "draft", description: "Draft")
 OrderStatus.create(name: "new", description: "New")

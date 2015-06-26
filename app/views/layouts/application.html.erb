@@ -79,6 +79,8 @@
 <%= javascript_include_tag "jquery.number.min.js" %>
 <%= javascript_include_tag "jquery.nicefileinput.min.js" %>
 <%= javascript_include_tag "/javascripts/datatable/js/jquery.dataTables.min.js" %>
+
+
 <!-- END PAGE LEVEL PLUGINS -->
 
 <%= render "layouts/head_script" %>
@@ -130,6 +132,7 @@
 
 
 
+<%= javascript_include_tag "jquery.form.js" %>
 
 </head>
 <!-- END HEAD -->
@@ -480,6 +483,7 @@
 				<ul class="sub-menu">
 				  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path(tab_page:1), class: "tab_page" %></li>
 				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup?tab_page=1", class: "tab_page" %></li>
+				  <li<% if ["restore"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Restore', "/admin/users/restore?tab_page=1", class: "tab_page" %></li>
 				</ul>
 	    </li>
 	<% end %>
