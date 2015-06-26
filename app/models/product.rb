@@ -803,11 +803,12 @@ class Product < ActiveRecord::Base
   def find_deliveries_by_serial_number(serial_number)
     deliveries = Delivery.joins(:delivery_details)
                       .where(status: 1)
+                      .where(delivery_details: {product_id: self.id})
                       .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
   end
   
   def find_serial_numbers_by_serial_number(serial_number)
-    dds = DeliveryDetail.joins(:delivery)
+    dds = delivery_details.joins(:delivery)
                       .where(deliveries: {status: 1})
                       .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
     

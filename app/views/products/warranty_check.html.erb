@@ -68,23 +68,25 @@
                                         </thead>
                                         <% if params[:serial_number].present? %>
                                             <% @products.each do |product| %>
-                                                <td>
-                                                  <div class="main-title"><%= product.display_name %></div>
-                                                  <div>
-                                                    <%= product.description %>
-                                                  </div>
-                                                </td>
-                                                <td>
-                                                  <% product.find_serial_numbers_by_serial_number(params[:serial_number]).each do |s| %>
-                                                    <div><%= s %></div>
-                                                  <% end %>
-                                                </td>
-                                                <td>
-                                                  <% product.find_deliveries_by_serial_number(params[:serial_number]).each do |d| %>
-                                                    <div><%= d.delivery_link %> / <%= d.order.order_link %></div>
-                                                  <% end %>
-                                                </td>
-                                                <!--<td></td>-->
+												<tr>
+													<td>
+													  <div class="main-title"><%= product.display_name %></div>
+													  <div>
+														<%= product.description %>
+													  </div>
+													</td>
+													<td>
+													  <% product.find_serial_numbers_by_serial_number(params[:serial_number]).each do |s| %>
+														<div><%= s %></div>
+													  <% end %>
+													</td>
+													<td>
+													  <% product.find_deliveries_by_serial_number(params[:serial_number]).each do |d| %>
+														<div><%= d.delivery_link %> / <%= d.order.order_link %></div>
+													  <% end %>
+													</td>
+													<!--<td></td>-->
+												</tr>
                                             <% end %>
                                         <% end %>
                                     </table>
