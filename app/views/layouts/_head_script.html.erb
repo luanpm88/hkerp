@@ -951,6 +951,7 @@
 			{
 			    //alert(respone.product.id);
 			    $('.order_supplier_history').html(respone.order_supplier_history);
+				$('.order_line_product_image').html(respone.product_image);
 			    
 			    var data = respone.product;
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val(respone.display_name);
@@ -966,6 +967,7 @@
 			error: function(jqXHR, textStatus, errorThrown)
 			{
 			      $('.order_supplier_history').html("");
+				  $('.order_line_product_image').html("");
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val("");
 			    $('.ajax_outer textarea[name="order_detail[product_description]"]').html("");
 			    $('.ajax_outer input[name="order_detail[unit]"]').val("");

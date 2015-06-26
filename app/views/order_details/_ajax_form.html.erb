@@ -147,14 +147,21 @@
                          </div>
 			 
 			 <div class="col-md-5">
+					<div class="form-group">
+						 <h4 class="form-label">Product Image</h4>
+						  <span class="help"></span>
+						  <div class="order_line_product_image">
+							  
+						  </div>
+			      </div>
 			      <div class="form-group">
-				   <label class="form-label">Product Supplier History</label>
+				   <h4 class="form-label">Product Supplier History</h4>
 				   <span class="help"></span>
 				   <div class="order_supplier_history">
 					<%= @order_detail.product.order_supplier_history(current_user).html_safe if !@order_detail.product.nil? %>
 				   </div>
 			      </div>
-                              
+                    
 			      
 			 </div>                            
                             
