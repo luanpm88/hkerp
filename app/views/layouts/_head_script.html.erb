@@ -1792,7 +1792,7 @@
 		uploaderBoxes()
 		
 		//form validation
-		$('form').validate();
+		$('form').not('.custom_validate').validate();
 		
 		$(document).on("click", '.order-actions-button.not_loaded', function() {
 			loadOrderActions($(this));

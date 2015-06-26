@@ -1,0 +1,111 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Products', products_url, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>Warranty - <span class="semi-bold"> Check</span></h3>	
+                </div>
+                <div class="row">
+					<div class="col-md-12">
+						<div class="grid simple ">
+							<div class="grid-body no-border filters">
+                              <form id="warranty-check-filters-form" action="" class="custom_validate">
+                                
+                                <% if !params[:tab_page].nil? %>
+                                  <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                                <% end %>
+                                
+								<div class="row">
+									<div class="col-md-4">
+										<h4>Serial Number</h4>
+										
+										<%= text_field_tag "serial_number", params[:serial_number], class: "form-control required" %>
+										
+									</div>
+									<div class="col-md-1 pull-left">
+                                            <div class="">
+                                                <h4 style="color:#fff">...</h4>
+                                                
+                                                    <input type="submit" value="Send" class="pull-right btn btn-primary text-center" />
+                                                
+                                            </div>
+                                    </div>
+								</div>
+                              </form>
+							</div>
+						</div>
+					</div>
+				</div>
+					
+				<div class="row">
+					<div class="col-md-12">
+						
+                        <div class="grid simple" style="margin-top: 10px">
+                            <div class="grid-title no-border">
+                                <h4>Search  <span class="semi-bold">Result</span></h4>
+                                <div class="tools">
+				    
+                                    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+                                    <a href="javascript:;" class="reload"></a>
+                                    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border">
+                                 
+                                    <table class="table table-striped no-more-tables">
+                                        <thead>
+                                            <tr>                                                
+												<th width="50%">Product</th>
+												<th>Serial Number</th>
+                                                <th>Deliveries</th>
+                                                <!--<th class="text-right">Action</th>-->   
+                                            </tr>
+                                        </thead>
+                                        <% if params[:serial_number].present? %>
+                                            <% @products.each do |product| %>
+												<tr>
+													<td>
+													  <div class="main-title"><%= product.display_name %></div>
+													  <div>
+														<%= product.description %>
+													  </div>
+													</td>
+													<td>
+													  <% product.find_serial_numbers_by_serial_number(params[:serial_number]).each do |s| %>
+														<div><%= s %></div>
+													  <% end %>
+													</td>
+													<td>
+													  <% product.find_deliveries_by_serial_number(params[:serial_number]).each do |d| %>
+														<div><%= d.delivery_link %> / <%= d.order.order_link %></div>
+													  <% end %>
+													</td>
+													<!--<td></td>-->
+												</tr>
+                                            <% end %>
+                                        <% end %>
+                                    </table>
+                            </div>
+                        </div>
+			
+                    </div>
+					
+                </div>
+
+<script>
+  $(document).ready(function() {
+    $('#warranty-check-filters-form').validate({
+      rules: {
+        serial_number: {
+          required: true,
+          minlength: 4
+        }
+      }
+    });
+  });
+</script>

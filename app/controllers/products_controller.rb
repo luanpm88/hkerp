@@ -290,7 +290,13 @@ class ProductsController < ApplicationController
     render layout: "content" if params[:tab_page].present?
   end
   
-  
+  def warranty_check    
+    if params[:serial_number].present?
+      @products = Product.find_by_serial_number(params[:serial_number].strip)
+    end    
+    
+    render layout: "content" if params[:tab_page].present?
+  end
   
   private
     # Use callbacks to share common setup or constraints between actions.

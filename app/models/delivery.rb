@@ -145,11 +145,13 @@ class Delivery < ActiveRecord::Base
   def delivery_link
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
-    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: self.id, :export_ticket => true, tab_page: 1}, title: "#{(order.is_purchase ? "Purchase" : "Sales")} Delivery [#{order.quotation_code}]", :class => 'tab_page').html_safe
+    link_helper.link_to("<i class=\"icon-print\"></i>".html_safe+" Delivery ("+self.created_at.strftime("%Y-%m-%d")+")", {controller: "deliveries",action: "show", id: self.id, tab_page: 1}, title: "#{(order.is_purchase ? "Purchase" : "Sales")} Delivery [#{order.quotation_code}]", :class => 'tab_page').html_safe
   end
   
   def trash
     self.update_attribute("status", 0)
   end
+  
+  
   
 end

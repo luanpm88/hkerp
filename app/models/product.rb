@@ -213,7 +213,7 @@ class Product < ActiveRecord::Base
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\">"+product.name+" "+product.product_code+"<div>"+product.description+"</div>"+'</div>',
+                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name+" "+product.product_code+"</strong><div>"+product.description+"</div>"+'</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
@@ -793,6 +793,39 @@ class Product < ActiveRecord::Base
     end
     
   end
-
+  
+  def self.find_by_serial_number(serial_number)
+    products = Product.joins(:delivery_details => :delivery)
+                      .where(deliveries: {status: 1})
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
+  end
+  
+  def find_deliveries_by_serial_number(serial_number)
+    deliveries = Delivery.joins(:delivery_details)
+                      .where(status: 1)
+                      .where(delivery_details: {product_id: self.id})
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
+  end
+  
+  def find_serial_numbers_by_serial_number(serial_number)
+    dds = delivery_details.joins(:delivery)
+                      .where(deliveries: {status: 1})
+                      .where("LOWER(delivery_details.serial_numbers) LIKE ? ", "%#{serial_number.downcase.strip}%")
+                      .distinct
+    
+    ss = []
+    dds.each do |dd|
+      sa = Product.extract_serial_numbers(dd.serial_numbers)
+      sa.each do |s|
+        if s.downcase.include? serial_number.downcase.strip
+          ss << s
+        end        
+      end
+    end
+    
+    return ss
+  end
   
 end

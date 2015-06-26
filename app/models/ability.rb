@@ -469,6 +469,8 @@ class Ability
       can :de_combine_parts, Product do |product|
         product.calculated_stock > 0 && product.parts.count > 0
       end
+      
+      can :warranty_check, Product
     end
     
   end
