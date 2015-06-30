@@ -318,6 +318,7 @@ class Ability
       
       can :view_supplier_price, Product
       can :view_suppliers, Contact
+      can :statistic_stock, Product
     end
 
     if user.has_role? "accountant"

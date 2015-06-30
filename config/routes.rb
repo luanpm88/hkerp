@@ -240,6 +240,7 @@ Hkerp::Application.routes.draw do
       
       get :statistic_sales
       get :statistic_purchase
+      get :statistic_stock
     end
   end
 

@@ -138,7 +138,13 @@ class AccountingController < ApplicationController
     end
   end
   
-  
+  def statistic_stock
+    authorize! :statistic_stock, Product
+    
+    @statistics = Product.stock_statistic
+    
+    render layout: "content" if params[:tab_page].present?
+  end
 
   
 end

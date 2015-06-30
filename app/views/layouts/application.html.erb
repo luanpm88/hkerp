@@ -330,6 +330,10 @@
 			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>			
 		  </li>
 		  
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Stock Statistics', "accounting/statistic_stock?tab_page=1", class: "tab_page" %>			
+		  </li>
+		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
 			<%= link_to 'Sales Orders', "/accountings/orders?tab_page=1", class: "tab_page" %>			

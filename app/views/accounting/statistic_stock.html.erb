@@ -1,0 +1,56 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+                      <%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Stock - <span class="semi-bold"> Statistics</span></h3>	
+                </div>
+                
+					<div class="grid simple ">
+								<div class="grid-title no-border">
+									<h3>Supplier Price</h3>
+								</div>
+								<div class="grid-body no-border statistics-content">
+								<div class="row">
+                                    <div class="col-md-4">
+										<h4>Items Count</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:supplier_count]) %></h2>
+									</div>
+                                    <div class="col-md-4">
+										<h4>Items Count (No Price)</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:supplier_count_no_price]) %></h2>
+									</div>
+									<div class="col-md-4">
+										<h4>Total Supplier Remain</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:supplier_total]) %></h2>
+									</div>
+                                </div>
+                                <div class="grid-title no-border">
+									<h3>Public Price</h3>
+								</div>
+                                <div class="row">
+                                  
+                                    <div class="col-md-4">
+										<h4>Items Count</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:public_count]) %></h2>
+									</div>
+                                    <div class="col-md-4">
+										<h4>Items Count (No Price)</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:public_count_no_price]) %></h2>
+									</div>
+									<div class="col-md-4">
+										<h4>Total Supplier Remain</h4>
+										<h2 class="text-right"><%= format_price(@statistics[:public_total]) %></h2>
+									</div>
+									
+									
+									
+								</div>
+					</div>
+

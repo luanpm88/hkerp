@@ -38,7 +38,9 @@ class Product < ActiveRecord::Base
   
   before_save :fix_serial_numbers
   
-  
+  def self.all_products
+    self.where(status: 1)
+  end
   
   def order_supplier_history(user)
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
@@ -829,6 +831,37 @@ class Product < ActiveRecord::Base
     end
     
     return ss
+  end
+  
+  def self.stock_statistic
+    public_total = 0.00
+    public_count = 0
+    public_count_no_price = 0
+    supplier_total = 0.00
+    supplier_count = 0
+    supplier_count_no_price = 0
+    self.all_products.each do |p|
+      stock_c = p.calculated_stock
+      public_total += p.product_price.price.to_f*stock_c
+      public_count += stock_c if p.product_price.price.to_f > 0.00
+      public_count_no_price += stock_c if p.product_price.price.to_f == 0.00
+      
+      supplier_total += p.product_price.supplier_price.to_f*stock_c
+      supplier_count += stock_c if p.product_price.supplier_price.to_f > 0.00
+      supplier_count_no_price += stock_c if p.product_price.supplier_price.to_f == 0.00
+    end
+    
+    return { public_count: public_count,
+            public_total: public_total,
+            public_count_no_price: public_count_no_price,
+            
+            supplier_count: supplier_count,
+            supplier_total: supplier_total,
+            supplier_count_no_price: supplier_count_no_price
+          }
+  end
+  
+  def self.total_items_count
   end
   
 end
