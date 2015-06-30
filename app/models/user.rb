@@ -173,15 +173,15 @@ class User < ActiveRecord::Base
     if !params["order"].nil?
       case params["order"]["0"]["column"]
       when "1"
-        order = "users.first_name"
-      when "4"
-        order = "users.created_at"      
+        order = "users.first_name #{params["order"]["0"]["dir"]}, users.last_name #{params["order"]["0"]["dir"]}"
+      when "3"
+        order = "users.created_at"
       else
-        order = "users.first_name"
+        order = "users.first_name, users.last_name"
       end
-      order += " "+params["order"]["0"]["dir"]
+      order += " "+params["order"]["0"]["dir"] if params["order"]["0"]["column"] == 3
     else
-      order = "users.first_name"
+      order = "users.first_name, users.last_name"
     end
     @records = @records.order(order) if !order.nil?
     

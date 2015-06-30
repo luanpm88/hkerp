@@ -1,11 +1,10 @@
 <script>
 	function reloadTab(tid) {
-		//if ($('iframe#tab_sales_deliveries').contents().find('.dataTable').length) {
-		//	$('iframe#tab_sales_deliveries').contents().find('.dataTable').dataTable().fnFilter();
+		//if ($(".main-frame").length) {
+		//	$(".main-frame")[0].contentWindow.reloadDatatable()
 		//} else {
 			$('iframe#'+tid).attr("src",$('iframe#'+tid).attr("src"))
-		//}
-		
+		//}		
 	}
 	function closeTab(tid) {
 		//open parent		

@@ -93,6 +93,12 @@
 <!-- END CORE TEMPLATE JS --> 
 
 
+<script>
+	function reloadDatatable() {
+      $('.dataTable').dataTable().fnFilter();
+    }
+</script>
+
 
 <%= csrf_meta_tags %>
 
