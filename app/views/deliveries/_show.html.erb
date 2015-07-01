@@ -123,7 +123,7 @@
               <%= detail.order_detail.product_description %>
             </td>
             <td valign="top" style="text-align: center">
-              <% if detail.serial_numbers.present? || serial_numbers.strip != "-" %>
+              <% if detail.serial_numbers.present? || detail.serial_numbers.strip != "-" %>
                 <% detail.serial_numbers_extracted.each_with_index do |serial_number,index| %>
                       <div>
                         
@@ -132,7 +132,7 @@
                       
                       </div>
                 <% end %>
-              <% elsif detail.order_detail.order.tax.rate == 0 || serial_numbers.strip == "-" %>
+              <% elsif detail.order_detail.order.tax.rate == 0 || detail.serial_numbers.strip == "-" %>
                 -
               <% else %>
                 <% (1..detail.quantity).each do |i| %>
