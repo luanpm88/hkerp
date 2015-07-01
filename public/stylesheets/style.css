@@ -8067,9 +8067,9 @@ tr.block_commission_header h3 {
     background: #fff none repeat scroll 0 0;
     border: 1px solid #ccc;
     display: block;
-    margin: auto;
-    padding: 20px;
-    width: 310px;
+    margin: auto auto 20px;
+    padding: 40px 80px;
+    width: 100%;
 }
 .login-msg h2 {
     display: none;

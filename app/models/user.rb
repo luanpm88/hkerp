@@ -220,7 +220,7 @@ class User < ActiveRecord::Base
     roles.order("name").each do |r|
       names << "<span class=\"badge badge-info #{r.name}\">#{r.name}</span>"
     end
-    return names.join("<br />").html_safe
+    return names.join(" ").html_safe
   end
   
   def quick_info
