@@ -864,4 +864,21 @@ class Product < ActiveRecord::Base
   def self.total_items_count
   end
   
+  def self.update_all_public_prices
+    self.all.each do |p|
+      if p.product_price.supplier_price.to_f > 0.00
+        new_price = p.product_price.dup
+        new_price.price = 0.00
+        new_price.calculate_price
+        
+        if new_price.price != p.product_price.price || new_price.supplier_price != p.product_price.supplier_price || new_price.supplier_id != p.product_price.supplier_id || new_price.customer_id != p.product_price.customer_id
+          new_price.save
+        else
+          p.product_price.update_attribute("updated_at",Time.now)
+        end
+
+      end      
+    end
+  end
+  
 end

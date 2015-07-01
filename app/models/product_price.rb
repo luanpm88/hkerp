@@ -45,11 +45,11 @@ class ProductPrice < ActiveRecord::Base
   
   def self.calculate_price(supplier_price)
     price = 0
-    if supplier_price < 500000.00
+    if supplier_price < 200000.00
       price = supplier_price + 50000.00
-    elsif supplier_price < 1000000.00
-      price = supplier_price + 100000.00
-    elsif
+    #elsif supplier_price < 1000000.00
+    #  price = supplier_price + 100000.00
+    else
       price = supplier_price*1.2
     end
     
