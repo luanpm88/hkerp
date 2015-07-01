@@ -8068,8 +8068,8 @@ tr.block_commission_header h3 {
     border: 1px solid #ccc;
     display: block;
     margin: auto;
-    padding: 60px;
-    width: 100%;
+    padding: 20px;
+    width: 310px;
 }
 .login-msg h2 {
     display: none;
