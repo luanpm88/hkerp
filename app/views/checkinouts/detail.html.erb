@@ -76,7 +76,7 @@
 							
 							<% if can? :manage, Checkinout%>
 							    <% if check.id.nil? %>
-							      <a href="<%= new_checkinout_path(att_no: @user.ATT_No, check_date: check.check_date) %>" class="btn btn-primary btn-sm btn-mini" type="button">Update</a>
+							      <a href="<%= new_checkinout_path(att_no: @user.ATT_No, check_date: check.check_date, tab_page: 1) %>" class="btn btn-primary btn-sm btn-mini" type="button">Update</a>
 							    <% else %>
 							      <a href="<%= edit_checkinout_path(check) %>" class="btn btn-primary btn-sm btn-mini" type="button">Update</a>
 							      <%= link_to 'Delete', check, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-primary btn-sm btn-mini btn-danger" %>

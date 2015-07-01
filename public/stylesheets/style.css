@@ -5482,7 +5482,7 @@ ul.progress-list li  .progress{
 }
 
 .form-group .controls{
-	margin-top:8px;
+	margin-top: 0;
 }
 .form-control{
 	border:1px solid #E5E9EC;
@@ -8062,4 +8062,21 @@ tr.block_commission_header h3 {
 }
 .tab-content {
     margin-bottom: 0;
+}
+.login_logo {
+    background: #fff none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    display: block;
+    margin: auto;
+    padding: 50px;
+    width: 100%;
+}
+.login-msg h2 {
+    display: none;
+}
+.login-msg h5 li {
+    list-style: none;
+}
+.login-msg h5 ul {
+    padding: 0;
 }

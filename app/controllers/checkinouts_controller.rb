@@ -56,10 +56,10 @@ class CheckinoutsController < ApplicationController
     
     respond_to do |format|
       if @checkinout.save
-        format.html { redirect_to detail_checkinouts_url(user_id: @checkinout.user.id), notice: 'Checkinout was successfully created.' }
+        format.html { redirect_to detail_checkinouts_url(user_id: @checkinout.user.id, tab_page: params[:tab_page]), notice: 'Checkinout was successfully created.' }
         format.json { render action: 'show', status: :created, location: @checkinout }
       else
-        format.html { render action: 'new' }
+        format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @checkinout.errors, status: :unprocessable_entity }
       end
     end
@@ -78,7 +78,7 @@ class CheckinoutsController < ApplicationController
         format.html { redirect_to detail_checkinouts_url(user_id: @checkinout.user.id), notice: 'Checkinout was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: 'edit' }
+        format.html { render action: 'edit', tab_page: params[:tab_page] }
         format.json { render json: @checkinout.errors, status: :unprocessable_entity }
       end
     end
@@ -137,6 +137,8 @@ class CheckinoutsController < ApplicationController
     @checks = Checkinout.get_by_month(@user, @month, @year)
     @work_time = Checkinout.get_work_time_by_month(@user, @month, @year)
     @timezone = Time.zone
+    
+    render layout: "content" if params[:tab_page].present?
   end
 
   private
