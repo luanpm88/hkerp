@@ -132,7 +132,7 @@
                       
                       </div>
                 <% end %>
-              <% elsif detail.order_detail.order.tax.rate == 0 %>
+              <% elsif detail.order_detail.order.tax.rate == 0 || serial_number.strip == "-" %>
                 -
               <% else %>
                 <% (1..detail.quantity).each do |i| %>
