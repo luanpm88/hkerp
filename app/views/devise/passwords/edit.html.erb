@@ -1,16 +1,55 @@
-<h2>Change your password</h2>
+		
+		<div class="page-title"> <i class="icon-user"></i>
+				<h3>Change your password</h3>
+		</div>      
+      
+		<div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                
+                  
+						<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
+                          
+								<% if devise_error_messages! != "" %>
+								  <div class="alert alert-error login-msg">
+									<button data-dismiss="alert" class="close"></button>
+									<div id="error_explanation">
+									  <h5><%= devise_error_messages! %></h5>
+									</div>
+								  </div>
+								<% end %>
+								
+                                <%= f.hidden_field :reset_password_token %>
 
-<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :put }) do |f| %>
-  <%= devise_error_messages! %>
-  <%= f.hidden_field :reset_password_token %>
+                          
+                          <div class="form-group">
+                                  <label class="form-label"><%= f.label :password, "New password" %></label>
+                                  <span class="help">(required)</span>
+                                  <div class="input-with-icon  right">                                       
+                                          <i class=""></i>
+                                          <%= f.password_field :password, :autofocus => true, :class => "form-control required" %>
+                                  </div>
+                          </div>
+                          
+                          <div class="form-group">
+                                  <label class="form-label"><%= f.label :password_confirmation, "Confirm new password" %></label>
+                                  <span class="help">(required)</span>
+                                  <div class="input-with-icon  right">                                       
+                                          <i class=""></i>
+                                          <%= f.password_field :password_confirmation, :class => "form-control required" %>
+                                  </div>
+                          </div>
+                        
+                                                  
+                          <div><%= f.submit "Change my password", :class => "btn btn-primary" %></div>
+                        <% end %>
+                        <br />
+                        <%= render "devise/shared/links" %>
+				
+              </div>
+			  
+            </div>
+				
+      </div>
+      
 
-  <div><%= f.label :password, "New password" %><br />
-  <%= f.password_field :password, :autofocus => true %></div>
-
-  <div><%= f.label :password_confirmation, "Confirm new password" %><br />
-  <%= f.password_field :password_confirmation %></div>
-
-  <div><%= f.submit "Change my password" %></div>
-<% end %>
-
-<%= render "devise/shared/links" %>
