@@ -97,6 +97,7 @@
 																<option value="">All</option>
 																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "not_paid" %> value="not_paid">Not Paid</option>
 																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "paid" %> value="paid">Paid</option>
+																<option <%= 'selected="selected"' if params[:paid_status].present? && params[:paid_status] == "out_of_date" %> value="out_of_date">Out Of Date</option>
 															</select>
 														</div>
 													</div>

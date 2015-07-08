@@ -410,6 +410,9 @@ class Order < ActiveRecord::Base
     if params[:paid_status].present? && params[:paid_status] == "not_paid"
       sell_orders = sell_orders.where("payment_status_name != 'paid'")
     end
+    if params[:paid_status].present? && params[:paid_status] == "out_of_date"
+      sell_orders = sell_orders.where(payment_status_name: 'out_of_date')
+    end
                   
         
     sell_orders.each do |order|
