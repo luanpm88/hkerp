@@ -46,7 +46,10 @@
 
 														<% if @supplier.nil? && @customer.nil? %>
 															<%= order.is_purchase ? order.supplier.name : order.customer.name %>
+															<br />
 														<% end %>
+														
+														<%= order.customer_po %>
 														
 													</td>
 													
