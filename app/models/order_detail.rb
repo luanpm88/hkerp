@@ -133,7 +133,12 @@ class OrderDetail < ActiveRecord::Base
   end  
     
   def return_count
-    return delivered_count - quantity
+    if ["confirmed","finished"].include?(order.status.name)
+      return delivered_count - quantity
+    elsif ["canceled"].include?(order.status.name)
+      return delivered_count
+    end
+    
   end
   
   def out_of_stock_count

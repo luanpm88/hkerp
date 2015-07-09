@@ -217,6 +217,21 @@ class OrdersController < ApplicationController
     end
   end
   
+  def cancel_order
+    @order.save_draft(current_user)
+    
+    list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
+    respond_to do |format|
+      if @order.cancel_order(current_user)        
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order was successfully confimed.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to edit_order_path(@order, tab_page: params[:tab_page]), alert: 'Order was unsuccessfully confimed. Check the order again.' }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+  
   def confirm_items
     list_path = @order.is_purchase ? purchase_orders_orders_path : orders_path
     

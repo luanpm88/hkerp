@@ -329,7 +329,7 @@ class Ability
       can :print_order_fix1, Order
       can :download_pdf, Order
       can :pay_order, Order  do |order|
-        ['finished','confirmed'].include?(order.status.name) && !order.is_paid
+        ['canceled','finished','confirmed'].include?(order.status.name) && !order.is_paid
       end
       
       can :create, PaymentRecord
@@ -417,6 +417,9 @@ class Ability
       can :confirm_items, Order do |order|
         order.id.present? && order.is_sales && ["new","price_confirmed"].include?(order.status.name)
       end
+      can :cancel_order, Order do |order|
+        order.is_sales && ['items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end 
       
       can :create, OrderDetail
       can :read, OrderDetail
@@ -453,7 +456,7 @@ class Ability
       can :create, ProductStockUpdate
       
       can :deliver, Order  do |order|
-        ['confirmed','finished'].include?(order.status.name) && !order.is_delivered?
+        ['canceled','confirmed','finished'].include?(order.status.name) && !order.is_delivered?
       end
       
       can :trash, Delivery do |d|

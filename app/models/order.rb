@@ -272,6 +272,8 @@ class Order < ActiveRecord::Base
 
     end
     
+    self.update_status_names
+    
     return status
   end
   
@@ -304,6 +306,14 @@ class Order < ActiveRecord::Base
     
     self.set_status('confirmed',user)
     Notification.send_notification(salesperson, 'order_confirmed', self)
+    
+    return true
+  end
+  
+  def cancel_order(user)
+    
+    self.set_status('canceled',user)
+    # Notification.send_notification(salesperson, 'order_canceled', self)
     
     return true
   end
@@ -524,22 +534,22 @@ class Order < ActiveRecord::Base
   
   def self.delivery_sales_orders
     Order.customer_orders
-                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
+                  .where(order_status_name: ["canceled","confirmed","finished"]) # orders confirmed
   end
   
   def self.delivery_purchase_orders
     Order.purchase_orders
-                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
+                  .where(order_status_name: ["canceled","confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_sales_orders
     Order.customer_orders
-                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
+                  .where(order_status_name: ["canceled","confirmed","finished"]) # orders confirmed
   end
   
   def self.accounting_purchase_orders
     Order.purchase_orders
-                  .where(order_status_name: ["confirmed","finished"]) # orders confirmed
+                  .where(order_status_name: ["canceled","confirmed","finished"]) # orders confirmed
   end
   
   pg_search_scope :search,
@@ -772,10 +782,7 @@ class Order < ActiveRecord::Base
     if ["confirmed","finished"].include?(status.name)      
       if is_delivered?
         status_arr << 'delivered'
-      else
-        if has_return_items
-          status_arr << 'return_back'
-        end
+      else        
         if has_delvery_items
           status_arr << 'not_delivered'
         end
@@ -786,6 +793,10 @@ class Order < ActiveRecord::Base
           status_arr << 'combinable'
         end
       end
+    end
+    
+    if has_return_items
+      status_arr << 'return_back'
     end
     
     #self.update_attributes(delivery_status_name: status_arr.join(",")) # if status_arr.join(",") != delivery_status_name
@@ -834,7 +845,13 @@ class Order < ActiveRecord::Base
   end
   
   def remain_amount
-    total_vat - paid_amount
+    if ["confirmed","finished"].include?(self.status.name)
+      total_vat - paid_amount
+    elsif ["canceled"].include?(self.status.name)
+      paid_amount
+    else
+      0
+    end    
   end
   
   def remain_tip
@@ -850,11 +867,22 @@ class Order < ActiveRecord::Base
   end
   
   def is_paid
-    total_vat == paid_amount
+    if ["confirmed","finished"].include?(self.status.name)
+      total_vat == paid_amount
+    elsif ["canceled"].include?(self.status.name)
+      return false
+    end
+    
   end
   
   def is_payback
-    paid_amount > total_vat
+    if ["confirmed","finished"].include?(self.status.name)
+      paid_amount > total_vat
+    elsif ["canceled"].include?(self.status.name)
+      paid_amount > 0
+    else
+      return false
+    end
   end
   
   
@@ -862,9 +890,7 @@ class Order < ActiveRecord::Base
     status = ""
     
     if ["confirmed","finished"].include?(self.status.name)
-      if is_payback
-        status = "pay_back"
-      elsif paid_amount == total_vat
+      if paid_amount == total_vat
         status = "paid"
       elsif !is_deposited
         status = "not_deposited"
@@ -877,13 +903,21 @@ class Order < ActiveRecord::Base
       end
     end
     
+    if is_payback
+        status = "pay_back"
+    end
+    
     #update_attributes(payment_status_name: status)
     
     return status
   end
   
   def is_debt
-    is_deposited && !debt_date.nil? && debt_date >= Time.now && paid_amount != total_vat
+    if ["confirmed","finished"].include?(status.name)
+      is_deposited && !debt_date.nil? && debt_date >= Time.now && paid_amount != total_vat
+    else
+      return false
+    end
   end
   def is_out_of_date
     is_deposited && !debt_date.nil? && debt_date < Time.now && paid_amount != total_vat
@@ -933,21 +967,46 @@ class Order < ActiveRecord::Base
   def is_delivered?
     # return items_delivered == items_total    
        
-    
-    order_details.each do |line|
-      if line.delivered_count != line.quantity
-        return false
+    if ["confirmed","finished"].include?(status.name)    
+      order_details.each do |line|
+        if line.delivered_count != line.quantity
+          return false
+        end
       end
+      
+      return true
+    else
+      return false
     end
-    
-    return true
   end
   
   def has_return_items
-    order_details.each do |line|
-      if line.delivered_count > line.quantity
-        return true
+    if ["confirmed","finished"].include?(status.name)
+      order_details.each do |line|
+        if line.delivered_count > line.quantity
+          return true
+        end
       end
+    elsif ["canceled"].include?(status.name)
+      order_details.each do |line|
+        if line.delivered_count > 0
+          return true
+        end
+      end
+    end
+    
+    return false
+  end
+  
+  def has_deliver_items
+    if ["confirmed","finished"].include?(status.name)
+      order_details.each do |line|
+        if line.delivered_count < line.quantity
+          return true
+        end
+      end
+    elsif ["canceled"].include?(status.name)
+      return false
     end
     
     return false
@@ -1306,7 +1365,7 @@ class Order < ActiveRecord::Base
     #status   
     order_statuses.each do |os|
       oso = OrderStatusesOrder.where(order_id: self.id, order_status_id: os.id).first
-      line = {user: oso.user, date: oso.created_at, note: "Status changed to [#{os.name}]", link: self.order_link, quantity: ""}
+      line = {user: oso.user, date: oso.created_at, note: "Status changed to [<span class=\"#{os.name}\">#{os.name}</span>]", link: self.order_link, quantity: ""}
       history << line
     end
     

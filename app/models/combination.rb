@@ -10,6 +10,14 @@ class Combination < ActiveRecord::Base
   
   #after_save :update_stock_after
   
+  after_save :update_order_status_names
+  
+  def update_order_status_names
+    product.orders.where(parent_id: nil).where("delivery_status_name NOT LIKE ?", '%delivered%').each do |o|
+      o.update_status_names
+    end
+  end
+  
   def prevent_save
     errors.add(:quantity, "prevent_save")
   end

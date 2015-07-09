@@ -74,8 +74,7 @@ class PaymentRecordsController < ApplicationController
       @payment_record.paid_person = @order.is_purchase ? @order.supplier.name : @order.customer.name
       @payment_record.paid_address = @order.is_purchase ? @order.supplier.full_address : @order.customer.full_address
       @payment_record.amount = @order.remain_amount
-      @payment_record.order_id = @order.id
-      
+      @payment_record.order_id = @order.id      
       
     end
     render layout: "content" if params[:tab_page].present?

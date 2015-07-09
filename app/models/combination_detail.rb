@@ -5,6 +5,14 @@ class CombinationDetail < ActiveRecord::Base
   #validate :valid_serial_numbers
   #validate :serial_numbers_remain_can_not_greater_than_stock_remain
   
+  after_save :update_order_status_names
+  
+  def update_order_status_names
+    product.orders.where(parent_id: nil).where("delivery_status_name NOT LIKE ?", '%delivered%').each do |o|
+      o.update_status_names
+    end
+  end
+  
   def valid_serial_numbers
     if Product.extract_serial_numbers(serial_numbers).count > quantity
         errors.add(:serial_numbers, "can not be greater than quantity")

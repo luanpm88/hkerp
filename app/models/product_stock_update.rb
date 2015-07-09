@@ -13,11 +13,11 @@ class ProductStockUpdate < ActiveRecord::Base
   before_validation :update_quantity
   before_validation :fix_serial_numbers  
   
-  after_save :update_delivery_status_names
+  after_save :update_order_status_names
   
-  def update_delivery_status_names
+  def update_order_status_names
     product.orders.where(parent_id: nil).where("delivery_status_name NOT LIKE ?", '%delivered%').each do |o|
-      o.update_delivery_status_name
+      o.update_status_names
     end
   end
   

@@ -77,6 +77,12 @@ module ApplicationHelper
         actions += '<li>'+ActionController::Base.helpers.link_to("Confirm Order", confirm_order_orders_path(:id => item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Confirm Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?' })+'</li>'
         group_3 += 1
       end
+      
+      if can? :cancel_order, item
+        actions += '<li>'+ActionController::Base.helpers.link_to("Cancel Order", cancel_order_orders_url(id: item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Cancel Order [#{item.quotation_code}]", data: { confirm: 'Are you sure?' })+'</li>'
+        group_3 += 1
+      end
+      
       if can? :change, item
         actions += '<li>'+ActionController::Base.helpers.link_to("Change Items", change_orders_path(:id => item.id, tab_page:1), psrc: (item.is_purchase ? purchase_orders_orders_path(tab_page:1) : orders_url(tab_page: 1)), class: "tab_page", title: "Change Items [#{item.quotation_code}]")+'</li>'
         group_3 += 1

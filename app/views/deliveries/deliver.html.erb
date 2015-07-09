@@ -49,14 +49,14 @@
 				    
 				    
 				
-				
+			<% if @order.has_return_items %>
 				<%= form_for(@delivery) do |f| %>
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
 				    <%= f.hidden_field :is_return, {value: 1} %>
 				    <% if !params[:tab_page].nil? %>
                             <%= hidden_field_tag "tab_page", params[:tab_page] %>
                      <% end %>
-				    <% if @order.has_return_items %>
+				    
 				    
 					    <h2>Return Items</h2>
 												<div class="form-group">
@@ -108,7 +108,7 @@
 									</td>
 									
 									<td class="text-center">
-									<% if line.delivered_count > line.quantity %>
+									<% if line.return_count > 0 %>
 										<%= select_tag "delivery_lines[#{line.id}][quantity]", options_for_select((-line.return_count).upto(0)), class: "form-control text-center select2" %>
 									<% end %>
 									</td>
@@ -138,9 +138,10 @@
 							<input name="save" type="submit" class="btn btn-primary btn-cons" value="Confirm" />
 							<%= link_to 'Cancel', deliveries_path, :class => "btn btn-white btn-cons cancel-but" %>
 					    </div>
-				    <% end %>
 				<% end %>
+			<% end %>
 			    
+			<% if @order.has_deliver_items %>
 				
 				<%= form_for(@delivery) do |f| %>
 				    <%= f.hidden_field :order_id, {value: @order.id} %>
@@ -234,6 +235,8 @@
 				    </div>
 				    
 				<% end %>
+			<% end %>
+				
                             </div>
                         </div>
 			

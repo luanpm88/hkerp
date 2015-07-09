@@ -148,6 +148,8 @@ Hkerp::Application.routes.draw do
       patch :do_update_tip
       
       get :order_actions
+      
+      get :cancel_order
     end
   end
 

@@ -15,8 +15,8 @@ class PaymentRecord < ActiveRecord::Base
   validate :valid_amount
   validate :valid_debt_date
   
-  after_save :update_payment_status_name
-  after_destroy :update_payment_status_name
+  after_save :update_order_status_names
+  after_destroy :update_order_status_names
   
   def self.all_order_payments
     self.where(type_name: 'order')
@@ -66,10 +66,9 @@ class PaymentRecord < ActiveRecord::Base
     return {result: result, items: @records, actions_col: actions_col}
   end
   
-  def update_payment_status_name
+  def update_order_status_names
     if !order.nil?
-      order.update_payment_status_name
-      order.update_tip_status_name
+      order.update_status_names
     end
   end
   

@@ -22,6 +22,13 @@ class Autotask < ActiveRecord::Base
             end
           end          
           self.autotask_details.create(item_count: count)
+      when "order_update_status_names"
+          count = 0
+          Order.all.each do |o|
+            o.update_status_names
+            count += 1
+          end          
+          self.autotask_details.create(item_count: count)
       else
       end
   end

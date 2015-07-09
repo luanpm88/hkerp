@@ -99,7 +99,7 @@ class DeliveriesController < ApplicationController
     respond_to do |format|
       if @delivery.valid?
         @delivery.update_stock
-        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @delivery.id, tab_page:1} : @delivery, notice: 'Sales delivery was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @delivery.id, tab_page: 1, export_ticket: (@delivery.is_return ? true : nil)} : @delivery, notice: 'Sales delivery was successfully created.' }
         format.json { render action: 'show', status: :created, location: @delivery }
       else
         format.html { render action: 'deliver', tab_page: params[:tab_page] }

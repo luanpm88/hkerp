@@ -31,8 +31,8 @@
 								</h4>
                                 <h4>Total (+VAT):  <span class="semi-bold"><%= @order.formated_total_vat %> VND</span></h4>
 								<h4>Deposit:  <span class="semi-bold"><%= @order.deposit %>%</span></h4>
-                                <h4>Paid:  <span class="semi-bold"><%= @order.paid_amount_formated %> VND (<%= @order.paid_percent %>%)</span></h4>
-                                <h4>Remain:  <span class="semi-bold"><%= @order.remain_amount_formated %> VND</span></h4>
+                                <h4>Paid:  <span class="semi-bold"><%= format_price(@order.paid_amount) %> VND (<%= @order.paid_percent %>%)</span></h4>
+                                <h4>Remain:  <span class="semi-bold"><%= format_price(@order.remain_amount) %> VND</span></h4>
 								
 							<% end %>
 							

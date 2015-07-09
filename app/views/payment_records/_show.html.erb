@@ -58,7 +58,7 @@
 <table class="top-info" style="margin-top: 0" cellspacing="0">
   <tr>
     <td class="mid" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
-      <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %> tiền: </label> <strong><%= @payment_record.paid_person %></strong></p>
+      <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %>: </label> <strong><%= @payment_record.paid_person %></strong></p>
       <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
       <p><label>Lý do: </label> <%= @payment_record.note %></p>
       <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong></p>
