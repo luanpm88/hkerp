@@ -154,8 +154,10 @@ class Ability
       end
       can :confirm_order, Order do |order|
         order.is_sales && order.salesperson_id == user.id && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
-                          
-      end        
+      end
+      can :cancel_order, Order do |order|
+        order.is_sales && order.salesperson_id == user.id && ['items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
+      end 
       can :change, Order do |order|
         order.is_sales && order.salesperson_id == user.id && ['price_confirmed','confirmed'].include?(order.status.name)
       end
@@ -204,6 +206,7 @@ class Ability
         order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
       end
       
+      
       can :update_price, Product
       can :do_update_price, Product
       can :update_public_price, Product
@@ -237,6 +240,9 @@ class Ability
       end
       can :do_change, Order do |order|
         order.is_purchase && order.purchaser_id == user.id && ['confirmed'].include?(order.status.name)
+      end      
+      can :cancel_order, Order do |order|
+        order.is_purchase && order.purchaser_id == user.id && ['items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
       end
 
       can :create, OrderDetail
