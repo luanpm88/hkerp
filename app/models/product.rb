@@ -627,13 +627,13 @@ class Product < ActiveRecord::Base
     #Order details, sales and purchases
     od_details = order_details
                       .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-                      .where(order_statuses: {name: ["finished","confirmed"]})
+                      .where(order_statuses: {name: ["canceled","finished","confirmed"]})
                       .where(orders: {parent_id: nil})
                       .where('orders.order_date >= ?', from_date)
                       .where('orders.order_date <= ?', to_date)
     
     #Delivery details, sales and purchases
-    statuses = OrderStatus.where(name: ["finished","confirmed"])    
+    statuses = OrderStatus.where(name: ["canceled","finished","confirmed"])    
     d_details = delivery_details
               .joins(:delivery)
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
