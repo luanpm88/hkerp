@@ -125,7 +125,7 @@ class Checkinout < ActiveRecord::Base
     else
       more = self.check_time - Time.zone.parse(self.check_date.to_s).change(@@in_morning_time)
     end
-    return more > @@work_time_per_day ? @@work_time_per_day : more;
+    return more > @@work_time_per_day ? @@work_time_per_day : 0;
   end
   
   def self.get_work_time_by_month(user, month, year)

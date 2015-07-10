@@ -1314,6 +1314,8 @@ class Order < ActiveRecord::Base
       return "ĐƠN HÀNG"
     elsif ['finished'].include?(status.name)
       return "HÓA ĐƠN"
+    elsif ['canceled'].include?(status.name)
+      return "ĐÃ HỦY"
     else
       return "BẢNG BÁO GIÁ"
     end
