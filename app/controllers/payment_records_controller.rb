@@ -207,7 +207,7 @@ class PaymentRecordsController < ApplicationController
     
     respond_to do |format|
       if @payment_record.trash
-        format.html { redirect_to list_path, notice: 'Delivery was successfully trashed.' }
+        format.html { redirect_to "/home/close_tab", notice: 'Delivery was successfully trashed.' }
         format.json { head :no_content }
       else
         format.html { redirect_to list_path, alert: 'Delivery was unsuccessfully trashed.' }

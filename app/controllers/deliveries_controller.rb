@@ -137,7 +137,7 @@ class DeliveriesController < ApplicationController
     
     respond_to do |format|
       if @delivery.trash
-        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : list_path, notice: 'Delivery was successfully trashed.' }
+        format.html { redirect_to "/home/close_tab", notice: 'Delivery was successfully trashed.' }
         format.json { head :no_content }
       else
         format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @delivery.id, tab_page:1} : list_path, alert: 'Delivery was unsuccessfully trashed.' }
