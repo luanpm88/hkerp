@@ -1,4 +1,11 @@
 Hkerp::Application.routes.draw do
+  resources :feedbacks do
+    collection do
+      get :datatable
+      get :picture
+      get :check
+    end
+  end
   resources :product_images do
     collection do
       get :image

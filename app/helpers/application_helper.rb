@@ -248,4 +248,8 @@ module ApplicationHelper
       
       return actions.html_safe
   end
+  
+  def check_ajax_button(checked, url)	
+    "<a href=\"#{url}\" class=\"check-radio ajax-check-radio\"><i class=\"#{checked.to_s} icon-#{(checked ? "check" : "check-empty")}\"></i></a>"
+  end
 end

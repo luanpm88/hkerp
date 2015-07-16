@@ -667,6 +667,41 @@ ALTER SEQUENCE delivery_details_id_seq OWNED BY delivery_details.id;
 
 
 --
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE feedbacks (
+    id integer NOT NULL,
+    user_id integer,
+    title character varying,
+    content text,
+    image character varying,
+    status integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE feedbacks_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: feedbacks_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
+
+
+--
 -- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1728,6 +1763,13 @@ ALTER TABLE ONLY delivery_details ALTER COLUMN id SET DEFAULT nextval('delivery_
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
 
 
@@ -2027,6 +2069,14 @@ ALTER TABLE ONLY deliveries
 
 ALTER TABLE ONLY delivery_details
     ADD CONSTRAINT delivery_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY feedbacks
+    ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
 
 
 --
@@ -2569,4 +2619,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150528015743');
 INSERT INTO schema_migrations (version) VALUES ('20150604092249');
 
 INSERT INTO schema_migrations (version) VALUES ('20150610035056');
+
+INSERT INTO schema_migrations (version) VALUES ('20150716075807');
 

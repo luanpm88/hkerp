@@ -1356,6 +1356,22 @@
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10
 	    });
+		
+		//Datatable products
+	    $('.datatable-feedbacks').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_feedbacks_path %>",
+				"data": function ( d ) {
+					
+				}
+			},
+			"columnDefs": [ { "targets": [0,1,2,3,4,5], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
+			"iDisplayLength": 10
+	    });
 	    
 	    $('select[name="DataTables_Table_0_length"]').select2({allowClear: true});
 	    
@@ -1828,6 +1844,28 @@
 		})
 		
 		$(".fancybox_image").fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+		
+		$(document).on("click", ".ajax-check-radio", function(e) {
+			e.preventDefault();
+			
+			
+			
+			var box = $(this).parent()
+			var url = $(this).attr("href")
+			
+			if (url == "") {
+				return
+			}
+			
+			$.ajax({
+				url : url,
+				type: "GET",
+				success:function(data, textStatus, jqXHR)
+				{
+					box.html(data)
+				}
+			});
+		});
 });
 
 </script>

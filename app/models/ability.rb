@@ -128,6 +128,15 @@ class Ability
       can :activity_log, User do |u|
         u == user
       end
+      
+      can :read, Feedback
+      can :datatable, Feedback
+      can :create, Feedback
+      can :picture, Feedback
+      can :update, Feedback do |f|
+        f.user_id == user.id
+      end
+      
     end  
     
     if user.has_role? "attendance_manager"

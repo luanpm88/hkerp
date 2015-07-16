@@ -8080,3 +8080,22 @@ tr.block_commission_header h3 {
 .login-msg h5 ul {
     padding: 0;
 }
+.header .nav > li.quicklinks .feedback-top {
+    margin-right: 15px;
+    margin-top: -6px;
+}
+.header .nav > li.quicklinks .feedback-top i {
+    font-size: 30px;
+}
+.header .nav > li.quicklinks .feedback-top:hover i {
+    color: red;
+}
+.check-radio {
+    font-size: 18px;
+    color: #333;
+}
+.ajax-check-radio i.true {
+    color: #3c763d;
+}
+.ajax-check-radio i.false {
+}
