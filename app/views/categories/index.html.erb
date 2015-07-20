@@ -80,8 +80,8 @@
 								
 							     
 								<td>
-								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_1.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_1.name}", :class => "tab_page btn btn-info btn-xs btn-mini" %>							
-									<%= link_to 'X', {action: "destroy", id: child_1.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_1.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_1.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
+									<%= link_to 'X', {action: "destroy", id: child_1.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
 								</td>
 							    </tr>
 							    
@@ -99,8 +99,8 @@
 									
 								     
 									<td>
-									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_2.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_2.name}", :class => "tab_page btn btn-info btn-xs btn-mini" %>							
-							    <%= link_to 'X', {action: "destroy", id: child_2.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" %>
+									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_2.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_2.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
+							    <%= link_to 'X', {action: "destroy", id: child_2.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
 									</td>
 								    </tr>
 							    <% end %>
