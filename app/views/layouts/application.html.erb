@@ -476,9 +476,11 @@
 					<li<% if params[:controller] == "commission_programs" && params[:action] == "statistics" %> class="active"<% end %>>
 						<%= link_to 'Statistics', statistics_commission_programs_path(tab_page:1), class: "tab_page" %>
 					</li>
-					<li<% if params[:controller] == "commission_programs" && params[:action] == "index" %> class="active"<% end %>>
-						<%= link_to 'Programs', commission_programs_path(tab_page:1), class: "tab_page" %>
-					</li>
+					<% if can? :create, CommissionProgram %>
+						<li<% if params[:controller] == "commission_programs" && params[:action] == "index" %> class="active"<% end %>>
+							<%= link_to 'Programs', commission_programs_path(tab_page:1), class: "tab_page" %>
+						</li>
+					<% end %>
 				  
 				</ul>
 	    </li>
