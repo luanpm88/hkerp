@@ -81,11 +81,11 @@ class Ability
       
       can :read, Category
       can :create, Category
-      can :update, Category
+      #can :update, Category
       
       can :read, Manufacturer
       can :create, Manufacturer
-      can :update, Manufacturer
+      #can :update, Manufacturer
       
       # ATTANCENCE == permissions for personal attandence requests
       can :read, Checkinout
