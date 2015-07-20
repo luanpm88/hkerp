@@ -449,6 +449,7 @@ class Product < ActiveRecord::Base
     count -= delivery_details
                       .joins(:delivery)
                       .joins(:order_detail => :order)
+                      .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
                       .where(orders: {supplier_id: Contact.HK.id})
                       .sum(:quantity)
@@ -457,6 +458,7 @@ class Product < ActiveRecord::Base
     count += delivery_details
                       .joins(:delivery)
                       .joins(:order_detail => :order)
+                      .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
                       .where(orders: {customer_id: Contact.HK.id})
                       .sum(:quantity)
