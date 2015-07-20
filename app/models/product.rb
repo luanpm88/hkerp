@@ -161,6 +161,7 @@ class Product < ActiveRecord::Base
     @products = self.filter(params, user)
     
     @products = @products.order(order) if !order.nil?
+    total = @products.count("products.id");
 
     @products = @products.limit(params[:length]).offset(params["start"])
     data = []
@@ -237,7 +238,7 @@ class Product < ActiveRecord::Base
                 
     end    
     
-    total = @products.count("products.id");
+    
     
     result = {
               "drawn" => params[:drawn],
