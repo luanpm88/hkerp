@@ -461,6 +461,8 @@ class Ability
       can :stop, CommissionProgram
       
       can :manage, CommissionProgram
+      
+      can :view_all_customers, Contact
     end
 
     if user.has_role? "storage_manager"
