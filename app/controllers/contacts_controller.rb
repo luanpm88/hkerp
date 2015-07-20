@@ -12,7 +12,7 @@ class ContactsController < ApplicationController
     respond_to do |format|
       format.html
       format.json {
-        render json: Contact.full_text_search(params[:q])
+        render json: Contact.full_text_search(params[:q], current_user)
       }
     end
   end

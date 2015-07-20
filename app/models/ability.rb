@@ -198,6 +198,11 @@ class Ability
       
       can :order_log, Order
       
+      
+      if user.has_role? "company_salesperson"
+        can :view_all_customers, Contact
+      end
+      
     end
 
     if user.has_role? "purchaser"        
