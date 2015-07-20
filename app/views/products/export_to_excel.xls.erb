@@ -7,19 +7,23 @@
   <Worksheet ss:Name="Sheet1">
     <Table>
       <Row>
+        <Cell><Data ss:Type="String">#</Data></Cell>
         <Cell><Data ss:Type="String">Name</Data></Cell>
         <Cell><Data ss:Type="String">Description</Data></Cell>
         <Cell><Data ss:Type="String">Price</Data></Cell>
         <Cell><Data ss:Type="String">Stock</Data></Cell>
         
       </Row>
+    <% num = 1 %>
     <% @products.each do |p| %>
       <Row>
+        <Cell><Data ss:Type="String"><%= num %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.display_name %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.description %></Data></Cell>
         <Cell><Data ss:Type="String"><%= format_price(p.product_price.price) %></Data></Cell>
         <Cell><Data ss:Type="String"><%= p.calculated_stock %></Data></Cell>
       </Row>
+      <% num += 1 %>
     <% end %>
     </Table>
   </Worksheet>
