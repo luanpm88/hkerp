@@ -421,7 +421,9 @@
 			<% end %>
 		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url(tab_page:1), class: "tab_page" %></li>
 		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url(tab_page:1), class: "tab_page" %></li>
-			<li<% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url(tab_page:1), class: "tab_page" %></li>
+			<% if can? :statistics, Product %>
+				<li<% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url(tab_page:1), class: "tab_page" %></li>
+			<% end %>
 		</ul>
 	    </li>
 	<% end %>

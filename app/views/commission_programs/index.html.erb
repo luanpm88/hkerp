@@ -11,7 +11,7 @@
 				
                 <div class="row">                  
                     <div class="col-md-12">
-                      <%= link_to 'Commission Program', new_commission_program_path(tab_page: 1),psrc: commission_programs_path(tab_page: 1), title: "New Commission Program", :class => 'tab_page btn btn-primary btn-cons' %>
+                      <%= link_to 'Commission Program', new_commission_program_path(tab_page: 1),psrc: commission_programs_path(tab_page: 1), title: "New Commission Program", :class => 'tab_page btn btn-primary btn-cons' if can? :create, CommissionProgram %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Programs</span></h4>
