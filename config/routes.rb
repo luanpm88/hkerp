@@ -239,6 +239,7 @@ Hkerp::Application.routes.draw do
       get :product_log
       
       get :warranty_check
+      get :export_to_excel
     end
   end
   

@@ -8,8 +8,6 @@ class ProductsController < ApplicationController
   def index
     @products = Product.order("name").all
     
-    
-    
     respond_to do |format|
       format.html { render layout: "content" if params[:tab_page].present? }
       format.json {
@@ -298,6 +296,15 @@ class ProductsController < ApplicationController
     end    
     
     render layout: "content" if params[:tab_page].present?
+  end
+  
+  def export_to_excel
+    @products = Product.where(status: 1).order("stock DESC")
+    
+    respond_to do |format|
+      format.html
+      format.xls
+    end
   end
   
   private

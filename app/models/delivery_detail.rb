@@ -7,6 +7,12 @@ class DeliveryDetail < ActiveRecord::Base
   
   before_save :fix_serial_numbers
   
+  after_save :update_cache_stock
+  
+  def update_cache_stock
+    product.update_cache_stock
+  end
+  
   def total
     (order_detail.price * quantity).abs
   end

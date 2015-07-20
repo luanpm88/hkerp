@@ -14,6 +14,11 @@ class ProductStockUpdate < ActiveRecord::Base
   before_validation :fix_serial_numbers  
   
   after_save :update_order_status_names
+  after_save :update_cache_stock
+  
+  def update_cache_stock
+    product.update_cache_stock
+  end
   
   def update_order_status_names
     product.orders.where(parent_id: nil).where("delivery_status_name NOT LIKE ?", '%delivered%').each do |o|

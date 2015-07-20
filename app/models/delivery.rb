@@ -13,6 +13,14 @@ class Delivery < ActiveRecord::Base
   after_save :update_order_status_names
   after_destroy :update_order_status_names
   
+  after_save :update_stock
+  
+  def update_stock
+    delivery_details.each do |dd|
+      dd.update_cache_stock
+    end
+  end
+  
   def update_order_status_names
     order.update_status_names
   end

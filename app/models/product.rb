@@ -104,6 +104,18 @@ class Product < ActiveRecord::Base
     self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
+  def self.filter(params, user)
+    where = "true"    
+    where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? && !params["search"]["value"].present?
+    where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present? && !params["search"]["value"].present?
+
+    @products = self.joins(:categories).joins(:manufacturer).where(where)
+    @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?    
+    
+    
+    return @products
+  end
+  
   def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
@@ -127,16 +139,15 @@ class Product < ActiveRecord::Base
                 end
       else
                 if !params["order"].nil?
-                  case params["order"]["0"]["column"]
-                  when "0"
-                    order = "products.id"
+                  case params["order"]["0"]["column"]                  
                   when "0"
                     order = "categories.name"
                   when "1"
                     order = "manufacturers.name"
                   when "2"
                     order = "products.name"
-                  
+                  when "4"
+                    order = "products.stock"
                   else
                     order = "products.updated_at DESC"
                   end
@@ -147,12 +158,8 @@ class Product < ActiveRecord::Base
       end
     
     
-    where = "true"    
-    where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? && !params["search"]["value"].present?
-    where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present? && !params["search"]["value"].present?
-
-    @products = self.joins(:categories).joins(:manufacturer).where(where)
-    @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?    
+    @products = self.filter(params, user)
+    
     @products = @products.order(order) if !order.nil?
 
     @products = @products.limit(params[:length]).offset(params["start"])
@@ -230,10 +237,7 @@ class Product < ActiveRecord::Base
                 
     end    
     
-    total = self.joins(:categories).joins(:manufacturer).where(where)
-    total = total.search(params["search"]["value"]) if !params["search"]["value"].empty?    
-    total = total.order(order) if !order.nil?
-    total = total.count("products.id");
+    total = @products.count("products.id");
     
     result = {
               "drawn" => params[:drawn],
@@ -879,6 +883,10 @@ class Product < ActiveRecord::Base
 
       end      
     end
+  end
+  
+  def update_cache_stock
+    self.update_attribute(:stock, self.calculated_stock)
   end
   
 end
