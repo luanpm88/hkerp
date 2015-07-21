@@ -1,5 +1,5 @@
        <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-12">
               <div class="grid simple">
                 <div class="grid-title no-border">
                   <h4>Feedback <span class="semi-bold">Details</span></h4>
@@ -34,52 +34,59 @@
                            <% if !params[:tab_page].nil? %>
                             <%= hidden_field_tag "tab_page", params[:tab_page] %>
 						 <% end %>
-                      
-                      <div class="form-group">
-                        <label class="form-label"><%= f.label :title %></label>
-                        <span class="help">(required)</span>
-						<div class="input-with-icon  right">                                       
-							<i class=""></i>
-                            <%= f.text_field :title, :class => "form-control required" %>
-						</div>
-                      </div>                     
-                      
-                      <div class="form-group">
-                        <label class="form-label"><%= f.label :content %></label>
-                        <span class="help">(required)</span>
-						<div class="input-with-icon  right">                                       
-							<i class=""></i>
-                            <%= f.text_area :content, :class => "form-control required", style: "height: 300px" %>
-						</div>
-                      </div>
-                      
-                      <div class="form-group">
-								   <label class="form-label"><%= f.label :image %></label>
-								   <span class="help">(required)</span>
-								   <div class="right">                                       
-									   <i class=""></i>
-									   <!--<div class="nice"><%= f.file_field :image %></div>-->
-									   
-										<ul id="sortable" class="image-boxes">
-											 
-											 <li class="image-box ui-state-default">
-												  <div class="img-actions">
-													   <i class="icon-minus-sign delete-but<% if !@feedback.image.present? %> hidden<% end %>"></i>
-												  </div>
-												  <a href="#" class="">
-													   <% if @feedback.image.present? %>
-															<img class="current_img current_image_pic" src="<%= @feedback.avatar(:square2x) %>" />
-													   <% end %>
-													   <i class="icon-picture current_img current_image_icon<% if @feedback.image.present? %> hidden<% end %>"></i>
-													   <img src="" class="new_picture hidden" />										
-												  </a>
-												  <%= f.file_field :image, :class => "hidden" %>
-											 </li>
-					 
-										</ul>
-										<br style="clear:both" />
+						 <div class="row column-seperation">
+							  <div class="col-md-6">
+								   <div class="form-group">
+									 <label class="form-label"><%= f.label :title %></label>
+									 <span class="help">(required)</span>
+									 <div class="input-with-icon  right">                                       
+										 <i class=""></i>
+										 <%= f.text_field :title, :class => "form-control required" %>
+									 </div>
+								   </div>                     
+								   
+								   <div class="form-group">
+									 <label class="form-label"><%= f.label :content %></label>
+									 <span class="help">(required)</span>
+									 <div class="input-with-icon  right">                                       
+										 <i class=""></i>
+										 <%= f.text_area :content, :class => "form-control required", style: "height: 200px" %>
+									 </div>
 								   </div>
-							   </div>
+								   
+								   
+							  </div>
+							  <div class="col-md-6">
+								   <div class="form-group">
+										<label class="form-label"><%= f.label :image %></label>
+										<span class="help">(required)</span>
+										<div class="right">                                       
+											<i class=""></i>
+											<!--<div class="nice"><%= f.file_field :image %></div>-->
+											
+											 <ul id="sortable" class="image-boxes">
+												  
+												  <li class="image-box ui-state-default">
+													   <div class="img-actions">
+															<i class="icon-minus-sign delete-but<% if !@feedback.image.present? %> hidden<% end %>"></i>
+													   </div>
+													   <a href="#" class="">
+															<% if @feedback.image.present? %>
+																 <img class="current_img current_image_pic" src="<%= @feedback.avatar(:square2x) %>" />
+															<% end %>
+															<i class="icon-picture current_img current_image_icon<% if @feedback.image.present? %> hidden<% end %>"></i>
+															<img src="" class="new_picture hidden" />										
+													   </a>
+													   <%= f.file_field :image, :class => "hidden" %>
+												  </li>
+						  
+											 </ul>
+											 <br style="clear:both" />
+										</div>
+									</div>
+								   
+							  </div>
+						 </div>
                       
 				  <div class="form-actions">  
 					<div class="pull-right">

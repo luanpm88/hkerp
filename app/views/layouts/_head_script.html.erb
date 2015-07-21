@@ -950,7 +950,7 @@
 			{
 			    //alert(respone.product.id);
 			    $('.order_supplier_history').html(respone.order_supplier_history);
-				$('.order_line_product_image').html(respone.product_image);
+				$('.order_line_product_image').html(respone.note+"<br />"+respone.product_image);
 			    
 			    var data = respone.product;
 			    $('.ajax_outer input[name="order_detail[product_name]"]').val(respone.display_name);

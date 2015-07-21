@@ -223,7 +223,7 @@ class Product < ActiveRecord::Base
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name+" "+product.product_code+"</strong><div>"+product.description[0..80]+"</div>"+'</div>',
+                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name+" "+product.product_code+"</strong><div>"+product.description[0..80]+"<div>(#{product.note})</div></div>"+'</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',

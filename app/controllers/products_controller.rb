@@ -169,7 +169,8 @@ class ProductsController < ApplicationController
                  price: price,
                  product: @product,
                  order_supplier_history: @product.order_supplier_history(current_user),
-                 product_image: "<div class=\"text-center\"><img src=\"#{@product.image(:thumb)}\" width=\"auto\" /></div>"
+                 product_image: "<h4>Image</h4><div class=\"text-center\"><img src=\"#{@product.image(:thumb)}\" width=\"auto\" /></div>",
+                 note: "<h4>Note</h4>"+@product.note.to_s
             ]
     render :json => @data
   end
@@ -315,7 +316,7 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
+      params.require(:product).permit(:note, :serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
                                       product_parts_attributes: [:_destroy, :id, :part_id, :quantity],

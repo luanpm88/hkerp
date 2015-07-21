@@ -1249,7 +1249,8 @@ CREATE TABLE products (
     tmpproduct integer,
     stock integer DEFAULT 0,
     serial_numbers text,
-    status integer DEFAULT 1
+    status integer DEFAULT 1,
+    note text
 );
 
 
@@ -2621,4 +2622,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150604092249');
 INSERT INTO schema_migrations (version) VALUES ('20150610035056');
 
 INSERT INTO schema_migrations (version) VALUES ('20150716075807');
+
+INSERT INTO schema_migrations (version) VALUES ('20150721042319');
 
