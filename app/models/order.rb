@@ -433,7 +433,7 @@ class Order < ActiveRecord::Base
         
         payment_recieved_vat += order.paid_amount
         payment_recieved += order.paid_amount/(order.tax.rate/100+1)
-        payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
+        #payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
         
         total_sell_with_vat_notpaid += order.remain_amount
         total_sell_with_vat_paid += order.paid_amount
@@ -510,7 +510,7 @@ class Order < ActiveRecord::Base
       payment_vat_paid: payment_vat_paid,
       payment_recieved_vat: payment_recieved_vat,
       payment_recieved: payment_recieved,
-      payment_vat_recieved: payment_vat_recieved,
+      payment_vat_recieved: payment_recieved_vat - payment_recieved,
       
       total_buy_with_vat_notpaid: total_buy_with_vat_notpaid,
       total_sell_with_vat_notpaid: total_sell_with_vat_notpaid,

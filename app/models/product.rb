@@ -86,7 +86,7 @@ class Product < ActiveRecord::Base
   #end
   
   pg_search_scope :search,
-                against: [:name, :product_code, :description],
+                against: [:name, :product_code],
                 associated_against: {
                   categories: :name,
                   manufacturer: :name,
