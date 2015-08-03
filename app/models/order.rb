@@ -493,8 +493,8 @@ class Order < ActiveRecord::Base
       end      
     end
     
-    buy_orders = buy_orders.sort {|a,b| a[:printed_order_number] <=> b[:printed_order_number]}
-    sell_orders = sell_orders.sort {|a,b| a[:printed_order_number] <=> b[:printed_order_number]}
+    buy_orders = buy_orders.sort {|a,b| a[:printed_order_number].to_i <=> b[:printed_order_number].to_i}
+    sell_orders = sell_orders.sort {|a,b| a[:printed_order_number].to_i <=> b[:printed_order_number].to_i}
     
     
     return {
