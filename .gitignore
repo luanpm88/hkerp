@@ -16,4 +16,4 @@
 /tmp
 /uploads
 /backup
-
+/db/database.yml
