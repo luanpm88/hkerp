@@ -497,6 +497,8 @@ class Ability
       end
       
       can :warranty_check, Product
+      
+      can :view_all_sales_orders, Order
     end
     
   end
