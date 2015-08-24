@@ -34,7 +34,7 @@ Tax.create(name: "VAT 10%", rate: 10)
 
 Country.create(name: "Việt Nam")
 
-@HK = Contact.create(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
+@HK = Contact.new(name: "Công Ty TNHH Giải Pháp CNTT & Truyền Thông Hoàng Khang",
                 address: "138/10 Đường số 20, P. 5, Q. Gò Vấp, TP. HCM",
                 phone: "(08) 3984 7690",
                 fax: "(08) 3984 7691",
@@ -45,6 +45,8 @@ Country.create(name: "Việt Nam")
                 contact_type_id: ContactType.supplier,
                 is_mine: true
               )
+@HK.contact_types << ContactType.find(ContactType.supplier.to_i)
+@HK.save
 
 Role.create(name: "admin")
 Role.create(name: "user")
