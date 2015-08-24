@@ -347,10 +347,11 @@ class OrdersController < ApplicationController
     end
     
     respond_to do |format|
-      #if !params[:confirm].nil?
-      #  format.html { redirect_to confirm_price_orders_url(id: @order.id, tab_page: params[:tab_page]) }
-      #end
-      format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : update_price_orders_url(id: @order.id), notice: 'The prices was successfully updated.' }
+      if !params[:confirm].nil?
+        format.html { redirect_to confirm_price_orders_url(id: @order.id, tab_page: 1), alert: 'The prices was unsuccessfully updated.' }
+      else
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : update_price_orders_url(id: @order.id), notice: 'The prices was successfully updated.' }
+      end      
       format.json { render action: 'show', status: :created, location: @order }          
     end
   end
