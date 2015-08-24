@@ -21,6 +21,13 @@ class Feedback < ActiveRecord::Base
     
     @records = self.all    
     
+    # Sap xep danh sach feedback
+    if !params["order"].nil?
+        if params["order"]["0"]["column"]="2"
+          @records = @records.order("created_at #{params["order"]["0"]["dir"]}")
+        end
+    end
+    
     @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
     
     if !user.has_role?("admin")
