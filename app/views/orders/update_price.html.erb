@@ -40,7 +40,7 @@
                                             <!--<th>Quantity</th>-->
                                             <th>Current Price</th>
 					    <th>Supplier
-						  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+						  <%= link_to '+', new_contact_path(:type_id => ContactType.supplier, tab_page: 1), title: "New Supplier" ,:class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button tab_page' %>
 						</th>
 					    <th>Supplier Price</th>
                                             <th>Public Price</th>
