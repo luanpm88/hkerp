@@ -183,7 +183,7 @@ module ApplicationHelper
       end
       
       if can? :print_order_fix1, item       
-        actions += '<li>'+ActionController::Base.helpers.link_to('Print Order (raw) Fix1', print_order_fix1_orders_path(:id => item.id), :target => "_blank")+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('Print Order (no line)', print_order_fix1_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end
      
       
