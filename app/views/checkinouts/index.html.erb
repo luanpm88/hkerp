@@ -112,6 +112,7 @@
                                         </thead>
                                         <tbody>
                                           <% @users.each do |user| %>
+					  <% if user.ATT_No.present? %>
                                             <tr>
                                               <td><%= user.name %></td>
                                               <td style="text-align: center"><%= Checkinout.default_hours_per_month %></td>
@@ -121,6 +122,7 @@
                                               <td style="text-align: center"><%= @state %></td>
                                               <td><a  title="Attendance Details: <%= user.name %>" href="<%= detail_checkinouts_url(user_id: user.id, month: @month, year: @year, tab_page: 1) %>" class="tab_page btn btn-primary btn-sm btn-small" type="button">View Details</a></td>
                                             </tr>
+					  <% end %>
                                           <% end %>
                                           </tbody>
                                     </table>
