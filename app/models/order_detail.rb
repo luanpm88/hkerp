@@ -146,7 +146,7 @@ class OrderDetail < ActiveRecord::Base
   end
   
   def cost
-    !product_price.nil? ? product_price.supplier_price : 0
+    !product_price.nil? ? product_price.supplier_price.to_f : 0
   end
   def cost_formated
     Order.format_price(cost)
