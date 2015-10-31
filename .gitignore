@@ -16,4 +16,4 @@
 /tmp
 /uploads
 /backup
-
+/crontab*.log

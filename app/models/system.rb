@@ -54,9 +54,9 @@ class System < ActiveRecord::Base
   end
   
   def self.upload_backup_to_dropbox(params)
-    bk_dir = Setting.get("backup_dir")
     root_dir = params[:dir].present? ? params[:dir] : ""
-    revision_max = Setting.get("dropbox_backup_revision_count").strip.to_i
+    bk_dir = root_dir+"backup"
+    revision_max = 5
     
     dropbox_list = `#{root_dir}dropbox_uploader.sh list`
     latest_backup_file = "no file"
