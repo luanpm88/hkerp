@@ -44,7 +44,7 @@ class Product < ActiveRecord::Base
   
   def order_supplier_history(user)
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
-                      .where(orders: {salesperson_id: user.id, parent_id: nil, supplier_id: Contact.HK.id, order_status_name: ["confirmed","finished"]})
+                      .where(orders: {parent_id: nil, salesperson_id: user.id, parent_id: nil, supplier_id: Contact.HK.id, order_status_name: ["confirmed","finished"]})
                       .where(product_id: id)
                       .order("created_at DESC").limit(10)
     @html = "<ul>"
@@ -451,7 +451,7 @@ class Product < ActiveRecord::Base
                       .joins(:order_detail => :order)
                       .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
-                      .where(orders: {supplier_id: Contact.HK.id})
+                      .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                       .sum(:quantity)
     
     #count for purchase delivery
@@ -460,7 +460,7 @@ class Product < ActiveRecord::Base
                       .joins(:order_detail => :order)
                       .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
-                      .where(orders: {customer_id: Contact.HK.id})
+                      .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
                       .sum(:quantity)
     
     #count for stock update
@@ -483,17 +483,21 @@ class Product < ActiveRecord::Base
     
     #count for sales delivery
     count -= order_details
+                      .joins(:delivery)
                       .joins(:order => :order_status)
+                      .where(deliveries: {status: 1})
                       .where(order_statuses: {name: ["finished"]})
-                      .where(orders: {supplier_id: Contact.HK.id})
+                      .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                       .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
     
     #count for purchase delivery
     count += order_details
+                      .joins(:delivery)
                       .joins(:order => :order_status)
+                      .where(deliveries: {status: 1})
                       .where(order_statuses: {name: ["finished"]})
-                      .where(orders: {customer_id: Contact.HK.id})
+                      .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
                       .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
     
@@ -556,7 +560,7 @@ class Product < ActiveRecord::Base
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
-              .where(orders: {customer_id: Contact.HK.id})
+              .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
@@ -571,7 +575,7 @@ class Product < ActiveRecord::Base
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
-              .where(orders: {supplier_id: Contact.HK.id})
+              .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
     end
@@ -583,7 +587,7 @@ class Product < ActiveRecord::Base
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
-              .where(orders: {supplier_id: Contact.HK.id})
+              .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
 
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
@@ -600,7 +604,7 @@ class Product < ActiveRecord::Base
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(order_statuses: {name: ["finished"]})
-              .where(orders: {customer_id: Contact.HK.id})
+              .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
