@@ -540,7 +540,8 @@ CREATE TABLE contacts (
     user_id integer,
     city_id integer,
     contact_types_cache character varying,
-    image character varying
+    image character varying,
+    fixed_address text
 );
 
 
@@ -2624,4 +2625,6 @@ INSERT INTO schema_migrations (version) VALUES ('20150610035056');
 INSERT INTO schema_migrations (version) VALUES ('20150716075807');
 
 INSERT INTO schema_migrations (version) VALUES ('20150721042319');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205023701');
 

@@ -19,8 +19,8 @@ development:
   encoding: unicode
   database: hkerp_development
   pool: 5
-  username: luan
-  password: benho
+  username: hkerp
+  password: aA456321@#$
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -48,13 +48,13 @@ test:
   encoding: unicode
   database: hkerp_test
   pool: 5
-  username: luan
-  password: benho
+  username: hkerp
+  password: aA456321@#$
 
 production:
   adapter: postgresql
   encoding: unicode
   database: hkerp_production
   pool: 5
-  username: luan
-  password: benho
+  username: hkerp
+  password: aA456321@#$
