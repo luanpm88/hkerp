@@ -508,7 +508,7 @@ class Product < ActiveRecord::Base
   def stock_update_count(from_date=nil, to_date=nil)
     result = product_stock_updates
     if from_date.present? && to_date.present?
-      result = result.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+      result = result.where('created_at >= ?', from_date.beginning_of_day).where('created_at <= ?', to_date.end_of_day)
     end
     result = result.sum(:quantity)
   end
