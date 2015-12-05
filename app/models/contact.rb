@@ -281,6 +281,8 @@ class Contact < ActiveRecord::Base
   end
   
   def full_address
+    return fixed_address if fixed_address.present?
+    
     ad = ""
     if city.present?
       ad += ", "+city.name_with_state
