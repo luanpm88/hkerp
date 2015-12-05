@@ -475,6 +475,7 @@ class Product < ActiveRecord::Base
   end
   
   def statistic_stock(datetime)
+    datetime = datetime.end_of_day
     count = 0
     #count for combinations
     #count += combinations.where("created_at <= ?", datetime).sum(:quantity)-combination_details.where("created_at <= ?", datetime).sum(:quantity)
@@ -558,7 +559,7 @@ class Product < ActiveRecord::Base
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
+      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
     end
     
     
@@ -573,7 +574,7 @@ class Product < ActiveRecord::Base
               .where(order_statuses: {name: ["finished"]})
               .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
+      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
     end
     
     count = products.sum("order_details.quantity")
@@ -586,7 +587,7 @@ class Product < ActiveRecord::Base
               .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
 
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
+      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
     end
     
     amount = products.sum("price*quantity")
@@ -603,7 +604,7 @@ class Product < ActiveRecord::Base
               .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date).where('orders.order_date <= ?', to_date)
+      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
     end
     
     
@@ -768,7 +769,7 @@ class Product < ActiveRecord::Base
   def combination_count(from_date=nil, to_date=nil)
     in_c = combinations.where(combined: [nil,true])
     if from_date.present? && to_date.present?
-      in_c = in_c.where('created_at >= ?', from_date).where('created_at <= ?', to_date)
+      in_c = in_c.where('created_at >= ?', from_date.beginning_of_day).where('created_at <= ?', to_date.end_of_day)
     end
     in_c = in_c.sum(:quantity)
     
