@@ -13,6 +13,7 @@ class Product < ActiveRecord::Base
   has_and_belongs_to_many :categories
   belongs_to :manufacturer
   belongs_to :user
+  belongs_to :tax
   
   has_many :order_details
   has_many :delivery_details

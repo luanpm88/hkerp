@@ -62,6 +62,40 @@ ALTER SEQUENCE agents_contacts_id_seq OWNED BY agents_contacts.id;
 
 
 --
+-- Name: articles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE articles (
+    id integer NOT NULL,
+    image_url character varying,
+    title character varying,
+    content text,
+    tag_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE articles_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: articles_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE articles_id_seq OWNED BY articles.id;
+
+
+--
 -- Name: assignments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -158,6 +192,36 @@ ALTER SEQUENCE autotasks_id_seq OWNED BY autotasks.id;
 
 
 --
+-- Name: carts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE carts (
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: carts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE carts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: carts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE carts_id_seq OWNED BY carts.id;
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -190,6 +254,16 @@ CREATE SEQUENCE categories_id_seq
 --
 
 ALTER SEQUENCE categories_id_seq OWNED BY categories.id;
+
+
+--
+-- Name: categories_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE categories_menus (
+    category_id integer NOT NULL,
+    menu_id integer NOT NULL
+);
 
 
 --
@@ -540,7 +614,8 @@ CREATE TABLE contacts (
     user_id integer,
     city_id integer,
     contact_types_cache character varying,
-    image character varying
+    image character varying,
+    fixed_address text
 );
 
 
@@ -592,6 +667,80 @@ CREATE SEQUENCE countries_id_seq
 --
 
 ALTER SEQUENCE countries_id_seq OWNED BY countries.id;
+
+
+--
+-- Name: customer_order_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE customer_order_details (
+    id integer NOT NULL,
+    customer_order_id integer,
+    product_id integer,
+    quantity integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    price numeric
+);
+
+
+--
+-- Name: customer_order_details_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE customer_order_details_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: customer_order_details_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE customer_order_details_id_seq OWNED BY customer_order_details.id;
+
+
+--
+-- Name: customer_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE customer_orders (
+    id integer NOT NULL,
+    orderer_first_name character varying,
+    orderer_last_name character varying,
+    orderer_company_name character varying,
+    orderer_email character varying,
+    orderer_address_1 character varying,
+    orderer_address_2 character varying,
+    orderer_phone character varying,
+    orderer_fax character varying,
+    orderer_message text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    orderer_tax character varying
+);
+
+
+--
+-- Name: customer_orders_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE customer_orders_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: customer_orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE customer_orders_id_seq OWNED BY customer_orders.id;
 
 
 --
@@ -702,6 +851,109 @@ ALTER SEQUENCE feedbacks_id_seq OWNED BY feedbacks.id;
 
 
 --
+-- Name: line_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE line_items (
+    id integer NOT NULL,
+    product_id integer,
+    cart_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    quantity integer DEFAULT 1
+);
+
+
+--
+-- Name: line_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE line_items_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: line_items_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE line_items_id_seq OWNED BY line_items.id;
+
+
+--
+-- Name: logins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE logins (
+    id integer NOT NULL,
+    email character varying DEFAULT ''::character varying NOT NULL,
+    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
+    reset_password_token character varying,
+    reset_password_sent_at timestamp without time zone,
+    remember_created_at timestamp without time zone,
+    sign_in_count integer DEFAULT 0 NOT NULL,
+    current_sign_in_at timestamp without time zone,
+    last_sign_in_at timestamp without time zone,
+    current_sign_in_ip inet,
+    last_sign_in_ip inet,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: logins_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE logins_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: logins_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE logins_id_seq OWNED BY logins.id;
+
+
+--
+-- Name: manages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE manages (
+    id integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: manages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE manages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: manages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE manages_id_seq OWNED BY manages.id;
+
+
+--
 -- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -733,6 +985,104 @@ CREATE SEQUENCE manufacturers_id_seq
 --
 
 ALTER SEQUENCE manufacturers_id_seq OWNED BY manufacturers.id;
+
+
+--
+-- Name: menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE menus (
+    id integer NOT NULL,
+    title character varying,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    level integer
+);
+
+
+--
+-- Name: menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE menus_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE menus_id_seq OWNED BY menus.id;
+
+
+--
+-- Name: messages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE messages (
+    id integer NOT NULL,
+    name character varying,
+    email character varying,
+    phone character varying,
+    messages text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE messages_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: messages_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
+
+
+--
+-- Name: newsletters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE newsletters (
+    id integer NOT NULL,
+    email character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: newsletters_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE newsletters_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: newsletters_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE newsletters_id_seq OWNED BY newsletters.id;
 
 
 --
@@ -1015,6 +1365,70 @@ ALTER SEQUENCE parent_contacts_id_seq OWNED BY parent_contacts.id;
 
 
 --
+-- Name: parent_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE parent_menus (
+    id integer NOT NULL,
+    parent_id integer,
+    menu_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: parent_menus_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE parent_menus_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: parent_menus_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE parent_menus_id_seq OWNED BY parent_menus.id;
+
+
+--
+-- Name: partners; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE partners (
+    id integer NOT NULL,
+    image_url character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    manufacturer_id integer
+);
+
+
+--
+-- Name: partners_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE partners_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: partners_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE partners_id_seq OWNED BY partners.id;
+
+
+--
 -- Name: payment_methods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1122,6 +1536,49 @@ CREATE SEQUENCE product_images_id_seq
 --
 
 ALTER SEQUENCE product_images_id_seq OWNED BY product_images.id;
+
+
+--
+-- Name: product_infos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE product_infos (
+    id integer NOT NULL,
+    image_url character varying,
+    description text,
+    old_price numeric,
+    product_hot character varying,
+    product_sale character varying,
+    product_bestselled character varying,
+    product_prominent character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    product_id integer,
+    note text,
+    product_new character varying,
+    sale_off_price numeric,
+    sale_price numeric,
+    bonus_product text
+);
+
+
+--
+-- Name: product_infos_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE product_infos_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: product_infos_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE product_infos_id_seq OWNED BY product_infos.id;
 
 
 --
@@ -1250,7 +1707,8 @@ CREATE TABLE products (
     stock integer DEFAULT 0,
     serial_numbers text,
     status integer DEFAULT 1,
-    note text
+    note text,
+    tax_id integer
 );
 
 
@@ -1314,6 +1772,40 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: slide_shows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE slide_shows (
+    id integer NOT NULL,
+    image_url character varying,
+    description text,
+    link_to character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    title character varying
+);
+
+
+--
+-- Name: slide_shows_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE slide_shows_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: slide_shows_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE slide_shows_id_seq OWNED BY slide_shows.id;
+
+
+--
 -- Name: states; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1343,6 +1835,38 @@ CREATE SEQUENCE states_id_seq
 --
 
 ALTER SEQUENCE states_id_seq OWNED BY states.id;
+
+
+--
+-- Name: tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE tags (
+    id integer NOT NULL,
+    title character varying,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE tags_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: tags_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE tags_id_seq OWNED BY tags.id;
 
 
 --
@@ -1645,6 +2169,13 @@ ALTER TABLE ONLY agents_contacts ALTER COLUMN id SET DEFAULT nextval('agents_con
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY articles ALTER COLUMN id SET DEFAULT nextval('articles_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY assignments ALTER COLUMN id SET DEFAULT nextval('assignments_id_seq'::regclass);
 
 
@@ -1660,6 +2191,13 @@ ALTER TABLE ONLY autotask_details ALTER COLUMN id SET DEFAULT nextval('autotask_
 --
 
 ALTER TABLE ONLY autotasks ALTER COLUMN id SET DEFAULT nextval('autotasks_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY carts ALTER COLUMN id SET DEFAULT nextval('carts_id_seq'::regclass);
 
 
 --
@@ -1750,6 +2288,20 @@ ALTER TABLE ONLY countries ALTER COLUMN id SET DEFAULT nextval('countries_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY customer_order_details ALTER COLUMN id SET DEFAULT nextval('customer_order_details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY customer_orders ALTER COLUMN id SET DEFAULT nextval('customer_orders_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY deliveries ALTER COLUMN id SET DEFAULT nextval('deliveries_id_seq'::regclass);
 
 
@@ -1771,7 +2323,49 @@ ALTER TABLE ONLY feedbacks ALTER COLUMN id SET DEFAULT nextval('feedbacks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY line_items ALTER COLUMN id SET DEFAULT nextval('line_items_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY logins ALTER COLUMN id SET DEFAULT nextval('logins_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY manages ALTER COLUMN id SET DEFAULT nextval('manages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY manufacturers ALTER COLUMN id SET DEFAULT nextval('manufacturers_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY menus ALTER COLUMN id SET DEFAULT nextval('menus_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY newsletters ALTER COLUMN id SET DEFAULT nextval('newsletters_id_seq'::regclass);
 
 
 --
@@ -1827,6 +2421,20 @@ ALTER TABLE ONLY parent_contacts ALTER COLUMN id SET DEFAULT nextval('parent_con
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY parent_menus ALTER COLUMN id SET DEFAULT nextval('parent_menus_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY partners ALTER COLUMN id SET DEFAULT nextval('partners_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY payment_methods ALTER COLUMN id SET DEFAULT nextval('payment_methods_id_seq'::regclass);
 
 
@@ -1842,6 +2450,13 @@ ALTER TABLE ONLY payment_records ALTER COLUMN id SET DEFAULT nextval('payment_re
 --
 
 ALTER TABLE ONLY product_images ALTER COLUMN id SET DEFAULT nextval('product_images_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY product_infos ALTER COLUMN id SET DEFAULT nextval('product_infos_id_seq'::regclass);
 
 
 --
@@ -1883,7 +2498,21 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('roles_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY slide_shows ALTER COLUMN id SET DEFAULT nextval('slide_shows_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY states ALTER COLUMN id SET DEFAULT nextval('states_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY tags ALTER COLUMN id SET DEFAULT nextval('tags_id_seq'::regclass);
 
 
 --
@@ -1937,6 +2566,14 @@ ALTER TABLE ONLY agents_contacts
 
 
 --
+-- Name: articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY articles
+    ADD CONSTRAINT articles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1958,6 +2595,14 @@ ALTER TABLE ONLY autotask_details
 
 ALTER TABLE ONLY autotasks
     ADD CONSTRAINT autotasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY carts
+    ADD CONSTRAINT carts_pkey PRIMARY KEY (id);
 
 
 --
@@ -2057,6 +2702,22 @@ ALTER TABLE ONLY countries
 
 
 --
+-- Name: customer_order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY customer_order_details
+    ADD CONSTRAINT customer_order_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: customer_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY customer_orders
+    ADD CONSTRAINT customer_orders_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2081,11 +2742,59 @@ ALTER TABLE ONLY feedbacks
 
 
 --
+-- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY line_items
+    ADD CONSTRAINT line_items_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: logins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY logins
+    ADD CONSTRAINT logins_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: manages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY manages
+    ADD CONSTRAINT manages_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY manufacturers
     ADD CONSTRAINT manufacturers_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY menus
+    ADD CONSTRAINT menus_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY messages
+    ADD CONSTRAINT messages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: newsletters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY newsletters
+    ADD CONSTRAINT newsletters_pkey PRIMARY KEY (id);
 
 
 --
@@ -2145,6 +2854,22 @@ ALTER TABLE ONLY parent_contacts
 
 
 --
+-- Name: parent_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY parent_menus
+    ADD CONSTRAINT parent_menus_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: partners_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY partners
+    ADD CONSTRAINT partners_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2166,6 +2891,14 @@ ALTER TABLE ONLY payment_records
 
 ALTER TABLE ONLY product_images
     ADD CONSTRAINT product_images_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY product_infos
+    ADD CONSTRAINT product_infos_pkey PRIMARY KEY (id);
 
 
 --
@@ -2209,11 +2942,27 @@ ALTER TABLE ONLY roles
 
 
 --
+-- Name: slide_shows_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY slide_shows
+    ADD CONSTRAINT slide_shows_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY states
     ADD CONSTRAINT states_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY tags
+    ADD CONSTRAINT tags_pkey PRIMARY KEY (id);
 
 
 --
@@ -2265,6 +3014,34 @@ ALTER TABLE ONLY users
 
 
 --
+-- Name: index_line_items_on_cart_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_line_items_on_cart_id ON line_items USING btree (cart_id);
+
+
+--
+-- Name: index_line_items_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX index_line_items_on_product_id ON line_items USING btree (product_id);
+
+
+--
+-- Name: index_logins_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_logins_on_email ON logins USING btree (email);
+
+
+--
+-- Name: index_logins_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE UNIQUE INDEX index_logins_on_reset_password_token ON logins USING btree (reset_password_token);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2283,6 +3060,22 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON users USING btree (re
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON schema_migrations USING btree (version);
+
+
+--
+-- Name: fk_rails_11e15d5c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY line_items
+    ADD CONSTRAINT fk_rails_11e15d5c6b FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: fk_rails_af645e8e5f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY line_items
+    ADD CONSTRAINT fk_rails_af645e8e5f FOREIGN KEY (cart_id) REFERENCES carts(id);
 
 
 --
@@ -2624,4 +3417,68 @@ INSERT INTO schema_migrations (version) VALUES ('20150610035056');
 INSERT INTO schema_migrations (version) VALUES ('20150716075807');
 
 INSERT INTO schema_migrations (version) VALUES ('20150721042319');
+
+INSERT INTO schema_migrations (version) VALUES ('20151205023701');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118011959');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118013234');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118022918');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118032810');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118032832');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118032917');
+
+INSERT INTO schema_migrations (version) VALUES ('20160118062716');
+
+INSERT INTO schema_migrations (version) VALUES ('20160119075810');
+
+INSERT INTO schema_migrations (version) VALUES ('20160119080249');
+
+INSERT INTO schema_migrations (version) VALUES ('20160119082908');
+
+INSERT INTO schema_migrations (version) VALUES ('20160119094029');
+
+INSERT INTO schema_migrations (version) VALUES ('20160120074431');
+
+INSERT INTO schema_migrations (version) VALUES ('20160120074549');
+
+INSERT INTO schema_migrations (version) VALUES ('20160121091924');
+
+INSERT INTO schema_migrations (version) VALUES ('20160123020829');
+
+INSERT INTO schema_migrations (version) VALUES ('20160123020937');
+
+INSERT INTO schema_migrations (version) VALUES ('20160123024351');
+
+INSERT INTO schema_migrations (version) VALUES ('20160123030046');
+
+INSERT INTO schema_migrations (version) VALUES ('20160124150039');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126021420');
+
+INSERT INTO schema_migrations (version) VALUES ('20160126032627');
+
+INSERT INTO schema_migrations (version) VALUES ('20160131182950');
+
+INSERT INTO schema_migrations (version) VALUES ('20160223023503');
+
+INSERT INTO schema_migrations (version) VALUES ('20160223033404');
+
+INSERT INTO schema_migrations (version) VALUES ('20160223081651');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224012626');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224085810');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224090006');
+
+INSERT INTO schema_migrations (version) VALUES ('20160224090206');
+
+INSERT INTO schema_migrations (version) VALUES ('20160226074840');
+
+INSERT INTO schema_migrations (version) VALUES ('20160229081249');
 
