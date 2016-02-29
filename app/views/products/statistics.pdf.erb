@@ -72,7 +72,7 @@
 										</td>
 										<td class="text-center"><%= add_sign(product.combination_count(@from_date, @to_date)) %></td>
 										<td class="text-center">
-											<%= add_sign(product.stock_update_count(@year, @month)) %>
+											<%= add_sign(product.stock_update_count(@from_date, @to_date)) %>
 										</td>
 										<td class="text-center"><%= product.statistic_stock(@to_date) %></td>
 									</tr>

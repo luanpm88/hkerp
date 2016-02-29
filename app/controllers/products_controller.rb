@@ -300,7 +300,7 @@ class ProductsController < ApplicationController
   end
   
   def export_to_excel
-    @products = Product.where(status: 1).order("stock DESC")
+    @products = Product.where(status: 1).where("stock > 0").order("stock DESC")
     
     respond_to do |format|
       format.html

@@ -16,7 +16,6 @@
 %>
 
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-
 <style>
     body {
         font-size: 15px;
@@ -32,9 +31,9 @@
       width: 50%;
     }
     
-.po_water_mark {
+    .po_water_mark {
     clear: both;
-    padding-top: 5px;
+    padding-top: 15px;
     width: 100%;
 }
     
@@ -87,12 +86,12 @@
     
 </div>
 
-<div style="position: absolute;top:<%= pos7 %>px;left: 4px;">
+<div style="position: absolute;top:<%= pos7 %>px;left: 4px">
     <% if !@order.order_details.nil? %>
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
         <% @count = @count + 1 if order_detail.quantity > 0 %>
-            <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 14px<%= ";display:none" if order_detail.quantity == 0 %>">
+            <div style="line-height: 30.5px;clear: both;margin-top: -4px;font-size: 17px<%= ";display:none" if order_detail.quantity == 0 %>">
                 <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 17px;text-align: center"><%= @count %></div>
                 <div style="border: solid 0px #aaa;float: left;width:277px;margin-right: 10px">
                     <%= order_detail.product_name %><br />
@@ -106,18 +105,12 @@
     <% end %>
     
     
-        <div class="po_water_mark">
-            <% if @order.customer_po.present? %>
-                <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
-            <% end %>
-            <div class="line1"></div>
-            <div class="line2"></div>
-        </div>
+        
     
 </div>
 
 <div style="position: absolute;top:<%= pos8 %>px;left: 30px;width:122px;text-align: right">
-    <%= @order.tax.rate.to_i == 0 ? "X" : @order.tax.rate.to_i %>
+    <%= @order.tax.rate.to_i %>
 </div>
 
 <div style="position: absolute;top:<%= pos9 %>px;left: 570px;width:130px;text-align: right">
@@ -125,7 +118,7 @@
 </div>
 
 <div style="position: absolute;top:<%= pos10 %>px;left: 570px;width:130px;text-align: right">
-    <%= @order.vat_amount == 0 ? "X" : format_price(@order.vat_amount, true, true) %>
+    <%= format_price(@order.vat_amount, true, true) %>
 </div>
 
 <div style="position: absolute;top:<%= pos11 %>px;left: 570px;width:130px;text-align: right">

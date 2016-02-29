@@ -347,6 +347,7 @@ class Ability
         ['confirmed'].include?(order.status.name)
       end
       can :print_order_fix1, Order
+      can :print_order_fix2, Order
       can :download_pdf, Order
       can :pay_order, Order  do |order|
         ['canceled','finished','confirmed'].include?(order.status.name) && !order.is_paid

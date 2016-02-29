@@ -131,6 +131,7 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :print_order
       get :print_order_fix1
+      get :print_order_fix2
       get :purchase_orders
       get :confirm_order
       get :datatable
