@@ -61,8 +61,8 @@ class Contact < ActiveRecord::Base
     actions_col = 5
     @records.each do |item|
       item = [
-              link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "show", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name),
-              link_helper.link_to(item.name, {controller: "contacts", action: "show", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name)+item.html_info_line.html_safe,
+              link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name),
+              link_helper.link_to(item.name, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name)+item.html_info_line.html_safe,
               '<div class="text-center nowrap">'+item.city_name+"</div>",
               item.agent_list_html,
               '<div class="text-center">'+(item.user.nil? ? "" : item.user.staff_col)+"</div>",

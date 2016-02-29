@@ -1,68 +1,194 @@
-<p id="notice"><%= notice %></p>
-
-<div>
-    <p>
-      <strong>Name:</strong>
-      <%= @contact.name %>
-    </p>
-    
-    <p>
-      <strong>Address:</strong>
-      <%= @contact.full_address %>
-    </p>
-    
-    <p>
-      <strong>Type:</strong>
-      <%= @contact.contact_types.map{|t| t.name}.join(", ") %>
-    </p>
-    
-    <p>
-      <strong>Tax Code:</strong>
-      <%= @contact.tax_code %>
-    </p>   
-    
-    
-    <p>
-      <strong>Phone:</strong>
-      <%= @contact.phone %>
-    </p>
-    
-    <p>
-      <strong>Mobile:</strong>
-      <%= @contact.mobile %>
-    </p>
-    
-    <p>
-      <strong>Fax:</strong>
-      <%= @contact.fax %>
-    </p>
-    
-    <p>
-      <strong>Email:</strong>
-      <%= @contact.email %>
-    </p>
-    
-    
-    
-    <p>
-      <strong>Account Number:</strong>
-      <%= @contact.account_number %>
-    </p>
-    
-    <p>
-      <strong>Bank:</strong>
-      <%= @contact.bank %>
-    </p>
-    
-    <p>
-      <strong>Website:</strong>
-      <%= @contact.website %>
-    </p>
-    
-    <p>
-      <strong>Note:</strong>
-      <%= @contact.note %>
-    </p>
-    
-</div>
-
+    <div class="row">
+            <div class="col-md-12">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                    <div class="page-title">
+                        <i class="icon-user"></i>
+                    	<h3>View- <span class="semi-bold"> Contact </span></h3>	
+                </div>
+                  <h4>Contact <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+                
+                
+                
+                <div class="grid-body no-border">
+              
+                           
+                    <div class="row column-seperation">
+                           
+                            <div class="col-md-6">
+                              
+							  
+													   <div class="form-group">
+                                                          <label class="form-label">Name: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                              <%= @contact.name %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+							  
+							  
+                                                        
+                                                        
+                                                        
+                              
+                                                        <div class="form-group">
+                                                          <label class="form-label">Address: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                           <%= @contact.full_address %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+														
+														<div class="form-group">
+                                                          <label class="form-label">Type: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                            <%= @contact.contact_types.map{|t| t.name}.join(", ") %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+														
+														<div class="form-group">
+                                                          <label class="form-label">Tax Code:</label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                              <%= @contact.tax_code %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+                                                        
+                                                        <div class="form-group">
+                                                          <label class="form-label">Phone: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                             <%= @contact.phone %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                          <label class="form-label">Mobile: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                         <%= @contact.mobile %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+                                                        
+                                                                     
+                            </div>
+                            
+                            
+          <div class="col-md-6">
+            
+              <div class="form-group">
+                                                          <label class="form-label">Fax: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                              <%= @contact.fax %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+							  
+							  
+                                                        
+                                                        
+                                                        
+                              
+                                                        <div class="form-group">
+                                                          <label class="form-label">Email: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                           <%= @contact.email %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+														
+														<div class="form-group">
+                                                          <label class="form-label">Account Number: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                             <%= @contact.account_number %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+														
+														<div class="form-group">
+                                                          <label class="form-label">Bank: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                               <%= @contact.bank %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+														
+                                                        
+                                                        <div class="form-group">
+                                                          <label class="form-label">Website: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                         <%= @contact.website %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+                                                        
+                                                        <div class="form-group">
+                                                          <label class="form-label">Note: </label>
+                                                                                  <div class="input-with-icon  right">                                       
+                                                                                         
+                                                                                          <div  class="form-control"  type="text">
+                                                                                             <%= @contact.note %>
+                                                                                          </div>
+                                                                                         
+                                                                                  </div>               
+                                                        </div>
+            
+          </div>
+                        
+                        
+                    </div>
+                      
+				  <div class="form-actions">  
+					<div class="pull-right">
+                                          <%= link_to 'Cancel', contacts_path, :class => "btn btn-white btn-cons cancel-but" %>
+                                          
+					</div>
+					</div>
+				
+                </div>
+              </div>
+            </div>		
+      </div>
+       
