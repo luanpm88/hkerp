@@ -132,85 +132,89 @@
 											 </div>
 													   
 													   
-													   <div class="col-md-6">
-											 
-																	  
-						   
-											  
-																			 
-																					 <%= fields_for :product_prices do |builder| %>
-																						  <%  if can? :update_public_price, @product %>
-																							   <div class="form-group">
-																									<label class="form-label"><%= builder.label :price %></label>
-																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
-																										<i class=""></i>
-																										<%= builder.text_field :price, value: @product.product_price.price, :class => "form-control price_input" %>
-																									</div>
+												  <div class="col-md-6">
+										
+																 
+					  
+										 
+																		
+																				<%= fields_for :product_prices do |builder| %>
+																					 <%  if can? :update_public_price, @product %>
+																						  <div class="form-group">
+																							   <label class="form-label"><%= builder.label :price %></label>
+																							   <span class="help"></span>
+																							   <div class="input-with-icon  right">                                       
+																								   <i class=""></i>
+																								   <%= builder.text_field :price, value: @product.product_price.price, :class => "form-control price_input" %>
 																							   </div>
-																						  <% end %>
-																						 <%  if can? :update_price, @product %>
-																							   <div class="form-group">
-																									<label class="form-label"><%= builder.label :supplier_price %></label>
-																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
-																										<i class=""></i>
-																										<%= builder.text_field :supplier_price, value: @product.product_price.supplier_price, :class => "form-control price_input" %>
-																									</div>
-																							   </div>
-																							   
-																							   <div class="form-group">
-																									<label class="form-label"><%= builder.label :suppiler_id %></label>
-																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
-																										  <i class=""></i>
-																										  <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
-																										  <br />
-																										  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
-																									</div>
-																							   </div>	
-																						  <% end %>
+																						  </div>
 																					 <% end %>
-																					 
-																					 
-															 <div class="form-group">
-															   <label class="form-label"><%= f.label :warranty %></label>
-															   <span class="help"></span>
-																					   <div class="input-with-icon  right">                                       
-																							   <i class=""></i>
-																							   <%= f.text_field :warranty, :class => "form-control" %>
-																					   </div>
-															 </div>
-														 
-															 <div class="form-group">
-																 <label class="form-label"><%= f.label :tax %></label>														   
-																 <div class="input-with-icon right">                                                  
-																	  <i class=""></i>
-																	  <div style="width: 100%; margin-bottom: 5px;">
-																		   <%= f.collection_select(:tax_id, Tax.all, :id, :name, {:prompt => "Choose tax..."}, {class: "modern_select width100"}) %>
-																	  </div>
+																					<%  if can? :update_price, @product %>
+																						  <div class="form-group">
+																							   <label class="form-label"><%= builder.label :supplier_price %></label>
+																							   <span class="help"></span>
+																							   <div class="input-with-icon  right">                                       
+																								   <i class=""></i>
+																								   <%= builder.text_field :supplier_price, value: @product.product_price.supplier_price, :class => "form-control price_input" %>
+																							   </div>
+																						  </div>
+																						  
+																						  <div class="form-group">
+																							   <label class="form-label"><%= builder.label :suppiler_id %></label>
+																							   <span class="help"></span>
+																							   <div class="input-with-icon  right">                                       
+																									 <i class=""></i>
+																									 <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
+																									 <br />
+																									 <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
+																							   </div>
+																						  </div>	
+																					 <% end %>
+																				<% end %>
+																				
+																				
+														<div class="form-group">
+														  <label class="form-label"><%= f.label :warranty %></label>
+														  <span class="help"></span>
+																				  <div class="input-with-icon  right">                                       
+																						  <i class=""></i>
+																						  <%= f.text_field :warranty, :class => "form-control" %>
+																				  </div>
+														</div>
+													
+														<div class="form-group">
+															<label class="form-label"><%= f.label :tax %></label>														   
+															<div class="input-with-icon right">                                                  
+																 <i class=""></i>
+																 <div style="width: 100%; margin-bottom: 5px;">
+																	  <%= f.collection_select(:tax_id, Tax.all, :id, :name, {:prompt => "Choose tax..."}, {class: "modern_select width100"}) %>
 																 </div>
-															 </div>
+															</div>
+														</div>
+										
+														<div class="form-group">
+														  <label class="form-label"><%= f.label :note %></label>
+														  <span class="help"></span>
+															  <div class="input-with-icon  right">                                       
+																	  <i class=""></i>
+																	  <%= f.text_area :note, :class => "form-control" %>
+															  </div>
+														</div>			 
+													
+												  </div>
+											  </div>
 											 
-															 <div class="form-group">
-															   <label class="form-label"><%= f.label :note %></label>
-															   <span class="help"></span>
-																   <div class="input-with-icon  right">                                       
-																		   <i class=""></i>
-																		   <%= f.text_area :note, :class => "form-control" %>
-																   </div>
-															 </div>			 
-														 
+											 <!-- Add Ckeditor - html_description column -->
+											 <div class="col-md-12">
+												  <div class="form-group">
+													   <label class="form-label">Html Description</label>
+													   <span class="help"></span>
+													   <div class="input-with-icon right">                                       
+															<i class=""></i>
+															<%= f.text_area :html_description, rows: "4", cols: "4", id: "editor-full" %>
 													   </div>
-												   </div>
-							  
-							  
-							  
-							  
-							  
-							  
-							  
-							  
+												  </div>
+											 </div>
 						 </div>
 													   
 													   

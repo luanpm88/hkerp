@@ -1708,7 +1708,8 @@ CREATE TABLE products (
     serial_numbers text,
     status integer DEFAULT 1,
     note text,
-    tax_id integer
+    tax_id integer,
+    html_description text
 );
 
 
@@ -3481,4 +3482,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160224090206');
 INSERT INTO schema_migrations (version) VALUES ('20160226074840');
 
 INSERT INTO schema_migrations (version) VALUES ('20160229081249');
+
+INSERT INTO schema_migrations (version) VALUES ('20160229083906');
 
