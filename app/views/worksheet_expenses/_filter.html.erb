@@ -1,0 +1,67 @@
+          <div class="grid simple ">
+		    <div class="grid-body no-border filters">
+			  <div class="row order-filters">
+				  <%= form_tag({controller: "worksheet_expenses", action: "index"}, method: 'get', class: "search") do %>
+				  <div class="col-md-2">
+					  <h4>Status</h4>
+					  <div class="">
+						  <div class="input-with-icon  right">                                       
+							  <i class=""></i>
+							  <select name="status" class="modern_select width100">
+								<option value="">None</option>
+								<option value="active">Active</option>
+								<option value="delete">Deleted</option>
+							  </select>
+						  </div>
+					  </div>
+				  </div>
+				
+				  <div class="col-md-2">
+					  <h4>Types</h4>
+					  <div class="">
+						  <div class="input-with-icon  right">                                       
+							  <i class=""></i>
+							  <select name="type_name" class="modern_select width100">
+								<option value="">None</option>
+								<option value="all">All</option>
+								<option value="per_km">Per_KM </option>
+							  </select>
+						  </div>
+					  </div>
+				  </div>
+				  
+				  <div class="col-md-2">
+					  <h4>ASC/DESC</h4>
+					  <div class="">
+						  <div class="input-with-icon  right">                                       
+							  <i class=""></i>
+							  <select name="order_by_cend" class="modern_select width100">
+								  <option value="asc">Ascending</option>
+								  <option value="desc">Descending</option>
+							  </select>
+						  </div>
+					  </div>
+				  </div>
+				  <div class="col-md-2" style="margin-top: 3.6%">
+					<button type="submit" class="btn btn-primary">Tìm lọc<i class="icon-search4 position-right"></i></button>
+				  </div>
+				  <% end %>
+			  </div>
+			  <div class="row order-filters">
+				  
+				<div class="col-md-2">
+					<h4>Actions</h4>
+					<div class="">
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+							<select name="actions_by" class="modern_select width100">
+							  <option value="">None</option>
+							  <option value="delete">Delete</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				
+			  </div>
+		    </div>		    
+		</div>

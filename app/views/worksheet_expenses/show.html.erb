@@ -1,0 +1,139 @@
+<!--<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @worksheet_expense.name %>
+</p>
+
+<p>
+  <strong>Price:</strong>
+  <%= @worksheet_expense.price %>
+</p>
+
+<p>
+  <strong>Type name:</strong>
+  <%= @worksheet_expense.type_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @worksheet_expense.description %>
+</p>
+
+<p>
+  <strong>Creator:</strong>
+  <%= @worksheet_expense.creator_id %>
+</p>
+
+<%= link_to 'Edit', edit_worksheet_expense_path(@worksheet_expense) %> |
+<%= link_to 'Back', worksheet_expenses_path %>
+-->
+
+<div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+                <div class="page-title">
+                    <i class="icon-user"></i>
+                    <h3>View- <span class="semi-bold"> Expense </span></h3>	
+            </div>
+              <h4>Worsheet Expense <span class="semi-bold">Details</span></h4>
+              <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+            </div>     
+            
+            <div class="grid-body no-border">
+          
+                <div class="row column-seperation">
+                       
+                  <div class="col-md-6">
+                    
+                    <div class="form-group">
+                       <label class="form-label">Name: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                               <%= @worksheet_expense.name %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Type: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                                <% if @worksheet_expense.type_name == 'all' %>
+                                        All
+                                <% elsif @worksheet_expense.type_name == 'per_km' %>
+                                        Per_Kilometer 
+                                <% end %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     
+                     
+                     <div class="form-group">
+                       <label class="form-label">Created At: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                          <%= @worksheet_expense.created_at %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Updated At: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                          <%= @worksheet_expense.updated_at %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                                                           
+                  </div>
+                          
+                  <div class="col-md-6">
+                    <div class="form-group">
+                       <label class="form-label">Price:</label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                               <%= @worksheet_expense.price %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Description: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                              <%= @worksheet_expense.description %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                  </div>
+                    
+                </div>
+                  
+              <div class="form-actions">  
+                <div class="pull-right">
+                  <%= link_to 'Cancel', "/home/close_tab", :class => "btn btn-white btn-cons cancel-but" %>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>		
+  </div>
+   
+

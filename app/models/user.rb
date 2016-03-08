@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   
   has_many :contacts
   has_many :products
+  has_many :worksheet_expenses, foreign_key: 'creator_id'
   
   has_many :assignments, :dependent => :destroy
   has_many :roles, :through => :assignments

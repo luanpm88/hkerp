@@ -1,0 +1,80 @@
+       <div class="row">
+            <div class="col-md-6">
+              <div class="grid simple">
+                <div class="grid-title no-border">
+                  <h4>Commission Program <span class="semi-bold">Details</span></h4>
+                  <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+                </div>     
+                
+              
+                <div class="grid-body no-border">
+                  
+                  
+                  <% if @worksheet_expense.errors.any? %>
+					   
+						 
+					 
+                    <div class="alert alert-error">
+                      <button data-dismiss="alert" class="close"></button>
+                      <div id="error_explanation">
+                        <h5><%= pluralize(@worksheet_expense.errors.count, "error") %> prohibited this commisstion program from being saved:</h5>
+                  
+                        <ul>
+                        <% @worksheet_expense.errors.full_messages.each do |msg| %>
+                          <li><%= msg %></li>
+                        <% end %>
+                        </ul>
+                      </div>
+                    </div>
+                  <% end %>
+                  
+                  <%= form_for(@worksheet_expense) do |f| %>
+                           <% if !params[:tab_page].nil? %>
+							  <%= hidden_field_tag "tab_page", params[:tab_page] %>
+						 <% end %>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :name %></label>
+                          <span class="help">(required)</span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :name, :class => "form-control required" %>
+                          </div>
+                      </div>                     
+                      <div class="form-group">
+                        <label class="form-label"><%= f.label :type %></label>
+						<div class="input-with-icon  right">                                       
+							<i class=""></i>
+                            <select name="worksheet_expense[type_name]" class="modern_select width100" style="width: 100%; margin-bottom: 5px;">
+                                <option value="all" <%= 'selected="selected"' if @worksheet_expense.type_name == "all" %>>All</option>
+                                <option value="per_km" <%= 'selected="selected"' if @worksheet_expense.type_name == "per_km" %>>Per_KM</option>
+                            </select>
+						</div>
+                      </div>                      
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :price %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_field :price, :class => "form-control price_input" %>
+                          </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="form-label"><%= f.label :description %></label>
+                          <span class="help"></span>
+                          <div class="input-with-icon  right">                                       
+                              <i class=""></i>
+                              <%= f.text_area :description, :class => "form-control" %>
+                          </div>
+                      </div>
+                      
+                      <div class="form-actions">  
+                        <div class="pull-right">
+                          <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
+                          <%= link_to 'Cancel', "/home/close_tab", :class => "btn btn-white btn-cons" %>
+                        </div>
+                      </div>
+				<% end %>
+                </div>
+              </div>
+            </div>		
+      </div>

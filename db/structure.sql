@@ -816,6 +816,41 @@ ALTER SEQUENCE delivery_details_id_seq OWNED BY delivery_details.id;
 
 
 --
+-- Name: expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE expenses (
+    id integer NOT NULL,
+    name character varying,
+    price numeric,
+    type_name character varying,
+    description text,
+    creator_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE expenses_id_seq OWNED BY expenses.id;
+
+
+--
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2160,6 +2195,42 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheet_expenses (
+    id integer NOT NULL,
+    name character varying,
+    price numeric,
+    type_name character varying,
+    description text,
+    creator_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status character varying
+);
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheet_expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheet_expenses_id_seq OWNED BY worksheet_expenses.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2311,6 +2382,13 @@ ALTER TABLE ONLY deliveries ALTER COLUMN id SET DEFAULT nextval('deliveries_id_s
 --
 
 ALTER TABLE ONLY delivery_details ALTER COLUMN id SET DEFAULT nextval('delivery_details_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY expenses ALTER COLUMN id SET DEFAULT nextval('expenses_id_seq'::regclass);
 
 
 --
@@ -2559,6 +2637,13 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 
 
 --
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheet_expenses ALTER COLUMN id SET DEFAULT nextval('worksheet_expenses_id_seq'::regclass);
+
+
+--
 -- Name: agents_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2732,6 +2817,14 @@ ALTER TABLE ONLY deliveries
 
 ALTER TABLE ONLY delivery_details
     ADD CONSTRAINT delivery_details_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY expenses
+    ADD CONSTRAINT expenses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3012,6 +3105,14 @@ ALTER TABLE ONLY tmpproducttocats
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheet_expenses
+    ADD CONSTRAINT worksheet_expenses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3484,4 +3585,10 @@ INSERT INTO schema_migrations (version) VALUES ('20160226074840');
 INSERT INTO schema_migrations (version) VALUES ('20160229081249');
 
 INSERT INTO schema_migrations (version) VALUES ('20160229083906');
+
+INSERT INTO schema_migrations (version) VALUES ('20160302160821');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307034143');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307084133');
 
