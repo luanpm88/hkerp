@@ -1,0 +1,261 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="grid simple">
+            <div class="grid-title no-border">
+                <h4>Worksheet <span class="semi-bold">Details</span></h4>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+                    <a href="javascript:;" class="reload"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+
+            <div class="grid-body no-border">
+
+                <% if @worksheet.errors.any? %>
+                    <div class="alert alert-error">
+                        <button data-dismiss="alert" class="close"></button>
+                        <div id="error_explanation">
+                            <h5><%= pluralize(@worksheet.errors.count, "error") %> prohibited this feedback from being saved:</h5>
+
+                            <ul>
+                                <% @worksheet.errors.full_messages.each do |msg| %>
+                                    <li>
+                                        <%= msg %>
+                                    </li>
+                                <% end %>
+                            </ul>
+                        </div>
+                    </div>
+                <% end %>
+
+                <%= form_for(@worksheet, html: { multipart: true }) do |f| %>
+                    <% if !params[:tab_page].nil? %>
+                        <%= hidden_field_tag "tab_page", params[:tab_page] %>
+                    <% end %>
+                    
+                    <h3 class="label_dark">Add Staff</h3>
+                    <div class="worksheet_box_list">
+                        <% (0..9).each do |staff| %>
+                            <div class="row column-seperation item_box staff_box staff_box_<%= staff.to_s %> <%= 'hidden'.html_safe if staff >= 0 %>" rel="<%= staff %>">
+                                <div class="worksheet_box_label">Staff #<%= staff+1 %></div>
+                                <div id="staff_box_close" class="worksheet_box_close" rel="<%= staff.to_s %>"><i class="icon icon-remove"></i></div>
+                                <div class="col-md-12">
+                                     <hr />
+                                </div>
+                                <div class="col-md-12 line_list">
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :staff %></label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon right">                                       
+                                            <i class=""></i>
+                                            <div class="input-with_add_but">
+                                                <%= link_to '<i class="icon-plus"></i>'.html_safe, new_user_path(tab_page: 1), title: "New User", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
+                                                <input style="width:100%;margin-bottom: 5px;" name="worksheet[user_ids][]" data="<%= users_path(format: "json") %>" class="select2-ajax-users main_input" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                        <a href="#add_staff" class="btn btn-white add-more-staff"><i class="icon icon-plus"></i> Add Staff</a>
+                    </div>
+                    
+                    <h3 class="label_dark">Add Intinerary</h3>
+                    <% intinerary = 0 %>
+                    <div class="worksheet_box_list">
+                        <%= f.fields_for :worksheet_intineraries do |ff| %>
+                            <% id = @worksheet.worksheet_intineraries[intinerary].id %>
+                            <%= ff.hidden_field :id %>
+                            
+                            <div class="row column-seperation item_box intinerary_box intinerary_box_<%= intinerary.to_s %> <%= 'hidden'.html_safe if !id.present? %>" rel="<%= intinerary %>">
+                                <%= ff.hidden_field :_destroy, class: "destroy_field" %>
+                                <div class="worksheet_box_label">Intinerary #<%= intinerary+1 %></div>
+                                <div id="intinerary_box_close" class="worksheet_box_close" rel="<%= intinerary.to_s %>"><i class="icon icon-remove"></i></div>
+                                <div class="col-md-12">
+                                     <hr />
+                                </div>
+                                <div class="col-md-12 line_list">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :start_address %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :start_address, class:"form-control main_input" %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :end_address %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :end_address, class:"form-control main_input" %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :start_at %></label>
+                                            <span class="help">(default: current date)</span>
+                                            <div class="input-append success date col-md-10 no-padding">
+                                                <%= ff.text_field :start_at, class:"form-control main_input" %>
+                                                <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                            </div>
+                                            <br style="clear: both" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :end_at %></label>
+                                            <span class="help">(default: current date)</span>
+                                            <div class="input-append success date col-md-10 no-padding">
+                                                <%= ff.text_field :end_at, class:"form-control main_input" %>
+                                                <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                                            </div>
+                                            <br style="clear: both" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :distance %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :distance, class:"form-control main_input" %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :description %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :description, class:"form-control main_input" %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <div class="input-with-icon right">
+                                                <a class="btn btn-white btn-expense" style="float: right;margin-top: 31px;">Add Expense</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% intinerary = intinerary+1 %>
+                        <% end %>
+                        <a href="#add_intinerary" class="btn btn-white add-more-intinerary"><i class="icon icon-plus"></i> Add Intinerary</a>
+                    </div>
+                                    
+                    <h3 class="label_dark">Add Expense</h3>
+                    <div class="worksheet_box_list">
+                        <% (0..9).each do |expense| %>
+                            <div class="row column-seperation item_box expense_box expense_box_<%= expense.to_s %> <%= 'hidden'.html_safe if expense >= 0 %>" rel="<%= expense %>">
+                                <div class="worksheet_box_label">Expense #<%= expense+1 %></div>
+                                <div id="expense_box_close" class="worksheet_box_close" rel="<%= expense.to_s %>"><i class="icon icon-remove"></i></div>
+                                <div class="col-md-12">
+                                     <hr />
+                                </div>
+                                <div class="col-md-12 line_list">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label"><%= f.label :name %></label>
+                                                <span class="help">(required)</span>
+                                                <div class="input-with-icon right">                                       
+                                                    <i class=""></i>
+                                                    <div class="input-with_add_but">
+                                                        <%= link_to '<i class="icon-plus"></i>'.html_safe, "", title: "New Worksheet Expense", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
+                                                        <input style="width:100%;margin-bottom: 5px;" name="" data="<%= worksheets_path(format: "json") %>" class="select2-ajax-states" value="" text="Expense" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label class="form-label"><%= f.label :price %></label>
+                                                <span class="help">(required)</span>
+                                                <div class="input-with-icon right">                                       
+                                                    <i class=""></i>
+                                                    <input type="text" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-label"><%= f.label :description %></label>
+                                                <span class="help">(default: current date)</span>
+                                                <i class=""></i>
+                                                <input type="text" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <% end %>
+                        <a href="#add_expense" class="btn btn-white add-more-expense"><i class="icon icon-plus"></i> Add Expense</a>
+                    </div>
+                    
+                    <h3 class="label_dark">Add Other Expenses</h3>
+                    <% other = 0 %>
+                    <div class="row column-seperation">
+                        <div class="worksheet_box_label">Intinerary #<%= other+1 %></div>
+                                <div class="worksheet_box_close" rel="<%= other.to_s %>"><i class="icon icon-remove"></i></div>
+                                <div class="col-md-12">
+                                     <hr />
+                                </div>
+                            <div class="col-md-12 line_list">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :name %></label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon right">                                       
+                                            <i class=""></i>
+                                            <div class="input-with_add_but">
+                                                <%= link_to '<i class="icon-plus"></i>'.html_safe, "", title: "New Worksheet Expense", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
+                                                <input style="width:100%;margin-bottom: 5px;" name="" data="<%= worksheets_path(format: "json") %>" class="select2-ajax-states" value="" text="Staff" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :price %></label>
+                                        <span class="help">(required)</span>
+                                        <div class="input-with-icon right">                                       
+                                            <i class=""></i>
+                                            <input type="text" class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label"><%= f.label :description %></label>
+                                        <span class="help">(default: current date)</span>
+                                        <i class=""></i>
+                                        <input type="text" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#add_other_expense" class="btn btn-white add-more-other-intinerary"><i class="icon icon-plus"></i> Add Other Worksheet Expense</a>
+                    </div>
+              
+                    <div class="form-actions">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
+                            <%= link_to 'Cancel', worksheets_path, :class => "btn btn-white btn-cons" %>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

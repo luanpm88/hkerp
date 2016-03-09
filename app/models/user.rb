@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
   
   has_many :deliveries, foreign_key: 'creator_id'
   has_many :payment_records, foreign_key: 'accountant_id'
+  has_and_belongs_to_many :worksheets
   
   def ability
     @ability ||= Ability.new(self)

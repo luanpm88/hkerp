@@ -1372,6 +1372,37 @@
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10
 	    });
+		
+		//Datatable products
+	    $('.datatable-worksheets').dataTable( {
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "<%= datatable_worksheets_path %>",
+				"data": function ( d ) {
+					d.status = $('select[name="status"]').val();
+
+					d.user_id = $('.select2-ajax-users').val();					
+					
+					if($(".worksheets-filters input[name='from_date']").val()) {
+						d.from_date =  $(".worksheets-filters input[name='from_date']").val()
+					}
+					
+					if($(".worksheets-filters input[name='to_date']").val()) {
+						d.to_date =  $(".worksheets-filters input[name='to_date']").val()
+					}
+				}
+			},
+			"columnDefs": [ { "targets": [4], "orderable": false } ],
+			"order": [],
+			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
+			"iDisplayLength": 10
+	    });
+		
+		//reload database
+		$('.worksheets-filters select, .worksheets-filters input').change(function() {
+			$('.datatable-worksheets').dataTable().fnFilter();
+		})
 	    
 	    $('select[name="DataTables_Table_0_length"]').select2({allowClear: true});
 	    
@@ -1586,6 +1617,9 @@
 		
 		$('.accounting-statistics-filters input[type=text]').change(function() {
 			//setTimeout("$('#accounting-statistics-filters-form').submit();", 500);
+	    });
+		
+		$('.worksheets-filters select, .worksheets-filters input').change(function() {
 	    });
 	    
 	    $('.select2-ajax-users').select2({
@@ -1807,6 +1841,60 @@
 		
 		//upload image boxes
 		uploaderBoxes()
+		
+		//add more worksheet staff
+		$('.add-more-staff').click(function() {
+			$('.worksheet_box_list .staff_box').each(function() {
+				if ($(this).hasClass("hidden")) {
+					$(this).removeClass("hidden")
+					return false
+				}				
+			})
+		});
+		
+		//close worksheet staff box
+		$(document).on("click", "#staff_box_close", function(e) {			
+			var val = $(this).attr("rel")
+			$('.staff_box_'+val).find("input").val("")
+			$('.staff_box_'+val).addClass("hidden")
+		});
+		
+		//add more worksheet intinerary
+		$('.add-more-intinerary').click(function() {
+			$('.worksheet_box_list .intinerary_box').each(function() {
+				if ($(this).hasClass("hidden")) {
+					$(this).removeClass("hidden")
+					$(this).find("input.destroy_field").val(false)
+					return false
+				}				
+			})
+		});
+		
+		//close worksheet intinerary box
+		$(document).on("click", "#intinerary_box_close", function(e) {			
+			var val = $(this).attr("rel")
+			$('.intinerary_box_'+val).find("input").val("")
+			$('.intinerary_box_'+val).addClass("hidden")
+			$('.intinerary_box_'+val).find("input.destroy_field").val(true)
+		});
+		
+		//add more worksheet expense
+		$('.add-more-expense').click(function() {
+			$('.worksheet_box_list .expense_box').each(function() {
+				if ($(this).hasClass("hidden")) {
+					$(this).removeClass("hidden")
+					return false
+				}				
+			})
+		});
+		
+		//close worksheet expnse box
+		$(document).on("click", "#expense_box_close", function(e) {			
+			var val = $(this).attr("rel")
+			$('.expense_box_'+val).find("input").val("")
+			$('.expense_box_'+val).addClass("hidden")
+		});
+		
 		
 		//form validation
 		$('form').validate();

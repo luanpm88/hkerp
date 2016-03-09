@@ -1,4 +1,11 @@
 Hkerp::Application.routes.draw do
+  resources :worksheets do
+    collection do
+      get :datatable
+      patch :trash
+      patch :un_trash
+    end
+  end
   resources :feedbacks do
     collection do
       get :datatable
