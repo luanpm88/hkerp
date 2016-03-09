@@ -4,6 +4,11 @@ Hkerp::Application.routes.draw do
       get :datatable
       get :delete
       get :undo_deleted
+  resources :worksheets do
+    collection do
+      get :datatable
+      patch :trash
+      patch :un_trash
     end
   end
   resources :feedbacks do

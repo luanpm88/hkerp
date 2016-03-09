@@ -1,0 +1,14 @@
+<ul class="breadcrumb">
+  <li>
+    <p>YOU ARE HERE</p>
+  </li>
+  <li>
+    <%= link_to 'Worksheets', worksheets_url, :class => "active" %>
+  </li>
+</ul>
+
+<div class="page-title"> <i class="icon-edit"></i>
+  <h3>Edit - <span class="semi-bold">Worksheet</span></h3>
+</div>
+      	  
+<%= render 'form' %>

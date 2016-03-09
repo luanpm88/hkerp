@@ -760,6 +760,9 @@ a .icon-flip-vertical:before {
 .icon-cogs:before {
   content: "\f085";
 }
+.icon-car:before {
+  content: "\f0fb";
+}
 .icon-comments:before {
   content: "\f086";
 }

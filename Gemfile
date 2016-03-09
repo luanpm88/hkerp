@@ -59,4 +59,6 @@ gem 'mechanize'
 gem 'unicode_utils'
 gem 'thin'
 gem 'mdb'
+gem 'sinatra', '~> 1.4', '>= 1.4.7'
+gem 'fancybox2-rails'
 
