@@ -489,6 +489,17 @@
 	<% end %>
 	
 	<% if current_user.has_role? "admin" %>
+		<li <% if params[:controller] == "worksheets" %> class="active open"<% end %>>
+			<%= link_to worksheets_url do %>
+			  <i class="icon-car"></i>
+			  <span class="title">Worksheet</span>
+			  <span class="arrow<% if params[:controller] == "worksheets" %> open<% end %>"></span>
+			<% end %>
+			<ul class="sub-menu">
+			  <li<% if params[:controller] == "worksheets" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Worksheet Management', worksheets_path(tab_page:1), class: "tab_page" %></li>
+			</ul>
+	    </li>
+		
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
 				  <i class="icon-cogs"></i>

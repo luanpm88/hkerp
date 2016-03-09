@@ -1,0 +1,51 @@
+<div class="row worksheets-filters">
+    <div class="col-md-4">
+        <h4>User name</h4>
+        <div class="">
+            <div class="input-with-icon right">
+                <i class=""></i>
+                <input style="width:100%;margin-bottom: 5px;" name="user_id" data="<%= users_path(format: "json") %>" class="select2-ajax-users" value="" text="" data-placeholder="All"/>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+        <h4>From Date</h4>
+        <div class="date_select_filter">
+            <div class="input-with-icon right">
+                <div class="input-append success date col-md-10 no-padding">
+                    <%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                </div>
+                <br style="clear: both" />         
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-2">
+        <h4>To Date</h4>
+        <div class="date_select_filter">
+            <div class="input-with-icon right">
+                <div class="input-append success date col-md-10 no-padding">
+                    <%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                    <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                </div>
+                <br style="clear: both" />
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <h4>Status</h4>							
+        <div class="">
+            <div class="input-with-icon right">                                       
+                <i class=""></i>
+                <select name="status" class="modern_select width100">
+                    <option value="all">All</option>
+                    <option value="active" selected>Active</option>
+                    <option value="deleted">Deleted</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>

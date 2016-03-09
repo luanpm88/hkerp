@@ -1,0 +1,14 @@
+<p><b>Staff: </b><%= @worksheet.display_user_name.join(", ").html_safe %></p>
+<p><b>Status: </b><%= @worksheet.status %></p>
+<p><b>Created_at: </b><%= @worksheet.created_at.strftime("%d/%m/%Y") %></p>
+<p><b>Creator: </b><%= @worksheet.creator.name %></p>
+<p>
+    <% @worksheet.worksheet_intineraries.each do |item| %>
+        <p><b>From: </b><%= item.start_address %></p>
+        <p><b>To: </b><%= item.end_address %></p>
+        <p><b>Start at: </b><%= item.start_at.strftime("%d/%m/%Y") %></p>
+        <p><b>End at: </b><%= item.end_at.strftime("%d/%m/%Y") %></p>
+        <p><b>Distance: </b><%= item.distance.to_i %> Km</p>
+        <p><b>Description: </b><%= item.description %></p>
+    <% end %>
+</p>
