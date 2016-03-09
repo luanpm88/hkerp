@@ -1,56 +1,98 @@
 class WorksheetExpense < ActiveRecord::Base
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
   include PgSearch  
-    
+  
+  pg_search_scope :search,
+              against: [:status, :type_name, :name],
+              associated_against: {
+                user: [:first_name, :last_name]
+              },
+              using: {
+                tsearch: {
+                  dictionary: 'english',
+                  any_word: true,
+                  prefix: true
+                }
+              }
   
   def self.full_text_search(q)
-    self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    #self.where(status: 'active').search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    self.where('LOWER(worksheet_expenses.name) LIKE ?', "%#{q}%").limit(50).map {|model| {:id => model.id, :text => model.name}}
+
   end
   
   def price=(new_price)
       self[:price] = new_price.to_s.gsub(/[\,]/, '')
   end
   
-  def self.search_expenses(params)
-      records = Expense.all
-      
-      if params[:order_by]=='none'
-          records = records
-      end
-      
-      if params[:order_by]=='all'
-          records = records.where(type_name: 'all')
-      end
+#  def self.search_expenses(params)
+#      records = Expense.all
+#      
+#      if params[:order_by]=='none'
+#          records = records
+#      end
+#      
+#      if params[:order_by]=='all'
+#          records = records.where(type_name: 'all')
+#      end
+#  
+#      if params[:order_by]=='per_km'
+#          records = records.where(type_name: 'per_km')
+#      end
+#      
+#      if params[:order_by_cend] == 'asc'
+#        records = records.order("expenses.created_at ASC")
+#      end
+#      
+#      if params[:order_by_cend] == 'desc'
+#        records = records.order("expenses.created_at DESC")
+#      end
+#      
+#      return records
+#  end
   
-      if params[:order_by]=='per_km'
-          records = records.where(type_name: 'per_km')
-      end
-      
-      if params[:order_by_cend] == 'asc'
-        records = records.order("expenses.created_at ASC")
-      end
-      
-      if params[:order_by_cend] == 'desc'
-        records = records.order("expenses.created_at DESC")
-      end
-      
-      return records
-  end
-  
+
   def self.datatable(params, user)
       ActionView::Base.send(:include, Rails.application.routes.url_helpers)
       link_helper = ActionController::Base.helpers    
       
       @records = self.all
       
-      if !params[:type_name].present? && params[:type_name] == 'all'
-        @records = @records.where(type_name: 'all')
-      elsif !params[:type_name].present? && params[:type_name] == 'per_km'
-        @records = @records.where(type_name: 'per_km')
+      if !params["order"].nil?
+        if params["order"]["0"]["column"]="5"
+          @records = @records.order("created_at #{params["order"]["0"]["dir"]}")
+        end
+        if params["order"]["0"]["column"]="1"
+          @records = @records.order("name #{params["order"]["0"]["dir"]}")
+        end
+      end
+#      @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+      
+      
+      if !params.nil?
+        if params[:status].present? && params[:status] == "active"
+          @records = @records.where(status: "active")
+        end
+        if params[:status].present? && params[:status] == "deleted"
+          @records = @records.where(status: "deleted")
+        end
+        if params[:status].present? && params[:status] == "all"
+          @records = @records.all
+        end
+        ##
+        if params[:type_name].present? && params[:type_name] == "per_worksheet"
+          @records = @records.where(type_name: "per_worksheet")
+        end
+        if params[:type_name].present? && params[:type_name] == "per_kilometer"
+          @records = @records.where(type_name: "per_kilometer")
+        end
+        if params[:type_name].present? && params[:type_name] == "all"
+          @records = @records.all
+        end
       end
       
       total = @records.count
-      @records = @records.limit(params[:length]).offset(params["start"]).where(status: 'active' )
+      @records = @records.limit(params[:length]).offset(params["start"])
       data = []
       
       actions_col = 8
@@ -62,8 +104,8 @@ class WorksheetExpense < ActiveRecord::Base
                   '<div class="text-center">'+item.display_type_name+"</div>",
                   '<div class="text-center">'+item.description+"</div>",
                   '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+"</div>",
-                  '<div class="text-center">'+item.status+"</div>",
-                  item.creator.nil? ? "" : "<div class=\"text-center\">"+item.creator.short_name+'</div>',
+                  '<div class="text-center">'+item.display_status+"</div>",
+                  item.creator.nil? ? "" : "<div class=\"text-center\">"+item.creator.staff_col+'</div>',
                   '',
               ]
         data << row
@@ -81,11 +123,15 @@ class WorksheetExpense < ActiveRecord::Base
   end
   
   def display_type_name
-    if self.type_name == 'all'
-      return "All"
-    elsif self.type_name == 'per_km'
+    if self.type_name == 'per_worksheet'
+      return "Per Worksheet"
+    elsif self.type_name == 'per_kilometer'
       return "Per Kilometer"
     end
+  end
+  
+  def display_status
+    return "<div class=\"#{self.status}\">#{self.status}</div>".html_safe
   end
 
 end
