@@ -2195,19 +2195,6 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
--- Name: worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE TABLE worksheet_expenses (
-    id integer NOT NULL,
-    name character varying,
-    price numeric,
-    type_name character varying,
-    description text,
-    creator_id integer,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    status character varying
 -- Name: users_worksheets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -2237,6 +2224,42 @@ CREATE SEQUENCE users_worksheets_id_seq
 --
 
 ALTER SEQUENCE users_worksheets_id_seq OWNED BY users_worksheets.id;
+
+
+--
+-- Name: worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheet_expenses (
+    id integer NOT NULL,
+    name character varying,
+    price numeric,
+    type_name character varying,
+    description text,
+    creator_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status character varying
+);
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheet_expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheet_expenses_id_seq OWNED BY worksheet_expenses.id;
 
 
 --
@@ -2290,15 +2313,10 @@ CREATE TABLE worksheets (
 
 
 --
--- Name: worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE worksheet_expenses_id_seq
 -- Name: worksheets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
 CREATE SEQUENCE worksheets_id_seq
->>>>>>> add_worksheet_to_erp
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -2307,17 +2325,10 @@ CREATE SEQUENCE worksheets_id_seq
 
 
 --
-
--- Name: worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE worksheet_expenses_id_seq OWNED BY worksheet_expenses.id;
-
 -- Name: worksheets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
 ALTER SEQUENCE worksheets_id_seq OWNED BY worksheets.id;
-
 
 
 --
@@ -2730,10 +2741,14 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY users_worksheets ALTER COLUMN id SET DEFAULT nextval('users_worksheets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
 
 ALTER TABLE ONLY worksheet_expenses ALTER COLUMN id SET DEFAULT nextval('worksheet_expenses_id_seq'::regclass);
-
-ALTER TABLE ONLY users_worksheets ALTER COLUMN id SET DEFAULT nextval('users_worksheets_id_seq'::regclass);
 
 
 --
@@ -2748,7 +2763,6 @@ ALTER TABLE ONLY worksheet_intineraries ALTER COLUMN id SET DEFAULT nextval('wor
 --
 
 ALTER TABLE ONLY worksheets ALTER COLUMN id SET DEFAULT nextval('worksheets_id_seq'::regclass);
-
 
 
 --
@@ -3216,18 +3230,19 @@ ALTER TABLE ONLY users
 
 
 --
-
--- Name: worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
---
-
-ALTER TABLE ONLY worksheet_expenses
-    ADD CONSTRAINT worksheet_expenses_pkey PRIMARY KEY (id);
-
 -- Name: users_worksheets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY users_worksheets
     ADD CONSTRAINT users_worksheets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheet_expenses
+    ADD CONSTRAINT worksheet_expenses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3244,7 +3259,6 @@ ALTER TABLE ONLY worksheet_intineraries
 
 ALTER TABLE ONLY worksheets
     ADD CONSTRAINT worksheets_pkey PRIMARY KEY (id);
->>>>>>> add_worksheet_to_erp
 
 
 --
@@ -3718,12 +3732,7 @@ INSERT INTO schema_migrations (version) VALUES ('20160229081249');
 
 INSERT INTO schema_migrations (version) VALUES ('20160229083906');
 
-
 INSERT INTO schema_migrations (version) VALUES ('20160302160821');
-
-INSERT INTO schema_migrations (version) VALUES ('20160307034143');
-
-INSERT INTO schema_migrations (version) VALUES ('20160307084133');
 
 INSERT INTO schema_migrations (version) VALUES ('20160303030812');
 
@@ -3735,6 +3744,9 @@ INSERT INTO schema_migrations (version) VALUES ('20160304015253');
 
 INSERT INTO schema_migrations (version) VALUES ('20160304042237');
 
-INSERT INTO schema_migrations (version) VALUES ('20160307144802');
+INSERT INTO schema_migrations (version) VALUES ('20160307034143');
 
+INSERT INTO schema_migrations (version) VALUES ('20160307084133');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307144802');
 
