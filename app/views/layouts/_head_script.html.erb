@@ -1470,6 +1470,28 @@
 			}
 	    });
 		
+		//ajax select2 for expenses
+		$('.select2-ajax-expenses').select2({
+			placeholder: "Search for a expense",
+			minimumInputLength: 1,
+			allowClear: true,
+			ajax: {
+			  url: $('.select2-ajax-expenses').attr("data"),
+			  dataType: 'json',
+			  data: function (term, page) { // page is the one-based page number tracked by Select2
+				return {
+				  q: term, //search term
+				};
+			  },
+			  results: function (data, page) {
+				return {results: data};
+			  }
+			},
+			initSelection: function (element, callback) {				      
+			  callback({ id: element.val(), text: element.attr('text') });
+			}
+		});
+		
 		$('.select2-ajax-manufacturers').select2({
 			      placeholder: "Search for a manufacturer",
 			      minimumInputLength: 1,
@@ -1847,6 +1869,7 @@
 			$('.worksheet_box_list .staff_box').each(function() {
 				if ($(this).hasClass("hidden")) {
 					$(this).removeClass("hidden")
+					$(this).find("input.destroy_field").val(false)
 					return false
 				}				
 			})
@@ -1856,7 +1879,9 @@
 		$(document).on("click", "#staff_box_close", function(e) {			
 			var val = $(this).attr("rel")
 			$('.staff_box_'+val).find("input").val("")
+			$('.staff_box_'+val).find("input").select2("val","")
 			$('.staff_box_'+val).addClass("hidden")
+			$('.staff_box_'+val).find("input.destroy_field").val(true)
 		});
 		
 		//add more worksheet intinerary
@@ -1888,11 +1913,31 @@
 			})
 		});
 		
-		//close worksheet expnse box
+		//close worksheet expense box
 		$(document).on("click", "#expense_box_close", function(e) {			
 			var val = $(this).attr("rel")
 			$('.expense_box_'+val).find("input").val("")
 			$('.expense_box_'+val).addClass("hidden")
+		});
+		
+		//add more other expense
+		$('.add-more-other-expense').click(function() {
+			$('.worksheet_box_list .other_expense_box').each(function() {
+				if ($(this).hasClass("hidden")) {
+					$(this).removeClass("hidden")
+					$(this).find("input.destroy_field").val(false)
+					return false
+				}				
+			})
+		});
+		
+		//close other expense box
+		$(document).on("click", "#other_expense_box_close", function(e) {			
+			var val = $(this).attr("rel")
+			$('.other_expense_box_'+val).find("input").val("")
+			$('.other_expense_box_'+val).find("input").select2("val","")
+			$('.other_expense_box_'+val).addClass("hidden")
+			$('.other_expense_box_'+val).find("input.destroy_field").val(true)
 		});
 		
 		
@@ -1972,11 +2017,14 @@
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10
 	    });
+<<<<<<< HEAD
 		
 		//Reload
 		$("select[name='type_name[]']" ).change(function() {
 			$('.datatable-worksheet-expenses').dataTable().fnFilter();
 	    });
+=======
+>>>>>>> add_worksheet_to_erp_ver1.1
 
 });
 

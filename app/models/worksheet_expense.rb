@@ -1,10 +1,10 @@
 class WorksheetExpense < ActiveRecord::Base
+  include PgSearch
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
-  include PgSearch  
-    
+  has_and_belongs_to_many :worksheets
   
   def self.full_text_search(q)
-    self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    self.where("LOWER(worksheet_expenses.name) LIKE ?", "%#{q.strip.downcase}%").limit(50).map {|model| {:id => model.id, :text => model.name} }
   end
   
   def price=(new_price)

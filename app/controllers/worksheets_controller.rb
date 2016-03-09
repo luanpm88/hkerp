@@ -24,15 +24,27 @@ class WorksheetsController < ApplicationController
   # GET /worksheets/new
   def new
     @worksheet = Worksheet.new
+     9.times do
+      @worksheet.users_worksheets.build
+    end
     9.times do
       @worksheet.worksheet_intineraries.build
+    end
+    9.times do
+      @worksheet.worksheets_worksheet_expenses.build
     end
   end
 
   # GET /worksheets/1/edit
   def edit
+    (9-@worksheet.users_worksheets.count).times do
+      @worksheet.users_worksheets.build
+    end
     (9-@worksheet.worksheet_intineraries.count).times do
       @worksheet.worksheet_intineraries.build
+    end
+    (9-@worksheet.worksheets_worksheet_expenses.count).times do
+      @worksheet.worksheets_worksheet_expenses.build
     end
   end
 
@@ -44,7 +56,7 @@ class WorksheetsController < ApplicationController
 
     respond_to do |format|
       if @worksheet.save
-        format.html { redirect_to worksheets_path(tab_page: 1), notice: 'Worksheet was successfully created.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : worksheets_path, notice: 'Worksheet was successfully created.' }
         format.json { render action: 'show', status: :created, location: @worksheet }
       else
         format.html { render action: 'new' }
@@ -58,7 +70,7 @@ class WorksheetsController < ApplicationController
   def update
     respond_to do |format|
       if @worksheet.update(worksheet_params)
-        format.html { redirect_to worksheets_path(tab_page: 1), notice: 'Worksheet was successfully updated.' }
+        format.html { redirect_to params[:tab_page].present? ? "/home/close_tab" : worksheets_path, notice: 'Worksheet was successfully updated.' }
         format.json { head :no_content }
       else
         format.html { render action: 'edit' }
@@ -122,6 +134,6 @@ class WorksheetsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def worksheet_params
-      params.require(:worksheet).permit(:creator_id, :user_ids => [], worksheet_intineraries_attributes: [:id, :start_address, :end_address, :start_at, :end_at, :distance, :description, :_destroy])
+      params.require(:worksheet).permit(:creator_id, users_worksheets_attributes: [:id, :user_id, :worksheet_id, :_destroy], worksheets_worksheet_expenses_attributes: [:id, :worksheet_id, :worksheet_expense_id, :price, :description, :_destroy], worksheet_intineraries_attributes: [:id, :start_address, :end_address, :start_at, :end_at, :distance, :description, :_destroy])
     end
 end

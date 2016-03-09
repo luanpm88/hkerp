@@ -36,13 +36,17 @@
                     <% end %>
                     
                     <h3 class="label_dark">Add Staff</h3>
+                    <% staff = 0 %>
                     <div class="worksheet_box_list">
-                        <% (0..9).each do |staff| %>
-                            <div class="row column-seperation item_box staff_box staff_box_<%= staff.to_s %> <%= 'hidden'.html_safe if staff >= 0 %>" rel="<%= staff %>">
+                        <%= f.fields_for :users_worksheets do |ff| %>
+                            <% users_worksheet = @worksheet.users_worksheets[staff] %>
+                            <%= ff.hidden_field :id %>
+                            <div class="row column-seperation item_box staff_box staff_box_<%= staff.to_s %> <%= 'hidden'.html_safe if !users_worksheet.id.present? %>" rel="<%= staff %>">
+                                <%= ff.hidden_field :_destroy, class: "destroy_field" %>
                                 <div class="worksheet_box_label">Staff #<%= staff+1 %></div>
                                 <div id="staff_box_close" class="worksheet_box_close" rel="<%= staff.to_s %>"><i class="icon icon-remove"></i></div>
                                 <div class="col-md-12">
-                                     <hr />
+                                    <hr />
                                 </div>
                                 <div class="col-md-12 line_list">
                                     <div class="form-group">
@@ -52,12 +56,13 @@
                                             <i class=""></i>
                                             <div class="input-with_add_but">
                                                 <%= link_to '<i class="icon-plus"></i>'.html_safe, new_user_path(tab_page: 1), title: "New User", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
-                                                <input style="width:100%;margin-bottom: 5px;" name="worksheet[user_ids][]" data="<%= users_path(format: "json") %>" class="select2-ajax-users main_input" />
+                                                <input style="width:100%;margin-bottom: 5px;" name="worksheet[users_worksheets_attributes][<%= staff %>][user_id]" data="<%= users_path(format: "json") %>" class="select2-ajax-users" text="<%= users_worksheet.user.name if !users_worksheet.user.nil? %>" value="<%= users_worksheet.user.id if !users_worksheet.user.nil? %>" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <% staff = staff+1 %>
                         <% end %>
                         <a href="#add_staff" class="btn btn-white add-more-staff"><i class="icon icon-plus"></i> Add Staff</a>
                     </div>
@@ -83,7 +88,7 @@
                                             <span class="help">(required)</span>
                                             <div class="input-with-icon right">                                       
                                                 <i class=""></i>
-                                                <%= ff.text_field :start_address, class:"form-control main_input" %>
+                                                <%= ff.text_field :start_address, class:"form-control" %>
                                             </div>
                                         </div>
                                     </div>
@@ -93,7 +98,7 @@
                                             <span class="help">(required)</span>
                                             <div class="input-with-icon right">                                       
                                                 <i class=""></i>
-                                                <%= ff.text_field :end_address, class:"form-control main_input" %>
+                                                <%= ff.text_field :end_address, class:"form-control" %>
                                             </div>
                                         </div>
                                     </div>
@@ -102,7 +107,7 @@
                                             <label class="form-label"><%= f.label :start_at %></label>
                                             <span class="help">(default: current date)</span>
                                             <div class="input-append success date col-md-10 no-padding">
-                                                <%= ff.text_field :start_at, class:"form-control main_input" %>
+                                                <%= ff.text_field :start_at, class:"form-control" %>
                                                 <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                                             </div>
                                             <br style="clear: both" />
@@ -127,7 +132,7 @@
                                             <span class="help"></span>
                                             <div class="input-with-icon right">                                       
                                                 <i class=""></i>
-                                                <%= ff.text_field :distance, class:"form-control main_input" %>
+                                                <%= ff.text_field :distance, class:"form-control price_input" %>
                                             </div>
                                         </div>
                                     </div>
@@ -137,7 +142,7 @@
                                             <span class="help"></span>
                                             <div class="input-with-icon right">                                       
                                                 <i class=""></i>
-                                                <%= ff.text_field :description, class:"form-control main_input" %>
+                                                <%= ff.text_field :description, class:"form-control" %>
                                             </div>
                                         </div>
                                     </div>
@@ -155,7 +160,7 @@
                         <a href="#add_intinerary" class="btn btn-white add-more-intinerary"><i class="icon icon-plus"></i> Add Intinerary</a>
                     </div>
                                     
-                    <h3 class="label_dark">Add Expense</h3>
+                    <!--<h3 class="label_dark">Add Expense</h3>
                     <div class="worksheet_box_list">
                         <% (0..9).each do |expense| %>
                             <div class="row column-seperation item_box expense_box expense_box_<%= expense.to_s %> <%= 'hidden'.html_safe if expense >= 0 %>" rel="<%= expense %>">
@@ -191,7 +196,7 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label class="form-label"><%= f.label :description %></label>
-                                                <span class="help">(default: current date)</span>
+                                                <span class="help">(required)</span>
                                                 <i class=""></i>
                                                 <input type="text" class="form-control" />
                                             </div>
@@ -201,51 +206,60 @@
                             </div>
                         <% end %>
                         <a href="#add_expense" class="btn btn-white add-more-expense"><i class="icon icon-plus"></i> Add Expense</a>
-                    </div>
+                    </div>-->
                     
                     <h3 class="label_dark">Add Other Expenses</h3>
-                    <% other = 0 %>
-                    <div class="row column-seperation">
-                        <div class="worksheet_box_label">Intinerary #<%= other+1 %></div>
-                                <div class="worksheet_box_close" rel="<%= other.to_s %>"><i class="icon icon-remove"></i></div>
+                    <% other_expense = 0 %>
+                    <div class="worksheet_box_list">
+                        <%= f.fields_for :worksheets_worksheet_expenses do |ff| %>
+                            <% worksheets_worksheet_expenses = @worksheet.worksheets_worksheet_expenses[other_expense] %>
+                            <%= ff.hidden_field :id %>
+                            <div class="row column-seperation item_box other_expense_box other_expense_box_<%= other_expense.to_s %> <%= 'hidden'.html_safe if !worksheets_worksheet_expenses.id.present?  %>" rel="<%= other_expense %>">
+                                <%= ff.hidden_field :_destroy, class: "destroy_field" %>
+                                <div class="worksheet_box_label">Other Expense #<%= other_expense+1 %></div>
+                                <div id="other_expense_box_close" class="worksheet_box_close" rel="<%= other_expense.to_s %>"><i class="icon icon-remove"></i></div>
                                 <div class="col-md-12">
-                                     <hr />
+                                    <hr />
                                 </div>
-                            <div class="col-md-12 line_list">
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label"><%= f.label :name %></label>
-                                        <span class="help">(required)</span>
-                                        <div class="input-with-icon right">                                       
-                                            <i class=""></i>
-                                            <div class="input-with_add_but">
-                                                <%= link_to '<i class="icon-plus"></i>'.html_safe, "", title: "New Worksheet Expense", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
-                                                <input style="width:100%;margin-bottom: 5px;" name="" data="<%= worksheets_path(format: "json") %>" class="select2-ajax-states" value="" text="Staff" />
+                                <div class="col-md-12 line_list">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :name %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <div class="input-with_add_but">
+                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, new_worksheet_expense_path(tab_page: 1), title: "New Worksheet Expense", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
+                                                    <input style="width:100%;margin-bottom: 5px;" name="worksheet[worksheets_worksheet_expenses_attributes][<%= other_expense %>][worksheet_expense_id]" data="<%= worksheet_expenses_path(format: "json") %>" class="select2-ajax-expenses" text="<%= worksheets_worksheet_expenses.worksheet_expense.name if !worksheets_worksheet_expenses.worksheet_expense.nil? %>" value="<%= worksheets_worksheet_expenses.worksheet_expense.id if !worksheets_worksheet_expenses.worksheet_expense.nil? %>" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :price %></label>
+                                            <span class="help">(required)</span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :price, class:"form-control price_input" %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label"><%= f.label :description %></label>
+                                            <span class="help"></span>
+                                            <div class="input-with-icon right">                                       
+                                                <i class=""></i>
+                                                <%= ff.text_field :description, class:"form-control" %>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
-                                    <div class="form-group">
-                                        <label class="form-label"><%= f.label :price %></label>
-                                        <span class="help">(required)</span>
-                                        <div class="input-with-icon right">                                       
-                                            <i class=""></i>
-                                            <input type="text" class="form-control" />
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="form-label"><%= f.label :description %></label>
-                                        <span class="help">(default: current date)</span>
-                                        <i class=""></i>
-                                        <input type="text" class="form-control" />
-                                    </div>
-                                </div>
                             </div>
-                        </div>
-                        <a href="#add_other_expense" class="btn btn-white add-more-other-intinerary"><i class="icon icon-plus"></i> Add Other Worksheet Expense</a>
+                            <% other_expense = other_expense+1 %>
+                        <% end %>
+                        <a href="#add_more_other_expense" class="btn btn-white add-more-other-expense"><i class="icon icon-plus"></i> Add Other Expense</a>
                     </div>
               
                     <div class="form-actions">
