@@ -1,8 +1,16 @@
 class Worksheet < ActiveRecord::Base
   include PgSearch
   belongs_to :creator, class_name: "User"
-  has_many :worksheet_intineraries, dependent: :destroy
+  
   has_and_belongs_to_many :users
+  has_and_belongs_to_many :worksheet_expenses
+  
+  has_many :worksheet_intineraries, dependent: :destroy
+  has_many :worksheets_worksheet_expenses, dependent: :destroy
+  has_many :users_worksheets, dependent: :destroy
+  
+  accepts_nested_attributes_for :worksheets_worksheet_expenses, :reject_if => lambda { |a| a[:worksheet_expense_id].blank? }, :allow_destroy => true
+  accepts_nested_attributes_for :users_worksheets, :reject_if => lambda { |a| a[:user_id].blank? }, :allow_destroy => true
   accepts_nested_attributes_for :worksheet_intineraries, :reject_if => lambda { |a| a[:start_address].blank? }, :allow_destroy => true
 
   pg_search_scope :search,

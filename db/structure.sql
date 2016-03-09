@@ -2297,6 +2297,38 @@ ALTER SEQUENCE worksheets_id_seq OWNED BY worksheets.id;
 
 
 --
+-- Name: worksheets_worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheets_worksheet_expenses (
+    id integer NOT NULL,
+    worksheet_id integer,
+    worksheet_expense_id integer,
+    price numeric,
+    description character varying
+);
+
+
+--
+-- Name: worksheets_worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheets_worksheet_expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheets_worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheets_worksheet_expenses_id_seq OWNED BY worksheets_worksheet_expenses.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2721,6 +2753,13 @@ ALTER TABLE ONLY worksheet_intineraries ALTER COLUMN id SET DEFAULT nextval('wor
 --
 
 ALTER TABLE ONLY worksheets ALTER COLUMN id SET DEFAULT nextval('worksheets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheets_worksheet_expenses ALTER COLUMN id SET DEFAULT nextval('worksheets_worksheet_expenses_id_seq'::regclass);
 
 
 --
@@ -3212,6 +3251,14 @@ ALTER TABLE ONLY worksheets
 
 
 --
+-- Name: worksheets_worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheets_worksheet_expenses
+    ADD CONSTRAINT worksheets_worksheet_expenses_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: index_line_items_on_cart_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -3697,4 +3744,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160307034143');
 INSERT INTO schema_migrations (version) VALUES ('20160307084133');
 
 INSERT INTO schema_migrations (version) VALUES ('20160307144802');
+
+INSERT INTO schema_migrations (version) VALUES ('20160309051609');
+
+INSERT INTO schema_migrations (version) VALUES ('20160309073038');
 

@@ -497,35 +497,23 @@
 			<% end %>
 			<ul class="sub-menu">
 			  <li<% if params[:controller] == "worksheets" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Worksheet Management', worksheets_path(tab_page:1), class: "tab_page" %></li>
+			  <li<% if params[:controller] == "worksheet_expenses" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Worksheet Expense', worksheet_expenses_path(tab_page:1), class: "tab_page" %></li>
 			</ul>
 	    </li>
 		
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
-				<%= link_to contacts_url do %>
-				  <i class="icon-cogs"></i>
-				  <span class="title">System</span>
-				  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
-				<% end %>
-				<ul class="sub-menu">
-				  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path(tab_page:1), class: "tab_page" %></li>
-				  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup?tab_page=1", class: "tab_page" %></li>
-				  <li<% if ["restore"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Restore', "/admin/users/restore?tab_page=1", class: "tab_page" %></li>
-				</ul>
-	    </li>
-	<% end %>
-	
-		<li <% if params[:controller] == "users" %> class="active open"<% end %>>
 			<%= link_to contacts_url do %>
 			  <i class="icon-cogs"></i>
-			  <span class="title">Worksheet</span>
+			  <span class="title">System</span>
 			  <span class="arrow<% if params[:controller] == "users" %> open<% end %>"></span>
 			<% end %>
 			<ul class="sub-menu">
-			  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Worksheet' %></li>
-			  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Worksheet Expense', worksheet_expenses_path(tab_page:1), class: "tab_page" %></li>
+			  <li<% if params[:controller] == "users" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Users', users_path(tab_page:1), class: "tab_page" %></li>
+			  <li<% if ["backup"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Backup', "/admin/users/backup?tab_page=1", class: "tab_page" %></li>
+			  <li<% if ["restore"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Restore', "/admin/users/restore?tab_page=1", class: "tab_page" %></li>
 			</ul>
-		</li>
-	
+	    </li>
+	<% end %>
 	
     </ul>
 	<div class="side-bar-widgets" style="display:none">
