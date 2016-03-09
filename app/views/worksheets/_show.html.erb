@@ -1,3 +1,4 @@
+<!--
 <p><b>Staff: </b><%= @worksheet.display_user_name.join(", ").html_safe %></p>
 <p><b>Status: </b><%= @worksheet.status %></p>
 <p><b>Created_at: </b><%= @worksheet.created_at.strftime("%d/%m/%Y") %></p>
@@ -11,4 +12,107 @@
         <p><b>Distance: </b><%= item.distance.to_i %> Km</p>
         <p><b>Description: </b><%= item.description %></p>
     <% end %>
-</p>
+</p>-->
+
+
+<div class="row">
+        <div class="col-md-12">
+          <div class="grid simple">
+            <div class="grid-title no-border">
+                
+              <h4>Worsheet <span class="semi-bold">Details</span></h4>
+              <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
+            </div>     
+            
+            <div class="grid-body no-border">
+          
+                <div class="row column-seperation">
+                       
+                  <div class="col-md-6">
+                    
+                    <div class="form-group">
+                       <label class="form-label">Staff: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                               <%= @worksheet.display_user_name.join(", ").html_safe %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Status: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                                <%= @worksheet.status %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     
+                     
+                     <div class="form-group">
+                       <label class="form-label">Created At: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                          <%= @worksheet.created_at.strftime("%d/%m/%Y") %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Creator: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                          <%= @worksheet.creator.name %>
+                           </div>
+                                
+                         </div>               
+                     </div>
+                                                           
+                  </div>
+                          
+                  <div class="col-md-6">
+                    <div class="form-group">
+                       <label class="form-label">Price:</label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                               
+                           </div>
+                                
+                         </div>               
+                     </div>
+                     
+                     <div class="form-group">
+                       <label class="form-label">Description: </label>
+                         <div class="input-with-icon  right">                                       
+                                
+                           <div  class="form-control"  type="text">
+                              
+                           </div>
+                                
+                         </div>               
+                     </div>
+                  </div>
+                    
+                </div>
+                  
+              <div class="form-actions">  
+                <div class="pull-right">
+                  <%= link_to 'Cancel', "/home/close_tab", :class => "btn btn-white btn-cons cancel-but" %>
+                </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>		
+  </div>
+   
+

@@ -81,9 +81,9 @@ class WorksheetExpense < ActiveRecord::Base
   end
   
   def display_type_name
-    if self.type_name == 'all'
-      return "All"
-    elsif self.type_name == 'per_km'
+    if self.type_name == 'per_worksheet'
+      return "Per Worksheet"
+    elsif self.type_name == 'per_kilometer'
       return "Per Kilometer"
     end
   end
