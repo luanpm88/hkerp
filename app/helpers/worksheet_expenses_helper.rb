@@ -10,9 +10,10 @@ module WorksheetExpensesHelper
       actions += '<li>'+ActionController::Base.helpers.link_to("Edit", edit_worksheet_expense_path(id: item.id, tab_page: 1), psrc: (item.id ? worksheet_expenses_path(tab_page:1) : worksheet_expenses_url(tab_page: 1)), title: "Edit - [#{item.id}]", class: "tab_page")+'</li>'
       
       if item.status == "active"
-        actions += '<li>'+ActionController::Base.helpers.link_to("Trash", delete_worksheet_expenses_path(id: item.id, tab_page: 1), psrc: (worksheet_expenses_path(tab_page: 1)), title: "Worksheet Expense - [#{item.id}]", class: "tab_page", data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('<i class="icon-trash"></i> Trash'.html_safe, delete_worksheet_expenses_path(id: item.id, tab_page: 1), psrc: (worksheet_expenses_path(tab_page: 1)), title: "Worksheet Expense - [#{item.id}]", class: "tab_page", data: { confirm: 'Are you sure?' })+'</li>'
       elsif item.status == "deleted"
-        actions += '<li>'+ActionController::Base.helpers.link_to("Un-Trash", undo_deleted_worksheet_expenses_path(id: item.id, tab_page: 1), psrc: (worksheet_expenses_path(tab_page: 1)), title: "Worksheet Expense - [#{item.id}]", class: "tab_page", data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to("Delete", item, method: :delete, data: { confirm: 'Are you sure?' })+'</li>'
+        actions += '<li>'+ActionController::Base.helpers.link_to('<i class="icon-trash"></i> Un-Trash'.html_safe, undo_deleted_worksheet_expenses_path(id: item.id, tab_page: 1), psrc: (worksheet_expenses_path(tab_page: 1)), title: "Worksheet Expense - [#{item.id}]", class: "tab_page", data: { confirm: 'Are you sure?' })+'</li>'
       end
             
       actions += '</ul></div></div>'

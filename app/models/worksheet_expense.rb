@@ -95,7 +95,7 @@ class WorksheetExpense < ActiveRecord::Base
       @records = @records.limit(params[:length]).offset(params["start"])
       data = []
       
-      actions_col = 7
+      actions_col = 8
       @records.each do |item|
         row = [
                   "<div class=\"checkbox check-default\"><input name=\"ids[]\" id=\"checkbox#{item.id}\" type=\"checkbox\" value=\"#{item.id}\"><label for=\"checkbox#{item.id}\"></label></div>",
@@ -127,6 +127,8 @@ class WorksheetExpense < ActiveRecord::Base
       return "Per Worksheet"
     elsif self.type_name == 'per_kilometer'
       return "Per Kilometer"
+    else
+      return "None"
     end
   end
   
