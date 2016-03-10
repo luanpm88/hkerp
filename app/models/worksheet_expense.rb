@@ -1,10 +1,5 @@
 class WorksheetExpense < ActiveRecord::Base
-  include PgSearch
   belongs_to :creator, :class_name => "User", :foreign_key => "creator_id"
-  has_and_belongs_to_many :worksheets
-  
-  def self.full_text_search(q)
-    self.where("LOWER(worksheet_expenses.name) LIKE ?", "%#{q.strip.downcase}%").limit(50).map {|model| {:id => model.id, :text => model.name} }
   include PgSearch  
   
   pg_search_scope :search,
@@ -19,6 +14,11 @@ class WorksheetExpense < ActiveRecord::Base
                   prefix: true
                 }
               }
+  
+  def self.full_text_search(q)
+    #self.where(status: 'active').search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    self.where('LOWER(worksheet_expenses.name) LIKE ?', "%#{q}%").limit(50).map {|model| {:id => model.id, :text => model.name}}
+
   end
   
   def price=(new_price)
@@ -95,7 +95,7 @@ class WorksheetExpense < ActiveRecord::Base
       @records = @records.limit(params[:length]).offset(params["start"])
       data = []
       
-      actions_col = 7
+      actions_col = 8
       @records.each do |item|
         row = [
                   "<div class=\"checkbox check-default\"><input name=\"ids[]\" id=\"checkbox#{item.id}\" type=\"checkbox\" value=\"#{item.id}\"><label for=\"checkbox#{item.id}\"></label></div>",
@@ -103,7 +103,7 @@ class WorksheetExpense < ActiveRecord::Base
                   '<div class="text-center">'+item.price.to_i.to_s+"</div>",
                   '<div class="text-center">'+item.display_type_name+"</div>",
                   '<div class="text-center">'+item.description+"</div>",
-                  '<div class="text-center">'+item.created_at.strftime("%d/%m/%Y")+"</div>",
+                  '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+"</div>",
                   '<div class="text-center">'+item.display_status+"</div>",
                   item.creator.nil? ? "" : "<div class=\"text-center\">"+item.creator.staff_col+'</div>',
                   '',
