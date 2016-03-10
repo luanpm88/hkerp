@@ -2011,10 +2011,25 @@
 					d.type_name = $("select[name='type_name']").val();
 				}
 			},
-			"columnDefs": [ { "targets": [6,7,8], "orderable": false } ],
+			"columnDefs": [ { "targets": [0,2,3,4,6,7,8], "orderable": false } ],
 			"order": [],
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10
+	    });
+		
+		//Reload
+		$('.worksheet-expenses-filters select').change(function() {
+			$('.datatable-worksheet-expenses').dataTable().fnFilter();
+		})
+		
+		 $('select[name="task"]').live("change", function() {
+			if ($(this).val() != "") {
+				$('select[name="task"]').val($(this).find(":selected").text());
+			}
+			else
+			{
+				$('select[name="task"]').val("");
+			}
 	    });
 
 });
