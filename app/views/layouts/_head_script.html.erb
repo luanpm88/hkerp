@@ -2007,20 +2007,14 @@
 			"ajax": {
 				"url": "<%= datatable_worksheet_expenses_path %>",
 				"data": function ( d ) {
-					d.type_name = $("select[name='type_name']").select2("val");
-					d.order_by_cend = $('select[name="order_by_cend"]').select2("val");
-					d.status = $('select[name="status"]').select2("val");
+					d.status = $('select[name="status"]').val();
+					d.type_name = $("select[name='type_name']").val();
 				}
 			},
-			"columnDefs": [ { "targets": [0,1,2,3,4,5,6,7,8], "orderable": false } ],
+			"columnDefs": [ { "targets": [6,7,8], "orderable": false } ],
 			"order": [],
 			"aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
 			"iDisplayLength": 10
-	    });
-		
-		//Reload
-		$("select[name='type_name[]']" ).change(function() {
-			$('.datatable-worksheet-expenses').dataTable().fnFilter();
 	    });
 
 });

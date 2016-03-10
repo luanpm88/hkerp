@@ -1,5 +1,5 @@
 class WorksheetExpensesController < ApplicationController
-  before_action :set_worksheet_expense, only: [:show, :edit, :update, :destroy, :delete, :undo_deleted]
+  before_action :set_worksheet_expense, only: [:show, :edit, :update, :destroy, :delete, :undo_deleted, :list_task]
   include WorksheetExpensesHelper
 
   # GET /worksheet_expenses
@@ -99,6 +99,19 @@ class WorksheetExpensesController < ApplicationController
     @worksheet_expense.save
     respond_to do |format|
       format.html { redirect_to "/home/close_tab" }
+      format.json { head :no_content }
+    end
+  end
+  
+  def list_task
+    @worksheet_expense = WorksheetExpense.where(id: params[:ids])
+    if params[:task] == 'delete'
+        @worksheet_expense.each do |list|
+          @worksheet_expense.destroy
+        end
+    end
+    respond_to do |format|
+      format.html { redirect_to worksheet_expenses_url }
       format.json { head :no_content }
     end
   end

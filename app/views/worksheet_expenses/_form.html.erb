@@ -45,8 +45,8 @@
 						<div class="input-with-icon  right">                                       
 							<i class=""></i>
                             <select name="worksheet_expense[type_name]" class="modern_select width100" style="width: 100%; margin-bottom: 5px;">
-                                <option value="all" <%= 'selected="selected"' if @worksheet_expense.type_name == "all" %>>All</option>
-                                <option value="per_km" <%= 'selected="selected"' if @worksheet_expense.type_name == "per_km" %>>Per_KM</option>
+                                <option value="per_worksheet" <%= 'selected="selected"' if @worksheet_expense.type_name == "per_worksheet" %>>Per Worksheet</option>
+                                <option value="per_kilometer" <%= 'selected="selected"' if @worksheet_expense.type_name == "per_kilometer" %>>Per Kilometer</option>
                             </select>
 						</div>
                       </div>                      
