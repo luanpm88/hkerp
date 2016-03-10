@@ -61,9 +61,9 @@ class WorksheetExpense < ActiveRecord::Base
                   '<div class="text-center">'+item.price.to_i.to_s+"</div>",
                   '<div class="text-center">'+item.display_type_name+"</div>",
                   '<div class="text-center">'+item.description+"</div>",
-                  '<div class="text-center">'+item.created_at.strftime("%Y-%m-%d")+"</div>",
-                  '<div class="text-center">'+item.status+"</div>",
-                  item.creator.nil? ? "" : "<div class=\"text-center\">"+item.creator.short_name+'</div>',
+                  '<div class="text-center">'+item.created_at.strftime("%d/%m/%Y")+"</div>",
+                  '<div class="text-center">'+item.display_status+"</div>",
+                  item.creator.nil? ? "" : "<div class=\"text-center\">"+item.creator.staff_col+'</div>',
                   '',
               ]
         data << row
@@ -86,6 +86,10 @@ class WorksheetExpense < ActiveRecord::Base
     elsif self.type_name == 'per_km'
       return "Per Kilometer"
     end
+  end
+  
+  def display_status
+    return "<div class=\"#{self.status}\">#{self.status}</div>".html_safe
   end
 
 end
