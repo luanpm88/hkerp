@@ -24,85 +24,266 @@
               <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
             </div>     
             
-            <div class="grid-body no-border">
+            
+            
+<div class="wrapper page" style="">
+
+<table class="cominfo">
+  <tr>
+    <td>
+      <p><b>CÔNG TY TNHH GIẢI PHÁP CNTT & TT HOÀNG KHANG</b></p>
+      <p><label>Add: 138/10 Đường số 20, P. 5, Q. Gò Vấp, TP.HCM</label></p>
+      <p><label>Branch: 188 Đường số 1, P. 16, Q. Gò Vấp, TP.HCM</label></p>
+      <p><label>Tel: (08) 3984 7690</label><label> / Fax: (08) 3984 7691</label></p>
+    </td>
+    <td class="" valign="top">
+      <p style="text-align: center"><label><b>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</b></label></p>
+      <p style="text-align: center"><label><b>Độc lập - Tự do - Hạnh phúc</b></label></p>
+      <p style="text-align: center"><label>*****</label></p>
+    </td>
+  </tr>
+</table>
+
+<table class="top-info" cellspacing="0">
+  <tr>
+    <td class="maintitle" align="center" style="padding-bottom: 30px;">
+      <h1>
+        PHIẾU CÔNG TÁC
+      </h1>
+    </td>
+  </tr>
+</table>
+<!---->
+<table class="list" cellspacing="0">
+        <p style="margin-top: 4%"><b>1. Nhân viên công tác:</b></p>
+  <tr>
+    <th style="text-align: center">STT<br />No.</th>
+    <th width="55%" style="max-width: 50%; text-align: center;" width="40%" colspan="2">Họ và tên<br />Full Name</th>
+    <th style="text-align: center">Ký tên<br />Signature<br /></th>
+    
+  </tr>
+
+        <tr class="quantity-1">
+          <td>01</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Phạm Minh Luân
+          </td>
+          <td>
+                ...
+          </td>
           
-                <div class="row column-seperation">
-                       
-                  <div class="col-md-6">
-                    
-                    <div class="form-group">
-                       <label class="form-label">Staff: </label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                               <%= @worksheet.display_user_name.join(", ").html_safe %>
-                           </div>
-                                
-                         </div>               
-                     </div>
-                     
-                     <div class="form-group">
-                       <label class="form-label">Status: </label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                                <%= @worksheet.status %>
-                           </div>
-                                
-                         </div>               
-                     </div>
-                     
-                     
-                     
-                     <div class="form-group">
-                       <label class="form-label">Created At: </label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                          <%= @worksheet.created_at.strftime("%d/%m/%Y") %>
-                           </div>
-                                
-                         </div>               
-                     </div>
-                     
-                     <div class="form-group">
-                       <label class="form-label">Creator: </label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                          <%= @worksheet.creator.name %>
-                           </div>
-                                
-                         </div>               
-                     </div>
-                                                           
-                  </div>
-                          
-                  <div class="col-md-6">
-                    <div class="form-group">
-                       <label class="form-label">Price:</label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                               
-                           </div>
-                                
-                         </div>               
-                     </div>
-                     
-                     <div class="form-group">
-                       <label class="form-label">Description: </label>
-                         <div class="input-with-icon  right">                                       
-                                
-                           <div  class="form-control"  type="text">
-                              
-                           </div>
-                                
-                         </div>               
-                     </div>
-                  </div>
-                    
-                </div>
+        </tr>
+        
+        <tr class="quantity-2">
+          <td>02</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Thái Hoàng Minh Tuấn
+          </td>
+          <td>
+                ...
+          </td>
+          
+        </tr>
+        
+</table>
+
+<!-- Thời gian, địa điểm công tác -->
+<table class="list" cellspacing="0">
+        <p style="margin-top: 4%"><b>2. Thời gian, địa điểm:</b></p>
+  <tr>
+    <th style="text-align: center">STT<br />No.</th>
+    <th width="15%" style="max-width: 25%; text-align: center;" width="20%" colspan="2">Điểm bắt đầu<br />Start address</th>
+    <th width="15%" style="max-width: 25%; text-align: center;" width="20%" colspan="2">Điểm kết thúc<br />End address</th>
+    <th style="text-align: center;">Thời gian<br />Time</th>
+    <th width="45%" style="max-width: 40%; text-align: center;">Mô tả<br />Discription</th>
+    
+  </tr>
+
+        <tr class="quantity-1">
+          <td>01</td>
+          <td width="15%" style="max-width: 25%; text-align: left;" width="20%" colspan="2">
+            Hồ Chí Minh
+          </td>
+          <td width="15%" style="max-width: 25%; text-align: left;" width="20%" colspan="2">
+                Đà Lạt
+          </td>
+          <td>
+            16/03/2016 - 23/03/2016
+          </td>
+          <td width="45%" style="max-width: 40%; text-align: left;">
+                CN Công ty FPT Tại Lâm Đồng - FPT Đà Lạt
+          </td>
+          
+        </tr>
+        
+        <tr class="quantity-2">
+          <td>02</td>
+          <td width="15%" style="max-width: 25%; text-align: left;" width="20%" colspan="2">
+            Đà Lạt
+          </td>
+          <td width="15%" style="max-width: 25%; text-align: left;" width="20%" colspan="2">
+                Hà Nội
+          </td>
+          <td>
+            23/03/2016 - 27/03/2016
+          </td>
+          <td width="45%" style="max-width: 40%; text-align: left;">
+                abc abc abc......
+          </td>
+          
+        </tr>
+        
+</table>
+
+<!-- Nội dung công tác -->
+<table class="list" cellspacing="0">
+        <p style="margin-top: 4%"><b>2. Nội dung phí công tác:</b></p>
+  <tr>
+    <th style="text-align: center">STT<br />No.</th>
+    <th width="55%" style="max-width: 50%; text-align: center" width="40%" colspan="2">Nội dung công tác<br />Worksheet Expense</th>
+    <th style="text-align: center">Phí công tác<br />Price<br /></th>
+    
+  </tr>
+   
+        <tr>
+           <th width="55%" style="max-width: 50%; text-align: center" width="40%" colspan="6">Hồ Chí Minh - Đà Lạt (350 Km)</th>
+        </tr>
+        <tr class="quantity-1">
+          <td>01</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Xăng - Xe số - Ron 92 - 50.000đ 
+          </td>
+          <td style="text-align: left;">
+                50.000
+          </td>
+        </tr>
+        
+        <tr class="quantity-1">
+          <td>02</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Xăng - Xe số - Ron 92 - 50.000đ 
+          </td>
+          <td style="text-align: left;">
+                50.000
+          </td>
+        </tr>
+        
+        
+        <tr>
+           <th width="55%" style="max-width: 50%; text-align: center" width="40%" colspan="6">Đà Lạt - Hà Nội (1750 Km)</th>
+        </tr>
+        <tr class="quantity-1">
+          <td>03</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Vé máy bay - VietjetAir 
+          </td>
+          <td style="text-align: left;">
+                670.000
+          </td>
+        </tr>
+        
+        <tr class="quantity-1">
+          <td>04</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Xăng - Xe số - Ron 92 - 50.000đ 
+          </td>
+          <td style="text-align: left;">
+                50.000
+          </td>
+        </tr>
+   
+</table>
+
+<table class="list" cellspacing="0">
+        <p style="margin-top: 4%"><b>3. Các loại phí khác:</b></p>
+  <tr>
+    <th style="text-align: center">STT<br />No.</th>
+    <th width="55%" style="max-width: 50%; text-align: center" width="40%" colspan="2">Nội dung công tác<br />Worksheet Expense</th>
+    <th style="text-align: center">Phí công tác<br />Price<br /></th>
+    
+  </tr>
+  <!--
+  <tr class="num_note">
+    <td>(1)</td>
+    <td width="30%" colspan="2">(2)</td>
+    <td>(3)</td>
+  </tr>-->
+
+        <tr class="quantity-1">
+          <td>01</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Xăng - Xe số - Ron 92 - 50.000đ
+          </td>
+          <td style="text-align: left;">
+                50.000
+          </td>
+          
+        </tr>
+        
+        <tr class="quantity-2">
+
+          <td>02</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Thuê phòng ở - KS Đà Lạt - 1 ngày 2 đêm
+          </td>
+          <td style="text-align: left;">
+                800.000
+          </td>
+          
+        </tr>
+        
+        <tr class="quantity-3">
+          <td>03</td>
+          <td width="30%" colspan="2" style="text-align: left">
+            Phí hao mòn xe - 1500đ/5km
+          </td>
+          <td style="text-align: left;">
+                100.000
+          </td>
+          
+        </tr>
+</table>
+
+
+<p style="margin-top: 4%"></p>
+<p><strong>TỔNG KẾT CHI PHÍ </strong></p>
+<p>
+  1. Tổng tiền công tác phí:<br/>&emsp;- Bằng số: ... VNĐ <br/>&emsp;- Bằng chữ: 			
+	
+</p>
+
+<p>
+  2. Tiền tạm ứng: <br/>&emsp;- Bằng số: ... VNĐ <br/>&emsp;- Bằng chữ:
+</p>
+<p>
+  3. Tiền thực hưởng:<br/>&emsp;- Bằng số: ... VNĐ <br/>&emsp;- Bằng chữ:				
+</p>
+		
+<p style="margin-top: 4%"></p><p></p>
+<table>
+  <tr>
+
+      <td width="25%" align="center" valign="top">
+        <p><strong>Người lập phiếu</strong><br/><i>(Ký, ghi rõ họ tên)</i></p>
+        
+      </td>
+      <td width="25%" align="center" valign="top">
+        <p><strong>Người duyệt</strong><br/><i>(Xác nhận nội dung)</i></p
+      </td>
+      <td width="25%" align="center" valign="top">
+        <p><strong>Phòng TC-KT</strong><br/><i>(Xác nhận nguồn tài chính<br/> và chế độ công tác)</i></p>
+      </td>
+      <td width="25%" align="center" valign="top">
+        <p><strong>Giám đốc</strong><br/></p>
+      </td>
+
+  </tr>
+</table>
+<p style="margin-bottom: 10%"></p>
+
+</div>
+
+            
                   
               <div class="form-actions">  
                 <div class="pull-right">
