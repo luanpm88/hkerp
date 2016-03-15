@@ -127,6 +127,8 @@ class WorksheetExpense < ActiveRecord::Base
       return "Per Worksheet"
     elsif self.type_name == 'per_kilometer'
       return "Per Kilometer"
+    else
+      return "None"
     end
   end
   
