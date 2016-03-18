@@ -17,7 +17,7 @@ class WorksheetExpense < ActiveRecord::Base
   
   def self.full_text_search(q)
     #self.where(status: 'active').search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
-    self.where('LOWER(worksheet_expenses.name) LIKE ?', "%#{q}%").limit(50).map {|model| {:id => model.id, :text => model.name}}
+    self.where('LOWER(worksheet_expenses.name) LIKE ?', "%#{q.strip.downcase}%").limit(50).map {|model| {:id => model.id, :text => model.name}}
 
   end
   
