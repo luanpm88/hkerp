@@ -408,6 +408,8 @@ class Ability
       end
       
       can :statistics, PaymentRecord
+      can :cash_book, PaymentRecord
+
     end
     
     if user.has_role? "accountant_manager"
