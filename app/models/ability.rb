@@ -398,13 +398,13 @@ class Ability
       can :custom_payments, PaymentRecord
       
       can :destroy, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       can :edit_pay_custom, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       can :update, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       
       can :statistics, PaymentRecord
