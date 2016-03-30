@@ -485,7 +485,7 @@ class Product < ActiveRecord::Base
     #count for sales delivery
     count -= order_details
                       .joins(:order => :order_status)
-                      .where(order_statuses: {name: ["finished"]})
+                      .where(order_statuses: {name: ["confirmed","finished"]})
                       .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
                       .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
@@ -493,7 +493,7 @@ class Product < ActiveRecord::Base
     #count for purchase delivery
     count += order_details
                       .joins(:order => :order_status)
-                      .where(order_statuses: {name: ["finished"]})
+                      .where(order_statuses: {name: ["confirmed","finished"]})
                       .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
                       .where("orders.order_date < ?", datetime)
                       .sum(:quantity)
@@ -556,7 +556,7 @@ class Product < ActiveRecord::Base
   def import_count(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["confirmed","finished"]})
               .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
@@ -571,7 +571,7 @@ class Product < ActiveRecord::Base
   def export_count(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["confirmed","finished"]})
               .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
     if from_date.present? && to_date.present?
       products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
@@ -583,7 +583,7 @@ class Product < ActiveRecord::Base
   def export_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["confirmed","finished"]})
               .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
 
     if from_date.present? && to_date.present?
@@ -600,7 +600,7 @@ class Product < ActiveRecord::Base
   def import_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["finished"]})
+              .where(order_statuses: {name: ["confirmed","finished"]})
               .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
     
     if from_date.present? && to_date.present?
