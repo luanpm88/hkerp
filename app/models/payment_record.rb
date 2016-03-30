@@ -3,6 +3,7 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :accountant, :class_name => "User"
   belongs_to :payment_method
   belongs_to :user
+  belongs_to :bank_account
 
   
   validates :note, presence: true
@@ -139,7 +140,52 @@ class PaymentRecord < ActiveRecord::Base
     datas = []    
     records.each do |p|
       data = {payment_record: p,pay: "", recieve: ""}
-      if p.type_name == 'tip'
+      if p.type_name == 'tip' || p.type_name == 'commission'
+         total_pay += p.amount
+         data[:pay] = p.amount
+      elsif p.type_name == 'custom'
+        if !p.is_paid
+          total_recieve += p.amount
+          data[:recieve] = p.amount
+        else
+          total_pay += p.amount.abs
+          data[:pay] = p.amount.abs
+        end
+      elsif p.type_name == 'order'
+        if p.order.is_purchase || (!p.order.is_purchase && p.amount < 0)
+          total_pay += p.amount.abs
+          data[:pay] = p.amount.abs
+        elsif !p.order.is_purchase || (p.order.is_purchase && p.amount < 0)
+          total_recieve += p.amount.abs
+          data[:recieve] = p.amount.abs
+        end
+      end
+      
+      datas << data
+    end
+    
+    
+    
+    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+  end
+  
+  def self.cash_book(from_date, to_date, params)
+    records = PaymentRecord.includes(:bank_account).where(status: 1).where(bank_accounts: {name: "Cash"})
+                            .where("payment_records.paid_date >= ? AND payment_records.paid_date <= ?", from_date.beginning_of_day, to_date.end_of_day)
+                            .order("payment_records.paid_date DESC, payment_records.created_at DESC")
+    
+    if params[:payment_method_id].present?
+      records = records.where(payment_method_id: params[:payment_method_id])
+    end
+    
+    
+    total_pay = 0.00
+    total_recieve = 0.00
+    
+    datas = []    
+    records.each do |p|
+      data = {payment_record: p,pay: "", recieve: ""}
+      if p.type_name == 'tip' || p.type_name == 'commission'
          total_pay += p.amount
          data[:pay] = p.amount
       elsif p.type_name == 'custom'
@@ -170,6 +216,32 @@ class PaymentRecord < ActiveRecord::Base
   
   def is_paid
     (type_name == "custom" && amount < 0) || (type_name == "commission" && amount > 0) || (type_name == "tip" && amount > 0) || ((type_name == "order" && order.is_purchase && amount > 0) || (type_name == "order" && !order.is_purchase && amount < 0))
+  end
+  
+  def self.total_cash
+    result = 0.0
+    
+    # tip / commission
+    result -= PaymentRecord.includes(:bank_account).where(status: 1).where(bank_accounts: {name: "Cash"})
+                            .where(type_name: ["tip","commission"])
+                            .sum(:amount).abs
+    
+    # custom payment
+    result += PaymentRecord.includes(:bank_account).where(status: 1).where(bank_accounts: {name: "Cash"})
+                            .where(type_name: ["custom"])
+                            .sum(:amount)
+                            
+    # purchase
+    result -= PaymentRecord.includes(:bank_account, :order).where(status: 1).where(bank_accounts: {name: "Cash"})
+                            .where(orders: {customer_id: Contact.HK.id})
+                            .where(type_name: ["order"])
+                            .sum(:amount)
+    
+    # sales
+    result += PaymentRecord.includes(:bank_account, :order).where(status: 1).where(bank_accounts: {name: "Cash"})
+                            .where(orders: {supplier_id: Contact.HK.id})
+                            .where(type_name: ["order"])
+                            .sum(:amount)
   end
   
 end

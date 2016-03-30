@@ -6,7 +6,7 @@
                 </ul>
                 <div class="page-title">
                         <i class="icon-archive"></i>
-                    	<h3>Payment Record - <span class="semi-bold"> Statistics</span></h3>	
+                    	<h3>Cash Book [<span class="semi-bold"><%= format_price(PaymentRecord.total_cash) %></span>]</h3>	
                 </div>
                 
                 
@@ -125,9 +125,9 @@
                                                   <% if p.type_name == 'tip' %>
                                                     Pay tip													
 													[<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
-												<% elsif p.type_name == 'commission' %>
+                                                  <% elsif p.type_name == 'commission' %>
                                                     Pay commission
-													[<%= p.order.salesperson.display_name %>]
+                                                    [<%= p.order.salesperson.name %>]
                                                   <% elsif p.type_name == 'custom' %>
                                                     Custom
                                                   <% elsif p.type_name == 'order' %>
@@ -148,7 +148,7 @@
                                                 </td>
 												
 												<td class="text-center">
-													<% if p.type_name == 'order' %>
+													<% if p.type_name == 'order' || p.type_name == 'commission' || p.type_name == 'tip' %>
 														<% if p.order.printed_order_number.present? %>
 															<strong class="finished"><%= p.order.printed_order_number %></strong>
 															<br />
