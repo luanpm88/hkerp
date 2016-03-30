@@ -43,6 +43,23 @@
 																<%= f.text_field :amount, :class => "form-control price_input required" %>
 														</div>
 													</div>
+													
+													<div class="form-group">
+														<label class="form-label"><%= f.label :bank_account %></label>
+														<span class="help"></span>
+														<div class="input-with-icon  right">                                       
+															<i class=""></i>
+															<select name="payment_record[bank_account_id]" class="modern_select" style="width: 100%">
+																	<option value="">None</option>
+																	<% BankAccount.all.each do |ba| %>
+																		<option value="<%= ba.id %>" <% if !@payment_record.bank_account_id.nil? && @payment_record.bank_account_id == ba.id %>selected="selected"<% end %>>
+																		<%= ba.name %>
+																		</option>
+																	<% end %>
+														 </select>
+														</div>
+													</div>
+													
 											</div>
 											<div class="col-md-6">
 												

@@ -353,6 +353,10 @@
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["custom_payments"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path(tab_page: 1), class: "tab_page" %>			
 		  </li>
+		  
+		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_book"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Cash book', cash_book_payment_records_path(tab_page: 1), class: "tab_page" %>
+		  </li>
 		</ul>
 	    </li>
 	<% end %>

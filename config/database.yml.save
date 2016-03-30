@@ -17,7 +17,8 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: hksite_development
+  database: hksite
+_development
   pool: 5
   username: hkerp
   password: aA456321@#$
@@ -46,7 +47,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: hksite_test
+  database: hkerp_test
   pool: 5
   username: hkerp
   password: aA456321@#$

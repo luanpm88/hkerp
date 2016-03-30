@@ -138,3 +138,5 @@ OrderStatus.create(name: "finished", description: "Finished")
 
 Autotask.create(name: "order_debt_outdate", time_interval: 43200)
 #Autotask.create(name: "order_update_status_names", time_interval: 43200)
+
+BankAccount.create(name: "Cash", description: "cash")

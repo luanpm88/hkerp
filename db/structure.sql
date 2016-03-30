@@ -158,6 +158,38 @@ ALTER SEQUENCE autotasks_id_seq OWNED BY autotasks.id;
 
 
 --
+-- Name: bank_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE bank_accounts (
+    id integer NOT NULL,
+    name character varying,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: bank_accounts_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE bank_accounts_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bank_accounts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE bank_accounts_id_seq OWNED BY bank_accounts.id;
+
+
+--
 -- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -1069,7 +1101,8 @@ CREATE TABLE payment_records (
     status integer DEFAULT 1,
     is_custom boolean DEFAULT false,
     is_recieved boolean DEFAULT false,
-    type_name character varying
+    type_name character varying,
+    bank_account_id integer
 );
 
 
@@ -1667,6 +1700,13 @@ ALTER TABLE ONLY autotasks ALTER COLUMN id SET DEFAULT nextval('autotasks_id_seq
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
+ALTER TABLE ONLY bank_accounts ALTER COLUMN id SET DEFAULT nextval('bank_accounts_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
 ALTER TABLE ONLY categories ALTER COLUMN id SET DEFAULT nextval('categories_id_seq'::regclass);
 
 
@@ -1959,6 +1999,14 @@ ALTER TABLE ONLY autotask_details
 
 ALTER TABLE ONLY autotasks
     ADD CONSTRAINT autotasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bank_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY bank_accounts
+    ADD CONSTRAINT bank_accounts_pkey PRIMARY KEY (id);
 
 
 --
@@ -2628,3 +2676,10 @@ INSERT INTO schema_migrations (version) VALUES ('20150721042319');
 
 INSERT INTO schema_migrations (version) VALUES ('20151205023701');
 
+<<<<<<< HEAD
+=======
+INSERT INTO schema_migrations (version) VALUES ('20160330012847');
+
+INSERT INTO schema_migrations (version) VALUES ('20160330021311');
+
+>>>>>>> c909f13ea06cbb44c4cb3f7187f9ee44997e1746
