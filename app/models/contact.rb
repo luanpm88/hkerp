@@ -362,6 +362,8 @@ class Contact < ActiveRecord::Base
     
     agents.each do |a|
       str << a.name.to_s.downcase.strip
+      str << a.phone.to_s.downcase.strip if a.phone.to_s.strip.present?
+      str << a.email.to_s.downcase.strip if a.email.to_s.strip.present?
     end
     
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
