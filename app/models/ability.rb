@@ -347,6 +347,7 @@ class Ability
         ['confirmed'].include?(order.status.name)
       end
       can :print_order_fix1, Order
+      can :print_order_fix2, Order
       can :download_pdf, Order
       can :pay_order, Order  do |order|
         ['canceled','finished','confirmed'].include?(order.status.name) && !order.is_paid
@@ -397,16 +398,18 @@ class Ability
       can :custom_payments, PaymentRecord
       
       can :destroy, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       can :edit_pay_custom, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       can :update, PaymentRecord do |p|
-        p.accountant_id == user.id && p.is_custom
+        p.accountant_id == user.id && p.type_name == "custom"
       end
       
       can :statistics, PaymentRecord
+      can :cash_book, PaymentRecord
+
     end
     
     if user.has_role? "accountant_manager"
@@ -497,6 +500,8 @@ class Ability
       end
       
       can :warranty_check, Product
+      
+      can :view_all_sales_orders, Order
     end
     
   end

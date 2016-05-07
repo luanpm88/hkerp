@@ -16,4 +16,5 @@
 /tmp
 /uploads
 /backup
+/config/database.yml
 /crontab*.log

@@ -385,20 +385,25 @@ class User < ActiveRecord::Base
     # create the file path
     path = File.join(directory, name)
     # write the file
+    `rm -rf tmp/backup/*`
     File.open(path, "wb") { |f| f.write(file_upload['datafile'].read) }
     
     # CHECK PACKAGE
-    `rm -rf tmp/backup/backup && unzip #{path} -d tmp/backup/`
+    `unzip #{path} -d tmp/backup/`
+    puts 'unzip #{path} -d tmp/backup/'
     
-    if File.directory?("tmp/backup/backup/#{name.gsub(".zip","")}/uploads") && params[:file].present?
-      `rm -rf uploads && mkdir uploads && cp -a tmp/backup/backup/#{name.gsub(".zip","")}/uploads/. uploads/`
+    if File.directory?("tmp/backup/#{name.gsub(".zip","")}/uploads") && params[:file].present?
+      `rm -rf uploads && mkdir uploads && cp -a tmp/backup/#{name.gsub(".zip","")}/uploads/. uploads/`
+      puts "rm -rf uploads && mkdir uploads && cp -a tmp/backup/#{name.gsub(".zip","")}/uploads/. uploads/"
     end
     
-    if File.exist?("tmp/backup/backup/#{name.gsub(".zip","")}/data.dump") && params[:database].present? && params[:environment].present?
-      `rake mytask:drop_all_table && rake db:migrate && psql hkerp_#{params[:environment]} < tmp/backup/backup/#{name.gsub(".zip","")}/data.dump`
+    if File.exist?("tmp/backup/#{name.gsub(".zip","")}/data.dump") && params[:database].present? && params[:environment].present?
+      `rake mytask:drop_all_table && rake db:migrate && psql hkerp_#{params[:environment]} < tmp/backup/#{name.gsub(".zip","")}/data.dump`
+      puts "rake mytask:drop_all_table && rake db:migrate && psql hkerp_#{params[:environment]} < tmp/backup/#{name.gsub(".zip","")}/data.dump"
     end
     
-    `rm -rf tmp/backup/backup && rm #{path}`
+    `rm -rf tmp/backup/*`
+    puts "rm -rf tmp/backup/*"
     
   end
   

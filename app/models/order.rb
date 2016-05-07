@@ -1275,7 +1275,7 @@ class Order < ActiveRecord::Base
   
   def is_prices_oudated
     order_details.each do |od|
-      if od.is_price_outdated
+      if od.is_price_outdated && od.quantity > 0
         return true
       end
     end

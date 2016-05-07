@@ -1,4 +1,5 @@
 Hkerp::Application.routes.draw do
+  resources :bank_accounts
   resources :feedbacks do
     collection do
       get :datatable
@@ -59,6 +60,7 @@ Hkerp::Application.routes.draw do
       
       get :edit_pay_custom
       get :statistics
+      get :cash_book
       
       get :pay_commission
       post :do_pay_commission
@@ -131,6 +133,7 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :print_order
       get :print_order_fix1
+      get :print_order_fix2
       get :purchase_orders
       get :confirm_order
       get :datatable

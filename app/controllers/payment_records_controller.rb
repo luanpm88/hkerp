@@ -218,7 +218,7 @@ class PaymentRecordsController < ApplicationController
   
   def statistics
     if params[:from_date].present? && params[:to_date].present?
-      @from_date = params[:from_date].to_date
+      @from_date = params[:from_date].to_date.beginning_of_day
       @to_date =  params[:to_date].to_date.end_of_day
     else
       @from_date = DateTime.now.beginning_of_month
@@ -226,6 +226,20 @@ class PaymentRecordsController < ApplicationController
     end
     
     @statistics = PaymentRecord.statistics(@from_date, @to_date, params)
+    
+    render layout: "content" if params[:tab_page].present?
+  end
+  
+  def cash_book
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date.beginning_of_day
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_day
+      @to_date =  DateTime.now.end_of_day
+    end
+    
+    @statistics = PaymentRecord.cash_book(@from_date, @to_date, params)
     
     render layout: "content" if params[:tab_page].present?
   end
@@ -275,6 +289,6 @@ class PaymentRecordsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def payment_record_params
-      params.require(:payment_record).permit(:is_recieved, :is_custom, :paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
+      params.require(:payment_record).permit(:bank_account_id, :is_recieved, :is_custom, :paid_date, :is_tip, :payment_method_id, :debt_date, :paid_person, :paid_address, :note, :debt_days, :amount, :order_id, :accountant_id)
     end
 end
