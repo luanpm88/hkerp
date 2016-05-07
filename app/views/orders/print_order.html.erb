@@ -54,6 +54,9 @@
     -webkit-transform: rotate(12deg); /* Safari */
     transform: rotate(12deg);
 }
+.fix_small {
+    font-size: 14px;
+}
 </style>
 <div class="page">
 
@@ -70,7 +73,7 @@
 <div style="position: absolute;top:<%= pos2 %>px;left: 190px">
     <%= @order.buyer_name %>
 </div>
-<div style="position: absolute;top:<%= pos3 %>px;left: 98px">
+<div class="fix_small" style="position: absolute;top:<%= pos3 %>px;left: 98px">
     <%= @order.buyer_company %>
 </div>
 <div style="position: absolute;top:<%= pos4 %>px;left: 250px;font-size: 16px;font-weight: bold;letter-spacing: 1px;">
