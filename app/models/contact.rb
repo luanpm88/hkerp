@@ -366,6 +366,10 @@ class Contact < ActiveRecord::Base
       str << a.email.to_s.downcase.strip if a.email.to_s.strip.present?
     end
     
+    companies.each do |c|
+      c.update_cache_search
+    end
+    
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
 end
