@@ -103,7 +103,7 @@ class Product < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.where(status: 1).search(q).limit(50).map {|model| {:id => model.id, :text => model.display_name} }
+    self.where(status: 1).where("LOWER(products.cache_search) LIKE ?", "%#{q.strip.downcase}%").limit(50).map {|model| {:id => model.id, :text => model.display_name} }
   end
   
   def self.filter(params, user)
