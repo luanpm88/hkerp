@@ -103,7 +103,14 @@ class Product < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    self.where(status: 1).where("LOWER(products.cache_search) LIKE ?", "%#{q.strip.downcase}%").limit(50).map {|model| {:id => model.id, :text => model.display_name} }
+    result = self.where(status: 1)
+    
+    q.split(" ").each do |k|
+      result = result.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%")
+    end
+    
+    result = result.limit(50).map {|model| {:id => model.id, :text => model.display_name} }
+    return result
   end
   
   def self.filter(params, user)
@@ -113,7 +120,12 @@ class Product < ActiveRecord::Base
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
     # @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?
-    @products = @products.where("LOWER(products.cache_search) LIKE ?", "%#{params["search"]["value"].strip.downcase}%") if params["search"]["value"].present?    
+    
+    if params["search"]["value"].present?
+      params["search"]["value"].split(" ").each do |k|
+        @products = @products.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+      end
+    end
     
     
     return @products
