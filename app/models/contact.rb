@@ -1,6 +1,8 @@
 class Contact < ActiveRecord::Base
   mount_uploader :image, LogoUploader
   
+  after_save :update_cache_search
+  
   include PgSearch
   
   validates :name, presence: true
@@ -48,7 +50,15 @@ class Contact < ActiveRecord::Base
       end      
     end
     
-    @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    # @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    
+    if params["search"]["value"].present?
+      params["search"]["value"].split(" ").each do |k|
+        @records = @records.where("LOWER(contacts.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+      end
+    end
+    
+    
     if !user.can?(:view_all_customers, Contact)
       @records = @records.where(user_id: user.id)
     end
@@ -273,7 +283,12 @@ class Contact < ActiveRecord::Base
     if !user.can?(:view_all_customers, Contact)
       result = result.where(user_id: user.id)
     end
-    result = result.search(q).limit(50).map {|model| {:id => model.id, :text => model.short_name} }
+    
+    q.split(" ").each do |k|
+      result = result.where("LOWER(contacts.cache_search) LIKE ?", "%#{k.strip.downcase}%")
+    end
+    
+    result = result.limit(50).map {|model| {:id => model.id, :text => model.short_name} }
   end
   
   def short_name
@@ -328,4 +343,27 @@ class Contact < ActiveRecord::Base
     link_helper.url_for(controller: "contacts", action: "logo", id: self.id, type: version)
   end
   
+  def update_cache_search
+    str = []
+    str << name.to_s.downcase.strip
+    str << address.to_s.downcase.strip if address.to_s.strip.present?
+    str << website.to_s.downcase.strip if website.to_s.strip.present?
+    str << phone.to_s.downcase.strip if phone.to_s.strip.present?
+    str << mobile.to_s.downcase.strip if mobile.to_s.strip.present?
+    str << fax.to_s.downcase.strip if fax.to_s.strip.present?
+    str << email.to_s.downcase.strip if email.to_s.strip.present?
+    str << tax_code.to_s.downcase.strip if tax_code.to_s.strip.present?
+    str << note.to_s.downcase.strip if note.to_s.strip.present?
+    str << account_number.to_s.downcase.strip if account_number.to_s.strip.present?
+    str << bank.to_s.downcase.strip if bank.to_s.strip.present?
+    
+    str << city.name.to_s.downcase.strip if city.present?
+    str << state.name.to_s.downcase.strip if state.present?
+    
+    agents.each do |a|
+      str << a.name.to_s.downcase.strip
+    end
+    
+    self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
+  end
 end
