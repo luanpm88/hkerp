@@ -664,8 +664,14 @@ class Order < ActiveRecord::Base
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?
     
     @items = @items.where(where)
-    # @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?
-    @items = @items.where("LOWER(orders.cache_search) LIKE ?", "%#{params["search"]["value"].strip.downcase}%") if params["search"]["value"].present?    
+    
+    # SEARCHING @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    if params["search"]["value"].present?
+      params["search"]["value"].split(" ").each do |k|
+        @items = @items.where("LOWER(orders.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+      end
+    end
+    
     @items = @items.order(order_by) if !order_by.nil?
     
     total = @items.count(:all)
