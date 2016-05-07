@@ -2,6 +2,8 @@ class Product < ActiveRecord::Base
   include ActionView::Helpers::NumberHelper
   include PgSearch
   
+  after_save :update_cache_search
+  
   validates :name, presence: true
   #validates :product_code, presence: true
   #validates :unit, presence: true
@@ -110,7 +112,8 @@ class Product < ActiveRecord::Base
     where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present? && !params["search"]["value"].present?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
-    @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?    
+    # @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?
+    @products = @products.where("LOWER(products.cache_search) LIKE ?", "%#{params["search"]["value"].strip.downcase}%") if params["search"]["value"].present?    
     
     
     return @products
@@ -890,6 +893,15 @@ class Product < ActiveRecord::Base
   
   def update_cache_stock
     self.update_attribute(:stock, self.calculated_stock)
+  end
+  
+
+  def update_cache_search
+    str = []
+    str << display_name.to_s.downcase.strip
+    str << description.to_s.downcase.strip
+    
+    self.update_column(:cache_search, str.join(" "))
   end
   
 end

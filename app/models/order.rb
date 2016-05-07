@@ -1,6 +1,8 @@
 class Order < ActiveRecord::Base
   include PgSearch
   
+  after_save :update_cache_search
+  
   attr_accessor :debt_days
 
   validates :supplier_id, presence: true
@@ -662,7 +664,8 @@ class Order < ActiveRecord::Base
     @items = @items.where('extract(day from order_date AT TIME ZONE ?) = ?', Time.zone.tzinfo.identifier, params["day"]) if params["day"].present?
     
     @items = @items.where(where)
-    @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?    
+    # @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?
+    @items = @items.where("LOWER(orders.cache_search) LIKE ?", "%#{params["search"]["value"].strip.downcase}%") if params["search"]["value"].present?    
     @items = @items.order(order_by) if !order_by.nil?
     
     total = @items.count(:all)
@@ -1599,4 +1602,37 @@ class Order < ActiveRecord::Base
     
     return p.drafts.order("created_at DESC").empty? ? self : p.drafts.order("created_at").first
   end
+  
+  def update_cache_search
+    str = []
+    str << shipping_place.to_s.downcase.strip if shipping_place.present?
+    str << tip_status_name.to_s.downcase.strip if tip_status_name.present?
+    str << customer_po.to_s.downcase.strip if customer_po.present?
+    str << printed_order_number.to_s.downcase.strip if printed_order_number.present?
+    str << order_status_name.to_s.downcase.strip if order_status_name.present?
+    str << delivery_status_name.to_s.downcase.strip if delivery_status_name.present?
+    str << buyer_company.to_s.downcase.strip if buyer_company.present?
+    str << buyer_name.to_s.downcase.strip if buyer_name.present?
+    str << buyer_tax_code.to_s.downcase.strip if buyer_tax_code.present?
+    str << buyer_address.to_s.downcase.strip if buyer_address.present?
+    str << buyer_email.to_s.downcase.strip if buyer_email.present?
+    
+    str << salesperson.first_name.to_s.downcase.strip if salesperson.present?
+    str << salesperson.last_name.to_s.downcase.strip if salesperson.present?
+    str << purchaser.first_name.to_s.downcase.strip if purchaser.present?
+    str << purchaser.last_name.to_s.downcase.strip if purchaser.present?
+    
+    str << supplier.name.to_s.downcase.strip if purchaser.present?
+    str << supplier.tax_code.to_s.downcase.strip if purchaser.present?
+    str << supplier.address.to_s.downcase.strip if purchaser.present?
+    str << supplier.email.to_s.downcase.strip if purchaser.present?
+    
+    order_details.each do |od|
+      str << od.product_name.to_s.downcase.strip
+      str << od.product_description.to_s.downcase.strip
+    end
+    
+    self.update_column(:cache_search, str.join(" "))
+  end
+
 end
