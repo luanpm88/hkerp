@@ -1638,7 +1638,7 @@ class Order < ActiveRecord::Base
       str << od.product_description.to_s.downcase.strip
     end
     
-    self.update_column(:cache_search, str.join(" "))
+    self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
 
 end
