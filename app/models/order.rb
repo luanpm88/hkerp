@@ -300,9 +300,9 @@ class Order < ActiveRecord::Base
       return false
     end
     
+    # Update product price
     order_details.each do |od|
-      pp = od.update_price(user)
-
+      pp = od.update_price(user, false)
       od.update_attribute(:product_price_id, pp.id) if !pp.nil?
     end
     

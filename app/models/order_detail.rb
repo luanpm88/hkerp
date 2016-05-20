@@ -212,13 +212,14 @@ class OrderDetail < ActiveRecord::Base
     self[:shipment_amount] = new_price.to_s.gsub(/\,/, '')
   end
   
-  def update_price(user)
+  def update_price(user, change_public_price=true)
     params = {}
     if order.is_purchase
+      params[:price] = product.product_price.price
       params[:supplier_id] = order.supplier_id
       params[:supplier_price] = self.price
       params[:customer_id] = nil
-      product.update_price(params,user)
+      product.update_price(params,user,change_public_price)
     else
       #params[:price] = self.price
       #params[:supplier_id] = product.product_price.supplier_id
