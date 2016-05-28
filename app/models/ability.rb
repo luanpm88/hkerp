@@ -474,6 +474,9 @@ class Ability
       
       can :update, Product
       
+      can :update, Category
+      can :update, Manufacturer
+      
       can :download_pdf, Delivery
       
       can :create, Combination
