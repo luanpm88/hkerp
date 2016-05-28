@@ -499,7 +499,6 @@ class Product < ActiveRecord::Base
     
     #count for sales delivery
     count -= order_details
-                      .joins(:delivery)
                       .joins(:order => :order_status)
                       .where(order_statuses: {name: ["confirmed","finished"]})
                       .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
@@ -508,7 +507,6 @@ class Product < ActiveRecord::Base
     
     #count for purchase delivery
     count += order_details
-                      .joins(:delivery)
                       .joins(:order => :order_status)
                       .where(order_statuses: {name: ["confirmed","finished"]})
                       .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
