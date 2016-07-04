@@ -17,14 +17,11 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: hksite_development
+  database: hksite
+_development
   pool: 5
   username: hkerp
-<<<<<<< HEAD:config/database.yml
   password: aA456321@#$
-=======
-  password: 123456
->>>>>>> c909f13ea06cbb44c4cb3f7187f9ee44997e1746:config/database.yml.default
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
@@ -50,14 +47,10 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: hksite_test
+  database: hkerp_test
   pool: 5
   username: hkerp
-<<<<<<< HEAD:config/database.yml
   password: aA456321@#$
-=======
-  password: 123456
->>>>>>> c909f13ea06cbb44c4cb3f7187f9ee44997e1746:config/database.yml.default
 
 production:
   adapter: postgresql
@@ -65,8 +58,4 @@ production:
   database: hkerp_production
   pool: 5
   username: hkerp
-<<<<<<< HEAD:config/database.yml
   password: aA456321@#$
-=======
-  password: 123456
->>>>>>> c909f13ea06cbb44c4cb3f7187f9ee44997e1746:config/database.yml.default
