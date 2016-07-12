@@ -69,40 +69,59 @@
 						    <% category.children.each do |child_1| %>
 							<% child_1.update_level(2) %>
 							    <tr>
-								<td class="v-align-middle">
-								    <div class="checkbox check-default">
-									<input id="checkbox<%= child_1.id %>" type="checkbox" value="<%= child_1.id %>">
-									<label for="checkbox<%= child_1.id %>"></label>
-								    </div>
-								</td>
-								<td class="v-align-middle">----<%= child_1.name %></td>
-								<td class="v-align-middle"><%= child_1.description %></td>
-								
-							     
-								<td>
-								    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_1.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_1.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
-									<%= link_to 'X', {action: "destroy", id: child_1.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
-								</td>
+									<td class="v-align-middle">
+										<div class="checkbox check-default">
+										<input id="checkbox<%= child_1.id %>" type="checkbox" value="<%= child_1.id %>">
+										<label for="checkbox<%= child_1.id %>"></label>
+										</div>
+									</td>
+									<td class="v-align-middle">----<%= child_1.name %></td>
+									<td class="v-align-middle"><%= child_1.description %></td>
+									
+									 
+									<td>
+										<%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_1.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_1.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
+										<%= link_to 'X', {action: "destroy", id: child_1.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
+									</td>
 							    </tr>
 							    
 							    <% child_1.children.each do |child_2| %>
 								<% child_2.update_level(3) %>
 								    <tr>
-									<td class="v-align-middle">
-									    <div class="checkbox check-default">
-										<input id="checkbox<%= child_2.id %>" type="checkbox" value="<%= child_2.id %>">
-										<label for="checkbox<%= child_2.id %>"></label>
-									    </div>
-									</td>
-									<td class="v-align-middle">--------<%= child_2.name %></td>
-									<td class="v-align-middle"><%= child_2.description %></td>
-									
-								     
-									<td>
-									    <%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_2.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_2.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
-							    <%= link_to 'X', {action: "destroy", id: child_2.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
-									</td>
+										<td class="v-align-middle">
+											<div class="checkbox check-default">
+											<input id="checkbox<%= child_2.id %>" type="checkbox" value="<%= child_2.id %>">
+											<label for="checkbox<%= child_2.id %>"></label>
+											</div>
+										</td>
+										<td class="v-align-middle">--------<%= child_2.name %></td>
+										<td class="v-align-middle"><%= child_2.description %></td>
+										
+										 
+										<td>
+											<%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_2.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_2.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
+											<%= link_to 'X', {action: "destroy", id: child_2.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
+										</td>
 								    </tr>
+									<% child_2.children.each do |child_3| %>
+									<% child_3.update_level(4) %>
+										<tr>
+											<td class="v-align-middle">
+												<div class="checkbox check-default">
+												<input id="checkbox<%= child_3.id %>" type="checkbox" value="<%= child_3.id %>">
+												<label for="checkbox<%= child_3.id %>"></label>
+												</div>
+											</td>
+											<td class="v-align-middle">--------<%= child_3.name %></td>
+											<td class="v-align-middle"><%= child_3.description %></td>
+											
+											 
+											<td>
+												<%= link_to '<i class="icon-paste"></i>'.html_safe, edit_category_path(id: child_3.id, tab_page: 1),psrc: categories_url(tab_page: 1), title: "Edit: #{child_3.name}", :class => "tab_page btn btn-info btn-xs btn-mini" if can?(:update, Category) %>							
+												<%= link_to 'X', {action: "destroy", id: child_3.id, tab_page: 1}, method: :delete, data: { confirm: 'Are you sure?' }, :class => "btn btn-danger btn-xs btn-mini" if can?(:update, Category) %>
+											</td>
+										</tr>
+									<% end %>
 							    <% end %>
 						    <% end %>
 						    
