@@ -116,7 +116,7 @@ class Product < ActiveRecord::Base
   def self.filter(params, user)
     where = "true"    
     where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? && !params["search"]["value"].present?
-    where += " AND categories.id IN (#{params["categories"].join(",")})" if params["categories"].present? && !params["search"]["value"].present?
+    where += " AND categories.id IN (#{params["categories"]})" if params["categories"].present? && !params["search"]["value"].present?
 
     @products = self.joins(:categories).joins(:manufacturer).where(where)
     # @products = @products.search(params["search"]["value"]) if params["search"]["value"].present?
@@ -244,7 +244,7 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
                         "<div class=\"text-center\"><a class=\"fancybox_image\" href=\"#{product.image}.png\"><img src=\"#{product.image(:thumb)}\" width=\"60\" /></a></div>",
-                        product.user.nil? ? "" : "<div class=\"text-center\">"+product.user.staff_col+'</div>',
+                        product.user.nil? ? "" : "<div class=\"text-center\">"+product.created_at.strftime("%Y-%m-%d")+"<br>By<br><div class=\"text-center\">"+product.user.staff_col+'</div></div>',
                         ''
                       ]
                 data << item

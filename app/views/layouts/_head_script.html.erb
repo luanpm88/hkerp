@@ -1294,7 +1294,7 @@
 				"url": "<%= datatable_products_path %>",
 				"data": function ( d ) {
 					d.manufacturers =  $("select[name='manufacturers[]']").val(),
-					d.categories = $("select[name='categories[]']").val()
+					d.categories = $("input[name='categories']").val()
 				}
 			},
 			"columnDefs": [ { "targets": [3,5,6,7,8], "orderable": false } ],
@@ -1383,7 +1383,7 @@
 			$('.datatable-products').dataTable().fnFilter();
 			$("select[name='manufacturers[]']").select2('data', null);
 	    });
-	    $("select[name='categories[]']").change(function() {
+	    $("input[name='categories']").change(function() {
 		$('.datatable-products').dataTable().fnFilter();
 	    });
 	    $(".filter-cat-clear").click(function() {

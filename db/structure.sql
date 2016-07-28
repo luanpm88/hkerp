@@ -265,7 +265,8 @@ CREATE TABLE categories (
     updated_at timestamp without time zone,
     tmpcat integer,
     level integer,
-    user_id integer
+    user_id integer,
+    cache_search text
 );
 
 
@@ -3539,4 +3540,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160507055327');
 INSERT INTO schema_migrations (version) VALUES ('20160507062626');
 
 INSERT INTO schema_migrations (version) VALUES ('20160507104735');
+
+INSERT INTO schema_migrations (version) VALUES ('20160728094423');
 

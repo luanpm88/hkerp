@@ -1,6 +1,8 @@
 class Category < ActiveRecord::Base
   include PgSearch
   
+  after_save :update_cache_search
+  
   validates :name, presence: true, :uniqueness => true
   
   has_and_belongs_to_many :products
@@ -26,7 +28,15 @@ class Category < ActiveRecord::Base
                 }
   
   def self.full_text_search(q)
-    rows = self.search(q).limit(50).map {|model| {:id => model.id, :text => model.name} }
+    rows = self.all
+    if q.present?
+      q.split(" ").each do |k|
+        rows = self.where("LOWER(categories.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+      end
+    end
+    
+    rows = rows.limit(50).map {|model| {:id => model.id, :text => model.name} }
+    
     new_rows = []
     new_rows << {id: "", text: "No category"}
     rows.each do |row|
@@ -37,4 +47,12 @@ class Category < ActiveRecord::Base
     
     return new_rows
   end
+  
+  def update_cache_search
+    str = []
+    str << name.to_s.downcase.strip
+    
+    self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
+  end
+  
 end
