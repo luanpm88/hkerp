@@ -31,7 +31,7 @@ class Category < ActiveRecord::Base
     rows = self.all
     if q.present?
       q.split(" ").each do |k|
-        rows = self.where("LOWER(categories.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+        rows = rows.where("LOWER(categories.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
       end
     end
     
