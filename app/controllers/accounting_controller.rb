@@ -95,6 +95,9 @@ class AccountingController < ApplicationController
     authorize! :read, Order
     
 	@min_order_detail_price = 1000000
+	if params[:min_order_detail_price].present?
+		@min_order_detail_price = params[:min_order_detail_price].gsub(",", "")
+	end
 	
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date].to_date

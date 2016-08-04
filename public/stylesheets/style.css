@@ -8102,3 +8102,15 @@ tr.block_commission_header h3 {
 .company_salesperson {
     background-color: #0aa699;
 }
+ul.sub-sub-menu {
+    padding: 5px 0px 10px 70px;
+}
+.sub-sub-menu li {
+    margin-left: 10px;
+	padding-left: 0;
+}
+.sub-sub-menu li a {
+	list-style: none;
+	color: #ccc;
+	font-size: 13px;
+}
