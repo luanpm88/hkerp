@@ -163,7 +163,7 @@ com_title = Contact.HK
 <% if @paid_date_check && @paid_date_filter.present? %>
     BẢNG ĐỐI CHIẾU THANH TOÁN - NGÀY <%= @paid_date_filter.to_date.strftime("%d/%m/%Y") %>
 <% else %>
-	ĐƠN GIÁ DƯỚI 1.000.000 - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %>
+	ĐƠN GIÁ TỪ 1.000.000 - TỪ NGÀY <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN NGÀY <%= @to_date.strftime("%d/%m/%Y") %>
 <% end %>
 </h3>
 <% if !@customer.nil? %>
