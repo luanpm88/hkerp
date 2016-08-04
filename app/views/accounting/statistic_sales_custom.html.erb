@@ -1,0 +1,156 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li>
+						<%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
+                    </li>
+		    
+                </ul>
+                <div class="page-title">	<i class="icon-folder-open"></i>
+
+                    	<h3>Acounting - <span class="semi-bold"> Statistics</span></h3>	
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+			
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "accounting", action: "statistic_sales_custom"})%>">
+							<% if params[:tab_page] %>
+								<%= hidden_field_tag "tab_page", 1 %>
+							<% end %>
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-3">
+									<h4>From Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
+									</div>
+									</div>
+								</div>
+								<div class="col-md-3">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+								
+								
+								
+									<div class="col-md-2">
+										<h4>Customer</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="customer_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @customer.id  if !@customer.nil? %>" text="<%= @customer.name if !@customer.nil? %>" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+											
+									<div class="col-md-2">
+										<h4>Tip For</h4>
+										<div class="">
+											<div class="input-with-icon  right">                                       
+											<i class=""></i>
+											<input style="width:100%;margin-bottom: 5px;" name="tip_contact_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers" value="<%= @tip_contact.id if !@tip_contact.nil? %>" text="<%= @tip_contact.name if !@tip_contact.nil? %>" data-placeholder="All"/>
+											</div>
+										</div>
+									</div>
+											
+											
+											
+											<div class="col-md-2 pull-right">
+													<div class="">
+														<h4 style="color:#fff">...</h4>
+														
+															<input type="submit" value="Send" class="pull-right btn btn-primary text-center" />
+														
+													</div>
+											</div>
+
+							</div>
+						</form>
+						</div>		    
+					</div>
+			
+			
+			
+			
+			
+                    
+			
+			<%= link_to '<i class="icon-print"></i> Print'.html_safe, {controller: "accounting", action: "statistic_sales_custom", pdf: 1, from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), customer_id: params[:customer_id], tip_contact_id: params[:tip_contact_id], paid_status: params[:paid_status], paid_date_check: params[:paid_date_check], paid_date_filter: params[:paid_date_filter]}, :class => 'btn btn-primary btn-cons', target: "_blank" %>
+			
+			
+			<div class="grid simple ">
+			    <div class="grid-body no-border filters" method="get">
+					<h4>Sales Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+					
+					<%= render 'statistic_table_custom' %>
+					
+				</div>
+			</div>
+			
+			
+			
+			<div class="grid simple ">
+			    <div class="grid-title no-border">
+                                <h4>Sales Statistics in/on - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            <div class="grid-body no-border statistics-content">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Total</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_sell],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>Total (+VAT)</h5>
+							<h2 class="text-right bold"><%= format_price(@statistics[:total_sell_with_vat],false,false,2) %></h2>
+						</div>
+						
+						<div class="col-md-4">
+							<h5>VAT</h5>
+							<h2 class="text-right"><%= format_price(@statistics[:total_vat_sell],false,false,2) %></h2>
+						</div>
+						
+						
+						
+					</div>
+			    </div>
+			</div>
+			
+			
+			
+			
+			
+			
+			
+			</div>
+                </div>
+
+<script>
+    $(document).ready(function() {
+		$(".date_select_filter select").select2();
+    });
+</script>

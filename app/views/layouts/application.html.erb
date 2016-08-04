@@ -330,6 +330,7 @@
 		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings?tab_page=1", class: "tab_page" %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics', "/accounting/statistic_sales?tab_page=1", class: "tab_page" %></li>
+		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales_custom"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Sales Statistics (< 1.000.000)', "/accounting/statistic_sales_custom?tab_page=1", class: "tab_page" %></li>
 		  
 		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
 		  

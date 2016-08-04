@@ -1,0 +1,86 @@
+                    <table cellspacing="0" cellpadding="0" class="list table table-border">
+						<tr>
+							<th class="text-center">STT</th>
+							<th>Order</th>
+							
+							<th>Item</th>
+							<th class="text-center">Unit</th>
+							<th class="text-right">Price</th>
+							
+							<th class="text-right">Total(+VAT)</th>
+						</tr>
+						
+						<%
+						num = 1
+						@orders.each do |order| %>
+							<%
+								count = order.order_details.where("quantity > 0").where("price >= " + @min_order_detail_price.to_s).count
+							%>
+							
+							
+									<% order.order_details.where("quantity > 0").where("price >= " + @min_order_detail_price.to_s).each_with_index do |od,index| %>
+										<% if od.quantity > 0 %>
+											<tr>												
+												<% if index == 0 %>
+													<td rowspan="<%= count %>" class="text-center">
+													<%= num %>
+													</td>
+													<td rowspan="<%= count %>">
+														<strong><%= order.printed_order_number %></strong>
+														<br />
+														(<%= order.order_date_formatted %>)
+														
+														<br />
+
+														<% if @supplier.nil? && @customer.nil? %>
+															<%= order.is_purchase ? order.supplier.name : order.customer.name %>
+															<br />
+														<% end %>
+														
+														<%= order.customer_po %>
+														
+													</td>
+													
+												<% end %>
+												
+												
+												
+												<td style="text-align: left !important">
+													<%= od.product.display_name %><br />
+													
+												</td>
+												<td class="text-center">
+													<%= od.quantity %><br /><%= od.unit %>
+													
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total_vat) %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total_vat) %>
+													<br />
+													(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+												</td>
+												
+											</tr>
+											
+										<% end %>
+									<% end %>
+							<% num += 1 %>
+						<% end %>
+						
+						<% if @paid_date_check && @paid_date_filter.present? %>
+							<tr>
+								<td class="text-right" colspan="8">
+									Tổng thanh toán ngày <%= @paid_date_filter.to_date.strftime("%Y-%m-%d") %>:
+								</td>
+								<td class="text-right">
+									<strong class="paid">
+										<%= format_price(@total_PAD_paid) %>
+									</strong><br />									
+								</td>
+							</tr>
+						<% end %>
+						
+						
+					</table>

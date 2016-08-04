@@ -1,0 +1,139 @@
+                    <table class="table table-border">
+						<tr>
+							<th class="text-center">Order</th>
+							
+							<th>Item</th>
+							
+							<th class="text-right">Price</th>
+							<th class="text-right">Cost Total</th>
+							<th class="text-right">Tip</th>
+							<th class="text-right">Fare</th>
+							<th class="text-right">Fare VAT</th>
+							
+							<th class="text-right">Total(+VAT)</th>							
+						</tr>
+						
+						<%
+						num = 1
+						@orders.each do |order| %>
+						
+							<%
+								count = order.order_details.where("quantity > 0").where("price >= " + @min_order_detail_price.to_s).count+1
+							%>
+							
+							
+									<% order.order_details.where("quantity > 0").where("price >= " + @min_order_detail_price.to_s).each_with_index do |od,index| %>
+										<% if od.quantity > 0 %>
+											<tr>												
+												<% if index == 0 %>
+													<td rowspan="<%= count %>" class="text-center">
+													<%= num %>
+													<br />
+														<strong class="finished"><%= order.printed_order_number %></strong>
+													<br />
+														(<%= order.order_date_formatted %>)
+														<br />
+														<%= order.order_link %>														
+														<br /><br />
+														<i class="icon-building"></i> <%= order.is_purchase ? order.supplier.short_name : order.customer.short_name %>
+														<br /><br />
+														<%= order.display_payment_status %>
+														<% if (order.is_debt || order.is_out_of_date) %>
+															<%= order.debt_remain_days.to_s+' days' %>
+															<br />
+															(<%= order.debt_date.to_date if !order.debt_date.nil? %>)
+														<% end %>
+													</td>
+												<% end %>
+												
+												
+												<td>
+													<%= od.product.display_name %>												
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total) %>
+													<div class="text-right">(<%= od.quantity %> <%= od.unit %>)</div>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.cost_total) %>
+													<% if od.shipment_amount > 0 %>
+														<label class="col_label"><i class="icon-ambulance"></i>S.cost:</label>
+														<%= format_price(od.shipment_amount) %>
+													<% end %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.tip_amount) %>
+													<%= order.display_tip_status %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.fare) %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.fare_vat) %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total_vat) %>
+													<br />
+													(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
+												</td>
+											</tr>
+											
+										<% end %>
+									<% end %>
+									<% if count > 1 %>
+										<tr style="background: #efefef">
+											
+											<td colspan="9">
+												
+												<div class="actions pull-right">
+													<%= render_order_actions(order) %>
+												</div>
+												
+												<div>
+													<% order.all_deliveries.each do |d| %>
+			
+															<%= d.delivery_link %>&nbsp;&nbsp;&nbsp;
+			
+													<% end %>
+												</div>
+												<div>
+													<% order.all_order_payments.each do |recept| %>
+															<%= recept.payment_record_link %>&nbsp;&nbsp;&nbsp;
+													<% end %>
+												</div>
+												
+											</td>
+										</tr>
+									<% end %>
+							<% num += 1 %>
+						<% end %>
+						
+						<tr>
+							<td class="text-right" colspan="7">
+								Total:
+							</td>
+							<td class="text-right">
+								<strong><%= format_price(@total_with_vat) %></strong>
+							</td>
+                        </tr>
+						
+						<tr>
+							<td class="text-right" colspan="2">
+								FARE total:
+							</td>
+							<td class="text-right">
+								<strong><%= format_price(@total) %></strong>
+							</td>
+							<td class="text-right">
+								<strong><%= format_price(@total_cost) %></strong>
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare) %></strong>
+							</td>
+							<td class="text-right">
+								<strong class="paid"><%= format_price(@total_fare_vat) %></strong>
+							</td>
+						</tr>
+						
+						
+					</table>

@@ -534,6 +534,118 @@ class Order < ActiveRecord::Base
     }
   end
   
+  def self.statistics_custom(from_date, to_date, params = {}, min_order_detail_price)
+    total_buy = 0.00
+    total_sell = 0.00
+    total_buy_with_vat = 0.00
+    total_sell_with_vat = 0.00
+    total_vat_buy = 0.00
+    total_vat_sell = 0.00
+    
+    total_buy_with_vat_notpaid = 0.00
+    total_sell_with_vat_notpaid = 0.00
+    total_buy_with_vat_paid = 0.00
+    total_sell_with_vat_paid = 0.00
+    
+    total_tip_amount_notpaid = 0.00
+    total_tip_amount_paid = 0.00
+    
+    total_PAD_buy_paid = 0.00
+    total_PAD_sell_paid = 0.00
+    
+    total_fare = 0.00
+    total_cost = 0.00
+    
+    sell_orders = Order.customer_orders
+                  .joins(:order_status).where(order_statuses: {name: "finished"})
+    
+    sell_orders = sell_orders.where('order_date >= ?', from_date.beginning_of_day)
+                                .where('order_date <= ?', to_date.end_of_day)
+                  
+    
+    if params[:customer_id].present?
+      sell_orders = sell_orders.where(customer_id: params[:customer_id])
+    end
+    if params[:tip_contact_id].present?
+      sell_orders = sell_orders.where(tip_contact_id: params[:tip_contact_id])
+    end
+    if params[:paid_status].present? && params[:paid_status] == "paid"
+      sell_orders = sell_orders.where(payment_status_name: "paid")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "not_paid"
+      sell_orders = sell_orders.where("payment_status_name != 'paid'")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "out_of_date"
+      sell_orders = sell_orders.where(payment_status_name: 'out_of_date')
+    end
+                  
+        
+    sell_orders.each do |order|
+      if order.parent.nil?
+		order.order_details.where("price >= " + min_order_detail_price.to_s).each do |od|
+			total_sell += od.total
+			total_sell_with_vat += od.total_vat
+			total_vat_sell += od.vat_amount
+			
+			total_tip_amount_notpaid += order.tip_amount if !order.is_tipped
+			total_tip_amount_paid += order.tip_amount if order.is_tipped
+			
+			total_fare += od.fare
+			total_cost += od.cost
+		end
+      end      
+    end
+    
+    buy_orders = Order.purchase_orders
+                  .joins(:order_status).where(order_statuses: {name: "finished"})
+                  
+    buy_orders = buy_orders.where('order_date >= ?', from_date)
+                                .where('order_date <= ?', to_date)
+    
+    if params[:supplier_id].present?
+      buy_orders = buy_orders.where(supplier_id: params[:supplier_id])
+    end
+    if params[:paid_status].present? && params[:paid_status] == "paid"
+      buy_orders = buy_orders.where(payment_status_name: "paid")
+    end
+    if params[:paid_status].present? && params[:paid_status] == "not_paid"
+      buy_orders = buy_orders.where("payment_status_name != 'paid'")
+    end
+        
+    buy_orders.each do |order|
+      if order.parent.nil?
+		order.order_details.where("price >= " + min_order_detail_price.to_s).each do |od|
+			total_buy += od.total
+			total_buy_with_vat += od.total_vat
+			total_vat_buy += od.vat_amount
+		end
+      end      
+    end
+    
+    buy_orders = buy_orders.sort {|a,b| a[:printed_order_number].to_i <=> b[:printed_order_number].to_i}
+    sell_orders = sell_orders.sort {|a,b| a[:printed_order_number].to_i <=> b[:printed_order_number].to_i}
+    
+    
+    return {
+      total_buy: total_buy,
+      total_sell: total_sell,
+      total_buy_with_vat: total_buy_with_vat,
+      total_sell_with_vat: total_sell_with_vat,
+      total_vat_buy: total_vat_buy,
+      total_vat_sell: total_vat_sell,
+            
+      total_tip_amount_notpaid: total_tip_amount_notpaid,
+      total_tip_amount_paid: total_tip_amount_paid,
+      
+      sell_orders: sell_orders,
+      buy_orders: buy_orders,
+      
+      total_fare: total_fare,
+      total_fare_vat: total_fare - total_fare*(0.25),
+      total_cost: total_cost
+    }
+  end
+  
   def self.delivery_sales_orders
     Order.customer_orders
                   .where(order_status_name: ["canceled","confirmed","finished"]) # orders confirmed

@@ -252,6 +252,7 @@ Hkerp::Application.routes.draw do
       get :pay
       
       get :statistic_sales
+	  get :statistic_sales_custom
       get :statistic_purchase
       get :statistic_stock
     end
