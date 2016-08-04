@@ -6,7 +6,7 @@
 							<th>Item</th>
 							<th class="text-center">Unit</th>
 							<th class="text-right">Price</th>
-							
+							<th class="text-right">Total</th>
 							<th class="text-right">Total(+VAT)</th>
 						</tr>
 						
@@ -54,7 +54,10 @@
 													
 												</td>
 												<td class="text-right">
-													<%= format_price(od.total_vat) %>
+													<%= format_price(od.price) %>
+												</td>
+												<td class="text-right">
+													<%= format_price(od.total) %>
 												</td>
 												<td class="text-right">
 													<%= format_price(od.total_vat) %>
@@ -69,18 +72,17 @@
 							<% num += 1 %>
 						<% end %>
 						
-						<% if @paid_date_check && @paid_date_filter.present? %>
-							<tr>
-								<td class="text-right" colspan="8">
-									Tổng thanh toán ngày <%= @paid_date_filter.to_date.strftime("%Y-%m-%d") %>:
-								</td>
-								<td class="text-right">
-									<strong class="paid">
-										<%= format_price(@total_PAD_paid) %>
-									</strong><br />									
-								</td>
-							</tr>
-						<% end %>
+						<tr>
+							<td class="text-right" colspan="5">
+								Tổng cộng:
+							</td>
+							<td>
+								<strong class="paid"><%= format_price(@total) %></strong>
+							</td>
+							<td>
+								<strong class="paid"><%= format_price(@total_with_vat) %></strong>
+							</td>
+                        </tr>
 						
 						
 					</table>
