@@ -5832,7 +5832,7 @@ border-bottom-left-radius: 2px;
    padding-left: 32px !important;
 }
 
-.input-with-icon i {
+/*.input-with-icon i {
   color: #e5e9ec;
   display: block;
   position: absolute;
@@ -5841,17 +5841,17 @@ border-bottom-left-radius: 2px;
   height: 16px;
   font-size: 16px;
   text-align: center;
-}
+}*/
 
 .input-with-icon.right input {
    padding-left: 12px !important;
    padding-right: 33px !important;
 }
 
-.input-with-icon.right i {
+/*.input-with-icon.right i {
    right: 8px;
    float: right;
-}
+}*/
 
 /** Bs3 new input appends **/
 

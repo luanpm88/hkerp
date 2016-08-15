@@ -40,7 +40,7 @@
 						 <li class="active"><a href="#general">General</a></li>
 						 <li><a href="#parts">Product Parts</a></li>
 						 <li><a href="#images">Images</a></li>
-						 
+						 <li><a href="#intro">Intro</a></li>
 					   </ul>
 					   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
 					   <div class="tab-content" style="margin-bottom: 0;">
@@ -65,14 +65,14 @@
 																					   </div>
 															 </div>
 															 
-															 <div class="form-group">
-																 <label class="form-label"><%= f.label :product_code %></label>
-																 <span class="help"></span>
-																						 <div class="input-with-icon  right">                                       
-																								 <i class=""></i>
-																								 <%= f.text_field :product_code, :class => "form-control" %>
-																						 </div>
-															   </div>
+															<div class="form-group">
+																<label class="form-label"><%= f.label :product_code %></label>
+																<span class="help"></span>
+																<div class="input-with-icon  right">                                       
+																		<i class=""></i>
+																		<%= f.text_field :product_code, :class => "form-control" %>
+																</div>
+															</div>
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :description %></label>
 															   <span class="help"></span>
@@ -301,7 +301,19 @@
 						 </div>
 							  
 							  
-						 
+						 <div class="tab-pane" id="intro">
+							
+							<div class="form-group">
+								<label class="form-label"><%= f.label :intro %></label>
+								<span class="help"></span>
+								<div class="input-with-icon  right">                                       
+										<i class=""></i>
+										<%= f.text_area :intro, :class => "form-control editor" %>
+								</div>
+							</div>
+							
+							
+						 </div>
 						 
 					</div>
 					
@@ -321,4 +333,8 @@
       </div>
 					   
 					   
-
+<script>
+	$(document).ready(function() {
+		tinymce.init({ selector:'.editor' });
+	});
+</script>

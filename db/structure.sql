@@ -1744,7 +1744,8 @@ CREATE TABLE products (
     serial_numbers text,
     status integer DEFAULT 1,
     note text,
-    cache_search text
+    cache_search text,
+    intro text
 );
 
 
@@ -3542,4 +3543,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160507062626');
 INSERT INTO schema_migrations (version) VALUES ('20160507104735');
 
 INSERT INTO schema_migrations (version) VALUES ('20160728094423');
+
+INSERT INTO schema_migrations (version) VALUES ('20160815074344');
 
