@@ -68,11 +68,11 @@ class Product < ActiveRecord::Base
   
   def display_name
     result = ''
-    if categories.first.name != 'none'
+    if categories.first.present? and categories.first.name != 'none'
       result += categories.first.name + " "
     end
     
-    if manufacturer.name != 'none'
+    if manufacturer.present? and manufacturer.name != 'none'
       result += manufacturer.name + " "
     end
     
