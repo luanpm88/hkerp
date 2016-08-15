@@ -913,6 +913,7 @@ class Product < ActiveRecord::Base
     str = []
     str << display_name.to_s.downcase.strip
     str << description.to_s.downcase.strip
+    str << product_code.to_s.downcase.strip
     
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
