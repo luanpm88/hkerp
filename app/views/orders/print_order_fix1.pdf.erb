@@ -86,7 +86,7 @@
     
 </div>
 
-<div style="position: absolute;top:<%= pos7 %>px;left: 4px">
+<div style="position: absolute;top:<%= pos7 %>px;left: -4px">
     <% if !@order.order_details.nil? %>
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
@@ -105,7 +105,13 @@
       <% end %>
     <% end %>
     
-    
+    <div class="po_water_mark">
+        <% if @order.customer_po.present? %>
+            <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
+        <% end %>
+        <div class="line1"></div>
+        <div class="line2"></div>
+    </div>
         
     
 </div>
