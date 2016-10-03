@@ -320,16 +320,18 @@ class ProductsController < ApplicationController
       end
     end
     
-    render json: (products.offset(per_page*page).limit(per_page).map {|item| {
-                    "id": item.id,
-                    "display_name": item.display_name,
-                    "name": item.name,
-                    "product_code": item.product_code,
-                    "price": item.product_price.price,
-                    "description": item.description,
-                    "stock": item.calculated_stock,
-                    "unit": item.unit,
-                } })
+    render json: {"products": (products.offset(per_page*page).limit(per_page).map {|item| {
+                                  "id": item.id,
+                                  "display_name": item.display_name,
+                                  "name": item.name,
+                                  "product_code": item.product_code,
+                                  "price": item.product_price.price,
+                                  "description": item.description,
+                                  "stock": item.calculated_stock,
+                                  "unit": item.unit,
+                              } }),
+                  "total": products.count
+    }
   end
   
   private
