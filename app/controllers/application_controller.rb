@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_devise_permitted_parameters, if: :devise_controller?
   protect_from_forgery with: :exception
   
-  before_action :authenticate_user!
+  before_action :authenticate_user!, :except => [:erp_connector]
   
   layout :layout_by_resource
     

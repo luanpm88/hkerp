@@ -243,6 +243,8 @@ Hkerp::Application.routes.draw do
       
       get :warranty_check
       get :export_to_excel
+      
+      get :erp_connector
     end
   end
   

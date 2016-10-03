@@ -1,5 +1,5 @@
 class ProductsController < ApplicationController
-  load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable]
+  load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable, :erp_connector]
   
   before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
@@ -306,6 +306,30 @@ class ProductsController < ApplicationController
       format.html
       format.xls
     end
+  end
+  
+  def erp_connector
+    per_page = 20
+    page = params[:page].present? ? params[:page].to_i : 0
+    
+    products = Product.where(status: 1)
+    
+    if params["keyword"].present?
+      params["keyword"].split(" ").each do |k|
+        products = products.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+      end
+    end
+    
+    render json: (products.offset(per_page*page).limit(per_page).map {|item| {
+                    "id": item.id,
+                    "display_name": item.display_name,
+                    "name": item.name,
+                    "product_code": item.product_code,
+                    "price": item.product_price.price,
+                    "description": item.description,
+                    "stock": item.calculated_stock,
+                    "unit": item.unit,
+                } })
   end
   
   private
