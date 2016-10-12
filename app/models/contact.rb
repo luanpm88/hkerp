@@ -347,7 +347,7 @@ class Contact < ActiveRecord::Base
     str = []
     str << name
     str << name.to_s.downcase.strip
-    str << address.to_s.downcase.strip if address.to_s.strip.present?
+    # str << address.to_s.downcase.strip if address.to_s.strip.present?
     str << website.to_s.downcase.strip if website.to_s.strip.present?
     str << phone.to_s.downcase.strip if phone.to_s.strip.present?
     str << mobile.to_s.downcase.strip if mobile.to_s.strip.present?
@@ -358,8 +358,8 @@ class Contact < ActiveRecord::Base
     str << account_number.to_s.downcase.strip if account_number.to_s.strip.present?
     str << bank.to_s.downcase.strip if bank.to_s.strip.present?
     
-    str << city.name.to_s.downcase.strip if city.present?
-    str << state.name.to_s.downcase.strip if state.present?
+    # str << city.name.to_s.downcase.strip if city.present?
+    # str << state.name.to_s.downcase.strip if state.present?
     
     agents.each do |a|
       str << a.name.to_s.downcase.strip
