@@ -345,6 +345,7 @@ class Contact < ActiveRecord::Base
   
   def update_cache_search
     str = []
+    str << name
     str << name.to_s.downcase.strip
     str << address.to_s.downcase.strip if address.to_s.strip.present?
     str << website.to_s.downcase.strip if website.to_s.strip.present?
