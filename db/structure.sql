@@ -2172,7 +2172,8 @@ CREATE TABLE users (
     phone_ext character varying,
     mobile character varying,
     "ATT_No" character varying,
-    image character varying
+    image character varying,
+    is_soft boolean DEFAULT false
 );
 
 
@@ -3545,4 +3546,6 @@ INSERT INTO schema_migrations (version) VALUES ('20160507104735');
 INSERT INTO schema_migrations (version) VALUES ('20160728094423');
 
 INSERT INTO schema_migrations (version) VALUES ('20160815074344');
+
+INSERT INTO schema_migrations (version) VALUES ('20161105045331');
 
