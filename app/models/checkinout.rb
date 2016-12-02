@@ -114,6 +114,9 @@ class Checkinout < ActiveRecord::Base
   end
   
   def get_late
+    # auto check for TUAN(3) + VIET(4)
+    return 0 if [3,4].inlcude?(self.user.id)
+    
     Time.zone = "Asia/Bangkok"
     if self.check_time > Time.zone.parse(self.check_date.to_s).change(@@out_morning_time)
       more = self.check_time - Time.zone.parse(self.check_date.to_s).change(@@in_noon_time)
