@@ -125,6 +125,7 @@ class Checkinout < ActiveRecord::Base
       else
         more = 4*60*60
       end
+      return more
     else
       if self.user.is_soft
         more = self.check_time - Time.zone.parse(self.check_date.to_s).change({:hour => 8 , :min => 0 , :sec => 0 })

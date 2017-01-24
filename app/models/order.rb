@@ -184,7 +184,7 @@ class Order < ActiveRecord::Base
     
     if donvi==5 && chuc>1
       chuoi += " lăm"
-    elsif donvi>1 || ($donvi==1 && chuc==0)
+    elsif donvi>1 || (donvi==1 && chuc==0)
         chuoi += " " + @@mangso[donvi]
     end
     return chuoi
