@@ -413,7 +413,7 @@ class Product < ActiveRecord::Base
     end
     
     # if empty stock for 30 days
-    if (!calculated_stock > 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100)
+    if (calculated_stock > 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100)
       return true
     end
     
