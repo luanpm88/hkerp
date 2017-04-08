@@ -41,7 +41,7 @@ class Ability
     #can :manage, SupplierOrder, :salesperson_id => user.id
     
     if user.has_role? "admin"
-      can :manage, :all
+      # can :manage, :all
     end
     
     if user.has_role? "user"
@@ -435,14 +435,23 @@ class Ability
         order.is_sales && ['price_confirmed','confirmed','finished'].include?(order.status.name)
       end      
       can :confirm_order, Order do |order|
-        order.is_sales && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed'].include?(order.status.name)))
+        order.is_sales && (["price_confirmed"].include?(order.status.name) || (!order.is_prices_oudated && ['new','items_confirmed','price_confirmed','canceled'].include?(order.status.name)))
+      end
+      can :confirm_items, Order do |order|
+        order.is_sales && ["canceled"].include?(order.status.name)
+      end
+      can :update, Order do |order|
+        order.is_sales && ["canceled"].include?(order.status.name)
       end
       can :confirm_items, Order do |order|
         order.id.present? && order.is_sales && ["new","price_confirmed"].include?(order.status.name)
       end
       can :cancel_order, Order do |order|
         order.is_sales && ['items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
-      end 
+      end
+      can :update, Order do |order|
+        true
+      end
       
       can :create, OrderDetail
       can :read, OrderDetail

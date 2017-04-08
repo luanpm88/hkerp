@@ -304,6 +304,16 @@
 						 <div class="tab-pane" id="intro">
 							
 							<div class="form-group">
+								<label class="form-label"><%= f.label :no_price %></label>
+								<span class="help"></span>
+								<div class="input-with-icon  right">                                       
+									<i class=""></i>
+									<input type="hidden" name="product[no_price]" value="false" />
+									<input type="checkbox" <%= 'checked' if @product.no_price %> name="product[no_price]" value="true" />
+								</div>
+							</div>
+							
+							<div class="form-group">
 								<label class="form-label"><%= f.label :short_intro %></label>
 								<span class="help"></span>
 								<div class="input-with-icon  right">                                       

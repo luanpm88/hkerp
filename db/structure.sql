@@ -72,7 +72,8 @@ CREATE TABLE articles (
     content text,
     tag_id integer,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    popup boolean DEFAULT false
 );
 
 
@@ -1745,7 +1746,10 @@ CREATE TABLE products (
     status integer DEFAULT 1,
     note text,
     cache_search text,
-    intro text
+    intro text,
+    tax_id integer,
+    short_intro text,
+    no_price boolean
 );
 
 
@@ -3533,6 +3537,8 @@ INSERT INTO schema_migrations (version) VALUES ('20160224090206');
 
 INSERT INTO schema_migrations (version) VALUES ('20160226074840');
 
+INSERT INTO schema_migrations (version) VALUES ('20160229081249');
+
 INSERT INTO schema_migrations (version) VALUES ('20160330012847');
 
 INSERT INTO schema_migrations (version) VALUES ('20160330021311');
@@ -3545,7 +3551,13 @@ INSERT INTO schema_migrations (version) VALUES ('20160507104735');
 
 INSERT INTO schema_migrations (version) VALUES ('20160728094423');
 
+INSERT INTO schema_migrations (version) VALUES ('20160811090641');
+
 INSERT INTO schema_migrations (version) VALUES ('20160815074344');
 
 INSERT INTO schema_migrations (version) VALUES ('20161105045331');
+
+INSERT INTO schema_migrations (version) VALUES ('20161213073624');
+
+INSERT INTO schema_migrations (version) VALUES ('20170324061121');
 
