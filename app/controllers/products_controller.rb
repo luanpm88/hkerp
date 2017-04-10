@@ -1,13 +1,20 @@
 class ProductsController < ApplicationController
-  load_and_authorize_resource :except => [:ajax_new, :ajax_show, :ajax_create, :datatable, :erp_connector]
-  
+  load_and_authorize_resource :except => [
+    :ajax_new,
+    :ajax_show,
+    :ajax_create,
+    :datatable,
+    :erp_connector,
+    :erp_categories_dataselect
+  ]
+  protect_from_forgery :except  => [:erp_connector]
   before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
   def index
     @products = Product.order("name").all
-    
+
     respond_to do |format|
       format.html { render layout: "content" if params[:tab_page].present? }
       format.json {
@@ -15,20 +22,20 @@ class ProductsController < ApplicationController
       }
     end
   end
-  
+
   def datatable
     authorize! :read, Product
-    
+
     result = Product.datatable(params, current_user)
-   
+
     result[:items].each_with_index do |item, index|
-      
-      
+
+
       actions = '<div class="text-right"><div class="btn-group actions">
                     <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
-      
-      
+
+
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_product_path(id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Edit: #{item.display_name}", class: "tab_page")+'</li>'
       end
@@ -56,13 +63,13 @@ class ProductsController < ApplicationController
       if can? :un_trash, item
         actions += '<li>'+view_context.link_to('<i class="icon-trash"></i> Un-Trash'.html_safe, {controller: "products", action: "un_trash", id: item.id, tab_page: 1}, method: :patch)+'</li>'
       end
-     
-      
+
+
       actions += '</ul></div></div>'
-      
+
       result[:result]["data"][index][result[:actions_col]] = actions if result[:actions_col] != 0
     end
-    
+
     render json: result[:result]
   end
 
@@ -74,16 +81,16 @@ class ProductsController < ApplicationController
   # GET /products/new
   def new
     @product = Product.new
-    
+
     (1..10).each do |i|
       @product.product_parts.build
     end
-    
+
     @product_images = []
     (1..12).each do |i|
-      @product_images << @product.product_images.build(display_order: i)      
+      @product_images << @product.product_images.build(display_order: i)
     end
-    
+
      render layout: "content" if params[:tab_page].present?
   end
 
@@ -92,12 +99,12 @@ class ProductsController < ApplicationController
     (1..(10-@product.product_parts.count)).each do |i|
       @product.product_parts.build
     end
-    
+
     @product_images = @product.product_images.order(:display_order)
     (1..(12-@product.product_images.count)).each do |i|
       @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
     end
-    
+
     render layout: "content" if params[:tab_page].present?
   end
 
@@ -106,11 +113,11 @@ class ProductsController < ApplicationController
   def create
     @product = Product.new(product_params)
     @product.user = current_user
-    
+
     (1..(10-@product.product_parts.count)).each do |i|
       @product.product_parts.build
     end
-    
+
     @product_images = []
     (1..(12-@product.product_images.count)).each do |i|
       @product_images << @product.product_images.build(display_order: i+@product.product_images.count)
@@ -119,7 +126,7 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.save
         @product.update_price(params["product_prices"], current_user) if can? :update_public_price, @product
-        
+
         format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @product.id, tab_page: 1} : edit_product_path(@product), notice: 'Product was successfully created.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
@@ -133,8 +140,8 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1.json
   def update
     p product_params
-    
-    
+
+
     respond_to do |format|
       if @product.update(product_params)
         @product.update_price(params["product_prices"], current_user) if can? :update_public_price, @product
@@ -156,14 +163,14 @@ class ProductsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  
+
   # GET /orders/1
   # GET /orders/1.json
   def ajax_show
     authorize! :read, Product
-    
+
     price = params[:purchase].present? ? @product.product_price.supplier_price : @product.product_price.price
-    
+
     @data = Hash[display_name: @product.display_name,
                  product_price_id: @product.product_prices.count > 0 ? @product.product_price.id : 0,
                  price: price,
@@ -174,18 +181,18 @@ class ProductsController < ApplicationController
             ]
     render :json => @data
   end
-  
+
   def ajax_new
     authorize! :create, Product
-    
+
     @product = Product.new
-   
+
     render :layout => nil
   end
-  
+
   def ajax_create
     authorize! :create, Product
-    
+
     @product = Product.new(product_params)
 
     respond_to do |format|
@@ -199,15 +206,15 @@ class ProductsController < ApplicationController
       end
     end
   end
-  
+
   def sales_delivery
     @orders = Order.get_sales_orders_with_delivery
   end
-  
+
   def update_price
     render layout: "content" if params[:tab_page].present?
   end
-  
+
   def do_update_price
     respond_to do |format|
       if @product.update_price(params["product_prices"], current_user)
@@ -219,10 +226,10 @@ class ProductsController < ApplicationController
       end
     end
   end
-  
+
   def trash
     respond_to do |format|
-      if @product.trash       
+      if @product.trash
         format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
@@ -231,10 +238,10 @@ class ProductsController < ApplicationController
       end
     end
   end
-  
+
   def un_trash
     respond_to do |format|
-      if @product.un_trash       
+      if @product.un_trash
         format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
         format.json { render action: 'show', status: :created, location: @product }
       else
@@ -243,7 +250,7 @@ class ProductsController < ApplicationController
       end
     end
   end
-  
+
   def statistics
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date].to_date
@@ -252,9 +259,9 @@ class ProductsController < ApplicationController
       @from_date = DateTime.now.beginning_of_month
       @to_date =  DateTime.now
     end
-    
+
     @products = Product.statistics(@from_date, @to_date)
-    
+
     if params[:pdf] == "1"
         render  :pdf => "products_statistics_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
             :template => 'products/statistics.pdf.erb',
@@ -270,13 +277,13 @@ class ProductsController < ApplicationController
                           :right  => 0},
             }
     end
-    
+
   end
-  
+
   def ajax_product_prices
     render layout: nil
   end
-  
+
   def product_log
     if params[:from_date].present? && params[:to_date].present?
       @from_date = params[:from_date].to_date
@@ -285,55 +292,95 @@ class ProductsController < ApplicationController
       @from_date = DateTime.now.beginning_of_month
       @to_date =  DateTime.now
     end
-    
+
     @history = @product.product_log(@from_date, @to_date, current_user)
-    
+
     render layout: "content" if params[:tab_page].present?
   end
-  
-  def warranty_check    
+
+  def warranty_check
     if params[:serial_number].present?
       @products = Product.find_by_serial_number(params[:serial_number].strip)
-    end    
-    
+    end
+
     render layout: "content" if params[:tab_page].present?
   end
-  
+
   def export_to_excel
     @products = Product.where(status: 1).where("stock > 0").order("stock DESC")
-    
+
     respond_to do |format|
       format.html
       format.xls
     end
   end
-  
+
   def erp_connector
     per_page = 20
     page = params[:page].present? ? params[:page].to_i : 0
-    
-    products = Product.where(status: 1)
-    
-    if params["keyword"].present?
-      params["keyword"].split(" ").each do |k|
-        products = products.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+
+    products = Product.where(status: 1).joins(:categories)
+
+    #FILTERS
+    and_conds = []
+
+    #All data
+    data = params['data'].present? ? JSON.parse(params['data']) : {}
+
+    #keywords
+    if data["keywords"].present?
+      data["keywords"].each do |kw|
+        or_conds = []
+        kw[1].each do |cond|
+          or_conds << "LOWER(#{cond[1]["name"]}) LIKE '%#{cond[1]["value"].downcase.strip}%'"
+        end
+        and_conds << '('+or_conds.join(' OR ')+')'
       end
     end
-    
-    render json: {"products": (products.offset(per_page*page).limit(per_page).map {|item| {
-                                  "id": item.id,
-                                  "display_name": item.display_name,
-                                  "name": item.name,
-                                  "product_code": item.product_code,
-                                  "price": item.product_price.price,
-                                  "description": item.description,
-                                  "stock": item.calculated_stock,
-                                  "unit": item.unit,
-                              } }),
-                  "total": products.count
+
+    #filter
+    if data["filters"].present?
+      data["filters"].each do |kw|
+        or_conds = []
+        kw[1].each do |cond|
+          or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
+        end
+        and_conds << '('+or_conds.join(' OR ')+')'
+      end
+    end
+
+    # conditions
+    products = products.where(and_conds.join(' AND ')) if !and_conds.empty?
+
+    render json: {
+      "products": (products.offset(per_page*page).limit(per_page).map {|item| {
+        "id": item.id,
+        "display_name": item.display_name,
+        "name": item.name,
+        "product_code": item.product_code,
+        "price": item.product_price.price,
+        "description": item.description,
+        "stock": item.calculated_stock,
+        "unit": item.unit,
+      }}),
+      "total": products.count
     }
   end
-  
+
+  def erp_categories_dataselect
+    query = Category.all
+    keyword = params[:keyword]
+
+    if keyword.present?
+      keyword = keyword.strip.downcase
+      query = query.where('LOWER(name) LIKE ?', "%#{keyword}%")
+    end
+
+    query = query.limit(8).map{|category| {value: category.id, text: category.name} }
+
+    render json: query
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product

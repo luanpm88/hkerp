@@ -16,11 +16,11 @@ Hkerp::Application.routes.draw do
     collection do
       get :start
       get :stop
-      
+
       get :statistics
     end
   end
-  
+
   resources :city_types
   resources :cities do
     collection do
@@ -42,7 +42,7 @@ Hkerp::Application.routes.draw do
   resources :product_parts
 
   default_url_options :host => "27.0.15.181:3000"
-  
+
   resources :product_prices
 
   resources :payment_records do
@@ -50,18 +50,18 @@ Hkerp::Application.routes.draw do
       get :download_pdf
       get :pay_tip
       post :do_pay_tip
-      
+
       get :pay_custom
       post :do_pay_custom
-      
+
       get :trash
       get :custom_payments
       get :datatable
-      
+
       get :edit_pay_custom
       get :statistics
       get :cash_book
-      
+
       get :pay_commission
       post :do_pay_commission
     end
@@ -141,24 +141,24 @@ Hkerp::Application.routes.draw do
       get :change
       patch :do_change
       get :confirm_items
-      
+
       get :pricing_orders
       get :update_price
       patch :do_update_price
       get :confirm_price
-      
+
       get :update_info
       patch :do_update_info
-      
+
       get :finish_order
-      
+
       get :order_log
-      
+
       get :update_tip
       patch :do_update_tip
-      
+
       get :order_actions
-      
+
       get :cancel_order
     end
   end
@@ -169,25 +169,25 @@ Hkerp::Application.routes.draw do
       collection do
         get :backup
         post :backup
-        
+
         get :restore
         post :restore
-        
+
         get :download_backup
         get :delete_backup
-        
+
         get :datatable
       end
     end
   end
-  
+
   resources :users do
     collection do
       get :avatar
       get :activity_log
     end
   end
-  
+
   resources :manufacturers
 
   resources :contact_types
@@ -204,9 +204,9 @@ Hkerp::Application.routes.draw do
       get :ajax_show
       get :ajax_list_agent
       get :ajax_list_supplier_agent
-      
+
       get :datatable
-      
+
       get :logo
     end
   end
@@ -216,7 +216,7 @@ Hkerp::Application.routes.draw do
   resources :categories
 
   get 'admin' => 'admin#index'
-  
+
   controller :sessions do
     get 'login' => :new
     post 'login' => :create
@@ -232,27 +232,29 @@ Hkerp::Application.routes.draw do
       get :sales_delivery
       get :update_price
       patch :do_update_price
-      
+
       patch :trash
       patch :un_trash
-      
+
       get :statistics
       get :ajax_product_prices
-      
+
       get :product_log
-      
+
       get :warranty_check
       get :export_to_excel
-      
+
       get :erp_connector
+      post :erp_connector
+      get :erp_categories_dataselect
     end
   end
-  
+
   resources :accounting do
     collection do
       get :orders
       get :pay
-      
+
       get :statistic_sales
 	  get :statistic_sales_custom
       get :statistic_purchase
@@ -268,12 +270,12 @@ Hkerp::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # root 'home#index'
-  
+
   devise_scope :user do
     authenticated :user do
       root 'home#index', as: :authenticated_root
     end
-  
+
     unauthenticated do
       root 'devise/sessions#new', as: :unauthenticated_root
     end
