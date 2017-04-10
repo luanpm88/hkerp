@@ -363,7 +363,8 @@ class ProductsController < ApplicationController
         "stock": item.calculated_stock,
         "unit": item.unit,
       }}),
-      "total": products.count
+      "total": products.count('products.id'),
+      "per_page": per_page
     }
   end
 
