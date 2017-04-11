@@ -5,7 +5,8 @@ class ProductsController < ApplicationController
     :ajax_create,
     :datatable,
     :erp_connector,
-    :erp_categories_dataselect
+    :erp_categories_dataselect,
+    :erp_get_info
   ]
   protect_from_forgery :except  => [:erp_connector]
   before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
@@ -380,6 +381,21 @@ class ProductsController < ApplicationController
     query = query.limit(8).map{|category| {value: category.id, text: category.name} }
 
     render json: query
+  end
+
+  def erp_get_info
+    product = Product.find(params[:id])
+
+    render json: {
+      "id": product.id,
+      "display_name": product.display_name,
+      "name": product.name,
+      "product_code": product.product_code,
+      "price": product.product_price.price,
+      "description": product.description,
+      "stock": product.calculated_stock,
+      "unit": product.unit,
+    }
   end
 
   private

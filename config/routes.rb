@@ -247,6 +247,7 @@ Hkerp::Application.routes.draw do
       get :erp_connector
       post :erp_connector
       get :erp_categories_dataselect
+      get :erp_get_info
     end
   end
 
