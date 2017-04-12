@@ -7,7 +7,9 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!, :except => [
     :erp_connector,
     :erp_categories_dataselect,
-    :erp_get_info
+    :erp_get_info,
+    :erp_price_update,
+    :erp_set_imported
   ]
 
   layout :layout_by_resource

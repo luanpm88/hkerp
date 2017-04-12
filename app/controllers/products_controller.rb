@@ -6,7 +6,9 @@ class ProductsController < ApplicationController
     :datatable,
     :erp_connector,
     :erp_categories_dataselect,
-    :erp_get_info
+    :erp_get_info,
+    :erp_price_update,
+    :erp_set_imported
   ]
   protect_from_forgery :except  => [:erp_connector]
   before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
@@ -344,7 +346,11 @@ class ProductsController < ApplicationController
       data["filters"].each do |kw|
         or_conds = []
         kw[1].each do |cond|
-          or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
+          if cond[1]["name"] == 'products.erp_price_updated'
+            or_conds << "(#{cond[1]["name"]} = '#{cond[1]["value"]}' AND products.erp_imported = true)"
+          else
+            or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
+          end
         end
         and_conds << '('+or_conds.join(' OR ')+')'
       end
@@ -396,6 +402,18 @@ class ProductsController < ApplicationController
       "stock": product.calculated_stock,
       "unit": product.unit,
     }
+  end
+
+  def erp_price_update
+    product = Product.find(params[:id])
+
+    product.update_column(:erp_price_updated, true)
+  end
+
+  def erp_set_imported
+    product = Product.find(params[:id])
+
+    product.update_column(:erp_imported, true)
   end
 
   private
