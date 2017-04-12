@@ -8,7 +8,8 @@ class ProductsController < ApplicationController
     :erp_categories_dataselect,
     :erp_get_info,
     :erp_price_update,
-    :erp_set_imported
+    :erp_set_imported,
+    :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
   before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
@@ -322,7 +323,7 @@ class ProductsController < ApplicationController
     per_page = 20
     page = params[:page].present? ? params[:page].to_i : 0
 
-    products = Product.where(status: 1).joins(:categories)
+    products = Product.where(status: 1).joins(:categories).joins(:manufacturer)
 
     #FILTERS
     and_conds = []
@@ -385,6 +386,20 @@ class ProductsController < ApplicationController
     end
 
     query = query.limit(8).map{|category| {value: category.id, text: category.name} }
+
+    render json: query
+  end
+
+  def erp_manufacturers_dataselect
+    query = Manufacturer.all
+    keyword = params[:keyword]
+
+    if keyword.present?
+      keyword = keyword.strip.downcase
+      query = query.where('LOWER(name) LIKE ?', "%#{keyword}%")
+    end
+
+    query = query.limit(8).map{|manu| {value: manu.id, text: manu.name} }
 
     render json: query
   end

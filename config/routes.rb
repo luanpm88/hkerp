@@ -250,6 +250,7 @@ Hkerp::Application.routes.draw do
       get :erp_get_info
       post :erp_price_update
       post :erp_set_imported
+      get :erp_manufacturers_dataselect
     end
   end
 

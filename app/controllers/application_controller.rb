@@ -9,7 +9,8 @@ class ApplicationController < ActionController::Base
     :erp_categories_dataselect,
     :erp_get_info,
     :erp_price_update,
-    :erp_set_imported
+    :erp_set_imported,
+    :erp_manufacturers_dataselect
   ]
 
   layout :layout_by_resource
