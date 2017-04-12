@@ -1749,7 +1749,9 @@ CREATE TABLE products (
     intro text,
     tax_id integer,
     short_intro text,
-    no_price boolean
+    no_price boolean,
+    erp_price_updated boolean DEFAULT false,
+    erp_imported boolean DEFAULT false
 );
 
 
@@ -3560,4 +3562,6 @@ INSERT INTO schema_migrations (version) VALUES ('20161105045331');
 INSERT INTO schema_migrations (version) VALUES ('20161213073624');
 
 INSERT INTO schema_migrations (version) VALUES ('20170324061121');
+
+INSERT INTO schema_migrations (version) VALUES ('20170412012147');
 
