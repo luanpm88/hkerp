@@ -417,6 +417,7 @@ class ProductsController < ApplicationController
       "description": product.description,
       "stock": product.calculated_stock,
       "unit": product.unit,
+      "warranty": product.warranty,
     }
   end
 
