@@ -919,4 +919,17 @@ class Product < ActiveRecord::Base
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
 
+  # out of date condition
+  def out_of_date
+    last_order_detail = self.order_details.order("created_at DESC").first
+
+    if last_order_detail.nil?
+      last_date = self.updated_at
+    else
+      last_date = last_order_detail.updated_at
+    end
+
+    return (self.stock <= 0 and last_date < Time.now - 6.months)
+  end
+
 end
