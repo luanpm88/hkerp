@@ -371,6 +371,7 @@ class ProductsController < ApplicationController
         "stock": item.calculated_stock,
         "unit": item.unit,
         "out_of_date": item.out_of_date,
+        "warranty": item.warranty,
       }}),
       "total": products.count('products.id'),
       "per_page": per_page
