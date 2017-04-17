@@ -370,6 +370,7 @@ class ProductsController < ApplicationController
         "description": item.description,
         "stock": item.calculated_stock,
         "unit": item.unit,
+        "out_of_date": item.out_of_date,
       }}),
       "total": products.count('products.id'),
       "per_page": per_page
