@@ -114,7 +114,7 @@ class Product < ActiveRecord::Base
   end
 
   def self.filter(params, user)
-    where = "1=1"
+    where = "products.status=1"
     where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? && !params["search"]["value"].present?
     where += " AND categories.id IN (#{params["categories"]})" if params["categories"].present? && !params["search"]["value"].present?
 
