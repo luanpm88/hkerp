@@ -253,6 +253,7 @@ Hkerp::Application.routes.draw do
       get :erp_manufacturers_dataselect
 
       get :suspend
+      get :unsuspend
     end
   end
 

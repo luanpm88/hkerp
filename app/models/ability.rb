@@ -234,6 +234,9 @@ class Ability
       can :suspend, Product do |product|
         !product.suspended
       end
+      can :unsuspend, Product do |product|
+        product.suspended
+      end
 
       can :purchase_orders, Order do |order|
         order.purchaser_id == user.id
