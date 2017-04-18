@@ -127,6 +127,14 @@ class Product < ActiveRecord::Base
       end
     end
 
+    if params["status"].present?
+      if params["status"] == 'suspended'
+         @products = @products.where(suspended: true)
+       elsif params["status"] == 'not_suspended'
+         @products = @products.where(suspended: false)
+       end
+    end
+
 
     return @products
   end
@@ -242,7 +250,7 @@ class Product < ActiveRecord::Base
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
-                        "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+'</div>',
+                        "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+product.suspended_status+'</div>',
                         "<div class=\"text-center\"><a class=\"fancybox_image\" href=\"#{product.image}.png\"><img src=\"#{product.image(:thumb)}\" width=\"60\" /></a></div>",
                         product.user.nil? ? "" : "<div class=\"text-center\">"+product.created_at.strftime("%Y-%m-%d")+"<br>By<br><div class=\"text-center\">"+product.user.staff_col+'</div></div>',
                         ''
@@ -432,6 +440,10 @@ class Product < ActiveRecord::Base
     #update_attributes(payment_status_name: status)
 
     return "<div class=\"#{status}\">#{status}</div>".html_safe
+  end
+
+  def suspended_status
+    return !suspended ? '' : "<div class=\"price_outdated\">suspended</div>".html_safe
   end
 
   def is_combinable

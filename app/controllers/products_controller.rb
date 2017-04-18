@@ -12,7 +12,7 @@ class ProductsController < ApplicationController
     :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
-  before_action :set_product, only: [:product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:suspend, :product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -39,7 +39,9 @@ class ProductsController < ApplicationController
                     <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
       actions += '<ul class="dropdown-menu">'
 
-
+      if can? :suspend, item
+        actions += '<li>'+view_context.link_to("Suspend", suspend_products_path(id: item.id, tab_page: 1), method_data: 'patch', psrc: products_url(tab_page: 1), title: "Suspend: #{item.display_name}", class: "list_ajax_action")+'</li>'
+      end
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_product_path(id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Edit: #{item.display_name}", class: "tab_page")+'</li>'
       end
@@ -243,6 +245,14 @@ class ProductsController < ApplicationController
     end
   end
 
+  def suspend
+    if @product.update_column(:suspended, true)
+      render text: 'Product was successfully suspended.'
+    else
+      render text: 'Product was unsuccessfully suspended.'
+    end
+  end
+
   def un_trash
     respond_to do |format|
       if @product.un_trash
@@ -370,7 +380,7 @@ class ProductsController < ApplicationController
         "description": item.description,
         "stock": item.calculated_stock,
         "unit": item.unit,
-        "out_of_date": item.out_of_date,
+        "out_of_date": item.suspended,
         "warranty": item.warranty,
       }}),
       "total": products.count('products.id'),

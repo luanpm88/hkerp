@@ -1,22 +1,22 @@
                 <ul class="breadcrumb">
                     <li>
                         <p>YOU ARE HERE</p>
-                    </li> 
+                    </li>
                     <li><%= link_to 'Products', products_url, :class => "active" %></li>
                 </ul>
                 <div class="page-title">
                         <i class="icon-archive"></i>
-                    	<h3>Product - <span class="semi-bold"> Management</span></h3>	
+                    	<h3>Product - <span class="semi-bold"> Management</span></h3>
                 </div>
                 <div class="row">
 					<div class="col-md-12">
 						<div class="grid simple ">
 							<div class="grid-body no-border filters">
-							
+
 								<div class="row">
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<h4>Categories <span class="filter-cat-clear">Clear select</span></h4>
-										
+
 											<!--<select class="modern_select" style="width:100%" name="categories[]" multiple="multiple">
 											<option value="">All category</option>
 											<optgroup label="Categories">
@@ -27,11 +27,11 @@
 											<% end %>
 											</optgroup>
 											</select>-->
-											
+
 											<input style="width:100%;margin-bottom: 5px;" name="categories" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" />
-										
+
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-4">
 										<h4>Manufacturers <span class="filter-manu-clear">Clear select</span></h4>
 										<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
 												<% Manufacturer.all.order(:name).each do |manufacturer| %>
@@ -39,7 +39,7 @@
 												<% end %>
 										</select>
 										<div class="filter-manu-scroll">
-											
+
 											<!--<ul class="filter">
 												<% Manufacturer.all.order(:name).each do |manufacturer| %>
 													<li>
@@ -52,12 +52,20 @@
 											</ul>-->
 										</div>
 									</div>
+									<div class="col-md-4">
+										<h4>Manufacturers <span class="filter-manu-clear">Status</span></h4>
+										<select class="modern_select width100" name="status">
+											<option value="">All</option>
+											<option value="not_suspended">Not Suspended</option>
+											<option value="suspended">Suspended</option>
+										</select>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-					
+
 				<div class="row">
 					<div class="col-md-12">
 						<%= link_to 'New Product', new_product_path(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page', title: "New Product" %>
@@ -65,41 +73,41 @@
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Products</span></h4>
                                 <div class="tools">
-				    
+
 				    <a href="javascript:;" class="collapse"></a>
                                     <a href="#grid-config" data-toggle="modal" class="config"></a>
 				    <a href="javascript:;" class="reload"></a>
 				    <a href="javascript:;" class="remove"></a>
-                                    
+
                                 </div>
                             </div>
                             <div class="grid-body no-border">
-                                 
+
                                     <table class="table table-striped no-more-tables datatable-products no-filter">
                                         <thead>
-                                            <tr>                                                
+                                            <tr>
 												<th>Cat</th>
 												<th>Manu</th>
-                                                <th width="30%">Name</th>												
+                                                <th width="30%">Name</th>
                                                 <th class="text-right">Price</th>
 												<th class="text-center">Stock</th>
 												<th class="text-center">Status</th>
 												<th class="text-center">Image</th>
 												<th class="text-center">Staff</th>
-                                                <th class="text-right">Action</th>   
+                                                <th class="text-right">Action</th>
                                             </tr>
                                         </thead>
-										
+
                                     </table>
-									
-									
-									
+
+
+
                             </div>
                         </div>
-			
+
                     </div>
-					
+
                 </div>
-				
-				
+
+
 			</div>

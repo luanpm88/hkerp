@@ -251,6 +251,8 @@ Hkerp::Application.routes.draw do
       post :erp_price_update
       post :erp_set_imported
       get :erp_manufacturers_dataselect
+
+      get :suspend
     end
   end
 
