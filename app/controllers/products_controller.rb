@@ -368,7 +368,9 @@ class ProductsController < ApplicationController
       data["filters"].each do |kw|
         or_conds = []
         kw[1].each do |cond|
-          if cond[1]["name"] == 'products.erp_price_updated'
+          if cond[1]["name"] == 'stock'
+            or_conds << "(products.stock > 0)"
+          elsif cond[1]["name"] == 'products.erp_price_updated'
             or_conds << "(#{cond[1]["name"]} = '#{cond[1]["value"]}' AND products.erp_imported = true)"
           else
             or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
