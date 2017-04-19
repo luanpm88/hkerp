@@ -383,6 +383,14 @@ class ProductsController < ApplicationController
     # conditions
     products = products.where(and_conds.join(' AND ')) if !and_conds.empty?
 
+    # order
+      if data["sort_by"].present?
+        order = data["sort_by"]
+        order += " #{data["sort_direction"]}" if data["sort_direction"].present?
+
+        products = products.order(order)
+      end
+
     render json: {
       "products": (products.offset(per_page*page).limit(per_page).map {|item| {
         "id": item.id,
