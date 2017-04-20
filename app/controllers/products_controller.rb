@@ -386,7 +386,7 @@ class ProductsController < ApplicationController
     end
 
     if !trashed
-      products = Product.where(status: 1)
+      products = products.where(status: 1)
     end
 
     # conditions
@@ -471,7 +471,8 @@ class ProductsController < ApplicationController
 
   def erp_set_imported
     product = Product.find(params[:id])
-
+    value = true
+    value = false if params[:value].present? and params[:value] == ''
     product.update_column(:erp_imported, true)
   end
 
