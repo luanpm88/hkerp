@@ -472,8 +472,8 @@ class ProductsController < ApplicationController
   def erp_set_imported
     product = Product.find(params[:id])
     value = true
-    value = false if params[:value].present? and params[:value] == ''
-    product.update_column(:erp_imported, true)
+    value = false if params[:value].present? and params[:value] == 'false'
+    product.update_column(:erp_imported, value)
   end
 
   private
