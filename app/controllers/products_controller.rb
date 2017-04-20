@@ -344,7 +344,7 @@ class ProductsController < ApplicationController
     per_page = 20
     page = params[:page].present? ? params[:page].to_i : 0
 
-    products = Product.where(status: 1).joins(:categories).joins(:manufacturer)
+    products = Product.joins(:categories).joins(:manufacturer)
 
     #FILTERS
     and_conds = []
@@ -364,6 +364,7 @@ class ProductsController < ApplicationController
     end
 
     #filter
+    trashed = false
     if data["filters"].present?
       data["filters"].each do |kw|
         or_conds = []
@@ -375,9 +376,17 @@ class ProductsController < ApplicationController
           else
             or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
           end
+
+          if cond[1]["name"] == 'products.status'
+            trashed = true
+          end
         end
         and_conds << '('+or_conds.join(' OR ')+')'
       end
+    end
+
+    if !trashed
+      products = Product.where(status: 1)
     end
 
     # conditions
@@ -403,6 +412,7 @@ class ProductsController < ApplicationController
         "unit": item.unit,
         "out_of_date": item.suspended,
         "warranty": item.warranty,
+        "status": item.status,
       }}),
       "total": products.count('products.id'),
       "per_page": per_page
