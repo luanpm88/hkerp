@@ -941,7 +941,7 @@ class Product < ActiveRecord::Base
       last_date = last_order_detail.updated_at
     end
 
-    return (self.stock <= 0 and last_date < Time.now - 6.months)
+    return (self.stock <= 0 and last_date < Time.now - 4.months)
   end
 
 end
