@@ -41,7 +41,7 @@ class Ability
     #can :manage, SupplierOrder, :salesperson_id => user.id
 
     if user.has_role? "admin"
-      # can :manage, :all
+      can :manage, :all
     end
 
     if user.has_role? "user"

@@ -22,7 +22,7 @@
         font-size: 12px;
         font-family: "Tahoma";
     }
-    
+
     * {
         font-size: 12px;
         font-family: "Tahoma";
@@ -31,13 +31,13 @@
       text-align: center;
       width: 50%;
     }
-    
+
 .po_water_mark {
     clear: both;
     padding-top: 5px;
     width: 100%;
 }
-    
+
 .po_water_mark .line1 {
     background: none repeat scroll 0 0 #fff;
     border-bottom: 1px solid #333;
@@ -84,29 +84,31 @@
 </div>
 
 <div style="position: absolute;top:<%= pos6 %>px;left: 400px">
-    
+
 </div>
 
 <div style="position: absolute;top:<%= pos7 %>px;left: -4px;">
     <% if !@order.order_details.nil? %>
       <% @count = 0 %>
       <% @order.order_details.each do |order_detail| %>
-        <% @count = @count + 1 if order_detail.quantity > 0 %>
-            <div style="line-height: 20.5px;clear: both;margin-top: -4px;font-size: 12px<%= ";display:none" if order_detail.quantity == 0 %>">
-                <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 22px;text-align: center"><%= @count %></div>
-                <div style="border: solid 0px #aaa;float: left;width:275px;margin-right: 25px">
-                    <%= order_detail.product_name %><br />
+            <% if order_detail.quantity > 0 %>
+                <% @count = @count + 1 if order_detail.quantity > 0 %>
+                <div style="line-height: 20.5px;clear: both;margin-top: -4px;font-size: 12px<%= ";display:none" if order_detail.quantity == 0 %>">
+                    <div style="border: solid 0px #aaa;float: left;width:20px;margin-right: 22px;text-align: center"><%= @count %></div>
+                    <div style="border: solid 0px #aaa;float: left;width:275px;margin-right: 25px">
+                        <%= order_detail.product_name %><br />
+                    </div>
+                    <div style="border: solid 0px #aaa;float: left;width:50px;margin-right: 25px;text-align: center"><%= order_detail.unit.downcase %></div>
+                    <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 18px;text-align: center"><%= order_detail.quantity %></div>
+                    <div style="border: solid 0px #aaa;float: left;width:80px;margin-right: 15px;text-align: right"><%= format_price(order_detail.price, true) %></div>
+                    <div style="border: solid 0px #aaa;float: left;width:110px;margin-right: 0;text-align: right"><%= format_price(order_detail.total, true, true) %></div>
                 </div>
-                <div style="border: solid 0px #aaa;float: left;width:50px;margin-right: 25px;text-align: center"><%= order_detail.unit.downcase %></div>
-                <div style="border: solid 0px #aaa;float: left;width:64px;margin-right: 18px;text-align: center"><%= order_detail.quantity %></div>
-                <div style="border: solid 0px #aaa;float: left;width:80px;margin-right: 15px;text-align: right"><%= format_price(order_detail.price, true) %></div>
-                <div style="border: solid 0px #aaa;float: left;width:110px;margin-right: 0;text-align: right"><%= format_price(order_detail.total, true, true) %></div>
-            </div>
-            <div style="height: 10px;clear: both"></div>
+                <div style="height: 10px;clear: both"></div>
+            <% end %>
       <% end %>
     <% end %>
-    
-    
+
+
         <div class="po_water_mark">
             <% if @order.customer_po.present? %>
                 <div class="text"><% if @order.customer_po.include? "OHCM" %>PO: <% end %><%= @order.customer_po %></div>
@@ -114,7 +116,7 @@
             <div class="line1"></div>
             <div class="line2"></div>
         </div>
-    
+
 </div>
 
 <div style="position: absolute;top:<%= pos8 %>px;left: 30px;width:122px;text-align: right">
