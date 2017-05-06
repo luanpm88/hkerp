@@ -32,15 +32,15 @@
 <!-- END CORE CSS FRAMEWORK -->
 
 <!-- BEGIN CSS TEMPLATE -->
-<%= stylesheet_link_tag "style.css?v=18" %>
+<%= stylesheet_link_tag "style.css?v=19" %>
 <%= stylesheet_link_tag "responsive.css" %>
 <%= stylesheet_link_tag "custom-icon-set.css" %>
 <!-- END CSS TEMPLATE -->
 
 
-<!-- END CHAT --> 
-<!-- END CONTAINER --> 
-		
+<!-- END CHAT -->
+<!-- END CONTAINER -->
+
 <!-- BEGIN CORE JS FRAMEWORK-->
 <%= javascript_include_tag "jquery-1.8.3.min.js" %>
 <%= javascript_include_tag "jquery_ujs.js" %>
@@ -48,7 +48,7 @@
 <%= javascript_include_tag "bootstrap.min.js" %>
 <%= javascript_include_tag "breakpoints.js" %>
 <%= javascript_include_tag "jquery.unveil.min.js" %>
-<!-- END CORE JS FRAMEWORK --> 
+<!-- END CORE JS FRAMEWORK -->
 <!-- BEGIN PAGE LEVEL JS -->
 <%= javascript_include_tag "jquery.sidr.min.js" %>
 <%= javascript_include_tag "jqueryblockui.js" %>
@@ -96,14 +96,14 @@
 		$('.notification_button').on("click", function() {
 			setTimeout('read_notification()', 5000);
 		});
-		
+
 		$('#main-tab a[rel="tab1hellowWorld"]').parent().find(".but-del").click(function (e) {
 			closeTab("tab1hellowWorld")
 		});
 		//$('#main-tab a[rel="tab1hellowWorld"]').parent().find(".but-reload").click(function (e) {
 		//	reloadTab("tab1hellowWorld")
 		//});
-		
+
 		//$(document).on("click","'.page-sidebar ul li ul.sub-menu li a'",function() {
 		//	$('#main-menu-toggle').trigger("click");
 		//});
@@ -115,7 +115,7 @@
 <!-- BEGIN CORE TEMPLATE JS -->
 <%= javascript_include_tag "core.js" %>
 <%= javascript_include_tag "demo.js" %>
-<!-- END CORE TEMPLATE JS --> 
+<!-- END CORE TEMPLATE JS -->
 
 
 
@@ -124,7 +124,7 @@
 
 <style>
 	/* generic table styling */
-	
+
 
 	/* filter-table specific styling */
 	td.alt { background-color: #ffc !important; background-color: rgba(255, 255, 0, 0.2) !important; }
@@ -143,30 +143,30 @@
 <!-- BEGIN BODY -->
 <body class="main-frame-page">
 <!-- BEGIN HEADER -->
-<div class="header navbar navbar-inverse "> 
+<div class="header navbar navbar-inverse ">
   <!-- BEGIN TOP NAVIGATION BAR -->
   <div class="navbar-inner">
-	<div class="header-seperation"> 
-		<ul class="nav pull-left notifcation-center" id="main-menu-toggle-wrapper" style="display:none">	
-		 <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu"  class="" > <div class="iconset top-menu-toggle-white"></div> </a> </li>		 
+	<div class="header-seperation">
+		<ul class="nav pull-left notifcation-center" id="main-menu-toggle-wrapper" style="display:none">
+		 <li class="dropdown"> <a id="main-menu-toggle" href="#main-menu"  class="" > <div class="iconset top-menu-toggle-white"></div> </a> </li>
 		</ul>
-      <!-- BEGIN LOGO -->	
+      <!-- BEGIN LOGO -->
 		<a href="<%= url_for("/") %>">
 			<!--<img src="<%= url_for("/img") %>/logo.png" class="logo" alt=""  data-src="<%= url_for("/img") %>/logo.png" data-src-retina<%= url_for("/img") %>logo2x.png" width="106" height="21"/>-->
 			<span class="logo-text">HK-ERP</span>
-		
+
 		</a>
-      <!-- END LOGO --> 
-      <ul class="nav pull-right notifcation-center">	
+      <!-- END LOGO -->
+      <ul class="nav pull-right notifcation-center">
         <li class="dropdown" id="header_task_bar"> <a href="<%= url_for("/") %>" class="dropdown-toggle active" data-toggle=""> <div class="iconset top-home"></div> </a> </li>
         <li class="dropdown" id="header_inbox_bar" style="display: none" > <a href="#email" class="dropdown-toggle" > <div class="iconset top-messages"></div>  <span class="badge" id="msgs-badge">2</span> </a></li>
-		<li class="dropdown" id="portrait-chat-toggler" style="display:none"> <a href="#sidr" class="chat-menu-toggle"> <div class="iconset top-chat-white "></div> </a> </li>        
+		<li class="dropdown" id="portrait-chat-toggler" style="display:none"> <a href="#sidr" class="chat-menu-toggle"> <div class="iconset top-chat-white "></div> </a> </li>
       </ul>
       </div>
-      <!-- END RESPONSIVE MENU TOGGLER --> 
-      <div class="header-quick-nav" > 
+      <!-- END RESPONSIVE MENU TOGGLER -->
+      <div class="header-quick-nav" >
       <!-- BEGIN TOP NAVIGATION MENU -->
-	  <div class="pull-left"> 
+	  <div class="pull-left">
         <ul class="nav quick-section">
           <li class="quicklinks"> <a href="#" class="" id="layout-condensed-toggle" >
             <div class="iconset top-menu-toggle-dark"></div>
@@ -188,23 +188,23 @@
 	  </div>
 	 <!-- END TOP NAVIGATION MENU -->
 	 <!-- BEGIN CHAT TOGGLER -->
-      <div class="pull-right"> 
-		<div class="chat-toggler notification_button">	
+      <div class="pull-right">
+		<div class="chat-toggler notification_button">
 				<a href="#" class="dropdown-toggle" id="my-task-list" data-placement="bottom"  data-content='' data-toggle="dropdown" data-original-title="Notifications">
-					<div class="user-details"> 
+					<div class="user-details">
 						<div class="username">
-						    <span class="badge badge-important notification_count"></span> 
+						    <span class="badge badge-important notification_count"></span>
 							Logged in as <span class="bold">
 							<%= current_user.short_name %>
 						      </span>
-						</div>						
-					</div> 
+						</div>
+					</div>
 					<div class="iconset top-down-arrow"></div>
-				</a>	
+				</a>
 				<div id="notification-list" style="display:none">
 					<div style="width:300px" class="top_notification">
-						
-						
+
+
 						<% current_user.notification_top.each do |notification| %>
 							<div class="notification-messages info" onclick="window.location='<%= notification.url %>'">
 									<% if !notification.icon.nil? %>
@@ -228,17 +228,17 @@
 										</div>
 										<div class="date pull-left">
 										<%= time_ago_in_words(notification.created_at) %>
-										</div>										
+										</div>
 									</div>
-									<div class="clearfix"></div>									
+									<div class="clearfix"></div>
 							</div>
 						<% end %>
-						
-					</div>				
+
+					</div>
 				</div>
-				<div class="profile-pic"> 
-					<img src="<%= current_user.avatar(:square) %>"  alt="" data-src="<%= current_user.avatar(:square2x) %>" data-src-retina="<%= current_user.avatar(:square2x) %>" width="35" height="35" /> 
-				</div>       			
+				<div class="profile-pic">
+					<img src="<%= current_user.avatar(:square) %>"  alt="" data-src="<%= current_user.avatar(:square2x) %>" data-src-retina="<%= current_user.avatar(:square2x) %>" width="35" height="35" />
+				</div>
 			</div>
 		 <ul class="nav quick-section ">
 			<li class="quicklinks">
@@ -246,9 +246,9 @@
 					<i class="icon-smile"></i>
 				</a>
 			</li>
-			<li class="quicklinks"> 
-				<a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">						
-					<div class="iconset top-settings-dark "></div> 	
+			<li class="quicklinks">
+				<a data-toggle="dropdown" class="dropdown-toggle  pull-right " href="#" id="user-options">
+					<div class="iconset top-settings-dark "></div>
 				</a>
 				<ul class="dropdown-menu  pull-right" role="menu" aria-labelledby="user-options">
 					<li>
@@ -257,24 +257,24 @@
 					<li>
 						<%= link_to 'Activity Logs', activity_log_users_url(tab_page: 1), class: "tab_page", title: "Activity Logs" %>
 					</li>
-                  <!--<li>		    
+                  <!--<li>
 					<a href="email.html"> My Inbox&nbsp;&nbsp;<span class="badge badge-important animated bounceIn">2</span></a>
                   </li>-->
-                  <li class="divider"></li>                
+                  <li class="divider"></li>
                   <li>
-		    
+
 		    <%= link_to destroy_user_session_path, method: :delete do %>
 		      <i class="icon-off"></i>&nbsp;&nbsp;Log Out
 		    <% end %>
-		    
-		   
+
+
 		  </li>
                </ul>
-			</li> 
-			<li class="quicklinks" style="display: none"> <span class="h-seperate"></span></li> 
-			<li class="quicklinks" style="display: none"> 	
+			</li>
+			<li class="quicklinks" style="display: none"> <span class="h-seperate"></span></li>
+			<li class="quicklinks" style="display: none">
 			<a id="chat-menu-toggle" href="#sidr" class="chat-menu-toggle" ><div class="iconset top-chat-dark "><span class="badge badge-important hide" id="chat-message-count">1</span></div>
-			</a> 
+			</a>
 				<div class="simple-chat-popup chat-menu-toggle hide" >
 					<div class="simple-chat-popup-arrow"></div><div class="simple-chat-popup-inner">
 						 <div style="width:100px">
@@ -283,24 +283,24 @@
 						</div>
 					</div>
 				</div>
-			</li> 
+			</li>
 		</ul>
       </div>
 	   <!-- END CHAT TOGGLER -->
-      </div> 
-      <!-- END TOP NAVIGATION MENU --> 
-   
+      </div>
+      <!-- END TOP NAVIGATION MENU -->
+
   </div>
-  <!-- END TOP NAVIGATION BAR --> 
+  <!-- END TOP NAVIGATION BAR -->
 </div>
 
-<!-- END HEADER --> 
+<!-- END HEADER -->
 <!-- BEGIN CONTAINER -->
-<div class="page-container row"> 
+<div class="page-container row">
   <!-- BEGIN SIDEBAR -->
-  <div class="page-sidebar" id="main-menu"> 
+  <div class="page-sidebar" id="main-menu">
   <!-- BEGIN MINI-PROFILE -->
-   <div class="user-info-wrapper">	
+   <div class="user-info-wrapper">
 	<div class="profile-wrapper">
 		<img src="<%= current_user.avatar(:square) %>"  alt="" data-src="<%= current_user.avatar(:square) %>" data-src-retina="<%= current_user.avatar(:square2x) %>" width="69" height="69" />
 	</div>
@@ -311,12 +311,12 @@
     </div>
    </div>
   <!-- END MINI-PROFILE -->
-  
+
   <!-- BEGIN MINI-WIGETS -->
 
    <!-- END MINI-WIGETS -->
-   
-   <!-- BEGIN SIDEBAR MENU -->	
+
+   <!-- BEGIN SIDEBAR MENU -->
     <p class="menu-title">BROWSE <span class="pull-right"><a href="javascript:;"><i class="icon-refresh"></i></a></span></p>
     <ul>
 	<% if current_user.has_role? "accountant" %>
@@ -329,45 +329,45 @@
 		<% end %>
 		<ul class="sub-menu">
 		  <li<% if ["accounting"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Statistics', "/accountings?tab_page=1", class: "tab_page" %></li>
-		  
+
 			<li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales"].include?(params[:action]) %> class="active"<% end %>>
 				<%= link_to 'Sales Statistics', "/accounting/statistic_sales?tab_page=1", class: "tab_page" %>
 				<ul class="sub-sub-menu">
 					<li<% if ["accounting"].include?(params[:controller]) && ["statistic_sales_custom"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'With min-price', "/accounting/statistic_sales_custom?tab_page=1", class: "tab_page" %></li>
 				</ul>
 			</li>
-		  
-		  
+
+
 		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
-		  
+
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["statistics"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>			
+			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
-		  
+
 		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Stock Statistics', "accounting/statistic_stock?tab_page=1", class: "tab_page" %>			
+			<%= link_to 'Stock Statistics', "accounting/statistic_stock?tab_page=1", class: "tab_page" %>
 		  </li>
-		  
+
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
-			<%= link_to 'Sales Orders', "/accountings/orders?tab_page=1", class: "tab_page" %>			
+			<%= link_to 'Sales Orders', "/accountings/orders?tab_page=1", class: "tab_page" %>
 		  </li>
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_payment_alert %></span>
 			<%= link_to 'Purchase Orders', "/accountings/orders?purchase=1&tab_page=1", class: "tab_page" %>
 		  </li>
-		  
+
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["custom_payments"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path(tab_page: 1), class: "tab_page" %>			
+			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
-		  
+
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_book"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Cash book', cash_book_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
 		</ul>
 	    </li>
 	<% end %>
-	
+
 	<% if current_user.has_role? "salesperson" %>
 	    <li class="start<% if params[:purchase] != "1" && ["orders"].include?(params[:controller]) && ["index"].include?(params[:action]) %> active open<% end %>">
 		<%= link_to orders_url do %>
@@ -380,11 +380,11 @@
 		  <li<% if params[:purchase] != "1" && params[:controller] == "orders" && ["index"].include?(params[:action]) %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.price_confirmed_sales_order_alert(current_user) %></span>
 			<%= link_to 'Customer Orders', orders_url(tab_page: 1), class: "tab_page" %>
-		  </li>	      
+		  </li>
 		</ul>
 	    </li>
 	<% end %>
-	
+
 	<% if current_user.has_role? "purchaser" %>
 	    <li class="start<% if ["orders"].include?(params[:controller]) && (params[:purchase] == "1" || ["purchase_orders","pricing_orders"].include?(params[:action])) %> active open<% end %>">
 		<%= link_to orders_url do %>
@@ -394,18 +394,18 @@
 			<span class="badge badge-important pull-right alert-level1"><%= Notification.purchase_alert %></span>
 		<% end %>
 		<ul class="sub-menu">
-		    
+
 		    <li<% if ["pricing_orders"].include?(params[:action]) %> class="active"<% end %>>
 				<span class="badge badge-important pull-right alert-level2"><%= Notification.items_confirmed_sales_order_alert %></span>
 				<%= link_to 'Pricing Orders', pricing_orders_orders_url(tab_page:1), class: "tab_page" %>
-				
+
 		    </li>
-		    
+
 		    <li<% if ["orders"].include?(params[:controller]) && (params[:purchase] == "1" || ["purchase_orders"].include?(params[:action])) %> class="active"<% end %>><%= link_to 'Supplier Orders', purchase_orders_orders_path(tab_page:1), class: "tab_page" %></li>
 		</ul>
 	    </li>
 	<% end %>
-	
+
 	<% if current_user.has_role?("storage_manager") || current_user.has_role?("salesperson") || current_user.has_role?("purchaser") %>
 	    <li class="start<% if ["products", "categories", "manufacturers", "deliveries"].include?(params[:controller]) %> active open<% end %>">
 		<%= link_to products_url do %>
@@ -415,19 +415,19 @@
 		  <span class="badge badge-important pull-right alert-level1"><%= Notification.delivery_alert if current_user.has_role?('storage_manager') %></span>
 		<% end %>
 		<ul class="sub-menu">
-		    
+
 		    <% if current_user.has_role?("storage_manager") %>
 			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			    <span class="badge badge-important pull-right alert-level2"><%= Notification.sales_delivery_alert %></span>
 				<%= link_to 'Sales Deliveries', deliveries_url(tab_page:1), class: "tab_page" %>
-				
-			</li>		    
+
+			</li>
 			<li<% if ["deliveries"].include?(params[:controller]) && ["index","show"].include?(params[:action]) && params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.purchase_delivery_alert %></span>
 			    <%= link_to 'Purchase Deliveries', deliveries_url(purchase: true, tab_page:1), class: "tab_page" %>
 			</li>
 		    <% end %>
-		    
+
 		    <li<% if ["products"].include?(params[:controller]) && ["index"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Product list', products_url(tab_page: 1), class: "tab_page" %></li>
 			<% if can? :warranty_check, Product %>
 				<li<% if ["products"].include?(params[:controller]) && ["warranty_check"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Warranty Check', warranty_check_products_url(tab_page: 1), class: "tab_page" %></li>
@@ -440,7 +440,7 @@
 		</ul>
 	    </li>
 	<% end %>
-	
+
 	<% if can? :read, Contact %>
 	    <li <% if params[:controller] == "contacts" %> class="active open"<% end %>>
 	      <%= link_to contacts_url do %>
@@ -450,11 +450,11 @@
 	      <% end %>
 	      <ul class="sub-menu">
 			<li<% if params[:controller] == "contacts" %> class="active"<% end %>><%= link_to 'Contacts', contacts_url(tab_page:1), class: "tab_page" %></li>
-			
+
 	      </ul>
 	    </li>
 	<% end %>
-	
+
 	<% if can? :view_attendance, Checkinout %>
 	    <li <% if params[:controller] == "checkinouts" || params[:controller] == "checkinout_requests" %> class="active open"<% end %>>
 	      <%= link_to checkinouts_url do %>
@@ -465,7 +465,7 @@
 	      <ul class="sub-menu">
 		  <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
 		      <%= link_to 'Monthly Attendance Reports', checkinouts_url(tab_page:1), class: "tab_page" %>
-		  </li>	    	    
+		  </li>
 		  <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
 		      <%= link_to 'Attendance Requests', checkinout_requests_url(tab_page:1), class: "tab_page" %>
 		  </li>
@@ -477,7 +477,7 @@
 	      </ul>
 	    </li>
 	<% end %>
-	
+
 	<% if current_user.has_role? "user" %>
 	    <li <% if params[:controller] == "commission_programs" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
@@ -494,11 +494,11 @@
 							<%= link_to 'Programs', commission_programs_path(tab_page:1), class: "tab_page" %>
 						</li>
 					<% end %>
-				  
+
 				</ul>
 	    </li>
 	<% end %>
-	
+
 	<% if current_user.has_role? "admin" %>
 	    <li <% if params[:controller] == "users" %> class="active open"<% end %>>
 				<%= link_to contacts_url do %>
@@ -513,8 +513,8 @@
 				</ul>
 	    </li>
 	<% end %>
-	
-	
+
+
     </ul>
 	<div class="side-bar-widgets" style="display:none">
 	<p class="menu-title">FOLDER <span class="pull-right"><a href="#" class="create-folder"><i class="icon-plus"></i></a></span></p>
@@ -540,19 +540,19 @@
 	</div>
 	<a href="#" class="scrollup">Scroll</a>
 	<div class="clearfix"></div>
-    <!-- END SIDEBAR MENU --> 
+    <!-- END SIDEBAR MENU -->
   </div>
-   <div class="footer-widget">		
+   <div class="footer-widget">
 	<div class="progress transparent progress-small no-radius no-margin">
-		<div class="progress-bar progress-bar-success animate-progress-bar" data-percentage="79%" style="width: 79%;"></div>		
+		<div class="progress-bar progress-bar-success animate-progress-bar" data-percentage="79%" style="width: 79%;"></div>
 	</div>
 	<div class="pull-right">
 		<div class="details-status">
 		<span class="animate-number" data-value="86" data-animation-duration="560">86</span>%
-	</div>	
+	</div>
 	<a href="lockscreen.html"><i class="icon-off"></i></a></div>
   </div>
-  <!-- END SIDEBAR --> 
+  <!-- END SIDEBAR -->
   <!-- BEGIN PAGE CONTAINER-->
     <div class="page-content">
         <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -566,13 +566,13 @@
             </div>
             <div class="clearfix"></div>
             <div class="content">
-	      
-	      
-	      
-		  
+
+
+
+
 		  <ul class="nav nav-tabs" id="main-tab">
             <li class="active">
-				
+
 				<a style="min-width: auto" href="#tab1hellowWorld" rel="tab1hellowWorld">
 					<i class="icon-home" style="display: inline-block;
     font-size: 20px;"></i>
@@ -580,25 +580,25 @@
 					<!--<i class="but but-reload icon-refresh"></i>-->
 				</a>
 			</li>
-            
-            
+
+
           </ul>
           <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
           <div class="tab-content">
             <div class="tab-pane active" id="tab1hellowWorld" style="padding: 19px !important">
 				<% if notice %><p class="alert alert-success"><%= notice %></p><% end %>
 				<% if alert %><p class="alert"><%= alert %></p><% end %>
-				<%= yield %> 
+				<%= yield %>
             </div>
-			
+
           </div>
-	      
-	      
+
+
 	    </div>
             <!-- END PAGE -->
         </div>
  </div>
-<!-- BEGIN CHAT --> 
+<!-- BEGIN CHAT -->
 <div id="sidr">
     <div class="chat-window-wrapper">
         <div class="chat-header">
