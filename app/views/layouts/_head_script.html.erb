@@ -1896,6 +1896,71 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 				alert('success');
 			});
 		});
+
+		$(document).on("click", ".price_box_toggle_btn", function() {
+			$(this).parent().find('.update_price_box').toggle();
+			format_price($(this).parent().find('.update_price_box').find('input.price_input'));
+
+			$('.select2-ajax-suppliers').select2({
+				placeholder: "Search for a supplier",
+				minimumInputLength: 1,
+				ajax: {
+				  url: $('.select2-ajax-suppliers').attr("data"),
+				  dataType: 'json',
+				  data: function (term, page) { // page is the one-based page number tracked by Select2
+						return {
+							q: term, //search term
+						};
+					},
+					results: function (data, page) {
+					  return {results: data};
+					}
+				},
+				initSelection: function (element, callback) {
+				  callback({ id: element.val, text: element.attr('text') });
+				}
+			});
+		});
+		$(document).on("click", ".update_price_box .btn-cancel", function() {
+			$(this).parents('.update_price_box').hide();
+		});
+		$(document).on("click", ".update_price_box .btn-save", function() {
+			var tr = $(this).parents('tr');
+			var box = $(this).parents('.update_price_box');
+			var pid = box.attr('data-id');
+			var s_price = box.find('input[name=new_price]').val();
+			var p_price = box.find('input[name=new_supplier_price]').val();
+			var supplier_id = box.find('input[name=supplier_id]').val();
+			var url = '<%= quick_update_price_products_path %>';
+			var button = $(this);
+
+			if (supplier_id == '') {
+				alert('Select supplier!');
+				box.find('input[name=supplier_id]').addClass('error');
+				return;
+			}
+
+			if (p_price.trim() != '' && parseFloat(p_price.replace(/,/g,"")) > 0) {
+				button.hide();
+				button.after('<div>Updating...</div>');
+
+				$.ajax({
+					url : url,
+					type: "POST",
+					data: {
+						id: pid,
+						'product_prices[price]': s_price,
+						'product_prices[supplier_price]': p_price,
+						'product_prices[supplier_id]': supplier_id
+					},
+					success:function(data, textStatus, jqXHR)
+					{
+						box.parent().html(data.price_col);
+						tr.find('.price_update_status').html(data.price_status);
+					}
+				});
+			}
+		});
 });
 
 </script>

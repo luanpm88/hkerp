@@ -254,6 +254,8 @@ Hkerp::Application.routes.draw do
 
       get :suspend
       get :unsuspend
+
+      post :quick_update_price
     end
   end
 

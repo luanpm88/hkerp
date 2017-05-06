@@ -222,6 +222,7 @@ class Ability
 
 
       can :update_price, Product
+      can :quick_update_price, Product
       can :do_update_price, Product
       can :update_public_price, Product
 
@@ -299,6 +300,7 @@ class Ability
       end
 
       can :update_price, Product
+      can :quick_update_price, Product
       can :do_update_price, Product
 
       can :trash, Product do |product|

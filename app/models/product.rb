@@ -248,7 +248,7 @@ class Product < ActiveRecord::Base
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name+" "+product.product_code+"</strong><div>"+product.description[0..80]+"<div>#{(product.note.present? ? "(#{product.note})": "")}</div></div>"++(product.warranty.empty? ? '' :"<div>Warranty: "+product.warranty+"</div>") + '</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
-                        "<div class=\"text-right #{trashed_class}\">"+product.product_price.price_formated+'</div>',
+                        "<div class=\"text-right #{trashed_class}\">"+product.price_col(user)+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.display_status+product.price_status+product.suspended_status+'</div>',
                         "<div class=\"text-center\"><a class=\"fancybox_image\" href=\"#{product.image}.png\"><img src=\"#{product.image(:thumb)}\" width=\"60\" /></a></div>",
@@ -261,8 +261,6 @@ class Product < ActiveRecord::Base
 
     end
 
-
-
     result = {
               "drawn" => params[:drawn],
               "recordsTotal" => total,
@@ -271,6 +269,32 @@ class Product < ActiveRecord::Base
     result["data"] = data
 
     return {result: result, items: @products, actions_col: actions_col}
+  end
+
+  def price_col(user)
+    if user.can?(:update_price, self)
+      html = "<div><div class='text-nowrap'>S: #{self.product_price.price_formated}</div>"
+      html += "<div class='text-nowrap'>P: #{self.product_price.supplier_price_formated}</div>"
+      html += "<a class='price_box_toggle_btn' href='#update_price'><i class='icon-pencil'></i></a>"
+      html += "<div class='update_price_box' data-id='#{self.id}'>
+          <h5>Update price</h5>
+          <title>#{self.display_name}</title>
+          <label>Purchase: <span class='help'>(required)</span></label>
+          <input value='"+self.product_price.supplier_price_formated+"' class='price_input' type='text' name='new_supplier_price' value='' />
+          <label>Supplier: <span class='help'>(required)</span></label>
+          <input name='supplier_id' data='/contacts.json' class='select2-ajax-suppliers' />
+          <label>Sales:</label>
+          <input class='price_input' type='text' name='new_price' value='' />
+          <br>
+          <a class='btn btn-primary btn-small btn-save' href='#save'>Save</a>
+          <a class='btn btn-small btn-cancel' href='#save'>Cancel</a>
+        </div>"
+      html += "</div>"
+
+      html
+    else
+      self.product_price.price_formated
+    end
   end
 
   def self.extract_serial_numbers(string)
@@ -439,7 +463,7 @@ class Product < ActiveRecord::Base
 
     #update_attributes(payment_status_name: status)
 
-    return "<div class=\"#{status}\">#{status}</div>".html_safe
+    return "<div class=\"#{status} price_update_status\">#{status}</div>".html_safe
   end
 
   def suspended_status

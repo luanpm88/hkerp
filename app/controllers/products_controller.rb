@@ -12,7 +12,7 @@ class ProductsController < ApplicationController
     :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
-  before_action :set_product, only: [:unsuspend, :suspend, :product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
+  before_action :set_product, only: [:quick_update_price, :unsuspend, :suspend, :product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
 
   # GET /products
   # GET /products.json
@@ -475,6 +475,15 @@ class ProductsController < ApplicationController
     value = true
     value = false if params[:value].present? and params[:value] == 'false'
     product.update_column(:erp_imported, value)
+  end
+
+  def quick_update_price
+    @product.update_price(params["product_prices"], current_user)
+
+    render json: {
+      price_col: @product.price_col(current_user),
+      price_status: @product.price_status
+    }
   end
 
   private
