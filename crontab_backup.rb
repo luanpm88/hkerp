@@ -1,7 +1,7 @@
 require 'active_record'
 require 'yaml'
 DIR = File.expand_path(File.dirname(__FILE__))
-rails_env = "production"
+rails_env = "development"
 # Change the following to reflect your database settings
 # config = YAML.load_file(DIR+'/config/database.yml')["production"]
 config = YAML.load_file(DIR+'/config/database.yml')[rails_env]
@@ -21,11 +21,3 @@ ActiveRecord::Base.establish_connection(
 require DIR+'/app/models/system.rb'
 
 System.backup({database: true, file: true, dir: DIR+"/", rails_env: rails_env})
-
-
-
-
-
-
-
-

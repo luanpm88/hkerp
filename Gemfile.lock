@@ -144,6 +144,7 @@ GEM
     ref (1.0.5)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rmega (0.2.2)
     roo (2.0.1)
       nokogiri (~> 1)
       rubyzip (~> 1.1, < 2.0.0)
@@ -214,6 +215,7 @@ DEPENDENCIES
   pg
   pg_search
   rails (~> 4.2.3)
+  rmega
   roo
   sass-rails (~> 4.0.0)
   sdoc
@@ -227,4 +229,4 @@ DEPENDENCIES
   wkhtmltopdf-binary
 
 BUNDLED WITH
-   1.10.6
+   1.15.0
