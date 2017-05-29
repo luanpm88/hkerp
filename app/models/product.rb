@@ -273,8 +273,8 @@ class Product < ActiveRecord::Base
 
   def price_col(user)
     if user.can?(:update_price, self)
-      html = "<div><div class='text-nowrap'>S: #{self.product_price.price_formated}</div>"
-      html += "<div class='text-nowrap'>P: #{self.product_price.supplier_price_formated}</div>"
+      html = "<div><div class='text-nowrap'>#{self.product_price.price_formated}</div>"
+      # html += "<div class='text-nowrap'>P: #{self.product_price.supplier_price_formated}</div>"
       html += "<a class='price_box_toggle_btn' href='#update_price'><i class='icon-pencil'></i></a>"
       html += "<div class='update_price_box' data-id='#{self.id}'>
           <h5>Update price</h5>
