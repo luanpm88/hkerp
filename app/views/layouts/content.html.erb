@@ -96,6 +96,8 @@
 
 
 <script>
+	$.fn.DataTable.ext.pager.numbers_length = 1000;
+
 	function reloadDatatable() {
       $('.dataTable').dataTable().fnFilter();
     }
