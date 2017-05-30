@@ -413,7 +413,7 @@ class Product < ActiveRecord::Base
       new_price.save
       self.update_column(:erp_price_updated, false)
     else
-      self.product_price.update_attribute("updated_at",Time.now)
+      self.product_price.update_column("updated_at",Time.now)
     end
 
     p = Product.find(self.id)

@@ -68,10 +68,6 @@
 
 		} else {
 		  $('#main-tab a[rel="'+tid+'"]').tab('show')
-
-		  reloadTab(tid)
-
-
 		}
 		$(document).scrollTop(0);
 		if($(window).width() <= 750 && $('.page-sidebar').css("display") == "block") {
@@ -1892,7 +1888,7 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 					'format': 'json'
 				}
 			}).fail(function( result ) {
-				$('.datatable-products').dataTable().fnFilter();
+				$('.datatable-products').dataTable().fnDraw(true);
 				alert('success');
 			});
 		});
