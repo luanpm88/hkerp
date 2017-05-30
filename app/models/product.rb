@@ -183,7 +183,7 @@ class Product < ActiveRecord::Base
 
     @products = self.filter(params, user)
 
-    @products = @products.order(order) if !order.nil?
+    @products = @products.order(order + ', products.created_at') if !order.nil?
     total = @products.count("products.id");
 
     @products = @products.limit(params[:length]).offset(params["start"])
@@ -519,7 +519,7 @@ class Product < ActiveRecord::Base
     count += stock_update_count
 
     if self.stock.nil? || self.stock != count
-      self.update_attributes(stock: count)
+      self.update_columns(stock: count)
     end
 
     return count
