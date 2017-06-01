@@ -79,7 +79,7 @@
 <%= javascript_include_tag "fancybox/jquery.fancybox.js" %>
 <%= javascript_include_tag "jquery.number.min.js" %>
 <%= javascript_include_tag "jquery.nicefileinput.min.js" %>
-<%= javascript_include_tag "/javascripts/datatable/js/jquery.dataTables.min.js" %>
+<%= javascript_include_tag "/javascripts/datatable/js/jquery.dataTables.js" %>
 <%= javascript_include_tag "/tinymce/tinymce.min.js" %>
 <!-- END PAGE LEVEL PLUGINS -->
 
@@ -96,7 +96,7 @@
 
 
 <script>
-	$.fn.DataTable.ext.pager.numbers_length = 1000;
+	$.fn.DataTable.ext.pager.numbers_length = 20;
 
 	function reloadDatatable() {
       $('.dataTable').dataTable().fnFilter();
