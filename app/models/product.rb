@@ -952,7 +952,7 @@ class Product < ActiveRecord::Base
     str << description.to_s.downcase.strip
     str << product_code.to_s.downcase.strip
 
-    self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
+    self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").to_ascii)
   end
 
   # out of date condition

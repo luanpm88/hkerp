@@ -61,3 +61,4 @@ gem 'thin'
 gem 'mdb'
 gem "sixarm_ruby_unaccent", ">= 1.1.1", "< 2"
 gem 'rmega'
+gem 'unidecoder'
