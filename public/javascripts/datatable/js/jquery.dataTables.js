@@ -13853,7 +13853,7 @@
 			numbers.splice( 0, 0, 0 );
 		}
 		else {
-			numbers = _range( page - 1 - half, page + half + 2 );
+			numbers = _range( page - half + 2, page + half - 1);
 			numbers.push( 'ellipsis' );
 			numbers.push( pages-1 );
 			numbers.splice( 0, 0, 'ellipsis' );
