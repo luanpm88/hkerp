@@ -106,7 +106,7 @@ class Product < ActiveRecord::Base
     result = self.where(status: 1)
 
     q.split(" ").each do |k|
-      result = result.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%")
+      result = result.where("(LOWER(products.cache_search) LIKE ? OR products.cache_search LIKE ?)", "%#{k.strip.downcase}%", "%#{k.strip}%")
     end
 
     result = result.limit(50).map {|model| {:id => model.id, :text => model.display_name} }
@@ -123,7 +123,7 @@ class Product < ActiveRecord::Base
 
     if params["search"]["value"].present?
       params["search"]["value"].split(" ").each do |k|
-        @products = @products.where("LOWER(products.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
+        @products = @products.where("(LOWER(products.cache_search) LIKE ? OR products.cache_search LIKE ?)", "%#{k.strip.downcase}%", "%#{k.strip}%") if k.strip.present?
       end
     end
 
@@ -951,6 +951,10 @@ class Product < ActiveRecord::Base
     str << display_name.to_s.downcase.strip
     str << description.to_s.downcase.strip
     str << product_code.to_s.downcase.strip
+
+    str << display_name.to_s.strip
+    str << description.to_s.strip
+    str << product_code.to_s.strip
 
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").to_ascii)
   end
