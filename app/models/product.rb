@@ -945,7 +945,6 @@ class Product < ActiveRecord::Base
     self.update_attribute(:stock, self.calculated_stock)
   end
 
-
   def update_cache_search
     str = []
     str << display_name.to_s.downcase.strip
@@ -955,6 +954,8 @@ class Product < ActiveRecord::Base
     str << display_name.to_s.strip
     str << description.to_s.strip
     str << product_code.to_s.strip
+
+    str << "[out_of_date]" if out_of_date
 
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").to_ascii)
   end

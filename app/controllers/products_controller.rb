@@ -371,6 +371,8 @@ class ProductsController < ApplicationController
         kw[1].each do |cond|
           if cond[1]["name"] == 'stock'
             or_conds << "(products.stock > 0)"
+          elsif cond[1]["name"] == 'out_of_date'
+            or_conds << "(products.cache_search) LIKE '%[out_of_date]%'"
           elsif cond[1]["name"] == 'products.erp_price_updated'
             or_conds << "(#{cond[1]["name"]} = '#{cond[1]["value"]}' AND products.erp_imported = true)"
           else
