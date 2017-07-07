@@ -520,6 +520,7 @@ class Ability
       end
 
       can :warranty_check, Product
+      can :export, Product
 
       can :view_all_sales_orders, Order
     end
