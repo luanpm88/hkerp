@@ -9,6 +9,7 @@ class ProductsController < ApplicationController
     :erp_get_info,
     :erp_price_update,
     :erp_set_imported,
+    :erp_set_sold_out,
     :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
@@ -479,6 +480,11 @@ class ProductsController < ApplicationController
     value = true
     value = false if params[:value].present? and params[:value] == 'false'
     product.update_column(:erp_imported, value)
+  end
+
+  def erp_set_sold_out
+    product = Product.find(params[:id])
+    product.update_column(:erp_sold_out, params[:value])
   end
 
   def quick_update_price

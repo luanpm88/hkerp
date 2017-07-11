@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
     :erp_get_info,
     :erp_price_update,
     :erp_set_imported,
+    :erp_set_sold_out,
     :erp_manufacturers_dataselect
   ]
 
