@@ -423,7 +423,7 @@ class Product < ActiveRecord::Base
     end
 
     # API
-    self.update_column(:erp_price_updated, false) if self.web_price != self.product_price.price
+    self.update_column(:erp_price_updated, false) if self.web_price.present? and self.web_price != self.product_price.price
 
     p = Product.find(self.id)
     return p.product_price
