@@ -410,7 +410,7 @@ class ProductsController < ApplicationController
         "display_name": item.display_name,
         "name": item.name,
         "product_code": item.product_code,
-        "price": item.product_price.price,
+        "price": item.get_web_price,
         "description": item.description,
         "stock": item.calculated_stock,
         "unit": item.unit,
