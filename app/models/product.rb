@@ -415,10 +415,15 @@ class Product < ActiveRecord::Base
 
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id || new_price.customer_id != self.product_price.customer_id
       new_price.save
+
+      # API
       self.update_column(:erp_price_updated, false)
     else
       self.product_price.update_column("updated_at",Time.now)
     end
+
+    # API
+    self.update_column(:erp_price_updated, false) if self.web_price != self.product_price.price
 
     p = Product.find(self.id)
     return p.product_price
@@ -980,5 +985,5 @@ class Product < ActiveRecord::Base
   def get_web_price
     web_price.to_f > 0 ? web_price : self.product_price.price
   end
-  
+
 end
