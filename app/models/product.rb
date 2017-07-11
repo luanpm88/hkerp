@@ -66,6 +66,10 @@ class Product < ActiveRecord::Base
     self[:price] = new_price.to_s.gsub(/[\,]/, '')
   end
 
+  def web_price=(new_price)
+    self[:web_price] = new_price.to_s.gsub(/[\,]/, '')
+  end
+
   def display_name
     result = ''
     if categories.first.present? and categories.first.name != 'none'
@@ -973,4 +977,8 @@ class Product < ActiveRecord::Base
     return (self.stock <= 0 and last_date < Time.now - 6.months)
   end
 
+  def get_web_price
+    web_price.to_f > 0 ? web_price : self.product_price.price
+  end
+  
 end

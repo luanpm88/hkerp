@@ -4,20 +4,20 @@
                 <div class="grid-title no-border">
                   <h4>Product <span class="semi-bold">Details</span></h4>
                   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
-                </div>     
-                
-                
-                
-                
+                </div>
+
+
+
+
                 <div class="grid-body no-border">-->
-                  
-                  
+
+
                   <% if @product.errors.any? %>
                     <div class="alert alert-error">
                       <button data-dismiss="alert" class="close"></button>
                       <div id="error_explanation">
                         <h5><%= pluralize(@product.errors.count, "error") %> prohibited this product from being saved:</h5>
-                  
+
                         <ul>
                         <% @product.errors.full_messages.each do |msg| %>
                           <li><%= msg %></li>
@@ -26,16 +26,16 @@
                       </div>
                     </div>
                   <% end %>
-                    
-                 
-                  
-                  
+
+
+
+
 				<%= form_for(@product, :multipart => true) do |f| %>
-                    
+
 					<% if params[:tab_page] %>
 						 <%= hidden_field_tag "tab_page", 1 %>
 					<% end %>
-					
+
 					<ul class="nav nav-pills" id="tab-01">
 						 <li class="active"><a href="#general">General</a></li>
 						 <li><a href="#parts">Product Parts</a></li>
@@ -45,30 +45,30 @@
 					   <div class="tools"> <a href="javascript:;" class="collapse"></a> <a href="#grid-config" data-toggle="modal" class="config"></a> <a href="javascript:;" class="reload"></a> <a href="javascript:;" class="remove"></a> </div>
 					   <div class="tab-content" style="margin-bottom: 0;">
 						 <div class="tab-pane active" id="general">
-							  
-							  
-							  
-							  
-							  
-							  
-							  
+
+
+
+
+
+
+
 							  <div class="row column-seperation">
-                           
+
 													   <div class="col-md-6">
-													  
+
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :name %></label>
 															   <span class="help">(required)</span>
-																					   <div class="input-with-icon  right">                                       
+																					   <div class="input-with-icon  right">
 																							   <i class=""></i>
 																							   <%= f.text_field :name, :class => "form-control required" %>
 																					   </div>
 															 </div>
-															 
+
 															<div class="form-group">
 																<label class="form-label"><%= f.label :product_code %></label>
 																<span class="help"></span>
-																<div class="input-with-icon  right">                                       
+																<div class="input-with-icon  right">
 																		<i class=""></i>
 																		<%= f.text_field :product_code, :class => "form-control" %>
 																</div>
@@ -76,75 +76,75 @@
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :description %></label>
 															   <span class="help"></span>
-																   <div class="input-with-icon  right">                                       
+																   <div class="input-with-icon  right">
 																		   <i class=""></i>
 																		   <%= f.text_area :description, :class => "form-control" %>
 																   </div>
 															 </div>
-											 
+
 															  <div class="form-group">
 															   <label class="form-label"><%= f.label :unit %></label>
 															   <span class="help">(required)</span>
-																					   <div class="input-with-icon  right">                                       
+																					   <div class="input-with-icon  right">
 																							   <i class=""></i>
 																							   <%= f.text_field :unit, :class => "form-control required" %>
 																					   </div>
 															 </div>
-															 
-															 
+
+
 															 <div class="form-group">
 																 <label class="form-label"><%= f.label :categories %></label>
-																 <span class="help">(required)</span>															   
-																 <div class="input-with-icon  right">                                                  
+																 <span class="help">(required)</span>
+																 <div class="input-with-icon  right">
 																	  <i class=""></i>
 																	  <div class="input-with_add_but">
                                                                              <%= link_to '<i class="icon-plus"></i>'.html_safe, new_category_path(tab_page: 1), title: "New Category", :class => 'btn btn-sm btn-small btn-white tab_page' %>
                                                                              <input style="width:100%;margin-bottom: 5px;" name="product[category_ids][]" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories required" value="<%= @product.categories.first.id if !@product.categories.first.nil? %>" text="<%= @product.categories.first.name if !@product.categories.first.nil? %>" />
                                                                       </div>
-																	 
+
 																 </div>
 															 </div>
-													   
+
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :manufacturer %></label>
 															   <span class="help">(required)</span>
-																 <div class="input-with-icon  right">                                                  
+																 <div class="input-with-icon  right">
 																		 <i class=""></i>
-																		 
+
 																		   <div class="input-with_add_but">
 																				<%= link_to '<i class="icon-plus"></i>'.html_safe, new_manufacturer_path(tab_page: 1), title: "New Manufacturer", :class => 'btn btn-sm btn-small btn-white tab_page' %>
 																				<input style="width:100%;margin-bottom: 5px;" name="product[manufacturer_id]" data="<%= manufacturers_path(format: "json") %>" class="select2-ajax-manufacturers required" value="<%= @product.manufacturer_id %>" text="<%= @product.manufacturer.name if !@product.manufacturer.nil? %>" />
 																		   </div>
-																		   
+
 																 </div>
 															 </div>
-									   
-						   
-																   
-						   
-																		
-						   
-																   
-																		
-															  
-																		
-																		
-												  
+
+
+
+
+
+
+
+
+
+
+
+
 											 </div>
-													   
-													   
+
+
 													   <div class="col-md-6">
-											 
-																	  
-						   
-											  
-																			 
+
+
+
+
+
 																					 <%= fields_for :product_prices do |builder| %>
 																						  <%  if can? :update_public_price, @product %>
 																							   <div class="form-group">
 																									<label class="form-label"><%= builder.label :price %></label>
 																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
+																									<div class="input-with-icon  right">
 																										<i class=""></i>
 																										<%= builder.text_field :price, value: @product.product_price.price, :class => "form-control price_input" %>
 																									</div>
@@ -154,84 +154,84 @@
 																							   <div class="form-group">
 																									<label class="form-label"><%= builder.label :supplier_price %></label>
 																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
+																									<div class="input-with-icon  right">
 																										<i class=""></i>
 																										<%= builder.text_field :supplier_price, value: @product.product_price.supplier_price, :class => "form-control price_input" %>
 																									</div>
 																							   </div>
-																							   
+
 																							   <div class="form-group">
 																									<label class="form-label"><%= builder.label :suppiler_id %></label>
 																									<span class="help"></span>
-																									<div class="input-with-icon  right">                                       
+																									<div class="input-with-icon  right">
 																										  <i class=""></i>
 																										  <input style="width:100%;margin-bottom: 5px;" name="product_prices[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers"  value="<%= @product.product_price.supplier_id if !@product.product_price.nil? %>" text="<%= @product.product_price.supplier.name if !@product.product_price.nil? && !@product.product_price.supplier.nil? %>" />
 																										  <br />
 																										  <%= link_to '+', ajax_new_contacts_path(:type_id => ContactType.supplier), :class => 'btn btn-sm btn-small btn-white fancybox.ajax add-agent-button' %>
 																									</div>
-																							   </div>	
+																							   </div>
 																						  <% end %>
 																					 <% end %>
-																					 
-																					 
+
+
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :warranty %></label>
 															   <span class="help"></span>
-																					   <div class="input-with-icon  right">                                       
+																					   <div class="input-with-icon  right">
 																							   <i class=""></i>
 																							   <%= f.text_field :warranty, :class => "form-control" %>
 																					   </div>
 															 </div>
-														 
-															 
-											 
+
+
+
 															 <div class="form-group">
 															   <label class="form-label"><%= f.label :note %></label>
 															   <span class="help"></span>
-																   <div class="input-with-icon  right">                                       
+																   <div class="input-with-icon  right">
 																		   <i class=""></i>
 																		   <%= f.text_area :note, :class => "form-control" %>
 																   </div>
 															 </div>
-											 
-						   
-														 
-														 
-														 
-														 
+
+
+
+
+
+
 													   </div>
 												   </div>
-							  
-							  
-							  
-							  
-							  
-							  
-							  
-							  
+
+
+
+
+
+
+
+
 						 </div>
-													   
-													   
+
+
 						 <div class="tab-pane" id="parts">
 							  <div class="row">
 								   <div class="col-md-12">
 										<% if @product.id.nil? %>
-										
+
 											 <p>
 												  Can't update parts of the product until it is added.
 											 </p>
-											 
+
 										<% else %>
 												  <div class="form-group">
 															<label class="form-label"><%= f.label :parts %></label>
-															<div class="input-with-icon  right">                                       
+															<div class="input-with-icon  right">
 																	<i class=""></i>
 																 <div class="row">
 																	  <% @product.product_parts.each_with_index do |part,index| %>
 																		   <%= f.fields_for :product_parts, part do |p| %>
-																		   
+
 																			 <div class="col-md-6">
-																				<div class="row parts_select">                           
+																				<div class="row parts_select">
 																					 <div class="col-sm-9 col-md-9">
 																						<%= p.hidden_field :id %>
 																						<%= p.hidden_field :_destroy, value: "", class: "destroy_tag"  %>
@@ -251,23 +251,23 @@
 								   </div>
 							  </div>
 						 </div>
-													   
-													   
-													   
+
+
+
 						 <div class="tab-pane" id="images">
 						   <div class="row">
-							  
-							  
+
+
 							  <div class="col-md-12">
-								   
+
 								   <% if @product.id.nil? %>
-										
+
 										<p>
 											 Can't upload images until the product is added.
 										</p>
-										
+
 								   <% else %>
-								   
+
 											 <ul id="sortable" class="image-boxes">
 												  <% @product_images.each_with_index do |part,index| %>
 													   <%= f.fields_for :product_images, part do |p| %>
@@ -281,7 +281,7 @@
 																		   <%= p.hidden_field :created_at %>
 																	  <% end %>
 																	  <i class="icon-picture current_img current_image_icon<% if part.filename.present? %> hidden<% end %>"></i>
-																	  <img src="" class="new_picture hidden" />										
+																	  <img src="" class="new_picture hidden" />
 																 </a>
 																 <%= p.hidden_field :id %>
 																 <%= p.hidden_field :display_order, class: "display_order" %>
@@ -289,57 +289,66 @@
 																 <%= p.file_field :filename, :class => "hidden" %>
 															</li>
 													   <% end %>
-												  <% end %>										
+												  <% end %>
 											 </ul>
-								   
+
 							  <% end %>
-								   
+
 							  </div>
-							  
-							  
+
+
 						   </div>
 						 </div>
-							  
-							  
+
+
 						 <div class="tab-pane" id="intro">
-							
+
 							<div class="form-group">
 								<label class="form-label"><%= f.label :no_price %></label>
 								<span class="help"></span>
-								<div class="input-with-icon  right">                                       
+								<div class="input-with-icon  right">
 									<i class=""></i>
 									<input type="hidden" name="product[no_price]" value="false" />
 									<input type="checkbox" <%= 'checked' if @product.no_price %> name="product[no_price]" value="true" />
 								</div>
 							</div>
-							
+
+							<div class="form-group">
+								<label class="form-label"><%= f.label :web_price %></label>
+								<span class="help"></span>
+								<div class="input-with-icon  right">
+									<i class=""></i>
+									<%= f.text_field :web_price, value: @product.web_price, :class => "form-control price_input" %>
+								</div>
+							</div>
+
 							<div class="form-group">
 								<label class="form-label"><%= f.label :short_intro %></label>
 								<span class="help"></span>
-								<div class="input-with-icon  right">                                       
+								<div class="input-with-icon  right">
 										<i class=""></i>
 										<%= f.text_area :short_intro, :class => "form-control editor-small" %>
 								</div>
 							</div>
-							
+
 							<div class="form-group">
 								<label class="form-label"><%= f.label :intro %></label>
 								<span class="help"></span>
-								<div class="input-with-icon  right">                                       
+								<div class="input-with-icon  right">
 										<i class=""></i>
 										<%= f.text_area :intro, :class => "form-control editor" %>
 								</div>
 							</div>
-							
-							
+
+
 						 </div>
-						 
+
 					</div>
-					
-					
-					 
-                        
-				  <div class="form-actions" style="margin-top: 0;">  
+
+
+
+
+				  <div class="form-actions" style="margin-top: 0;">
 					<div class="pull-right">
 					  <button type="submit" class="btn btn-success btn-cons"><i class="icon-ok"></i> Save</button>
                                           <%= link_to 'Cancel', products_path, :class => "btn btn-white btn-cons cancel-but" %>
@@ -348,10 +357,10 @@
 				<% end %>
                 <!--</div>
               </div>-->
-            </div>		
+            </div>
       </div>
-					   
-					   
+
+
 <script>
 	$(document).ready(function() {
 		tinymce.init({
@@ -368,7 +377,7 @@
 			  '//www.tinymce.com/css/codepen.min.css'
 			]
 		  });
-		
+
 		tinymce.init({
 			selector: '.editor-small',
 			height: 100,
