@@ -134,6 +134,7 @@ Hkerp::Application.routes.draw do
       get :print_order
       get :print_order_fix1
       get :print_order_fix2
+      get :print_order_fix3
       get :purchase_orders
       get :confirm_order
       get :datatable
