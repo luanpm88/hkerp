@@ -87,6 +87,20 @@ class Product < ActiveRecord::Base
     return result.strip
   end
 
+  def display_name_without_category
+    result = ''
+
+    if manufacturer.present? and manufacturer.name != 'none'
+      result += manufacturer.name + " "
+    end
+
+
+    result += name
+    result += " " + product_code if !product_code.nil?
+
+    return result.strip
+  end
+
   #def self.search(q)
   #  self.joins(:categories,:manufacturer).where("CONCAT(lower(categories.name),' ',lower(manufacturers.name),' ',lower(products.name),' ',lower(products.product_code)) LIKE '%#{q.downcase}%'").map {|model| {:id => model.id, :text => model.display_name} }
   #end
