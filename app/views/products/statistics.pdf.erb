@@ -37,9 +37,9 @@
 							  text-align: center;
 						  }
 					</style>
-					
+
 					<h3>BẢNG KÊ KHO - TỪ <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN <%= @to_date.strftime("%d/%m/%Y") %></h3>
-					
+
 					<table cellspacing="0" celpadding="0" class="table datatable-products-statistics-pdf list">
 						<thead>
 							<tr>
@@ -64,11 +64,11 @@
 										<td class="text-center"><%= product.statistic_stock(@from_date) %></td>
 										<td class="text-center">
 											<%= add_sign(product.import_count(@from_date, @to_date)) %>
-											<br />(<%= product.import_amount_formated(@from_date, @to_date) %>)
+
 										</td>
 										<td class="text-center">
 											<%= add_sign(-product.export_count(@from_date, @to_date)) %>
-											<br />(<%= product.export_amount_formated(@from_date, @to_date) %>)
+											
 										</td>
 										<td class="text-center"><%= add_sign(product.combination_count(@from_date, @to_date)) %></td>
 										<td class="text-center">
@@ -77,10 +77,10 @@
 										<td class="text-center"><%= product.statistic_stock(@to_date) %></td>
 									</tr>
 								<% end %>
-						
+
 							<%
 								count += 1
 							end %>
 						</tbody>
-						
+
                     </table>
