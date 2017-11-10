@@ -268,7 +268,7 @@ class Product < ActiveRecord::Base
   
   def product_image
     product_images.order("display_order").first
-  end
+  end  
   
   def image(type=nil)
     return "/img/photo.png" if product_image.nil?
