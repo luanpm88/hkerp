@@ -13,6 +13,14 @@ class ProductPrice < ActiveRecord::Base
 
   has_many :product_prices
 
+  after_save :update_product_cache_last_priced
+
+  def update_product_cache_last_priced
+    if product.present?
+      product.update_cache_last_priced
+    end
+  end
+
   def not_empty_price
     if price.to_f == 0.00 && supplier_price.to_f == 0.00 && supplier_id.nil?
        errors.add(:price, "can't be empty")

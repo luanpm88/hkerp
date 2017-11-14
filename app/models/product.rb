@@ -4,6 +4,9 @@ class Product < ActiveRecord::Base
 
   after_save :update_cache_search
 
+  after_save :update_cache_last_ordered
+  after_save :update_cache_last_priced
+
   validates :name, presence: true
   #validates :product_code, presence: true
   #validates :unit, presence: true
@@ -998,6 +1001,18 @@ class Product < ActiveRecord::Base
 
   def get_web_price
     web_price.to_f > 0 ? web_price : self.product_price.price
+  end
+
+  def update_cache_last_ordered
+    if !self.order_details.empty?
+      update_column(:cache_last_ordered, self.order_details.order('updated_at DESC').first.updated_at)
+    end
+  end
+
+  def update_cache_last_priced
+    if !self.product_prices.empty?
+      update_column(:cache_last_priced, self.product_prices.order('updated_at DESC').first.updated_at)
+    end
   end
 
 end

@@ -73,7 +73,10 @@ CREATE TABLE articles (
     tag_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    popup boolean DEFAULT false
+    popup boolean DEFAULT false,
+    short_description text,
+    meta_keywords character varying,
+    meta_description character varying
 );
 
 
@@ -755,7 +758,8 @@ CREATE TABLE customer_orders (
     orderer_message text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    orderer_tax character varying
+    orderer_tax character varying,
+    is_invoice boolean DEFAULT false
 );
 
 
@@ -1032,7 +1036,9 @@ CREATE TABLE menus (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    level integer
+    level integer,
+    image_url character varying,
+    menu_image character varying
 );
 
 
@@ -1754,7 +1760,10 @@ CREATE TABLE products (
     erp_imported boolean DEFAULT false,
     suspended boolean DEFAULT false,
     erp_sold_out boolean DEFAULT false,
-    web_price numeric(16,2)
+    html_description text,
+    web_price numeric(16,2),
+    cache_last_ordered timestamp without time zone,
+    cache_last_priced timestamp without time zone
 );
 
 
@@ -2206,6 +2215,175 @@ ALTER SEQUENCE users_id_seq OWNED BY users.id;
 
 
 --
+-- Name: users_worksheets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE users_worksheets (
+    id integer NOT NULL,
+    user_id integer,
+    worksheet_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: users_worksheets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE users_worksheets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: users_worksheets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE users_worksheets_id_seq OWNED BY users_worksheets.id;
+
+
+--
+-- Name: worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheet_expenses (
+    id integer NOT NULL,
+    name character varying,
+    price numeric,
+    type_name character varying,
+    description text,
+    creator_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status character varying
+);
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheet_expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheet_expenses_id_seq OWNED BY worksheet_expenses.id;
+
+
+--
+-- Name: worksheet_intineraries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheet_intineraries (
+    id integer NOT NULL,
+    start_address character varying,
+    end_address character varying,
+    start_at timestamp without time zone,
+    end_at timestamp without time zone,
+    distance numeric,
+    description text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    worksheet_id integer
+);
+
+
+--
+-- Name: worksheet_intineraries_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheet_intineraries_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheet_intineraries_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheet_intineraries_id_seq OWNED BY worksheet_intineraries.id;
+
+
+--
+-- Name: worksheets; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheets (
+    id integer NOT NULL,
+    creator_id integer,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    status character varying DEFAULT 'active'::character varying
+);
+
+
+--
+-- Name: worksheets_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheets_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheets_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheets_id_seq OWNED BY worksheets.id;
+
+
+--
+-- Name: worksheets_worksheet_expenses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE worksheets_worksheet_expenses (
+    id integer NOT NULL,
+    worksheet_id integer,
+    worksheet_expense_id integer,
+    price numeric,
+    description character varying
+);
+
+
+--
+-- Name: worksheets_worksheet_expenses_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE worksheets_worksheet_expenses_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: worksheets_worksheet_expenses_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE worksheets_worksheet_expenses_id_seq OWNED BY worksheets_worksheet_expenses.id;
+
+
+--
 -- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2609,6 +2787,41 @@ ALTER TABLE ONLY tmpproducttocats ALTER COLUMN id SET DEFAULT nextval('tmpproduc
 --
 
 ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY users_worksheets ALTER COLUMN id SET DEFAULT nextval('users_worksheets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheet_expenses ALTER COLUMN id SET DEFAULT nextval('worksheet_expenses_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheet_intineraries ALTER COLUMN id SET DEFAULT nextval('worksheet_intineraries_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheets ALTER COLUMN id SET DEFAULT nextval('worksheets_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY worksheets_worksheet_expenses ALTER COLUMN id SET DEFAULT nextval('worksheets_worksheet_expenses_id_seq'::regclass);
 
 
 --
@@ -3073,6 +3286,46 @@ ALTER TABLE ONLY tmpproducttocats
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users_worksheets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY users_worksheets
+    ADD CONSTRAINT users_worksheets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheet_expenses
+    ADD CONSTRAINT worksheet_expenses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheet_intineraries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheet_intineraries
+    ADD CONSTRAINT worksheet_intineraries_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheets_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheets
+    ADD CONSTRAINT worksheets_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: worksheets_worksheet_expenses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY worksheets_worksheet_expenses
+    ADD CONSTRAINT worksheets_worksheet_expenses_pkey PRIMARY KEY (id);
 
 
 --
@@ -3544,6 +3797,28 @@ INSERT INTO schema_migrations (version) VALUES ('20160226074840');
 
 INSERT INTO schema_migrations (version) VALUES ('20160229081249');
 
+INSERT INTO schema_migrations (version) VALUES ('20160229083906');
+
+INSERT INTO schema_migrations (version) VALUES ('20160303030812');
+
+INSERT INTO schema_migrations (version) VALUES ('20160303081325');
+
+INSERT INTO schema_migrations (version) VALUES ('20160303081851');
+
+INSERT INTO schema_migrations (version) VALUES ('20160304015253');
+
+INSERT INTO schema_migrations (version) VALUES ('20160304042237');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307034143');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307084133');
+
+INSERT INTO schema_migrations (version) VALUES ('20160307144802');
+
+INSERT INTO schema_migrations (version) VALUES ('20160309051609');
+
+INSERT INTO schema_migrations (version) VALUES ('20160309073038');
+
 INSERT INTO schema_migrations (version) VALUES ('20160330012847');
 
 INSERT INTO schema_migrations (version) VALUES ('20160330021311');
@@ -3573,4 +3848,16 @@ INSERT INTO schema_migrations (version) VALUES ('20170418032535');
 INSERT INTO schema_migrations (version) VALUES ('20170627072130');
 
 INSERT INTO schema_migrations (version) VALUES ('20170711031435');
+
+INSERT INTO schema_migrations (version) VALUES ('20171109081645');
+
+INSERT INTO schema_migrations (version) VALUES ('20171110064450');
+
+INSERT INTO schema_migrations (version) VALUES ('20171110070138');
+
+INSERT INTO schema_migrations (version) VALUES ('20171113040128');
+
+INSERT INTO schema_migrations (version) VALUES ('20171114064708');
+
+INSERT INTO schema_migrations (version) VALUES ('20171114064800');
 
