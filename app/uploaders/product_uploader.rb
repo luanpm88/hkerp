@@ -35,6 +35,38 @@ class ProductUploader < CarrierWave::Uploader::Base
   version :thumb do
     process :resize_to_fit => [312, 312]
   end
+  
+  version :thumb400 do
+    process :resize_and_pad => [400, 400, "#FFFFFF", "Center"]
+  end
+
+  version :thumb250 do
+    process :resize_and_pad => [250, 250, "#FFFFFF", "Center"]
+  end
+
+  version :thumb214 do
+    process :resize_and_pad => [214, 214, "#FFFFFF", "Center"]
+  end
+
+  version :thumb200 do
+    process :resize_and_pad => [200, 200, "#FFFFFF", "Center"]
+  end
+
+  version :thumb170 do
+    process :resize_and_pad => [170, 170, "#FFFFFF", "Center"]
+  end
+
+  version :thumb100 do
+    process :resize_and_pad => [100, 100, "#FFFFFF", "Center"]
+  end
+
+  version :thumb80 do
+    process :resize_and_pad => [80, 80, "#FFFFFF", "Center"]
+  end
+
+  version :thumb60 do
+    process :resize_and_pad => [60, 60, "#FFFFFF", "Center"]
+  end
 
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
