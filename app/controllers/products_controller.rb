@@ -10,6 +10,7 @@ class ProductsController < ApplicationController
     :erp_price_update,
     :erp_set_imported,
     :erp_set_sold_out,
+    :erp_set_cache_thcn_url,
     :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
@@ -485,6 +486,11 @@ class ProductsController < ApplicationController
   def erp_set_sold_out
     product = Product.find(params[:id])
     product.update_column(:erp_sold_out, params[:value])
+  end
+
+  def erp_set_cache_thcn_url
+    product = Product.find(params[:id])
+    product.update_column(:cache_thcn_url, params[:url])
   end
 
   def quick_update_price
