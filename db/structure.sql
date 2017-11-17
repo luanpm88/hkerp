@@ -73,7 +73,10 @@ CREATE TABLE articles (
     tag_id integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    popup boolean DEFAULT false
+    popup boolean DEFAULT false,
+    short_description text,
+    meta_keywords character varying,
+    meta_description character varying
 );
 
 
@@ -755,7 +758,8 @@ CREATE TABLE customer_orders (
     orderer_message text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    orderer_tax character varying
+    orderer_tax character varying,
+    is_invoice boolean DEFAULT false
 );
 
 
@@ -1032,7 +1036,10 @@ CREATE TABLE menus (
     description text,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    level integer
+    level integer,
+    image_url character varying,
+    menu_image character varying,
+    name_url character varying
 );
 
 
@@ -3577,9 +3584,19 @@ INSERT INTO schema_migrations (version) VALUES ('20170627072130');
 
 INSERT INTO schema_migrations (version) VALUES ('20170711031435');
 
+INSERT INTO schema_migrations (version) VALUES ('20171109081645');
+
+INSERT INTO schema_migrations (version) VALUES ('20171110064450');
+
+INSERT INTO schema_migrations (version) VALUES ('20171110070138');
+
+INSERT INTO schema_migrations (version) VALUES ('20171113040128');
+
 INSERT INTO schema_migrations (version) VALUES ('20171114064708');
 
 INSERT INTO schema_migrations (version) VALUES ('20171114064800');
+
+INSERT INTO schema_migrations (version) VALUES ('20171114073658');
 
 INSERT INTO schema_migrations (version) VALUES ('20171115035800');
 
