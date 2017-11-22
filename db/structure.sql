@@ -1764,7 +1764,8 @@ CREATE TABLE products (
     web_price numeric(16,2),
     cache_last_ordered timestamp without time zone,
     cache_last_priced timestamp without time zone,
-    cache_thcn_url character varying
+    cache_thcn_url character varying,
+    cache_web_search character varying
 );
 
 
@@ -3599,4 +3600,6 @@ INSERT INTO schema_migrations (version) VALUES ('20171114064800');
 INSERT INTO schema_migrations (version) VALUES ('20171114073658');
 
 INSERT INTO schema_migrations (version) VALUES ('20171115035800');
+
+INSERT INTO schema_migrations (version) VALUES ('20171117042839');
 
