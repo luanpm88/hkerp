@@ -1038,7 +1038,8 @@ CREATE TABLE menus (
     updated_at timestamp without time zone NOT NULL,
     level integer,
     image_url character varying,
-    menu_image character varying
+    menu_image character varying,
+    name_url character varying
 );
 
 
@@ -1764,7 +1765,8 @@ CREATE TABLE products (
     web_price numeric(16,2),
     cache_last_ordered timestamp without time zone,
     cache_last_priced timestamp without time zone,
-    cache_thcn_url character varying
+    cache_thcn_url character varying,
+    is_manual_price_update boolean DEFAULT true
 );
 
 
@@ -3862,5 +3864,9 @@ INSERT INTO schema_migrations (version) VALUES ('20171114064708');
 
 INSERT INTO schema_migrations (version) VALUES ('20171114064800');
 
+INSERT INTO schema_migrations (version) VALUES ('20171114073658');
+
 INSERT INTO schema_migrations (version) VALUES ('20171115035800');
+
+INSERT INTO schema_migrations (version) VALUES ('20171125035952');
 

@@ -193,7 +193,15 @@
 																		   <%= f.text_area :note, :class => "form-control" %>
 																   </div>
 															 </div>
-
+<div class="form-group">
+	<label class="form-label">Không tự động cập nhật giá</label>
+	<span class="help"></span>
+	<div class="input-with-icon  right">
+		<i class=""></i>
+		<input type="hidden" name="product[is_manual_price_update]" value="false" />
+		<input type="checkbox" <%= 'checked' if @product.is_manual_price_update %> name="product[is_manual_price_update]" value="true" />
+	</div>
+</div>
 
 
 

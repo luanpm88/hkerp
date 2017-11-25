@@ -428,7 +428,7 @@ class Product < ActiveRecord::Base
     end
 
     # calculate public price
-    new_price.calculate_price if change_public_price || new_price.price.to_f == 0
+    new_price.calculate_price if !self.is_manual_price_update and (change_public_price || new_price.price.to_f == 0)
 
     if new_price.price != self.product_price.price || new_price.supplier_price != self.product_price.supplier_price || new_price.supplier_id != self.product_price.supplier_id || new_price.customer_id != self.product_price.customer_id
       new_price.save
