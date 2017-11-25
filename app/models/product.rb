@@ -3,6 +3,7 @@ class Product < ActiveRecord::Base
   include PgSearch
 
   after_save :update_cache_search
+  after_save :update_cache_web_search
 
   after_save :update_cache_last_ordered
   after_save :update_cache_last_priced
@@ -984,6 +985,17 @@ class Product < ActiveRecord::Base
     str << "[out_of_date]" if out_of_date
 
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").to_ascii)
+  end
+  
+  def update_cache_web_search
+    str = []
+    str << display_name.to_s.downcase.strip
+    str << product_code.to_s.downcase.strip
+
+    str << display_name.to_s.strip
+    str << product_code.to_s.strip
+
+    self.update_column(:cache_web_search, str.join(" ") + " " + str.join(" ").to_ascii)
   end
 
   # out of date condition
