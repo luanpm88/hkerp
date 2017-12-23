@@ -1,4 +1,6 @@
 require "rmega"
+require "google_drive"
+
 class System < ActiveRecord::Base
   def self.columns
     @columns ||= [];
@@ -142,4 +144,56 @@ class System < ActiveRecord::Base
 
     puts "done"
   end
+
+  # upload google drive
+  def self.upload_backup_to_google_drive(params)
+    bk_dir = params[:backup_dir]
+    root_dir = params[:dir].present? ? params[:dir] : ""
+    revision_max = params[:revision_max]
+    backup_folder_name = 'erp.hoangkhang.com.vn'
+
+    # find lastest backup file
+    latest_backup_file = nil
+    (Dir.glob("#{bk_dir}/*").sort{|a,b| b <=> a}).each do |f|
+      if f.include?(".zip")
+        latest_backup_file = f
+        break
+      end
+    end
+    return if latest_backup_file.nil?
+    file_name = latest_backup_file.split("/").last
+    puts "Uploading... " + latest_backup_file
+
+    # Connect
+    session = GoogleDrive::Session.from_config(params[:token])
+
+    folder = session.collection_by_title(backup_folder_name)
+    if !folder.present?
+      folder = session.root_collection.create_subcollection(backup_folder_name)
+    end
+
+    files = folder.files
+
+    # Check if already upload
+    if files.find { |file| file.title == file_name }
+      puts "file exists!"
+      return
+    end
+
+    # upload file
+    folder.upload_from_file(latest_backup_file, file_name, convert: false)
+
+    # Delete last file if revision_max
+    files = folder.files
+    count = files.count
+    files.each_with_index do |file,index|
+      if index >= revision_max
+        puts "Deleting old backup... #{file.title}"
+        file.delete(true)
+      end
+    end
+
+    puts "done"
+  end
+
 end
