@@ -240,7 +240,9 @@ class Order < ActiveRecord::Base
     end while so>0
 
     chuoi = chuoi.strip.capitalize
-    chuoi = (chuoi =~ /Triệu /) == 0 ? "Một " + chuoi : chuoi
+    chuoi = (chuoi =~ /Triệu/) == 0 ? "Một " + chuoi : chuoi
+    chuoi = (chuoi =~ /Tỷ/) == 0 ? "Một " + chuoi : chuoi
+    chuoi = (chuoi =~ /Nghìn/) == 0 ? "Một " + chuoi : chuoi
 
     return chuoi.strip.capitalize + " đồng"
   end
