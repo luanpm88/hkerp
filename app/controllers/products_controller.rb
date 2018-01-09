@@ -11,6 +11,7 @@ class ProductsController < ApplicationController
     :erp_set_imported,
     :erp_set_sold_out,
     :erp_set_cache_thcn_url,
+    :erp_set_cache_thcn_properties,
     :erp_manufacturers_dataselect
   ]
   protect_from_forgery :except  => [:erp_connector]
@@ -509,6 +510,13 @@ class ProductsController < ApplicationController
       format.html
       format.xls
     end
+  end
+
+  def erp_set_cache_thcn_properties
+    product = Product.find(params[:id])
+    product.update_column(:cache_thcn_properties, params[:data])
+
+    render nothing: true
   end
 
   private
