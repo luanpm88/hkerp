@@ -12,6 +12,7 @@ class ApplicationController < ActionController::Base
     :erp_set_imported,
     :erp_set_sold_out,
     :erp_set_cache_thcn_url,
+    :erp_set_cache_thcn_properties,
     :erp_manufacturers_dataselect
   ]
 
