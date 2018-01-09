@@ -253,7 +253,7 @@ Hkerp::Application.routes.draw do
       post :erp_set_imported
       post :erp_set_sold_out
       post :erp_set_cache_thcn_url
-      get :erp_set_cache_thcn_properties
+      post :erp_set_cache_thcn_properties
       get :erp_manufacturers_dataselect
 
       get :suspend
