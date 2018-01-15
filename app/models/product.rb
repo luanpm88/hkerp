@@ -136,7 +136,11 @@ class Product < ActiveRecord::Base
   end
 
   def self.filter(params, user)
-    where = "products.status=1"
+    if params["status"].present? and params["status"] == 'deleted'
+        where = "products.status=0"
+    else
+        where = "products.status=1"
+    end
     where += " AND products.manufacturer_id IN (#{params["manufacturers"].join(",")})" if params["manufacturers"].present? # && !params["search"]["value"].present?
     where += " AND categories.id IN (#{params["categories"]})" if params["categories"].present? # && (!params["search"].present? || !params["search"]["value"].present?)
 
@@ -154,6 +158,8 @@ class Product < ActiveRecord::Base
          @products = @products.where(suspended: true)
       elsif params["status"] == 'not_suspended'
          @products = @products.where(suspended: false)
+      elsif params["status"] == 'deleted'
+          @products = @products.where('products.status = 0')
       end
     end
 
