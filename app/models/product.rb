@@ -1039,5 +1039,12 @@ class Product < ActiveRecord::Base
       update_column(:cache_last_priced, self.product_prices.order('updated_at DESC').first.updated_at)
     end
   end
+  
+  after_create :create_alias
+  
+  def create_alias
+    name = self.display_name
+    self.update_column(:alias, name.unaccent.downcase.to_s.gsub(/[^0-9a-z ]/i, '').gsub(/ +/i, '-').strip)
+  end
 
 end
