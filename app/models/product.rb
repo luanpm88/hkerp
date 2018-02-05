@@ -310,7 +310,7 @@ class Product < ActiveRecord::Base
           <label>Purchase: <span class='help'>(required)</span></label>
           <input value='"+self.product_price.supplier_price_formated+"' class='price_input' type='text' name='new_supplier_price' value='' />
           <label>Supplier: <span class='help'>(required)</span></label>
-          <input name='supplier_id' data='/contacts.json' class='select2-ajax-suppliers' />
+          <input text='"+self.product_price.supplier_name+"' value='"+self.product_price.supplier_id.to_s+"' name='supplier_id' data='/contacts.json' class='select2-ajax-suppliers' />
           <label>Sales:</label>
           <input class='price_input' type='text' name='new_price' value='' />
           <br>
