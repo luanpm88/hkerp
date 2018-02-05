@@ -69,4 +69,8 @@ class ProductPrice < ActiveRecord::Base
       self.price = ProductPrice.calculate_price(self.supplier_price)
     end
   end
+
+  def supplier_name
+    (supplier.present? ? supplier.name : '')
+  end
 end

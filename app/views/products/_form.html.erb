@@ -140,6 +140,9 @@
 
 
 																					 <%= fields_for :product_prices do |builder| %>
+																						<% if @product.product_price.present? and @product.product_price.updated_at.present? %>
+																							<p>Price is updated at: <strong><%= @product.product_price.updated_at.strftime('%Y-%m-%d') %></strong>, By: <strong><%= @product.product_price.user.name %></strong></p>
+																						<% end %>
 																						  <%  if can? :update_public_price, @product %>
 																							   <div class="form-group">
 																									<label class="form-label"><%= builder.label :price %></label>
