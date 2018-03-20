@@ -76,11 +76,11 @@ class Product < ActiveRecord::Base
 
   def display_name
     result = ''
-    if categories.first.present? and categories.first.name != 'none'
+    if categories.first.present? and categories.first.name.downcase != 'none'
       result += categories.first.name + " "
     end
 
-    if manufacturer.present? and manufacturer.name != 'none'
+    if manufacturer.present? and manufacturer.name.downcase != 'none'
       result += manufacturer.name + " "
     end
 
@@ -443,7 +443,7 @@ class Product < ActiveRecord::Base
       # API
       self.update_column(:erp_price_updated, false)
     else
-      self.product_price.update_column("updated_at",Time.now)
+      self.product_price.update_column("updated_at",Time.now) if self.product_price.id.present?
     end
 
     # API
