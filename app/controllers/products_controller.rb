@@ -461,7 +461,7 @@ class ProductsController < ApplicationController
     render json: {
       "id": product.id,
       "display_name": product.display_name,
-      "name": product.name,
+      "name": product.display_name,
       "product_code": product.product_code,
       "price": product.get_web_price,
       "description": product.description,
