@@ -347,16 +347,16 @@ class Contact < ActiveRecord::Base
     str = []
     str << name
     str << name.to_s.downcase.strip
-    # str << address.to_s.downcase.strip if address.to_s.strip.present?
+    #str << address.to_s.downcase.strip if address.to_s.strip.present?
     str << website.to_s.downcase.strip if website.to_s.strip.present?
     str << phone.to_s.downcase.strip if phone.to_s.strip.present?
     str << mobile.to_s.downcase.strip if mobile.to_s.strip.present?
     str << fax.to_s.downcase.strip if fax.to_s.strip.present?
     str << email.to_s.downcase.strip if email.to_s.strip.present?
     str << tax_code.to_s.downcase.strip if tax_code.to_s.strip.present?
-    str << note.to_s.downcase.strip if note.to_s.strip.present?
+    #str << note.to_s.downcase.strip if note.to_s.strip.present?
     str << account_number.to_s.downcase.strip if account_number.to_s.strip.present?
-    str << bank.to_s.downcase.strip if bank.to_s.strip.present?
+    #str << bank.to_s.downcase.strip if bank.to_s.strip.present?
 
     # str << city.name.to_s.downcase.strip if city.present?
     # str << state.name.to_s.downcase.strip if state.present?
