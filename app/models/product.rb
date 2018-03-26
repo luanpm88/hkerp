@@ -86,7 +86,7 @@ class Product < ActiveRecord::Base
 
 
     result += name
-    result += " (" + product_code + ")" if !product_code.nil?
+    result += " (" + product_code + ")" if product_code.strip.present?
 
     return result.strip
   end
