@@ -20,7 +20,7 @@ class System < ActiveRecord::Base
     root_dir = params[:dir].present? ? params[:dir] : ""
     bk_dir = root_dir+"backup"
     database = YAML.load_file(root_dir+'config/database.yml')[params[:rails_env]]["database"]
-    revision_max = 6
+    revision_max = 4
 
     # remove over 100 backup old
     @files = Dir.glob("#{bk_dir}/*").sort{|a,b| b <=> a}
