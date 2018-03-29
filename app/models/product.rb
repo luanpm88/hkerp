@@ -1039,5 +1039,13 @@ class Product < ActiveRecord::Base
       update_column(:cache_last_priced, self.product_prices.order('updated_at DESC').first.updated_at)
     end
   end
+  
+  # refresh price
+  def refresh_price
+    if !product_price.id.nil?
+      new_p = product_price.dup
+      new_p.save
+    end
+  end
 
 end

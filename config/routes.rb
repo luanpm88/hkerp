@@ -261,6 +261,8 @@ Hkerp::Application.routes.draw do
 
       post :quick_update_price
       post :export
+      
+      get :refresh_price
     end
   end
 
