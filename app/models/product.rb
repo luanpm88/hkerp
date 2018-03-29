@@ -1047,4 +1047,12 @@ class Product < ActiveRecord::Base
     self.update_column(:alias, name.unaccent.downcase.to_s.gsub(/[^0-9a-z ]/i, '').gsub(/ +/i, '-').strip)
   end
 
+  # refresh price
+  def refresh_price
+    if !product_price.id.nil?
+      new_p = product_price.dup
+      new_p.save
+    end
+  end
+
 end

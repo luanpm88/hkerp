@@ -63,6 +63,9 @@ class ProductsController < ApplicationController
       if can? :update_price, item
         actions += '<li>'+view_context.link_to("Update Price", {controller: "products", action: "update_price", id: item.id, tab_page: 1}, psrc: products_url(tab_page: 1), title: "Update Price: #{item.display_name}", class: "tab_page")+'</li>'
       end
+      if can? :update_price, item
+        actions += '<li>'+view_context.link_to("Refresh Price", {controller: "products", action: "refresh_price", id: item.id, tab_page: 1}, psrc: products_url(tab_page: 1), title: "Refresh Price: #{item.display_name}", class: "list_ajax_action")+'</li>'
+      end
       if can? :suspend, item
         actions += '<li>'+view_context.link_to("Suspend", suspend_products_path(id: item.id, tab_page: 1), method_data: 'patch', psrc: products_url(tab_page: 1), title: "Suspend: #{item.display_name}", class: "list_ajax_action")+'</li>'
       end
@@ -517,6 +520,17 @@ class ProductsController < ApplicationController
     product.update_column(:cache_thcn_properties, params[:data])
 
     render nothing: true
+  end
+  
+  # refresh price, make price updated
+  def refresh_price
+    product = Product.find(params[:id])
+    
+    if product.refresh_price
+      render text: 'Product price was successfully refreshed.'
+    else
+      render text: 'Product price unsuccessfully refreshed.'
+    end
   end
 
   private

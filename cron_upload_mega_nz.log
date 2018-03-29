@@ -1,3 +1,2 @@
-Uploading... /home/hkerp/hkerp/backup/2017_11_21_223006_hkerp_development_db_source.zip
-Deleting old backup... 2017_11_11_223004_hkerp_development_db_source.zip
-done
+/home/hkerp/hkerp/cron_upload_mega_nz.rb: end of file reached (EOFError)
+Uploading... /home/hkerp/hkerp/backup/2017_12_22_223003_hkerp_development_db_source.zip
