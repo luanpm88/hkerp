@@ -526,7 +526,7 @@ class ProductsController < ApplicationController
   def refresh_price
     product = Product.find(params[:id])
     
-    if product.refresh_price
+    if product.refresh_price(current_user)
       render text: 'Product price was successfully refreshed.'
     else
       render text: 'Product price unsuccessfully refreshed.'

@@ -1048,9 +1048,10 @@ class Product < ActiveRecord::Base
   end
 
   # refresh price
-  def refresh_price
+  def refresh_price(user)
     if !product_price.id.nil?
       new_p = product_price.dup
+      new_p.user_id = user.id
       new_p.save
     end
   end
