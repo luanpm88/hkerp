@@ -1,0 +1,41 @@
+<ul class="breadcrumb">
+  <li>
+    <p>YOU ARE HERE</p>
+  </li>
+  <li><%= link_to 'Products', products_url, :class => "active" %></li>
+</ul>
+<div class="page-title">
+  <h3>BHPhotoVideo - <span class="semi-bold">Connector</span></h3>
+</div>
+
+<form action="" method="GET">
+  <input type="hidden" name="tab_page" value="1" />
+  <div class="row">
+    <div class="col-md-6">
+      <input type="text" name="url" class="form-control" value="<%= params[:url] if params[:url].present? %>" />
+    </div>
+    <div class="col-md-3">
+      <input type="submit" value="Xem trang" class="btn btn-primary" />
+    </div>
+  </div>
+  <hr>
+  <table class="table table-striped no-filter">
+    <thead>
+      <th>Sản phẩm</th>
+      <th>Trạng thái</th>
+      <th>Chức năng</th>
+    </thead>
+    <% @list.each do |row| %>
+      <tr>
+        <td>
+          <a href="<%= row[:url] %>" target="_blank">
+            <%= row[:name] %>
+          </a>
+        </td>
+        <td><%= row[:price] %></td>
+        <td></td>
+      </tr>  
+    <% end %>
+  </table>
+  
+</form>

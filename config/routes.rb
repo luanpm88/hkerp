@@ -263,6 +263,8 @@ Hkerp::Application.routes.draw do
       post :export
       
       get :refresh_price
+      
+      get :bhpv_connector
     end
   end
 

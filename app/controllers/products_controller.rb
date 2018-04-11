@@ -532,6 +532,11 @@ class ProductsController < ApplicationController
       render text: 'Product price unsuccessfully refreshed.'
     end
   end
+  
+  # BHPhotoVideo connector
+  def bhpv_connector
+    @list = params[:url].present? ? Product.bhpv_list(url: params[:url]) : []
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

@@ -1055,5 +1055,27 @@ class Product < ActiveRecord::Base
       new_p.save
     end
   end
+  
+  # def BHPhotoVideo
+  def self.bhpv_list(options={})
+    response = RestClient.get options[:url], {params: options[:params]}
+    html = response.body
+    
+    items = Nokogiri::HTML(html).css('.main-content .items .item')
+    
+    list = []
+    
+    items.each do |item|
+      row = {
+        name: item.css('span[itemprop=name]').text.strip,
+        url: item.css('a[itemprop=url]').first['href'].strip,
+        price: item.css('span[data-selenium=price]').text.strip,
+      }
+      
+      list << row
+    end
+    
+    list
+  end
 
 end
