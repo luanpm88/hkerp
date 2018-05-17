@@ -318,6 +318,10 @@ class Product < ActiveRecord::Base
           <a class='btn btn-small btn-cancel' href='#save'>Cancel</a>
         </div>"
       html += "</div>"
+      
+      if self.product_price.present? and self.product_price.updated_at.present?
+				html += "<span class='label label-success'>#{self.product_price.updated_at.strftime('%d-%m-%Y')}</span>"
+			end
 
       html
     else
@@ -479,7 +483,7 @@ class Product < ActiveRecord::Base
     end
 
     # if empty stock for 30 days
-    if (calculated_stock <= 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 100)
+    if (calculated_stock <= 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 180)
       return true
     end
 
@@ -1060,22 +1064,29 @@ class Product < ActiveRecord::Base
   def self.bhpv_list(options={})
     response = RestClient.get options[:url], {params: options[:params]}
     html = response.body
+    page = Nokogiri::HTML(html)
     
-    items = Nokogiri::HTML(html).css('.main-content .items .item')
+    page_num = page.css('.pagination p.pageNuber').text
+    page_num = page_num.split("|").first.gsub(/\s+/, '/').split('/').last(2).first
     
-    list = []
+    return page_num
     
-    items.each do |item|
-      row = {
-        name: item.css('span[itemprop=name]').text.strip,
-        url: item.css('a[itemprop=url]').first['href'].strip,
-        price: item.css('span[data-selenium=price]').text.strip,
-      }
-      
-      list << row
-    end
-    
-    list
+    #items = page.css('.main-content .items .item')
+    #
+    #list = []
+    #
+    #items.each do |item|
+    #  row = {
+    #    name: item.css('span[itemprop=name]').text.strip,
+    #    url: item.css('a[itemprop=url]').first['href'].strip,
+    #    price: item.css('span[data-selenium=price]').text.strip,
+    #    sku: item.css('span[data-selenium=sku]').text.strip,
+    #  }
+    #  
+    #  list << row
+    #end
+    #
+    #list
   end
 
 end
