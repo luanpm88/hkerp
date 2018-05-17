@@ -136,6 +136,8 @@ class Ability
       can :update, Feedback do |f|
         f.user_id == user.id
       end
+      
+      can :warranty_check, Product
 
     end
 
