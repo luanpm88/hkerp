@@ -306,7 +306,10 @@ class Product < ActiveRecord::Base
       html += "<a class='price_box_toggle_btn' href='#update_price'><i class='icon-pencil'></i></a>"
       html += "<div class='update_price_box' data-id='#{self.id}'>
           <h5>Update price</h5>
-          <title>#{self.display_name}</title>
+          <p>Price is updated at: <strong>#{ self.product_price.updated_at.strftime('%Y-%m-%d') if self.product_price.updated_at.present?}</strong>, By: <strong>#{self.product_price.user.name if self.product_price.updated_at.present?}</strong>
+          #{'<span class=\'text-danger\'>[not_auto]</span>' if self.is_manual_price_update == true}
+          </p>
+          <title>#{self.display_name}</title>          
           <label>Purchase: <span class='help'>(required)</span></label>
           <input value='"+self.product_price.supplier_price_formated+"' class='price_input' type='text' name='new_supplier_price' value='' />
           <label>Supplier: <span class='help'>(required)</span></label>
