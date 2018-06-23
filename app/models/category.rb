@@ -30,9 +30,9 @@ class Category < ActiveRecord::Base
   def self.full_text_search(q)
     rows = self.all
     if q.present?
-      q.split(" ").each do |k|
-        rows = rows.where("LOWER(categories.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
-      end
+      #q.split(" ").each do |k|
+        rows = rows.where("LOWER(categories.cache_search) LIKE ?", "%#{q.strip.downcase}%") if q.strip.present?
+      #end
     end
     
     rows = rows.limit(50).map {|model| {:id => model.id, :text => model.name} }
