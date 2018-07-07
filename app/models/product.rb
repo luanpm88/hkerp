@@ -424,6 +424,11 @@ class Product < ActiveRecord::Base
       return price
     end
   end
+  
+  after_save :update_cache_price
+  def update_cache_price
+    update_column(:cache_price, product_price.price.to_f)
+  end
 
   def update_price(params, user, change_public_price=true)
     #if !params[:supplier_price].present?
