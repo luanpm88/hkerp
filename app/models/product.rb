@@ -7,6 +7,8 @@ class Product < ActiveRecord::Base
 
   after_save :update_cache_last_ordered
   after_save :update_cache_last_priced
+  
+  after_save :update_cache_display_name
 
   validates :name, presence: true
   #validates :product_code, presence: true
@@ -89,6 +91,10 @@ class Product < ActiveRecord::Base
     result += " (#{product_code.to_s.strip})" if product_code.present? and product_code.to_s.strip.present?
 
     return result.strip
+  end
+  
+  def update_cache_display_name
+    update_column(:cache_display_name, self.display_name)
   end
 
   def display_name_without_category
