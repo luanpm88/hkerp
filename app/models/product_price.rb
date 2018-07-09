@@ -73,4 +73,9 @@ class ProductPrice < ActiveRecord::Base
   def supplier_name
     (supplier.present? ? supplier.name : '')
   end
+  
+  after_save :update_product_cache_price
+  def update_product_cache_price
+    self.product.update_cache_price if self.product.present?
+  end
 end
