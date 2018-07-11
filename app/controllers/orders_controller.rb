@@ -135,6 +135,7 @@ class OrdersController < ApplicationController
     render  :pdf => "order_"+@order.quotation_code,
             :template => 'orders/show.pdf.erb',
             :layout => nil,
+            :zoom => 1.2,
             :footer => {
                :center => "",
                :left => "",

@@ -45,6 +45,7 @@ class DeliveriesController < ApplicationController
     render  :pdf => filename+"_"+@order.quotation_code+"-"+@delivery.id.to_s,
             :template => 'deliveries/show.pdf.erb',
             :layout => nil,
+            :zoom => 1.2,
             :footer => {
                :center => "",
                :left => "",
