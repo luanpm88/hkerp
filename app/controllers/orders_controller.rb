@@ -160,6 +160,7 @@ class OrdersController < ApplicationController
     render  :pdf => "quotation_"+@order.quotation_code,
             :template => 'orders/print_order.pdf.erb',
             :layout => nil,
+            :zoom => 2,
             :footer => {
                 :center => "",
                 :left => "",
@@ -181,6 +182,7 @@ class OrdersController < ApplicationController
     render  :pdf => "fix1_quotation_"+@order.quotation_code,
             :template => 'orders/print_order_fix1.pdf.erb',
             :layout => nil,
+            :zoom => 2,
             :footer => {
                 :center => "",
                 :left => "",
@@ -202,6 +204,7 @@ class OrdersController < ApplicationController
     render  :pdf => "fix2_quotation_"+@order.quotation_code,
             :template => 'orders/print_order_fix2.pdf.erb',
             :layout => nil,
+            :zoom => 2,
             :footer => {
                 :center => "",
                 :left => "",
@@ -223,6 +226,7 @@ class OrdersController < ApplicationController
     render  :pdf => "fix3_quotation_"+@order.quotation_code,
             :template => 'orders/print_order_fix3.pdf.erb',
             :layout => nil,
+            :zoom => 2,
             :footer => {
                 :center => "",
                 :left => "",
