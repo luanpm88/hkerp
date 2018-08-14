@@ -86,6 +86,12 @@
     <td align="" valign="top">Địa chỉ <div class="point2">:</div> </td>
     <td colspan="6"><%= @order.buyer_address %></td>
   </tr>
+  <% if @order.buyer_address != @order.shipping_place %>
+    <tr>
+      <td align="" valign="top">Địa điểm giao hàng <div class="point2">:</div> </td>
+      <td colspan="6"><%= @order.shipping_place %></td>
+    </tr>
+  <% end %>
   <tr>
     <td align="" valign="top">Điện thoại <div class="point2">:</div> </td>
     <td colspan="2"><%= @order.buyer_phone %></td>    
