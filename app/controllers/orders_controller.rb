@@ -28,8 +28,8 @@ class OrdersController < ApplicationController
       @order.order_date = (Time.now).strftime("%Y-%m-%d")
       @order.order_deadline = (Time.now + 7.days).strftime("%Y-%m-%d")
       #@order.payment_deadline = (Time.now + 3.days).strftime("%Y-%m-%d")
-      @order.debt_date = (Time.now + 14.days).strftime("%Y-%m-%d")
-      @order.debt_days = ((Time.now + 14.days).to_date - Time.now.to_date).to_i
+      @order.debt_date = (Time.now).strftime("%Y-%m-%d")
+      @order.debt_days = ((Time.now).to_date - Time.now.to_date).to_i
       @order.shipping_date = (Time.now).strftime("%Y-%m-%d")
       @order.warranty_place = "Tận nơi"
       @order.warranty_cost = "0"
