@@ -168,6 +168,8 @@ class Product < ActiveRecord::Base
           @products = @products.where('products.status = 0')
       end
     end
+    
+    @products = @products.where(user_id: params["user_id"]) if params["user_id"].present?
 
 
     return @products

@@ -1037,13 +1037,13 @@ class Order < ActiveRecord::Base
 
   def is_debt
     if ["confirmed","finished"].include?(status.name)
-      is_deposited && !debt_date.nil? && debt_date >= Time.now && paid_amount != total_vat
+      is_deposited && !debt_date.nil? && debt_date >= Time.now.beginning_of_day && paid_amount != total_vat
     else
       return false
     end
   end
   def is_out_of_date
-    is_deposited && !debt_date.nil? && debt_date < Time.now && paid_amount != total_vat
+    is_deposited && !debt_date.nil? && debt_date < Time.now.beginning_of_day && paid_amount != total_vat
   end
 
   def display_payment_status

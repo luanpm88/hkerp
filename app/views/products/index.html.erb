@@ -14,7 +14,7 @@
 							<div class="grid-body no-border filters">
 								<%= form_tag(export_products_path(format: 'xls'), target: '_blank') do %>
 									<div class="row">
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<h4>Categories <span class="filter-cat-clear">Clear select</span></h4>
 
 												<!--<select class="modern_select" style="width:100%" name="categories[]" multiple="multiple">
@@ -31,7 +31,7 @@
 												<input style="width:100%;margin-bottom: 5px;" name="categories" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" />
 
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<h4>Manufacturers <span class="filter-manu-clear">Clear select</span></h4>
 											<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
 													<% Manufacturer.all.order(:name).each do |manufacturer| %>
@@ -52,13 +52,22 @@
 												</ul>-->
 											</div>
 										</div>
-										<div class="col-md-4">
+										<div class="col-md-3">
 											<h4>Status</h4>
 											<select class="modern_select width100" name="status">
 												<option value="">All</option>
 												<option value="not_suspended">Not Suspended</option>
 												<option value="suspended">Suspended</option>
 												<option value="deleted">Deleted</option>
+											</select>
+										</div>
+										<div class="col-md-3">
+											<h4>User</h4>
+											<select class="modern_select width100" name="user_id">
+												<option value="">Tất cả</option>
+												<% User.all.order("users.first_name, users.last_name").each do |user| %>
+													<option value="<%= user.id %>"><%= user.name %></option>
+												<% end %>
 											</select>
 										</div>
 									</div>
