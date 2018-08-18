@@ -93,7 +93,7 @@ class PaymentRecord < ActiveRecord::Base
   def valid_debt_date
     if type_name == 'order'
       if order.is_deposited && !debt_date.nil?
-        if debt_date <= order.order_date
+        if debt_date < order.order_date.beginning_of_day
           errors.add(:debt_date, "can't be smaller than order date")
         end
       end
