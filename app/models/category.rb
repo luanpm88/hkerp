@@ -31,7 +31,7 @@ class Category < ActiveRecord::Base
     rows = self.all
     if q.present?
       #q.split(" ").each do |k|
-        rows = rows.where("LOWER(categories.cache_search) LIKE ?", "%#{q.strip.downcase}%") if q.strip.present?
+        rows = rows.where("LOWER(categories.cache_search) LIKE ? or categories.cache_search LIKE ? or categories.cache_search LIKE ?", "LOWER('%#{q.strip}%')", "%#{q.strip}%", "%#{q.strip.to_ascii.downcase}%") if q.strip.present?
       #end
     end
     
@@ -50,7 +50,9 @@ class Category < ActiveRecord::Base
   
   def update_cache_search
     str = []
+    str << name.to_s
     str << name.to_s.downcase.strip
+    str << name.to_s.to_ascii.downcase
     
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
