@@ -19,6 +19,9 @@ class Contact < ActiveRecord::Base
   has_many :companies, :through => :companies_contacts, :source => :contact
 
   has_many :contact_types_contacts
+  
+  has_many :customer_orders, :class_name => "Order", :foreign_key => "customer_id"
+  has_many :purchase_orders, :class_name => "Order", :foreign_key => "supplier_id"
 
   belongs_to :contact_type
   belongs_to :user
@@ -49,6 +52,17 @@ class Contact < ActiveRecord::Base
         @records = @records.where(city_id: city_ids)
       end
     end
+    
+    # po
+    if params[:po_status].present?
+      po_supplier_query = Order.select('supplier_id')
+      if params[:po_status] == 'has_po'
+        @records = @records.where(id: po_supplier_query)
+      end
+      if params[:po_status] == 'no_po'
+        @records = @records.where.not(id: po_supplier_query)
+      end
+    end
 
     # @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
 
@@ -73,8 +87,9 @@ class Contact < ActiveRecord::Base
       item = [
               link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name),
               link_helper.link_to(item.name, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name)+item.html_info_line.html_safe,
-              '<div class="text-center nowrap">'+item.city_name+"</div>",
+              '<div class="text-center nowrap">'+item.city_name+"</div>",              
               item.agent_list_html,
+              item.type_html,
               '<div class="text-center">'+(item.user.nil? ? "" : item.user.staff_col)+"</div>",
               '',
             ]
@@ -90,6 +105,13 @@ class Contact < ActiveRecord::Base
     result["data"] = data
 
     return {result: result, items: @records, actions_col: actions_col}
+  end
+  
+  def type_html
+    types = self.contact_types.map{|ct| "<div class=\"badge badge-info contact_type type_#{ct.name.downcase}\">#{ct.name}</div>"}
+    types << "<div class=\"badge badge-inverse contat_type type_has_po\">PO (#{self.purchase_orders.count})</div>" if !self.purchase_orders.empty?
+    
+    return types.join('<br>')
   end
 
   def city_name

@@ -1,0 +1,216 @@
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+<style>
+  .page * {
+    font-family: "Times New Roman";
+    font-size: 15px;
+  }
+  .cominfo p {
+    font-size: 13px;
+  }
+  .cominfo h2 {
+    font-size: 18px;
+    margin-bottom: 0;
+  }
+  p {
+    margin-bottom: 5px;
+    margin-top: 0;
+  }
+  .cominfo img {
+    width: 105px !important;
+    margin-top: -5px !important;
+  }
+  .top-info {
+    margin-top: 20px;
+  }
+  .top-info h1 {
+    font-size: 26px;
+    margin-bottom: 0;
+  }
+  .top-info h3 {
+      font-size: 16px;
+      margin-top: 5px;
+  }
+  .maintitle {
+    width: 70%;
+    padding-bottom: 20px !important;
+  }
+  
+  .mid label {
+        display: block;
+        float: left;
+        font-weight: 700;
+        padding-right: 10px;
+        text-align: right;
+        width: 100px;
+        margin-left: -110px;
+    }
+    .mid p {
+        clear: both;
+        padding-left: 110px;
+        min-height: 16px;
+    }
+  
+  .middle2 label {
+    margin-left: -80px;
+    width: 70px;
+  }
+  .middle2 p {
+    padding-left: 80px;
+  }
+  
+  .middle3 label {
+    margin-left: -90px;
+    width: 80px;
+  }
+  .middle3 p {
+    padding-left: 90px;
+  }
+  
+  .list {
+    width: 100%;
+    margin-top: 20px;
+    border-left: 1px solid #000000;
+    border-top: 1px solid #000000;
+    border-bottom: none;
+    border-right: none;
+  }
+  .list th {
+      background: none repeat scroll 0 0 #EFEFEF;
+      border-bottom: 1px solid #000000;
+      border-right: 1px solid #000000;
+      border-top: none;
+      border-left: none;
+      padding: 5px;
+  }
+  .list td {
+      border-bottom: 1px solid #000000;
+      border-right: 1px solid #000000;
+      border-top: none;
+      border-left: none;
+      padding: 5px;
+      text-align: center;
+  }
+  .paid-box label {
+    display: block;
+    float: left;
+    height: 20px;
+    width: 130px;
+  }
+  .point2 {
+    float: right;
+}
+table {
+    width: 100%;
+}
+.hidden, .quantity-0 {
+    position: absolute;
+    bottom: -9000px;
+    display: block;
+}
+</style>
+
+<%
+@header_com = Contact.HK
+%>
+
+<div class="wrapper page" style="">
+  <table>
+    <tr>
+      <td valign="top" width="75%">
+        <span style="display: inline-block; width: 50px">Đơn vị</span>: <strong><%= @header_com.name %></strong>
+        <br />
+        <span style="display: inline-block; width: 50px">MST</span>: <strong><%= @header_com.tax_code %></strong>
+        <br />
+        <span style="display: inline-block; width: 50px">Địa chỉ</span>: <%= @header_com.full_address %>
+        <br />
+        <span style="display: inline-block; width: 50px">Telefax</span>: <%= @header_com.phone %>
+      </td>
+      <td valign="top" style="text-align: center">Mẫu số 01-TT<br>(Ban hành theo Thông tư 200/2014/TT-BTC Ngày 22/12/2014 của Bộ Tài chính)</td>
+    </tr>
+  </table>
+  <BR />
+  <BR />
+  <table>
+    <tr>
+      <td valign="top" width="70%" align="center">
+        <h1 style="font-size: 26px; margin: 0;">
+          <% if @payment_record.is_paid %>
+            PHIẾU CHI
+          <% else %>
+            PHIẾU THU
+          <% end %>
+        </h1>
+        Ngày <%= @payment_record.paid_date.strftime("%d/%m/%Y") %>
+      </td>
+      <td valign="top" style="text-align: center">
+        <table>
+          <tr>
+            <td width="30">Nợ</td>
+            <td width="50">1111</td>
+            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
+          </tr>
+          <tr>
+            <td>Có</td>
+            <td>333111</td>
+            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>5111</td>
+            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+  <BR />
+  <table class="top-info" style="margin-top: 0" cellspacing="0">
+    <tr>
+      <td class="mid" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
+        <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %>: </label> <strong><%= @payment_record.paid_person %></strong></p>
+        <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
+        <p><label>Lý do: </label> <%= @payment_record.note %></p>
+        <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong>
+        <% if @payment_record.payment_method.present? %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>HTTT:</strong> <%= @payment_record.payment_method.name.downcase %>
+        <% end %>
+        </p>
+        <p><label>Viết bằng chữ: </label><%= Order.new.docso(@payment_record.amount.abs) %></p>
+        <p><label>Kèm theo: </label> <% if !@order.nil? %>Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p><% end %>
+        
+      </td>    
+    </tr>
+  </table>
+</div>
+<BR />
+<BR />
+<table>
+  <tr>
+
+      <td style="white-space: nowrap" width="20%" align="center" valign="top">
+        <p><strong>Thủ trưởng đơn vị</strong></p>
+        
+      </td>
+      
+      <td width="20%" align="center" valign="top">
+        <p><strong>Kế toán trưởng</strong></p>
+        
+      </td>
+      <td width="20%" align="center" valign="top">
+        <p><strong>Người lập phiếu</strong></p>
+        
+      </td>
+      <td width="20%" align="center" valign="top">
+        <p><strong>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %> tiền</strong></p>
+        
+      </td>
+      <td width="20%" align="center" valign="top">
+        <p><strong>Thủ quỹ</strong></p>
+        
+      </td>
+  </tr>
+</table>
+
+
+<page></page>

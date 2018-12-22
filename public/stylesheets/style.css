@@ -8167,3 +8167,10 @@ ul.sub-sub-menu {
     font-size: 12px;
     font-weight: normal;
 }
+.contact_type.type_customer {
+    background-color: #0aa699;
+}
+.contact_type.type_agent {
+    background-color: #D1DADE;
+    color: #5E5E5E;
+}

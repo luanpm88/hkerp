@@ -1346,7 +1346,8 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 						return $(this).val();
 					}).get();
 					d.types = types.join(",");
-					d.area_id = $("#area_id").val()
+					d.area_id = $("#area_id").val();
+					d.po_status = $("select[name=po_status]").val();
 				}
 			},
 			"columnDefs": [ { "targets": [0,1,2,3,4,5], "orderable": false } ],
@@ -1785,7 +1786,7 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 
 		$('.fancybox_link').fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
 
-		$("#contact_filter input").click(function() {
+		$("#contact_filter input, #contact_filter select").click(function() {
 			$('.datatable-contacts').dataTable().fnFilter();
 	    });
 

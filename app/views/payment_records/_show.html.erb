@@ -1,7 +1,4 @@
 <div class="wrapper page" style="">
-
-
-
 <%
 @header_com = Contact.HK
 %>
@@ -61,7 +58,11 @@
       <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %>: </label> <strong><%= @payment_record.paid_person %></strong></p>
       <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
       <p><label>Lý do: </label> <%= @payment_record.note %></p>
-      <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong></p>
+      <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong>
+      <% if @payment_record.payment_method.present? %>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>HTTT:</strong> <%= @payment_record.payment_method.name.downcase %>
+      <% end %>
+      </p>
       <p><label>Viết bằng chữ: </label><%= Order.new.docso(@payment_record.amount.abs) %></p>
       <% if !@order.nil? %><p><label>Kèm theo: </label> Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p><% end %>
       

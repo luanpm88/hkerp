@@ -439,7 +439,7 @@ class ProductsController < ApplicationController
       query = query.where('LOWER(name) LIKE ?', "%#{keyword}%")
     end
 
-    query = query.limit(8).map{|category| {value: category.id, text: category.name} }
+    query = query.limit(15).map{|category| {value: category.id, text: category.name} }
 
     render json: query
   end

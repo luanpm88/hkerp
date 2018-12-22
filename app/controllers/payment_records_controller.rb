@@ -63,6 +63,30 @@ class PaymentRecordsController < ApplicationController
                           :right  => 0},
             }
   end
+  
+  def download_pdf_2019
+    if !@payment_record.order.nil?
+      @order = @payment_record.order    
+      @hk = @order.supplier
+    else
+      @hk = Contact.HK
+    end
+    render  :pdf => "custom_payment_-"+@payment_record.id.to_s,
+            :template => 'payment_records/show_2019.pdf.erb',
+            :layout => nil,
+            :page_size => "A5",
+            :orientation => 'Landscape',
+            :footer => {
+               :center => "",
+               :left => "",
+               :right => "",
+               :page_size => "A5",
+               :margin  => {:top    => 0, # default 10 (mm)
+                          :bottom => 0,
+                          :left   => 0,
+                          :right  => 0},
+            }
+  end
 
   # GET /payment_records/new
   def new
