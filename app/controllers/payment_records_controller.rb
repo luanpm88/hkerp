@@ -74,8 +74,7 @@ class PaymentRecordsController < ApplicationController
     render  :pdf => "custom_payment_-"+@payment_record.id.to_s,
             :template => 'payment_records/show_2019.pdf.erb',
             :layout => nil,
-            :page_size => "A5",
-            :orientation => 'Landscape',
+            :page_size => "A4",
             :footer => {
                :center => "",
                :left => "",
@@ -264,6 +263,20 @@ class PaymentRecordsController < ApplicationController
     end
     
     @statistics = PaymentRecord.cash_book(@from_date, @to_date, params)
+    
+    render layout: "content" if params[:tab_page].present?
+  end
+  
+  def account_book
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date.beginning_of_day
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_day
+      @to_date =  DateTime.now.end_of_day
+    end
+    
+    @statistics = PaymentRecord.account_book(@from_date, @to_date, params)
     
     render layout: "content" if params[:tab_page].present?
   end

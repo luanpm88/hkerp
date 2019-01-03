@@ -9,7 +9,7 @@ class Checkinout < ActiveRecord::Base
   @@default_hours_per_month = 208
   cattr_reader :default_hours_per_month
   
-  @@in_morning_time = {:hour => 7 , :min => 30 , :sec => 0 }
+  @@in_morning_time = {:hour => 7 , :min => 45 , :sec => 0 }
   @@out_morning_time = {:hour => 11 , :min => 30 , :sec => 0 }
   @@in_noon_time = {:hour => 13 , :min => 0 , :sec => 0 }
   @@out_noon_time = {:hour => 17 , :min => 0 , :sec => 0 }

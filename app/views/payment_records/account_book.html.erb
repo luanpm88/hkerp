@@ -1,0 +1,228 @@
+                <ul class="breadcrumb">
+                    <li>
+                        <p>YOU ARE HERE</p>
+                    </li> 
+                    <li><%= link_to 'Payment Records', custom_payments_payment_records_path, :class => "active" %></li>
+                </ul>
+                <div class="page-title">
+                        <i class="icon-archive"></i>
+                    	<h3>Account Book [<span class="semi-bold"><%= format_price(PaymentRecord.total_cash) %></span>]</h3>	
+                </div>
+                
+                
+                <div class="row">
+                    <div class="col-md-12">
+			
+					<div class="grid simple ">
+						<div class="grid-body no-border filters" method="get">
+						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "payment_records", action: "account_book"})%>">
+							<%= hidden_field_tag "tab_page", 1 %>
+							<div class="row accounting-statistics-filters">
+								<div class="col-md-2">
+									<h4>From Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+										
+									</div>
+									</div>
+								</div>
+								<div class="col-md-2">
+									<h4>To Date</h4>
+									<div class="date_select_filter">
+									<div class="input-with-icon  right">
+										<div class="input-append success date col-md-10 no-padding">
+											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+										</div>
+										<br style="clear: both" />
+									</div>
+									</div>
+								</div>
+                                
+                                <div class="col-md-3">
+									<h4>Account</h4>
+										<select name="bank_account_id" class="modern_select" style="width: 100%">
+											<option value="">All</option>
+											   <% BankAccount.all.each do |bank| %>
+											   <option <% if bank.id.to_s == params[:bank_account_id] %>selected="selected"<% end %> value="<%= bank.id %>">
+													 <%= bank.name %>
+												   </option>
+											   <% end %>                                                               
+										</select>
+								</div>
+								
+								<div class="col-md-3">
+									<h4>Payment Method</h4>
+										<select name="payment_method_id" class="modern_select" style="width: 100%">
+											<option value="">All</option>
+											   <% PaymentMethod.all_payments.each do |payment| %>
+											   <option <% if payment.id.to_s == params[:payment_method_id] %>selected="selected"<% end %> value="<%= payment.id %>">
+													 <%= payment.name %>
+												   </option>
+											   <% end %>                                                               
+										</select>
+								</div>
+							
+							<div class="col-md-2">
+													<div class="">
+														<h4 style="color:#fff">...</h4>
+														
+															<input type="submit" value="Send" class="btn btn-primary text-center" />
+														
+													</div>
+											</div>
+
+							</div>
+						</form>
+						</div>		    
+					</div>
+                
+                
+                
+                <div class="row">
+                    <div class="col-md-12">                        
+                        <div class="grid simple ">
+                            <div class="grid-title no-border">
+                                <h4><span class="semi-bold">Statistics</span></h4>
+                                <div class="tools">
+				    
+				    <a href="javascript:;" class="collapse"></a>
+                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
+				    <a href="javascript:;" class="reload"></a>
+				    <a href="javascript:;" class="remove"></a>
+                                    
+                                </div>
+                            </div>
+                            
+                            <div class="grid-body no-border">
+                                 
+                                     <table class="table table-striped no-more-tables">
+                                        <thead>
+                                            <tr>
+												<th class="text-center">Date, Time</th>
+												
+                                                <th>
+                                                    Description
+                                                </th>
+												
+												
+                                                
+                                                <th>Note</th>
+                                                <th class="text-center">Order</th>
+                                                <th class="text-center">Account</th>
+												<th class="text-center">Payment</th>
+												<th class="text-center">Staff</th>
+												
+												<th class="text-right">Recieved</th>
+												<th class="text-right">Paid</th>
+												
+																					
+												
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                          
+                                            <% @statistics[:datas].each do |data| %>
+												<% p = data[:payment_record] %>
+                                              <tr>
+												<td class="text-center">
+													<%= p.paid_date.strftime("%Y-%m-%d, %H:%M") %>
+												</td>
+                                                <td>
+                                                  <% if p.type_name == 'tip' %>
+                                                    Pay tip													
+													[<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
+                                                  <% elsif p.type_name == 'commission' %>
+                                                    Pay commission
+                                                    [<%= p.order.salesperson.name %>]
+                                                  <% elsif p.type_name == 'custom' %>
+                                                    Custom
+                                                  <% elsif p.type_name == 'order' %>
+                                                    <%= p.order.is_purchase ? "Purchase" : "Sales" %>
+                                                    Order
+													<% if p.amount < 0 %>
+														[Pay back]
+													<% end %>
+													[<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>]
+                                                  <% end %>
+                                                  
+                                                </td>
+												
+												
+												
+                                                <td>
+                                                  <%= p.note %>
+                                                </td>
+												
+												<td class="text-center">
+													<% if p.type_name == 'order' || p.type_name == 'commission' || p.type_name == 'tip' %>
+														<% if p.order.printed_order_number.present? %>
+															<strong class="finished"><%= p.order.printed_order_number %></strong>
+															<br />
+														<% end %>
+														<%= link_to p.order.quotation_code, p.order, class: "fancybox.iframe show_order" %>
+														
+														<br />
+														<%= link_to("<i class=\"icon-print\"></i> ".html_safe+p.created_at.strftime("%Y-%m-%d"), p, :class => 'fancybox.iframe ajax_iframe') %>
+													<% end %>
+												</td>
+                                                
+                                                <td class="text-center">
+													<%= p.bank_account.name if p.bank_account.present? %>
+												</td>
+												
+												<td class="text-center">
+													<%= p.payment_method.name %>
+												</td>
+												
+												<td class="text-center">
+													<%= p.accountant.name %>
+												</td>
+												
+												
+												
+                                                <td class="text-right">
+                                                  <%= format_price(data[:recieve]) %>												  
+                                                </td>
+                                                <td class="text-right">
+                                                  <%= format_price(data[:pay]) %>
+                                                </td>
+                                                
+                                              </tr>  
+                                            <% end %>
+					    
+                                        </tbody>
+										
+										<footer>
+											<tr>
+												<td colspan="6" class="text-right">Tổng cộng</td>
+												<td class="text-right">
+													<strong><%= format_price(@statistics[:total_recieve]) %></strong>
+												</td>
+												<td class="text-right">
+													<strong><%= format_price(@statistics[:total_pay]) %></strong>
+												</td>
+											</tr>
+										</footer>
+                                    </table>
+                                     
+                            </div>
+                        </div>
+			
+                    </div>
+		    
+			</div>
+		    </div>
+                </div>
+
+
+
+
+
+                                   

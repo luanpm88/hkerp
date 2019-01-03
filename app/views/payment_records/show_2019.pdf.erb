@@ -3,7 +3,7 @@
 <style>
   .page * {
     font-family: "Times New Roman";
-    font-size: 15px;
+    font-size: 17px;
   }
   .cominfo p {
     font-size: 13px;
@@ -41,8 +41,8 @@
         float: left;
         font-weight: 700;
         padding-right: 10px;
-        text-align: right;
-        width: 100px;
+        text-align: left;
+        width: 120px;
         margin-left: -110px;
     }
     .mid p {
@@ -118,13 +118,13 @@ table {
   <table>
     <tr>
       <td valign="top" width="75%">
-        <span style="display: inline-block; width: 50px">Đơn vị</span>: <strong><%= @header_com.name %></strong>
+        <span style="display: inline-block; width: 90px">Đơn vị</span>: <strong><%= @header_com.name %></strong>
         <br />
-        <span style="display: inline-block; width: 50px">MST</span>: <strong><%= @header_com.tax_code %></strong>
+        <span style="display: inline-block; width: 90px">MST</span>: <strong><%= @header_com.tax_code %></strong>
         <br />
-        <span style="display: inline-block; width: 50px">Địa chỉ</span>: <%= @header_com.full_address %>
+        <span style="display: inline-block; width: 90px">Địa chỉ</span>: <%= @header_com.full_address %>
         <br />
-        <span style="display: inline-block; width: 50px">Telefax</span>: <%= @header_com.phone %>
+        <span style="display: inline-block; width: 90px">Điện thoại</span>: <%= @header_com.phone %>
       </td>
       <td valign="top" style="text-align: center">Mẫu số 01-TT<br>(Ban hành theo Thông tư 200/2014/TT-BTC Ngày 22/12/2014 của Bộ Tài chính)</td>
     </tr>
@@ -133,7 +133,7 @@ table {
   <BR />
   <table>
     <tr>
-      <td valign="top" width="70%" align="center">
+      <td valign="top" width="78%" align="center">
         <h1 style="font-size: 26px; margin: 0;">
           <% if @payment_record.is_paid %>
             PHIẾU CHI
@@ -145,21 +145,39 @@ table {
       </td>
       <td valign="top" style="text-align: center">
         <table>
-          <tr>
-            <td width="30">Nợ</td>
-            <td width="50">1111</td>
-            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
-          </tr>
-          <tr>
-            <td>Có</td>
-            <td>333111</td>
-            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>5111</td>
-            <td><strong><%= @payment_record.amount_formated %> VND</strong></td>
-          </tr>
+          <% if @payment_record.is_paid %>
+            <tr>
+              <td width="30">Nợ</td>
+              <!--<td align="right" width="50">1111</td>-->
+              <td align="right"><strong><%= @payment_record.tax_formated %> VND</strong></td>
+            </tr>
+            <tr>
+              <td>Có</td>
+              <!--<td align="right">333111</td>-->
+              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_without_tax_formated %> <% end %> VND</strong></td>
+            </tr>
+            <tr>
+              <td></td>
+              <!--<td align="right">5111</td>-->
+              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_formated %> <% end %> VND</strong></td>
+            </tr>
+          <% else %>
+            <tr>
+              <td width="30">Nợ</td>
+              <!--<td align="right" width="50">1111</td>-->
+              <td align="right"><strong><%= @payment_record.amount_formated %> VND</strong></td>
+            </tr>
+            <tr>
+              <td>Có</td>
+              <!--<td align="right">333111</td>-->
+              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.tax_formated %> <% end %> VND</strong></td>
+            </tr>
+            <tr>
+              <td></td>
+              <!--<td align="right">5111</td>-->
+              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_without_tax_formated %> <% end %> VND</strong></td>
+            </tr>
+          <% end %>
         </table>
       </td>
     </tr>
@@ -167,9 +185,9 @@ table {
   <BR />
   <table class="top-info" style="margin-top: 0" cellspacing="0">
     <tr>
-      <td class="mid" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
+      <td class="mid" width="100%" style="padding-top: 5px;border-top: solid 0px #000">
         <p><label>Người <%= @payment_record.is_paid ? "nhận" : "nộp" %>: </label> <strong><%= @payment_record.paid_person %></strong></p>
-        <p><label>Địa chỉ: </label> <strong><%= @payment_record.paid_address %></strong></p>
+        <p><label>Địa chỉ: </label> <%= @payment_record.paid_address %></p>
         <p><label>Lý do: </label> <%= @payment_record.note %></p>
         <p><label>Số tiền: </label> <strong><%= @payment_record.amount_formated %> VND</strong>
         <% if @payment_record.payment_method.present? %>
@@ -177,7 +195,7 @@ table {
         <% end %>
         </p>
         <p><label>Viết bằng chữ: </label><%= Order.new.docso(@payment_record.amount.abs) %></p>
-        <p><label>Kèm theo: </label> <% if !@order.nil? %>Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong></p><% end %>
+        <p><label>Kèm theo: </label> <% if !@order.nil? %>Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong>&nbsp;&nbsp;&nbsp;&nbsp; Chứng từ gốc</p><% end %>
         
       </td>    
     </tr>

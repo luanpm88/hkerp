@@ -65,6 +65,8 @@ Hkerp::Application.routes.draw do
 
       get :pay_commission
       post :do_pay_commission
+      
+      get :account_book
     end
   end
 

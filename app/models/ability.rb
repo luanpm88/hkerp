@@ -420,6 +420,7 @@ class Ability
 
       can :statistics, PaymentRecord
       can :cash_book, PaymentRecord
+      can :account_book, PaymentRecord
 
     end
 

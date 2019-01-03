@@ -344,9 +344,9 @@
 			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
 
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
+		  <!--<li<% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Stock Statistics', "accounting/statistic_stock?tab_page=1", class: "tab_page" %>
-		  </li>
+		  </li>-->
 
 		  <li<% if ["accounting"].include?(params[:controller]) && ["orders"].include?(params[:action]) && !params[:purchase] %> class="active"<% end %>>
 			<span class="badge badge-important pull-right alert-level2"><%= Notification.sales_payment_alert %></span>
@@ -364,6 +364,18 @@
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_book"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Cash book', cash_book_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
+			<li<% if ["payment_records"].include?(params[:controller]) && ["account_book"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Account book', account_book_payment_records_path(tab_page: 1), class: "tab_page" %>
+		  </li>
+			
+			<li<% if ["report"].include?(params[:controller]) %> class="active"<% end %>>
+				<%= link_to 'Report', "/report/warehouse?tab_page=1", class: "tab_page" %>
+				<ul class="sub-sub-menu">
+					<li<% if ["report"].include?(params[:controller]) && ["warehouse"].include?(params[:action]) %> class="active"<% end %>>
+						<%= link_to 'Warehouse', "/report/warehouse?tab_page=1", class: "tab_page" %>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	    </li>
 	<% end %>

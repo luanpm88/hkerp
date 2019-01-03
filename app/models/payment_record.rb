@@ -108,6 +108,37 @@ class PaymentRecord < ActiveRecord::Base
     Order.format_price(amount.abs)
   end
   
+  def tax_amount
+    if order.present?
+      return amount - amount_without_tax
+    end
+    return 0
+  end
+  
+  def tax_formated
+    if order.present?
+      return Order.format_price(tax_amount)
+    end
+    
+    return ''
+  end
+  
+  def amount_without_tax
+    if order.present?
+      return (amount / (1+(order.tax.rate/100)))
+    end
+    
+    return 0
+  end
+  
+  def amount_without_tax_formated
+    if order.present?
+      return Order.format_price(amount_without_tax)
+    end
+    
+    return ''
+  end
+  
   def debt_days=(new_amount)
     self[:debt_days] = new_amount.to_s.gsub(/[\,]/, '')
   end
@@ -178,6 +209,54 @@ class PaymentRecord < ActiveRecord::Base
       records = records.where(payment_method_id: params[:payment_method_id])
     end
     
+    
+    total_pay = 0.00
+    total_recieve = 0.00
+    
+    datas = []    
+    records.each do |p|
+      data = {payment_record: p,pay: "", recieve: ""}
+      if p.type_name == 'tip' || p.type_name == 'commission'
+         total_pay += p.amount
+         data[:pay] = p.amount
+      elsif p.type_name == 'custom'
+        if !p.is_paid
+          total_recieve += p.amount
+          data[:recieve] = p.amount
+        else
+          total_pay += p.amount.abs
+          data[:pay] = p.amount.abs
+        end
+      elsif p.type_name == 'order'
+        if p.order.is_purchase || (!p.order.is_purchase && p.amount < 0)
+          total_pay += p.amount.abs
+          data[:pay] = p.amount.abs
+        elsif !p.order.is_purchase || (p.order.is_purchase && p.amount < 0)
+          total_recieve += p.amount.abs
+          data[:recieve] = p.amount.abs
+        end
+      end
+      
+      datas << data
+    end
+    
+    
+    
+    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+  end
+  
+  def self.account_book(from_date, to_date, params)
+    records = PaymentRecord.includes(:bank_account).where(status: 1)
+                            .where("payment_records.paid_date >= ? AND payment_records.paid_date <= ?", from_date.beginning_of_day, to_date.end_of_day)
+                            .order("payment_records.paid_date DESC, payment_records.created_at DESC")
+    
+    if params[:payment_method_id].present?
+      records = records.where(payment_method_id: params[:payment_method_id])
+    end
+    
+    if params[:bank_account_id].present?
+      records = records.where(bank_account_id: params[:bank_account_id])
+    end
     
     total_pay = 0.00
     total_recieve = 0.00
