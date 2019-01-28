@@ -297,28 +297,60 @@ class PaymentRecord < ActiveRecord::Base
     (type_name == "custom" && amount < 0) || (type_name == "commission" && amount > 0) || (type_name == "tip" && amount > 0) || ((type_name == "order" && order.is_purchase && amount > 0) || (type_name == "order" && !order.is_purchase && amount < 0))
   end
   
-  def self.total_cash
+  def self.total_cash(options={})
     result = 0.0
+    query = PaymentRecord.includes(:bank_account, :order).where(status: 1).where(bank_accounts: {name: "Cash"})
+    
+    if options[:to_date].present?
+      query = query.where("paid_date <= ?", options[:to_date].end_of_day)
+    end
     
     # tip / commission
-    result -= PaymentRecord.includes(:bank_account).where(status: 1).where(bank_accounts: {name: "Cash"})
-                            .where(type_name: ["tip","commission"])
+    result -= query.where(type_name: ["tip","commission"])
                             .sum(:amount).abs
     
     # custom payment
-    result += PaymentRecord.includes(:bank_account).where(status: 1).where(bank_accounts: {name: "Cash"})
-                            .where(type_name: ["custom"])
+    result += query.where(type_name: ["custom"])
                             .sum(:amount)
                             
     # purchase
-    result -= PaymentRecord.includes(:bank_account, :order).where(status: 1).where(bank_accounts: {name: "Cash"})
-                            .where(orders: {customer_id: Contact.HK.id})
+    result -= query.where(orders: {customer_id: Contact.HK.id})
                             .where(type_name: ["order"])
                             .sum(:amount)
     
     # sales
-    result += PaymentRecord.includes(:bank_account, :order).where(status: 1).where(bank_accounts: {name: "Cash"})
-                            .where(orders: {supplier_id: Contact.HK.id})
+    result += query.where(orders: {supplier_id: Contact.HK.id})
+                            .where(type_name: ["order"])
+                            .sum(:amount)
+  end
+  
+  def self.remain(options={})
+    result = 0.0
+    query = PaymentRecord.includes(:bank_account, :order).where(status: 1)
+    
+    if options[:to_date].present?
+      query = query.where("paid_date <= ?", options[:to_date].end_of_day)
+    end
+    
+    if options[:bank_account_id].present?
+      query = query.where(bank_account_id: options[:bank_account_id])
+    end
+    
+    # tip / commission
+    result -= query.where(type_name: ["tip","commission"])
+                            .sum(:amount).abs
+    
+    # custom payment
+    result += query.where(type_name: ["custom"])
+                            .sum(:amount)
+                            
+    # purchase
+    result -= query.where(orders: {customer_id: Contact.HK.id})
+                            .where(type_name: ["order"])
+                            .sum(:amount)
+    
+    # sales
+    result += query.where(orders: {supplier_id: Contact.HK.id})
                             .where(type_name: ["order"])
                             .sum(:amount)
   end

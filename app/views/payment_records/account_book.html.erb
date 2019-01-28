@@ -5,8 +5,13 @@
                     <li><%= link_to 'Payment Records', custom_payments_payment_records_path, :class => "active" %></li>
                 </ul>
                 <div class="page-title">
-                        <i class="icon-archive"></i>
-                    	<h3>Account Book [<span class="semi-bold"><%= format_price(PaymentRecord.total_cash) %></span>]</h3>	
+                        <i class="icon-archive"></i><%= params[:bank_account_id] %>
+                    	<h3>Account Book [<span class="semi-bold">
+							<%= format_price(PaymentRecord.remain(
+								to_date: @to_date.end_of_day,
+								bank_account_id: params[:bank_account_id]
+							)) %>
+						</span>]</h3>	
                 </div>
                 
                 
@@ -103,6 +108,17 @@
                                  
                                      <table class="table table-striped no-more-tables">
                                         <thead>
+											<tr>
+												<th colspan="7" class="text-right">Begin</th>
+												<th colspan="2" class="text-right">
+													<h4><strong>
+													<%= format_price(PaymentRecord.remain(
+														to_date: (@from_date - 1.day).end_of_day,
+														bank_account_id: params[:bank_account_id]
+													)) %>
+													</strong></h4>
+												</th>												
+                                            </tr>
                                             <tr>
 												<th class="text-center">Date, Time</th>
 												
@@ -201,7 +217,7 @@
 										
 										<footer>
 											<tr>
-												<td colspan="6" class="text-right">Tổng cộng</td>
+												<td colspan="7" class="text-right">Tổng cộng</td>
 												<td class="text-right">
 													<strong><%= format_price(@statistics[:total_recieve]) %></strong>
 												</td>
@@ -210,6 +226,19 @@
 												</td>
 											</tr>
 										</footer>
+										<thead>
+											<tr>
+												<th colspan="7" class="text-right">End</th>
+												<th colspan="2" class="text-right">
+													<h4><strong>
+													<%= format_price(PaymentRecord.remain(
+														to_date: @to_date.end_of_day,
+														bank_account_id: params[:bank_account_id]
+													)) %>
+													</strong></h4>
+												</th>												
+                                            </tr>
+										</thead>
                                     </table>
                                      
                             </div>
