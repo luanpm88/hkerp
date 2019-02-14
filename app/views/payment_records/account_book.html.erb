@@ -74,13 +74,11 @@
 								</div>
 							
 							<div class="col-md-2">
-													<div class="">
-														<h4 style="color:#fff">...</h4>
-														
-															<input type="submit" value="Send" class="btn btn-primary text-center" />
-														
-													</div>
-											</div>
+                              <div class="">
+                                  <h4 style="color:#fff">...</h4>                                  
+                                  <input type="submit" value="Send" class="btn btn-primary text-center" />                                  
+                              </div>
+                            </div>
 
 							</div>
 						</form>
@@ -104,18 +102,19 @@
                                 </div>
                             </div>
                             
+                            <a target="_blank" href="<%= url_for({controller: "payment_records", action: "account_book_xls", format: "xls"})%>" class="btn btn-info text-center">
+                              Export
+                            </a>
+                            
                             <div class="grid-body no-border">
                                  
-                                     <table class="table table-striped no-more-tables">
+                                     <table class="table table-striped no-more-tables no-filter">
                                         <thead>
 											<tr>
 												<th colspan="7" class="text-right">Begin</th>
 												<th colspan="2" class="text-right">
 													<h4 class="mb-0"><strong>
-													<%= format_price(PaymentRecord.remain(
-														to_date: (@from_date - 1.day).end_of_day,
-														bank_account_id: params[:bank_account_id]
-													)) %>
+													<%= format_price(@statistics[:begin]) %>
 													</strong></h4>
 												</th>												
                                             </tr>
@@ -231,10 +230,7 @@
 												<th colspan="7" class="text-right">End</th>
 												<th colspan="2" class="text-right">
 													<h4 class="mb-0"><strong>
-													<%= format_price(PaymentRecord.remain(
-														to_date: @to_date.end_of_day,
-														bank_account_id: params[:bank_account_id]
-													)) %>
+													<%= format_price(@statistics[:end]) %>
 													</strong></h4>
 												</th>												
                                             </tr>

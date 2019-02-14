@@ -62,11 +62,13 @@ Hkerp::Application.routes.draw do
       get :edit_pay_custom
       get :statistics
       get :cash_book
+      get :cash_book_xls
 
       get :pay_commission
       post :do_pay_commission
       
       get :account_book
+      get :account_book_xls
     end
   end
 

@@ -420,8 +420,9 @@ class Ability
 
       can :statistics, PaymentRecord
       can :cash_book, PaymentRecord
+      can :cash_book_xls, PaymentRecord
       can :account_book, PaymentRecord
-
+      can :account_book_xls, PaymentRecord
     end
 
     if user.has_role? "accountant_manager"

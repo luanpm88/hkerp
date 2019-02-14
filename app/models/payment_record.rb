@@ -195,9 +195,19 @@ class PaymentRecord < ActiveRecord::Base
       datas << data
     end
     
-    
-    
-    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+    return {
+      datas: datas,
+      total_pay: total_pay,
+      total_recieve: total_recieve,
+      begin: PaymentRecord.remain(
+        to_date: (from_date - 1.day).end_of_day,
+        bank_account_id: params[:bank_account_id],
+      ),
+      end: PaymentRecord.remain(
+        to_date: to_date.end_of_day,
+        bank_account_id: params[:bank_account_id]
+      ),
+    }
   end
   
   def self.cash_book(from_date, to_date, params)
@@ -241,8 +251,20 @@ class PaymentRecord < ActiveRecord::Base
     end
     
     
-    
-    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+    cash_account = BankAccount.where(name: "Cash").first
+    return {
+      datas: datas,
+      total_pay: total_pay,
+      total_recieve: total_recieve,
+      begin: PaymentRecord.remain(
+        to_date: (from_date - 1.day).end_of_day,
+        bank_account_id: cash_account.id,
+      ),
+      end: PaymentRecord.remain(
+        from_date: to_date.end_of_day,
+        bank_account_id: cash_account.id
+      ),
+    }
   end
   
   def self.account_book(from_date, to_date, params)
@@ -290,7 +312,19 @@ class PaymentRecord < ActiveRecord::Base
     
     
     
-    return {datas: datas, total_pay: total_pay, total_recieve: total_recieve}
+    return {
+      datas: datas,
+      total_pay: total_pay,
+      total_recieve: total_recieve,
+      begin: PaymentRecord.remain(
+        to_date: (from_date - 1.day).end_of_day,
+        bank_account_id: params[:bank_account_id],
+      ),
+      end: PaymentRecord.remain(
+        to_date: to_date.end_of_day,
+        bank_account_id: params[:bank_account_id]
+      ),
+    }
   end
   
   def is_paid
@@ -353,6 +387,34 @@ class PaymentRecord < ActiveRecord::Base
     result += query.where(orders: {supplier_id: Contact.HK.id})
                             .where(type_name: ["order"])
                             .sum(:amount)
+  end
+  
+  def description
+    str = []
+    if self.type_name == 'tip'
+      str << 'Pay tip'
+      str << "[#{self.order.quotation_code}]"
+    elsif self.type_name == 'commission'
+      str << 'Pay commission'
+      str << "[#{self.order.salesperson.name}]"
+    elsif self.type_name == 'custom'
+      str << 'Custom'
+    elsif self.type_name == 'order'
+      str << (self.order.is_purchase ? "Purchase" : "Sales")
+      str << 'Order'
+      if self.amount < 0
+        str << '[Pay back]'
+      end
+    end
+    return str.join(" ")
+  end
+  
+  def printed_order_number
+    if self.type_name == 'order' || self.type_name == 'commission' || self.type_name == 'tip'
+      if self.order.printed_order_number.present?
+        self.order.printed_order_number
+      end
+    end
   end
   
 end
