@@ -264,7 +264,43 @@ class PaymentRecordsController < ApplicationController
     
     @statistics = PaymentRecord.cash_book(@from_date, @to_date, params)
     
+    File.open('cash_book.yml', 'w') { |f| f.write(YAML.dump(@statistics)) }
+    
     render layout: "content" if params[:tab_page].present?
+  end
+  
+  def cash_book_xls
+    @statistics = YAML.load(File.read('cash_book.yml'))
+    workbook = RubyXL::Parser.parse('templates/account_book_template.xlsx')
+    
+    worksheet = workbook[0]
+    
+    # Begin
+    worksheet[0][8].change_contents(@statistics[:begin])
+    
+    # End
+    worksheet[4][8].change_contents(@statistics[:end])
+    
+    # Records
+    @statistics[:datas].each do |data|
+      worksheet.insert_row(3)
+      p = data[:payment_record]
+      
+      worksheet[3][0].change_contents(p.paid_date.strftime("%Y-%m-%d"))
+      worksheet[3][1].change_contents(p.description)
+      worksheet[3][2].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][3].change_contents(p.printed_order_number)
+      worksheet[3][4].change_contents(p.payment_method.name)
+      worksheet[3][5].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][6].change_contents(p.accountant.name)
+      worksheet[3][7].change_contents(data[:recieve])
+      worksheet[3][8].change_contents(data[:pay])
+      
+    end      
+    
+    send_data workbook.stream.string,
+      filename: "cash_book.xlsx",
+      disposition: 'attachment'
   end
   
   def account_book
@@ -278,7 +314,43 @@ class PaymentRecordsController < ApplicationController
     
     @statistics = PaymentRecord.account_book(@from_date, @to_date, params)
     
+    File.open('account_book.yml', 'w') { |f| f.write(YAML.dump(@statistics)) }
+    
     render layout: "content" if params[:tab_page].present?
+  end
+  
+  def account_book_xls
+    @statistics = YAML.load(File.read('account_book.yml'))
+    workbook = RubyXL::Parser.parse('templates/account_book_template.xlsx')
+    
+    worksheet = workbook[0]
+    
+    # Begin
+    worksheet[0][8].change_contents(@statistics[:begin])
+    
+    # End
+    worksheet[4][8].change_contents(@statistics[:end])
+    
+    # Records
+    @statistics[:datas].each do |data|
+      worksheet.insert_row(3)
+      p = data[:payment_record]
+      
+      worksheet[3][0].change_contents(p.paid_date.strftime("%Y-%m-%d"))
+      worksheet[3][1].change_contents(p.description)
+      worksheet[3][2].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][3].change_contents(p.printed_order_number)
+      worksheet[3][4].change_contents(p.payment_method.name)
+      worksheet[3][5].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][6].change_contents(p.accountant.name)
+      worksheet[3][7].change_contents(data[:recieve])
+      worksheet[3][8].change_contents(data[:pay])
+      
+    end      
+    
+    send_data workbook.stream.string,
+      filename: "account_book.xlsx",
+      disposition: 'attachment'
   end
   
   def pay_commission

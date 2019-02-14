@@ -91,9 +91,13 @@
                                 </div>
                             </div>
                             
+                            <a target="_blank" href="<%= url_for({controller: "payment_records", action: "cash_book_xls", format: "xls"})%>" class="btn btn-info text-center">
+                              Export
+                            </a>
+                            
                             <div class="grid-body no-border">
                                  
-                                     <table class="table table-striped no-more-tables">
+                                     <table class="table table-striped no-more-tables no-filter">
                                         <thead>
 											<tr>
 												<th colspan="7" class="text-right">Begin</th>
