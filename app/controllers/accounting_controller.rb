@@ -208,5 +208,95 @@ class AccountingController < ApplicationController
     render layout: "content" if params[:tab_page].present?
   end
 
+  def export
+    @from_date = params[:from_date].present? ? params[:from_date].to_date : DateTime.now.beginning_of_month
+    @to_date =  params[:to_date].present? ? params[:to_date].to_date.end_of_day : DateTime.now
+    
+    if request.post?      
+      @supplier = params[:supplier_id].present? ? Contact.find(params[:supplier_id]) : nil
+      @customer = params[:customer_id].present? ? Contact.find(params[:customer_id]) : nil
+      
+      @statistics = Order.statistics(@from_date, @to_date, params)
+      
+      workbook = RubyXL::Parser.parse('templates/order_export_template.xlsx')
+      
+      worksheet = workbook[0]
+      
+      # Begin
+      worksheet[2][0].change_contents("Từ #{@from_date.strftime("%Y-%m-%d")} Đến #{@to_date.strftime("%Y-%m-%d")}")
+      
+      if params[:sales].present?
+        @orders = @statistics[:sell_orders]
+        
+        worksheet[1][0].change_contents("BẢNG KÊ BÁN RA")
+        worksheet[3][5].change_contents("Khách hàng")
+        
+        # End
+        worksheet[6][8].change_contents(@statistics[:total_sell])
+        worksheet[6][10].change_contents(@statistics[:total_vat_sell])
+        worksheet[6][11].change_contents(@statistics[:total_sell_with_vat])
+        
+        # Records
+        @orders.each do |order|
+          order.order_details.each do |order_detail|
+            worksheet.insert_row(5)
+            
+            worksheet[5][0].change_contents(order.quotation_code)
+            # worksheet[5][1].change_contents(order.printed_order_number)
+            # worksheet[5][2].change_contents(order.printed_order_number)
+            worksheet[5][3].change_contents(order.printed_order_number)
+            worksheet[5][4].change_contents(order.order_date.strftime("%Y-%m-%d"))
+            worksheet[5][5].change_contents(order.customer.short_name)
+            worksheet[5][6].change_contents(order.customer.tax_code)
+            worksheet[5][7].change_contents(order_detail.product_name)
+            worksheet[5][8].change_contents(order_detail.total)
+            worksheet[5][9].change_contents(order.tax.rate)
+            worksheet[5][10].change_contents(order_detail.vat_amount)
+            worksheet[5][11].change_contents(order_detail.total_vat)
+          end
+        end      
+        
+        send_data workbook.stream.string,
+          filename: "sales.xlsx",
+          disposition: 'attachment'
+      elsif params[:purchase].present?
+        @orders = @statistics[:buy_orders]
+        
+        worksheet[1][0].change_contents("BẢNG KÊ MUA VÀO")
+        worksheet[3][5].change_contents("Nhà CC")
+        
+        # End
+        worksheet[6][8].change_contents(@statistics[:total_buy])
+        worksheet[6][10].change_contents(@statistics[:total_vat_buy])
+        worksheet[6][11].change_contents(@statistics[:total_buy_with_vat])
+        
+        # Records
+        @orders.each do |order|
+          order.order_details.each do |order_detail|
+            worksheet.insert_row(5)
+            
+            worksheet[5][0].change_contents(order.quotation_code)
+            # worksheet[5][1].change_contents(order.printed_order_number)
+            # worksheet[5][2].change_contents(order.printed_order_number)
+            worksheet[5][3].change_contents(order.printed_order_number)
+            worksheet[5][4].change_contents(order.order_date.strftime("%Y-%m-%d"))
+            worksheet[5][5].change_contents(order.supplier.short_name)
+            worksheet[5][6].change_contents(order.supplier.tax_code)
+            worksheet[5][7].change_contents(order_detail.product_name)
+            worksheet[5][8].change_contents(order_detail.total)
+            worksheet[5][9].change_contents(order.tax.rate)
+            worksheet[5][10].change_contents(order_detail.vat_amount)
+            worksheet[5][11].change_contents(order_detail.total_vat)
+          end
+        end      
+        
+        send_data workbook.stream.string,
+          filename: "purchase.xlsx",
+          disposition: 'attachment'        
+      elsif params[:invoice].present?
+        
+      end
+    end
+  end
   
 end

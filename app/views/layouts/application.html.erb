@@ -376,6 +376,10 @@
 					</li>
 				</ul>
 			</li>
+			
+			<li<% if ["accounting"].include?(params[:controller]) && ["export"].include?(params[:action]) %> class="active"<% end %>>
+				<%= link_to 'Export', "/accounting/export?tab_page=1", class: "tab_page" %>
+		  </li>
 		</ul>
 	    </li>
 	<% end %>
