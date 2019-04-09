@@ -238,7 +238,7 @@ class Product < ActiveRecord::Base
 
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
-                col_2 = product.name+" "+product.product_code+"<br />"+product.product_log_link+"<div>"+product.description[0..80]+"</div>"
+                col_2 = product.name+" ("+product.product_code+")<br />"+product.product_log_link+"<div>"+product.description[0..80]+"</div>"
                 col_3 = product.statistic_stock(from_date).to_s
 
                 ic = product.import_count(from_date, to_date)
