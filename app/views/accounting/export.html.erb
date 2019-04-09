@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="col-md-12">
+    
+    <div class="grid simple ">
+        <div class="grid-body no-border filters" method="get">
+        <form target="_blank" id="accounting-statistics-filters-form" method="POST" action="<%= url_for({controller: "accounting", action: "export"})%>">
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>" />
+            <% if params[:tab_page] %>
+                <%= hidden_field_tag "tab_page", 1 %>
+            <% end %>
+            <div class="row accounting-statistics-filters">
+                <div class="col-md-2">
+                    <h4>From Date</h4>
+                    <div class="date_select_filter">
+                    <div class="input-with-icon  right">
+                        <div class="input-append success date col-md-10 no-padding">
+                            <%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>
+                        <br style="clear: both" />
+                        
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <h4>To Date</h4>
+                    <div class="date_select_filter">
+                    <div class="input-with-icon  right">
+                        <div class="input-append success date col-md-10 no-padding">
+                            <%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>
+                        <br style="clear: both" />
+                    </div>
+                    </div>
+                </div>
+                            
+                <div class="col-md-4">
+                    <div class="">
+                        <h4 style="color:#fff">...</h4>                        
+                        <input type="submit" name="sales" value="Sales" class="btn btn-primary text-center" />
+                        <input type="submit" name="purchase" value="Purchase" class="btn btn-primary text-center" />
+                        <!--<input type="submit" name="invoice" value="Invoices" class="btn btn-primary text-center" />-->
+                    </div>
+                </div>
+    
+            </div>
+        </form>
+    </div>		    
+</div>
