@@ -193,6 +193,9 @@ table {
         <% if @payment_record.payment_method.present? %>
           &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>HTTT:</strong> <%= @payment_record.payment_method.name.downcase %>
         <% end %>
+        <% if @payment_record.bank_account.present? %>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Tài khoản:</strong> <%= @payment_record.bank_account.name %>
+        <% end %>
         </p>
         <p><label>Viết bằng chữ: </label><%= Order.new.docso(@payment_record.amount.abs) %></p>
         <p><label>Kèm theo: </label> <% if !@order.nil? %>Hóa đơn với mã số <strong><%= @order.printed_order_number %></strong>&nbsp;&nbsp;&nbsp;&nbsp; Chứng từ gốc</p><% end %>

@@ -1292,7 +1292,9 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 					d.manufacturers =  $("select[name='manufacturers[]']").val(),
 					d.categories = $("input[name='categories']").val(),
 					d.status = $("select[name='status']").val(),
-					d.user_id = $("select[name='user_id']").val()
+					d.user_id = $("select[name='user_id']").val(),
+					d.supplier_id = $("[name='supplier_id']").val(),
+					d.in_use = $("[name='in_use']").val()
 				}
 			},
 			"columnDefs": [ { "targets": [3,5,6,7,8], "orderable": false } ],
@@ -1348,6 +1350,7 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 					d.types = types.join(",");
 					d.area_id = $("#area_id").val();
 					d.po_status = $("select[name=po_status]").val();
+					d.status = $("select[name=status]").val();
 				}
 			},
 			"columnDefs": [ { "targets": [0,1,2,3,4,5], "orderable": false } ],
@@ -1374,7 +1377,7 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 
 	    $('select[name="DataTables_Table_0_length"]').select2({allowClear: true});
 
-	    $("select[name='manufacturers[]'], select[name='status'], select[name='user_id']").change(function() {
+	    $("select[name='manufacturers[]'], select[name='status'], select[name='user_id'], [name='supplier_id'], [name='in_use']").change(function() {
 			$('.datatable-products').dataTable().fnFilter();
 	    });
 	    $(".filter-manu-clear").click(function() {

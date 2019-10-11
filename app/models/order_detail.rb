@@ -21,6 +21,14 @@ class OrderDetail < ActiveRecord::Base
   after_save :update_order_cache_total
 
   after_save :update_product_cache_last_ordered
+  
+  after_save :update_product_cache_recent_supplier_ids
+  
+  def update_product_cache_recent_supplier_ids
+    if product.present?
+      product.update_cache_recent_supplier_ids
+    end
+  end
 
   def update_product_cache_last_ordered
     if product.present?

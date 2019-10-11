@@ -2,7 +2,7 @@ class ContactsController < ApplicationController
   include ContactsHelper
   
   load_and_authorize_resource
-  before_action :set_contact, only: [:ajax_edit, :ajax_update, :show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
+  before_action :set_contact, only: [:contact, :ajax_edit, :ajax_update, :show, :edit, :update, :destroy, :ajax_destroy, :ajax_show, :ajax_list_agent, :ajax_list_supplier_agent]
 
   # GET /contacts
   # GET /contacts.json
@@ -181,6 +181,30 @@ class ContactsController < ApplicationController
   
   def logo
     send_file @contact.logo_path(params[:type]), :disposition => 'inline'
+  end
+  
+  def inactive
+    respond_to do |format|
+      if @contact.set_inactive
+        format.html { redirect_to params[:tab_page].present? ? contacts_url(tab_page: 1) : contacts_url, notice: 'Contact was successfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @contact }
+      else
+        format.html { redirect_to params[:tab_page].present? ? contacts_url(tab_page: 1) : contacts_url, alert: 'Contact was unsuccessfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @contact }
+      end
+    end
+  end
+  
+  def active
+    respond_to do |format|
+      if @contact.set_active
+        format.html { redirect_to params[:tab_page].present? ? contacts_url(tab_page: 1) : contacts_url, notice: 'Contact was successfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @contact }
+      else
+        format.html { redirect_to params[:tab_page].present? ? contacts_url(tab_page: 1) : contacts_url, alert: 'Contact was unsuccessfully trashed.' }
+        format.json { render action: 'show', status: :created, location: @contact }
+      end
+    end
   end
 
   private

@@ -169,6 +169,14 @@ class Product < ActiveRecord::Base
       end
     end
     
+    if params["supplier_id"].present?
+      @products = @products.where('products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ?', '%['+params["supplier_id"]+',%', '%,'+params["supplier_id"]+']%', '%,'+params["supplier_id"]+',%', '%['+params["supplier_id"]+']%')
+    end
+    
+    if params["in_use"].present?
+      @products = @products.where(in_use: params["in_use"])
+    end
+    
     @products = @products.where(user_id: params["user_id"]) if params["user_id"].present?
 
 
@@ -277,12 +285,14 @@ class Product < ActiveRecord::Base
                 actions_col = 0
       else
                 supplier_price = user.can?(:view_supplier_price, product) ? product.product_price.supplier_price_formated : "####"
+                
+                suppliers = params["supplier_id"].present? ? product.display_suppliers(user) : ""
 
                 trashed_class =  product.status == 0 ? "trashed" : ""
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name+" "+product.product_code+"</strong><div>"+product.description[0..80]+"<div>#{(product.note.present? ? "(#{product.note})": "")}</div></div>"++(product.warranty.empty? ? '' :"<div>Warranty: "+product.warranty+"</div>") + '</div>',
+                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name.to_s+" "+product.product_code.to_s+"</strong><div>"+product.description.to_s[0..80]+"<div>#{(product.note.present? ? "(#{product.note})": "")}</div></div>"++(product.warranty.empty? ? '' :"<div>Warranty: "+product.warranty.to_s+"</div>") + suppliers.to_s + '</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.price_col(user)+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
@@ -305,6 +315,18 @@ class Product < ActiveRecord::Base
     result["data"] = data
 
     return {result: result, items: @products, actions_col: actions_col}
+  end
+  
+  def display_suppliers(user)
+    if !user.can?(:view_suppliers, self)
+      return ""
+    end
+    
+    return "" if !cache_recent_supplier_ids.present?
+    
+    arr = Contact::where(id: JSON.parse(cache_recent_supplier_ids)).map(&:short_name)
+    
+    return "<br /><b>Suppliers</b>:<br /><div>" + arr.join("</div><div>") + "</div>"
   end
 
   def price_col(user)
@@ -1111,6 +1133,15 @@ class Product < ActiveRecord::Base
   
   def has_parts?
     parts.count > 0
+  end
+  
+  def recent_supplier_ids
+    # Order.purchase_orders.joins(:order_details).order('orders.order_date DESC').where(order_details: {product_id: self.id}).map(&:supplier_id).uniq
+    self.product_prices.order('created_at desc').map(&:supplier_id).uniq
+  end
+
+  def update_cache_recent_supplier_ids
+    self.update_column(:cache_recent_supplier_ids, self.recent_supplier_ids.to_json)
   end
 
 end

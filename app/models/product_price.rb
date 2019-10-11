@@ -14,6 +14,14 @@ class ProductPrice < ActiveRecord::Base
   has_many :product_prices
 
   after_save :update_product_cache_last_priced
+  
+  after_save :update_product_cache_recent_supplier_ids
+  
+  def update_product_cache_recent_supplier_ids
+    if product.present?
+      product.update_cache_recent_supplier_ids
+    end
+  end
 
   def update_product_cache_last_priced
     if product.present?

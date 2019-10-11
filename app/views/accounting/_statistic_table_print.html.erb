@@ -80,6 +80,7 @@
 													</td>
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.paid_amount) %>
+                                                        <%= order.display_last_payment %>
 													</td>
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.remain_amount) %>

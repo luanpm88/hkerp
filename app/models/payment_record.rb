@@ -417,4 +417,8 @@ class PaymentRecord < ActiveRecord::Base
     end
   end
   
+  def bank_account_name
+    bank_account.present? ? bank_account.name : ''
+  end
+  
 end

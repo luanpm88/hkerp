@@ -840,7 +840,7 @@ class Order < ActiveRecord::Base
                   '<div class="text-center">'+item.order_date_formatted+'</div>',
                   '<div class="text-center">'+debt_time+'</div>',
                   '<div class="text-center">'+item.display_order_status_name+item.display_delivery_status_name+'</div>',
-                  "<div class=\"text-center\">#{item.display_payment_status_name}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status_name}</div>",
+                  "<div class=\"text-center\">#{item.display_payment_status_name}Paid:<strong>#{item.paid_amount_formated}</strong><br />Total:#{item.formated_total_vat}<br />Remain:#{item.remain_amount_formated}#{item.display_tip_status_name}</div>#{item.display_last_payment}",
                   app_helper.render_order_actions(item)
                 ]
           data << row
@@ -1175,9 +1175,13 @@ class Order < ActiveRecord::Base
       "<div class=\"#{payment_status_name}\">#{payment_status_name}</div>".html_safe
     end
   end
-
-
-
+  
+  def display_last_payment
+    last_payment = self.all_order_payments.last
+    paid_info = (!last_payment.nil? ? "Last.payment: #{ApplicationController.helpers.format_price(last_payment.amount, false, true)}|#{last_payment.paid_date.strftime("%Y-%m-%d")}|#{last_payment.bank_account_name}" : '')
+    
+    "<br><div>#{paid_info}</div>".html_safe
+  end
 
   def out_of_stock_details
     str = ""

@@ -63,6 +63,10 @@ class Contact < ActiveRecord::Base
         @records = @records.where.not(id: po_supplier_query)
       end
     end
+    
+    if params[:status].present?
+      @records = @records.where(active: params[:status])
+    end
 
     # @records = @records.search(params["search"]["value"]) if !params["search"]["value"].empty?
 
@@ -301,7 +305,7 @@ class Contact < ActiveRecord::Base
                 }
 
   def self.full_text_search(q, user)
-    result = self.all
+    result = self.where(active: true)
     if !user.can?(:view_all_customers, Contact)
       result = result.where(user_id: user.id)
     end
@@ -394,5 +398,15 @@ class Contact < ActiveRecord::Base
     end
 
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
+  end
+  
+  def set_inactive
+    self.active = false
+    self.save
+  end
+  
+  def set_active
+    self.active = true
+    self.save
   end
 end

@@ -218,10 +218,8 @@ class AccountingController < ApplicationController
       
       @statistics = Order.statistics(@from_date, @to_date, params)
       
-      workbook = RubyXL::Parser.parse('templates/order_export_template.xlsx')
-      
-      worksheet = workbook[0]
-      
+      workbook = RubyXL::Parser.parse('templates/order_export_template.xlsx')      
+      worksheet = workbook[0]      
       # Begin
       worksheet[2][0].change_contents("Từ #{@from_date.strftime("%Y-%m-%d")} Đến #{@to_date.strftime("%Y-%m-%d")}")
       
@@ -294,7 +292,57 @@ class AccountingController < ApplicationController
           filename: "purchase.xlsx",
           disposition: 'attachment'        
       elsif params[:invoice].present?
+        workbook = RubyXL::Parser.parse('templates/invoices_import.xlsx')      
+        worksheet = workbook[0]      
+        # Begin
+        @orders = @statistics[:sell_orders]
+
+        # Records
+        count = 0
+        @orders.each_with_index do |order,index|
+          order.order_details.each do |order_detail|
+            current_row = 6+count
+            
+            worksheet.insert_row(6+count)
+            
+            worksheet[current_row][0].change_contents(count+1)
+            worksheet[current_row][1].change_contents(order.quotation_code)
+            
+            content = order_detail.product_name
+            #content += "\r\nPO: " + order.customer_po if order.customer_po.present?
+            worksheet[current_row][2].change_contents(content)            
+            worksheet[current_row][3].change_contents(order_detail.unit)
+            worksheet[current_row][4].change_contents(order_detail.quantity)
+            worksheet[current_row][5].change_contents(order_detail.price)
+            worksheet[current_row][6].change_contents(order_detail.total)
+            worksheet[current_row][7].change_contents(order.tax.rate/100)
+            worksheet[current_row][8].change_contents(order_detail.vat_amount)
+            worksheet[current_row][9].change_contents(order.order_date.strftime("%d/%m/%Y"))
+            worksheet[current_row][10].change_contents(order.buyer_name)
+            worksheet[current_row][11].change_contents(order.buyer_company)
+            worksheet[current_row][12].change_contents(order.buyer_tax_code)
+            worksheet[current_row][13].change_contents(order.buyer_address)
+            worksheet[current_row][14].change_contents(order.customer.account_number)
+            worksheet[current_row][15].change_contents((!order.payment_method.nil? ? order.payment_method.print_name : "TM/CK"))
+            #worksheet[5][3].change_contents(order.printed_order_number)
+            #worksheet[5][4].change_contents(order.order_date.strftime("%Y-%m-%d"))
+            #worksheet[5][5].change_contents(order.customer.short_name)
+            #worksheet[5][6].change_contents(order.customer.tax_code)
+            #worksheet[5][7].change_contents(order_detail.product_name)
+            #worksheet[5][8].change_contents(order_detail.total)
+            #worksheet[5][9].change_contents(order.tax.rate)
+            #worksheet[5][10].change_contents(order_detail.vat_amount)
+            #worksheet[5][11].change_contents(order_detail.total_vat)
+            
+            count += 1
+          end
+        end
         
+        worksheet.delete_row(5)
+        
+        send_data workbook.stream.string,
+          filename: "invoices.xlsx",
+          disposition: 'attachment'
       end
     end
   end

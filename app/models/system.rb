@@ -18,7 +18,7 @@ class System < ActiveRecord::Base
 
   def self.backup(params)
     root_dir = params[:dir].present? ? params[:dir] : ""
-    bk_dir = root_dir+"backup"
+    bk_dir = root_dir+"../backup"
     database = YAML.load_file(root_dir+'config/database.yml')[params[:rails_env]]["database"]
     revision_max = 1
 

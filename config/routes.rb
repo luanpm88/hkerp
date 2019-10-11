@@ -214,6 +214,8 @@ Hkerp::Application.routes.draw do
       get :datatable
 
       get :logo
+      patch :inactive
+      patch :active
     end
   end
 
