@@ -22,6 +22,10 @@ class Contact < ActiveRecord::Base
   
   has_many :customer_orders, :class_name => "Order", :foreign_key => "customer_id"
   has_many :purchase_orders, :class_name => "Order", :foreign_key => "supplier_id"
+  
+  has_many :customer_order_details, :through => :customer_orders, :source => :order_details
+  
+  has_one :contact_stat
 
   belongs_to :contact_type
   belongs_to :user
@@ -86,7 +90,7 @@ class Contact < ActiveRecord::Base
     @records = @records.limit(params[:length]).offset(params["start"])
     data = []
 
-    actions_col = 5
+    actions_col = 6
     @records.each do |item|
       item = [
               link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name),
@@ -241,11 +245,26 @@ class Contact < ActiveRecord::Base
     if !phone.nil? && !phone.empty?
       line += "<strong>Phone:</strong> " + phone + " "
     end
-    if !fax.nil? && !fax.empty?
-      line += "<strong>Fax:</strong> " + fax + " "
+    if !email.nil? && !email.empty?
+      line += "<strong>Email:</strong> " + email + " "
     end
     if !tax_code.nil? && !tax_code.empty?
       line += "<strong>MST:</strong> " + tax_code + " "
+    end
+
+    return line
+  end
+  
+  def tex_info_line
+    line = "";
+    if !address.nil? && !address.empty?
+      line += "Address: " + full_address + ", "
+    end
+    if !phone.nil? && !phone.empty?
+      line += "Phone: " + phone + ", "
+    end
+    if !email.nil? && !email.empty?
+      line += "Email: " + email + ", "
     end
 
     return line
@@ -263,6 +282,23 @@ class Contact < ActiveRecord::Base
     end
     if !email.nil? && !email.empty?
       line += "email: " + email + " "
+    end
+
+    return line
+  end
+  
+  def text_agent_line
+    line = "";
+    line += "[" + name + "] "
+
+    if !phone.nil? && !phone.empty?
+      line += "phone: " + phone + ", "
+    end
+    if !mobile.nil? && !mobile.empty?
+      line += "mobile: " + mobile + ", "
+    end
+    if !email.nil? && !email.empty?
+      line += "email: " + email + ", "
     end
 
     return line
@@ -345,6 +381,17 @@ class Contact < ActiveRecord::Base
 
     return html
   end
+  
+  def agent_list_text
+    list = []
+    if !agents.nil?
+      agents.each do |agent|
+        list << agent.text_agent_line
+      end
+    end
+
+    return list.join(' | ')
+  end
 
   def update_cache
     types = contact_types.map{|t| t.id}
@@ -408,5 +455,46 @@ class Contact < ActiveRecord::Base
   def set_active
     self.active = true
     self.save
+  end
+  
+  def buy_amount(from_date=nil, to_date=nil)
+    result = customer_orders
+      .joins(:order_status)
+      .where(order_statuses: {name: ["finished"]})
+      .where(parent_id: nil)
+    
+    if from_date.present?
+      result = result.where('order_date >= ?', from_date.beginning_of_day)
+    end
+    if to_date.present?
+      result = result.where('order_date <= ?', to_date.end_of_day)
+    end
+    
+    result.sum(:cache_total)
+  end
+  
+  def update_stats
+    stat = self.contact_stat
+    
+    if !stat.present?
+      stat = ContactStat.new
+      stat.contact_id = self.id
+    end
+    
+    # update buy amount
+    # last 6 months
+    stat.buy_last_6_months = self.buy_amount(Time.now - 6.months)
+    stat.buy_last_1_year = self.buy_amount(Time.now - 1.year)
+    stat.buy_last_3_years = self.buy_amount(Time.now - 3.years)
+    stat.buy_all_time = self.buy_amount
+    
+    stat.save
+    stat
+  end
+  
+  def self.update_all_stats
+    self.all.each do |c|
+      c.update_stats
+    end
   end
 end

@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  contact_id: 1
+  buy_last_6_months: 1.5
+  buy_last_1_year: 1.5
+  buy_last_3_years: 1.5
+  buy_all_time: 1.5
+
+two:
+  contact_id: 1
+  buy_last_6_months: 1.5
+  buy_last_1_year: 1.5
+  buy_last_3_years: 1.5
+  buy_all_time: 1.5

@@ -684,13 +684,8 @@ class Order < ActiveRecord::Base
                     prefix: true
                   }
                 }
-
-  def self.datatable(params, user)
-    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
-    link_helper = ActionController::Base.helpers
-
-    app_helper = ApplicationController.helpers
-
+  
+  def self.get_query(params, user)
     if !params["order"].nil? && !params["order"]["0"].nil?
       case params[:page]
       when "accounting"
@@ -780,13 +775,31 @@ class Order < ActiveRecord::Base
     @items = @items.where(where)
 
     # SEARCHING @items = @items.search(params["search"]["value"]) if !params["search"]["value"].empty?
-    if params["search"]["value"].present?
+    if params["search"].present? and params["search"]["value"].present?
       params["search"]["value"].split(" ").each do |k|
         @items = @items.where("LOWER(orders.cache_search) LIKE ?", "%#{k.strip.downcase}%") if k.strip.present?
       end
     end
 
     @items = @items.order(order_by) if !order_by.nil?
+    
+    return @items
+  end
+  
+  def self.datatable(params, user)
+    ActionView::Base.send(:include, Rails.application.routes.url_helpers)
+    link_helper = ActionController::Base.helpers
+
+    app_helper = ApplicationController.helpers
+
+    @items = self.get_query(params, user)
+    
+    # save params
+    if params[:report_hook].present?
+      File.open('report/report_' + params[:report_hook] + '.yml', 'w') { |f| f.write(YAML.dump(params)) }
+    end
+    
+    ######
 
     total = @items.count(:all)
 
@@ -1636,7 +1649,11 @@ class Order < ActiveRecord::Base
   end
 
   def fare_vat
-    fare - fare*(0.25)
+    if fare > 0
+      fare - fare*(0.25)
+    else
+      fare - fare.abs*0.1
+    end
   end
 
   def cost

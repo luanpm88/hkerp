@@ -68,3 +68,4 @@ gem 'unidecoder'
 gem 'google_drive'
 gem 'rest-client'
 gem 'rubyXL'
+gem 'whenever', require: false

@@ -288,7 +288,7 @@ class PaymentRecordsController < ApplicationController
       
       worksheet[3][0].change_contents(p.paid_date.strftime("%Y-%m-%d"))
       worksheet[3][1].change_contents(p.description)
-      worksheet[3][2].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][2].change_contents(p.note)
       worksheet[3][3].change_contents(p.printed_order_number)
       worksheet[3][4].change_contents(p.payment_method.name)
       worksheet[3][5].change_contents(p.bank_account.name) if p.bank_account.present?
@@ -338,7 +338,7 @@ class PaymentRecordsController < ApplicationController
       
       worksheet[3][0].change_contents(p.paid_date.strftime("%Y-%m-%d"))
       worksheet[3][1].change_contents(p.description)
-      worksheet[3][2].change_contents(p.bank_account.name) if p.bank_account.present?
+      worksheet[3][2].change_contents(p.note)
       worksheet[3][3].change_contents(p.printed_order_number)
       worksheet[3][4].change_contents(p.payment_method.name)
       worksheet[3][5].change_contents(p.bank_account.name) if p.bank_account.present?

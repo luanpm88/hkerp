@@ -206,6 +206,218 @@ class ContactsController < ApplicationController
       end
     end
   end
+  
+  def top_buyers
+    authorize! :top_buyers, Contact
+    
+    workbook = RubyXL::Parser.parse('templates/TopBuyers.xlsx')
+    
+    # Last 6 months
+    worksheet = workbook[0]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_6_months))
+    ContactStat.where.not(contact_id: 1).where('buy_last_6_months > 0').order('buy_last_6_months desc').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_6_months)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # Last 1 year
+    worksheet = workbook[1]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_1_year))
+    ContactStat.where.not(contact_id: 1).where('buy_last_1_year > 0').order('buy_last_1_year desc').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_1_year)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # Last 3 years
+    worksheet = workbook[2]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_3_years))
+    ContactStat.where.not(contact_id: 1).where('buy_last_3_years > 0').order('buy_last_3_years desc').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_3_years)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # All times
+    worksheet = workbook[3]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_all_time))
+    ContactStat.where.not(contact_id: 1).where('buy_all_time > 0').order('buy_all_time desc').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_all_time)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    send_data workbook.stream.string,
+        filename: "TopBuyers.xlsx",
+        disposition: 'attachment'
+  end
+  
+  def not_buy_customers
+    authorize! :not_buy_customers, Contact
+    
+    workbook = RubyXL::Parser.parse('templates/NotBuyCustomers.xlsx')
+    
+    # Last 6 months
+    worksheet = workbook[0]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_6_months))
+    ContactStat.includes(:contact).where.not(contact_id: 1).where('buy_last_6_months = 0').where('buy_all_time > 0').order('contacts.name').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_6_months)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # Last 1 year
+    worksheet = workbook[1]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_1_year))
+    ContactStat.includes(:contact).where.not(contact_id: 1).where('buy_last_1_year = 0').where('buy_all_time > 0').order('contacts.name').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_1_year)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # Last 3 years
+    worksheet = workbook[2]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_last_3_years))
+    ContactStat.includes(:contact).where.not(contact_id: 1).where('buy_last_3_years = 0').where('buy_all_time > 0').order('contacts.name').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_last_3_years)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    # All times
+    worksheet = workbook[3]      
+    iIndex = 4
+    count = 1
+    
+    worksheet[1][4].change_contents(ContactStat.sum(:buy_all_time))
+    ContactStat.includes(:contact).where.not(contact_id: 1).where('buy_all_time = 0').order('contacts.name').each do |stat|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(stat.contact.name)
+        worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
+        worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
+        worksheet[iIndex][4].change_contents(stat.buy_all_time)
+        worksheet[iIndex][5].change_contents(stat.updated_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+    
+    worksheet.delete_row(iIndex-2)
+    worksheet.delete_row(iIndex-1)
+    
+    send_data workbook.stream.string,
+        filename: "NotReturnCustomers.xlsx",
+        disposition: 'attachment'
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.

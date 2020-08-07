@@ -173,6 +173,14 @@ class Product < ActiveRecord::Base
       @products = @products.where('products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ? OR products.cache_recent_supplier_ids LIKE ?', '%['+params["supplier_id"]+',%', '%,'+params["supplier_id"]+']%', '%,'+params["supplier_id"]+',%', '%['+params["supplier_id"]+']%')
     end
     
+    if params["year"].present?
+      @products = @products.where('extract(year from products.created_at) = ?', params["year"])
+    end
+    
+    if params["month"].present?
+      @products = @products.where('extract(month from products.created_at) = ?', params["month"])
+    end
+    
     if params["in_use"].present?
       @products = @products.where(in_use: params["in_use"])
     end
@@ -247,7 +255,7 @@ class Product < ActiveRecord::Base
                 col_0 = product.categories.first.name
                 col_1 = product.manufacturer.name
                 col_2 = product.name+" ("+product.product_code+")<br />"+product.product_log_link+"<div>"+product.description[0..80]+"</div>"
-                col_3 = product.statistic_stock(from_date).to_s
+                col_3 = product.calculated_stock((from_date - 1.day).end_of_day).to_s
 
                 ic = product.import_count(from_date, to_date)
                 col_4 = ic.to_s+
@@ -265,7 +273,7 @@ class Product < ActiveRecord::Base
                 col_7 = su.to_s
                 col_7 = "+"+col_7 if su > 0
 
-                col_8 = product.statistic_stock(to_date).to_s
+                col_8 = product.calculated_stock(to_date).to_s
 
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+col_0+'</div>',
@@ -570,11 +578,21 @@ class Product < ActiveRecord::Base
 
 
 
-  def calculated_stock
+  def calculated_stock(datetime=nil)
+    if !datetime.present?
+      datetime = DateTime.now + 1.day
+      realtime = true
+    else
+      datetime = datetime.beginning_of_day
+      realtime = false
+    end
+    
+    datetime = datetime.beginning_of_day
+    
     count = 0
     #count for combinations
-    count += combinations.where(combined: [nil,true]).sum(:quantity)-combination_details.joins(:combination).where(combinations: {combined: [nil,true]}).sum(:quantity)
-    count += -combinations.where(combined: false).sum(:quantity)+combination_details.joins(:combination).where(combinations: {combined: false}).sum(:quantity)
+    count += combinations.where("combinations.created_at <= ?", datetime).where(combined: [nil,true]).sum(:quantity)-combination_details.joins(:combination).where("combinations.created_at <= ?", datetime).where(combinations: {combined: [nil,true]}).sum(:quantity)
+    count += -combinations.where("combinations.created_at <= ?", datetime).where(combined: false).sum(:quantity)+combination_details.joins(:combination).where("combinations.created_at <= ?", datetime).where(combinations: {combined: false}).sum(:quantity)
 
     #count for sales delivery
     count -= delivery_details
@@ -583,6 +601,7 @@ class Product < ActiveRecord::Base
                       .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
                       .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
+                      .where("deliveries.delivery_date <= ?", datetime)
                       .sum(:quantity)
 
     #count for purchase delivery
@@ -592,12 +611,13 @@ class Product < ActiveRecord::Base
                       .where(orders: {order_status_name: ["confirmed","finished"]})
                       .where(deliveries: {status: 1})
                       .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
+                      .where("deliveries.delivery_date <= ?", datetime)
                       .sum(:quantity)
 
     #count for stock update
-    count += stock_update_count
+    count += stock_update_count(nil, datetime)
 
-    if self.stock.nil? || self.stock != count
+    if realtime && (self.stock.nil? || self.stock != count)
       self.update_columns(stock: count)
     end
 
@@ -639,8 +659,11 @@ class Product < ActiveRecord::Base
 
   def stock_update_count(from_date=nil, to_date=nil)
     result = product_stock_updates
-    if from_date.present? && to_date.present?
-      result = result.where('created_at >= ?', from_date.beginning_of_day).where('created_at <= ?', to_date.end_of_day)
+    if from_date.present?
+      result = result.where('created_at >= ?', from_date.beginning_of_day)
+    end
+    if to_date.present?
+      result = result.where('created_at <= ?', to_date.end_of_day)
     end
     result = result.sum(:quantity)
   end
@@ -681,40 +704,57 @@ class Product < ActiveRecord::Base
   end
 
   def self.statistics(from_date, to_date)
-    Product.joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
+    Product.where(status: 1).joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
   end
 
   def import_count(from_date=nil, to_date=nil)
-    products = order_details
-              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["confirmed","finished"]})
-              .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
+    #products = order_details
+    #          .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
+    #          .where(order_statuses: {name: ["confirmed","finished"]})
+    #          .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
+    #if from_date.present? && to_date.present?
+    #  products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
+    #end
+    #
+    #
+    #count = products.sum("quantity")
+
+    #count for purchase delivery
+    counts = delivery_details
+                      .joins(:delivery)
+                      .joins(:order_detail => :order)
+                      .where(orders: {order_status_name: ["confirmed","finished"]})
+                      .where(deliveries: {status: 1})
+                      .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
+                      
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
+      counts = counts.where('deliveries.delivery_date >= ?', from_date.beginning_of_day).where('deliveries.delivery_date <= ?', to_date.end_of_day)
     end
-
-
-    count = products.sum("quantity")
+    
+    counts.sum("quantity")
   end
 
 
 
   def export_count(from_date=nil, to_date=nil)
-    products = order_details
-              .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["confirmed","finished"]})
-              .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
+    counts = delivery_details
+                      .joins(:delivery)
+                      .joins(:order_detail => :order)
+                      .where(orders: {order_status_name: ["confirmed","finished"]})
+                      .where(deliveries: {status: 1})
+                      .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
+                      
     if from_date.present? && to_date.present?
-      products = products.where('orders.order_date >= ?', from_date.beginning_of_day).where('orders.order_date <= ?', to_date.end_of_day)
+      counts = counts.where('deliveries.delivery_date >= ?', from_date.beginning_of_day).where('deliveries.delivery_date <= ?', to_date.end_of_day)
     end
-
-    count = products.sum("order_details.quantity")
+    
+    counts.sum("quantity")
   end
 
   def export_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["confirmed","finished"]})
+              .where(order_statuses: {name: ["finished"]})
               .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
 
     if from_date.present? && to_date.present?
@@ -731,7 +771,7 @@ class Product < ActiveRecord::Base
   def import_amount(from_date=nil, to_date=nil)
     products = order_details
               .joins(:order => :order_status) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
-              .where(order_statuses: {name: ["confirmed","finished"]})
+              .where(order_statuses: {name: ["finished"]})
               .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
 
     if from_date.present? && to_date.present?
@@ -778,8 +818,8 @@ class Product < ActiveRecord::Base
               .joins(:order_detail => :order) #.joins(:order_status).where(order_statuses: {name: ["items_confirmed"]})
               .where(deliveries: {status: 1})
               .where(orders: {order_status_id: statuses.map(&:id), parent_id: nil})
-              .where('orders.order_date >= ?', from_date)
-              .where('orders.order_date <= ?', to_date)
+              .where('deliveries.created_at >= ?', from_date)
+              .where('deliveries.created_at <= ?', to_date)
 
     history = []
     od_details.each do |od|
@@ -1142,6 +1182,129 @@ class Product < ActiveRecord::Base
 
   def update_cache_recent_supplier_ids
     self.update_column(:cache_recent_supplier_ids, self.recent_supplier_ids.to_json)
+  end
+  
+  def calc_cost_price(datetime=nil)
+    if !datetime.present?
+      datetime = DateTime.now + 1.day
+      realtime = true
+    else
+      datetime = (datetime - 1.day).end_of_day
+      realtime = false
+    end
+    
+    arr = []
+    logs = []
+    
+    #combinations
+    combinations.where("combinations.created_at <= ?", datetime).where(combined: [nil,true]).map do |com|
+      arr << {
+        note: 'Được ghép',
+        datetime: com.created_at,
+        quantity: com.quantity,
+      }
+    end
+    combination_details.joins(:combination).where("combinations.created_at <= ?", datetime).where(combinations: {combined: [nil,true]}).map do |cd|
+      arr << {
+        note: 'Đem ghép',
+        datetime: cd.created_at,
+        quantity: -cd.quantity,
+      }
+    end
+    combinations.where("combinations.created_at <= ?", datetime).where(combined: false).map do |cd|
+      arr << {
+        note: 'Tách ra',
+        datetime: cd.created_at,
+        quantity: -cd.quantity,
+      }
+    end
+    combination_details.joins(:combination).where("combinations.created_at <= ?", datetime).where(combinations: {combined: false}).map do |cd|
+      arr << {
+        note: 'Được tách',
+        datetime: cd.created_at,
+        quantity: cd.quantity,
+      }
+    end
+    
+    # sales delivery
+    delivery_details
+      .joins(:delivery)
+      .joins(:order_detail => :order)
+      .where(orders: {order_status_name: ["confirmed","finished"]})
+      .where(deliveries: {status: 1})
+      .where(orders: {parent_id: nil, supplier_id: Contact.HK.id})
+      .where("deliveries.delivery_date <= ?", datetime).map do |cd|
+        arr << {
+          note: 'Bán hàng',
+          datetime: cd.delivery.delivery_date,
+          quantity: -cd.quantity,
+        }
+      end
+    
+    #purchase
+    delivery_details
+      .joins(:delivery)
+      .joins(:order_detail => :order)
+      .where(orders: {order_status_name: ["confirmed","finished"]})
+      .where(deliveries: {status: 1})
+      .where(orders: {parent_id: nil, customer_id: Contact.HK.id})
+      .where("deliveries.delivery_date <= ?", datetime).map do |cd|
+        arr << {
+          note: 'Mua hàng',
+          datetime: (cd.delivery.delivery_date - 1.day).end_of_day,
+          quantity: cd.quantity,
+          price: cd.order_detail.price,
+        }
+      end
+      
+    #update stock
+    product_stock_updates.where('created_at <= ?', datetime).map do |cd|
+      arr << {
+        note: 'Điều chỉnh kho',
+        datetime: cd.created_at,
+        quantity: cd.quantity,
+      }
+    end
+    
+    
+    arr = arr.sort_by { |hsh| hsh[:datetime] }
+    
+    # calculating
+    finalPrice = nil
+    finalQuantity = 0
+    arr.each do |item|
+      if item[:price].present?
+        if finalPrice.nil?
+          finalPrice = item[:price]
+        else
+          if (item[:quantity] + finalQuantity) == 0
+            finalPrice = (finalPrice + item[:price])/2
+          else
+            finalPrice = ((finalPrice*finalQuantity) + (item[:price]*item[:quantity])) / (item[:quantity] + finalQuantity)
+          end
+        end
+      end
+      
+      stock_before = finalQuantity
+      
+      finalQuantity += item[:quantity]
+      
+      logs << {
+        datetime: item[:datetime],
+        note: item[:note],
+        stock_before: stock_before,
+        quantity: item[:quantity],
+        purchase_price: item[:price].to_f,
+        stock_after: finalQuantity,
+        cost_price: finalPrice.to_f,
+      }
+    end
+    
+    return {finalPrice: finalPrice, logs: logs}
+  end
+  
+  def cost_price(datetime=nil)
+    return calc_cost_price[:finalPrice]
   end
 
 end

@@ -377,6 +377,7 @@
 					d.day = $('#filter_date_3i').val();
 					d.order_by = $('select[name="order_by"]').val();
 					d.order_by_cend = $('select[name="order_by_cend"]').val();
+					d.report_hook = $('input[name="report_hook"]').val();
 				}
 			},
 			"columnDefs": [ { "targets": [1,2,3,4,5,6,7], "orderable": false } ],
@@ -1294,7 +1295,9 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 					d.status = $("select[name='status']").val(),
 					d.user_id = $("select[name='user_id']").val(),
 					d.supplier_id = $("[name='supplier_id']").val(),
-					d.in_use = $("[name='in_use']").val()
+					d.in_use = $("[name='in_use']").val(),
+					d.year = $("[name='year']").val(),
+					d.month = $("[name='month']").val()
 				}
 			},
 			"columnDefs": [ { "targets": [3,5,6,7,8], "orderable": false } ],
@@ -1377,7 +1380,7 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 
 	    $('select[name="DataTables_Table_0_length"]').select2({allowClear: true});
 
-	    $("select[name='manufacturers[]'], select[name='status'], select[name='user_id'], [name='supplier_id'], [name='in_use']").change(function() {
+	    $("[name='year'], [name='month'], select[name='manufacturers[]'], select[name='status'], select[name='user_id'], [name='supplier_id'], [name='in_use']").change(function() {
 			$('.datatable-products').dataTable().fnFilter();
 	    });
 	    $(".filter-manu-clear").click(function() {

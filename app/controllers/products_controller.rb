@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  include ApplicationHelper
+  
   load_and_authorize_resource :except => [
     :ajax_new,
     :ajax_show,
@@ -243,13 +245,17 @@ class ProductsController < ApplicationController
   end
 
   def trash
-    respond_to do |format|
-      if @product.trash
-        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
-        format.json { render action: 'show', status: :created, location: @product }
-      else
-        format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, alert: 'Product was unsuccessfully trashed.' }
-        format.json { render action: 'show', status: :created, location: @product }
+    if @product.calculated_stock != 0
+      render text: 'Stock quantity != 0. Can not delete'
+    else
+      respond_to do |format|
+        if @product.trash
+          format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, notice: 'Product was successfully trashed.' }
+          format.json { render action: 'show', status: :created, location: @product }
+        else
+          format.html { redirect_to params[:tab_page].present? ? products_url(tab_page: 1) : products_url, alert: 'Product was unsuccessfully trashed.' }
+          format.json { render action: 'show', status: :created, location: @product }
+        end
       end
     end
   end
@@ -284,11 +290,11 @@ class ProductsController < ApplicationController
 
   def statistics
     if params[:from_date].present? && params[:to_date].present?
-      @from_date = params[:from_date].to_date
+      @from_date = params[:from_date].to_date.beginning_of_day
       @to_date =  params[:to_date].to_date.end_of_day
     else
       @from_date = DateTime.now.beginning_of_month
-      @to_date =  DateTime.now
+      @to_date =  DateTime.now.end_of_day
     end
 
     @products = Product.statistics(@from_date, @to_date)
@@ -307,8 +313,78 @@ class ProductsController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+    elsif params[:excel] == "1"
+      workbook = RubyXL::Parser.parse('templates/RemainStock.xlsx')      
+      worksheet = workbook[0]      
+      # Begin
+      worksheet[0][0].change_contents("Tồn kho từ #{@from_date.strftime("%Y-%m-%d")} đến #{@to_date.strftime("%Y-%m-%d")}")
+      
+      count = 1
+			cat = nil
+			iIndex = 3
+			
+			total = {
+        b: 0,
+        purchase: 0,
+        sales: 0,
+        combine: 0,
+        io: 0,
+        e: 0,
+      }
+			
+			# @products = @products.where('stock > 0') if params[:remain].present?
+      @products.each do |product|
+          e = product.calculated_stock(@to_date)
+        
+          
+          b = product.calculated_stock((@from_date - 1.day).end_of_day)
+          purchase = product.import_count(@from_date, @to_date)
+          sales = product.export_count(@from_date, @to_date)
+          combine = product.combination_count(@from_date, @to_date)
+          io = product.stock_update_count(@from_date, @to_date)          
+        
+        if params[:remain].nil? || (!params[:remain].nil? && (e > 0 || purchase > 0 || sales > 0 || combine > 0 || io > 0))
+          # insert product
+          worksheet.insert_row(iIndex)
+          worksheet[iIndex][0].change_contents(count)
+          worksheet[iIndex][1].change_contents(product.category.name)
+          worksheet[iIndex][2].change_contents(product.display_name_without_category)
+          worksheet[iIndex][3].change_contents(b)
+          worksheet[iIndex][4].change_contents(purchase)
+          worksheet[iIndex][5].change_contents(-sales)
+          worksheet[iIndex][6].change_contents(combine)
+          worksheet[iIndex][7].change_contents(io)
+          worksheet[iIndex][8].change_contents(e)
+          
+          # total
+          total[:b] += b
+          total[:purchase] += purchase
+          total[:sales] += sales
+          total[:combine] += combine
+          total[:io] += io
+          total[:e] += e
+          
+          # increment count
+          count += 1
+          iIndex += 1
+        end
+      end
+      
+      worksheet.delete_row(2)
+      worksheet.delete_row(iIndex-1)
+      
+      # total
+      worksheet[0][3].change_contents(total[:b])
+      worksheet[0][4].change_contents(total[:purchase])
+      worksheet[0][5].change_contents(total[:sales])
+      worksheet[0][6].change_contents(total[:combine])
+      worksheet[0][7].change_contents(total[:io])
+      worksheet[0][8].change_contents(total[:e])
+      
+      send_data workbook.stream.string,
+          filename: "invoices.xlsx",
+          disposition: 'attachment'
     end
-
   end
 
   def ajax_product_prices

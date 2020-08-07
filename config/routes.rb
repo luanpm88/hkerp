@@ -216,6 +216,9 @@ Hkerp::Application.routes.draw do
       get :logo
       patch :inactive
       patch :active
+      
+      get :top_buyers
+      get :not_buy_customers
     end
   end
 
@@ -287,6 +290,8 @@ Hkerp::Application.routes.draw do
       
       get :export
       post :export
+      
+      get :order_export
     end
   end
 

@@ -20,7 +20,7 @@ class System < ActiveRecord::Base
     root_dir = params[:dir].present? ? params[:dir] : ""
     bk_dir = root_dir+"../backup"
     database = YAML.load_file(root_dir+'config/database.yml')[params[:rails_env]]["database"]
-    revision_max = 1
+    revision_max = 0
 
     # remove over 100 backup old
     @files = Dir.glob("#{bk_dir}/*").sort{|a,b| b <=> a}
@@ -41,11 +41,15 @@ class System < ActiveRecord::Base
     #`mkdir backup` if !File.directory?("backup")
     #`mkdir #{bk_dir}/#{dir}`
 
-    backup_cmd = "mkdir #{bk_dir}/#{dir} && "
-    backup_cmd += "pg_dump #{database} >> #{bk_dir}/#{dir}/data.dump && " if params[:database].present?
-    backup_cmd += "cp -a #{root_dir} #{bk_dir}/#{dir}/ && " if !params[:file].nil? && File.directory?("#{root_dir}uploads")
-    backup_cmd += "zip -r #{bk_dir}/#{dir}.zip #{bk_dir}/#{dir} && "
-    backup_cmd += "rm -rf #{bk_dir}/#{dir}"
+    #backup_cmd = "mkdir #{bk_dir}/#{dir} && "
+    #backup_cmd += "pg_dump #{database} >> #{bk_dir}/#{dir}/data.dump && " if params[:database].present?
+    #backup_cmd += "cp -a #{root_dir} #{bk_dir}/#{dir}/ && " if !params[:file].nil? && File.directory?("#{root_dir}uploads")
+    #backup_cmd += "zip -r #{bk_dir}/#{dir}.zip #{bk_dir}/#{dir} && "
+    #backup_cmd += "rm -rf #{bk_dir}/#{dir}"
+
+    backup_cmd = "rm -f #{root_dir}data.dump && "
+      backup_cmd += "pg_dump #{database} >> #{root_dir}data.dump && " if params[:database].present?
+      backup_cmd += "zip -r #{bk_dir}/#{dir}.zip #{root_dir}*" if !params[:file].nil? && File.directory?("#{root_dir}")
 
     puts backup_cmd
 

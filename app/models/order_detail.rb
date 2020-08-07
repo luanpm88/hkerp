@@ -162,7 +162,8 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def cost
-    !product_price.nil? ? product_price.supplier_price.to_f : 0
+    #!product_price.nil? ? product_price.supplier_price.to_f : 0
+    product.cost_price(order.order_date).to_f
   end
   def cost_formated
     Order.format_price(cost)
@@ -198,7 +199,11 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def fare_vat
-    fare - fare*(0.25)
+    if fare >= 0
+       fare - fare*(0.25)
+    else
+       fare - (fare.abs*0.1)
+    end
   end
 
   def fare_formated

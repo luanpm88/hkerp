@@ -43,6 +43,11 @@ class Ability
     if user.has_role? "admin"
       can :manage, :all
     end
+    
+    if user.has_role? "director"
+      can :top_buyers, Contact
+      can :not_buy_customers, Contact
+    end
 
     if user.has_role? "user"
       if user.ATT_No.present?
@@ -202,7 +207,7 @@ class Ability
 
 
       if user.has_role? "company_salesperson"
-        can :view_all_customers, Contact
+        can :view_all_customers, Contact        
       end
 
     end
@@ -219,7 +224,7 @@ class Ability
         order.is_sales && order.status.name == 'items_confirmed'
       end
       can :confirm_price, Order do |order|
-        order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
+        order.is_sales && order.status.name == 'items_confirmed' # && order.is_price_updated
       end
 
 
@@ -298,7 +303,7 @@ class Ability
         order.is_sales && order.status.name == 'items_confirmed'
       end
       can :confirm_price, Order do |order|
-        order.is_sales && order.status.name == 'items_confirmed' && order.is_price_updated
+        order.is_sales && order.status.name == 'items_confirmed' # && order.is_price_updated
       end
 
       can :update_price, Product
@@ -433,6 +438,7 @@ class Ability
 
     if user.has_role? "sales_manager"
       can :update, Contact
+      can :inactive, Contact
 
       can :update_info, Order do |order|
         ['new','items_confirmed','price_confirmed','confirmed','finished'].include?(order.status.name)
@@ -528,6 +534,10 @@ class Ability
       can :export, Product
 
       can :view_all_sales_orders, Order
+      
+      can :refresh_price, Product
+      can :suspend, Product
+      can :unsuspend, Product
     end
 
   end

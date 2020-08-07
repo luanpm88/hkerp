@@ -78,7 +78,9 @@
 				
                 <div class="row">                  
                     <div class="col-md-12">
-                      <%= link_to 'New Contact', new_contact_path(tab_page: 1),title: "New Contact", psrc: contacts_url(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page' %>
+						<%= link_to 'New Contact', new_contact_path(tab_page: 1),title: "New Contact", psrc: contacts_url(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page' %>
+						<%= link_to 'Top Buyers', top_buyers_contacts_path,title: "Top buyers", psrc: contacts_url(tab_page: 1), :class => 'btn btn-primary btn-cons', :target => '_blank' %>
+						<%= link_to 'Not Return Customers', not_buy_customers_contacts_path,title: "Not Return Customers", psrc: contacts_url(tab_page: 1), :class => 'btn btn-primary btn-cons', :target => '_blank' %>
                         <div class="grid simple ">
                             <div class="grid-title no-border">
                                 <h4>Listing  <span class="semi-bold">Contacts</span></h4>

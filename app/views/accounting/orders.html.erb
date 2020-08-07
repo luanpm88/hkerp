@@ -15,6 +15,9 @@
 				
 				<%= render partial:"orders/filter" %>
 				
+				<a style="margin-bottom: 20px;" target="_blank" href="<%= url_for({controller: "accounting", action: "order_export", report_hook: @report_hook, format: "xls"})%>" class="btn btn-info text-center">
+					Export
+				</a>
 				
 				
 				

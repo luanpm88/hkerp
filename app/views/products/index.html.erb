@@ -91,7 +91,25 @@
 												<option value="false">False</option>
 											</select>
 										</div>
-										<div class="col-md-6 text-right">
+										<div class="col-md-2">
+											<h4>Created Year</h4>
+											<select class="modern_select width100" name="year">
+												<option value="">All</option>
+												<% (2010..2030).each do |n| %>
+													<option value="<%= n %>"><%= n %></option>
+												<% end %>
+											</select>
+										</div>
+										<div class="col-md-2">
+											<h4>Created Month</h4>
+											<select class="modern_select width100" name="month">
+												<option value="">All</option>
+												<% (1..12).each do |n| %>
+													<option value="<%= n %>"><%= n %></option>
+												<% end %>
+											</select>
+										</div>
+										<div class="col-md-2 text-right">
 											<h4 syle="color: #fff">.</h4>
 											<button class="btn btn-primary">Export</button>
 										</div>

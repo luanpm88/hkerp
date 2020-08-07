@@ -1,4 +1,65 @@
 class AccountingController < ApplicationController
+  def order_export
+    @params = YAML.load(File.read('report/report_' + params["report_hook"] + '.yml'))
+    items = Order.get_query(@params, current_user)
+    
+    
+    
+    workbook = RubyXL::Parser.parse('templates/order_report.xlsx')
+    
+    worksheet = workbook[0]
+    
+    ## Begin
+    #worksheet[0][8].change_contents(@statistics[:begin])
+    #
+    ## End
+    #worksheet[4][8].change_contents(@statistics[:end])
+    
+    # Records
+    items.reverse.each do |item|      
+      item.order_details.each do |od|
+        worksheet.insert_row(2)
+        worksheet[2][3].change_contents(od.product_name)
+        worksheet[2][8].change_contents(od.total)
+        worksheet[2][9].change_contents(od.vat_amount)
+        worksheet[2][10].change_contents(od.total_vat)
+      end
+      
+      worksheet.insert_row(2)
+      if item.is_purchase
+        name_col = item.supplier.short_name
+      else
+        name_col = item.customer.short_name
+      end
+      
+      if !item.is_purchase
+        staff_col = item.salesperson.name
+      else
+        staff_col = item.purchaser.name
+      end
+      worksheet[2][0].change_contents(item.quotation_code)
+      worksheet[2][1].change_contents(item.customer_po)
+      worksheet[2][2].change_contents(item.printed_order_number)
+      worksheet[2][3].change_contents(name_col)
+      worksheet[2][4].change_contents(staff_col)
+      worksheet[2][5].change_contents(item.order_date_formatted)
+      worksheet[2][6].change_contents(item.is_debt || item.is_out_of_date ? item.debt_remain_days.to_s+' days' : "")
+      worksheet[2][7].change_contents(item.order_status_name)
+      worksheet[2][8].change_contents(item.total)
+      worksheet[2][9].change_contents(item.vat_amount)
+      worksheet[2][10].change_contents(item.total_vat)
+      worksheet[2][11].change_contents(item.paid_amount)      
+      worksheet[2][12].change_contents(item.remain_amount)
+      
+      
+      
+    end      
+    
+    send_data workbook.stream.string,
+      filename: "order_export.xlsx",
+      disposition: 'attachment'
+  end
+  
   def index
     authorize! :read, Order
     
@@ -26,6 +87,8 @@ class AccountingController < ApplicationController
     else
       @orders = Order.accounting_sales_orders
     end
+    
+    @report_hook = Time.now.to_i.to_s + '_' + current_user.id.to_s
     
     render layout: "content" if params[:tab_page].present?
   end
