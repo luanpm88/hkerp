@@ -1,168 +1,168 @@
-                <ul class="breadcrumb">
-                    <li>
-                        <p>YOU ARE HERE</p>
-                    </li>
-                    <li><%= link_to 'Products', products_url, :class => "active" %></li>
-                </ul>
-                <div class="page-title">
-                        <i class="icon-archive"></i>
-                    	<h3>Product - <span class="semi-bold"> Management</span></h3>
-                </div>
-                <div class="row">
-					<div class="col-md-12">
-						<div class="grid simple ">
-							<div class="grid-body no-border filters">
-								<%= form_tag(export_products_path(format: 'xls'), target: '_blank') do %>
-									<div class="row">
-										<div class="col-md-3">
-											<h4>Categories <span class="filter-cat-clear">Clear select</span></h4>
+<ul class="breadcrumb">
+	<li>
+		<p>YOU ARE HERE</p>
+	</li>
+	<li><%= link_to 'Products', products_url, :class => "active" %></li>
+</ul>
+<div class="page-title">
+		<i class="icon-archive"></i>
+		<h3>Product - <span class="semi-bold"> Management</span></h3>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="grid simple ">
+			<div class="grid-body no-border filters">
+				<%= form_tag(export_products_path(format: 'xls'), target: '_blank') do %>
+					<div class="row">
+						<div class="col-md-3">
+							<h4>Categories <span class="filter-cat-clear">Clear select</span></h4>
 
-												<!--<select class="modern_select" style="width:100%" name="categories[]" multiple="multiple">
-												<option value="">All category</option>
-												<optgroup label="Categories">
-												<% Category.all.each do |category| %>
-												   <% if category.children == [] %>
-													<option value="<%= category.id %>"><%= category.name %></option>
-												   <% end %>
-												<% end %>
-												</optgroup>
-												</select>-->
-
-												<input style="width:100%;margin-bottom: 5px;" name="categories" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" />
-
-										</div>
-										<div class="col-md-3">
-											<h4>Manufacturers <span class="filter-manu-clear">Clear select</span></h4>
-											<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
-													<% Manufacturer.all.order(:name).each do |manufacturer| %>
-														<option value="<%= manufacturer.id %>"><%= manufacturer.name %></option>
-													<% end %>
-											</select>
-											<div class="filter-manu-scroll">
-
-												<!--<ul class="filter">
-													<% Manufacturer.all.order(:name).each do |manufacturer| %>
-														<li>
-															<div class="checkbox check-success">
-																<input id="manu_checkbox<%= manufacturer.id %>" type="checkbox" value="<%= manufacturer.id %>" name="manufacturers[]" />
-																<label for="manu_checkbox<%= manufacturer.id %>"><%= manufacturer.name %></label>
-															</div>
-														</li>
-													<% end %>
-												</ul>-->
-											</div>
-										</div>
-										<div class="col-md-3">
-											<h4>Status</h4>
-											<select class="modern_select width100" name="status">
-												<option value="">All</option>
-												<option value="not_suspended">Not Suspended</option>
-												<option value="suspended">Suspended</option>
-												<option value="deleted">Deleted</option>
-											</select>
-										</div>
-										<div class="col-md-3">
-											<h4>User</h4>
-											<select class="modern_select width100" name="user_id">
-												<option value="">Tất cả</option>
-												<% User.all.order("users.first_name, users.last_name").each do |user| %>
-													<option value="<%= user.id %>"><%= user.name %></option>
-												<% end %>
-											</select>
-										</div>
-									</div>
-									<div class="row">
-										<% if current_user.can?(:view_suppliers, self) %>
-											<div class="col-md-4">
-												<h4>Supplier</h4>
-												<div class="">
-													<div class="input-with-icon  right">                                       
-													<i class=""></i>
-													<input style="width:100%;margin-bottom: 5px;" name="supplier_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="" text="" data-placeholder="All"/>
-													</div>
-												</div>
-											</div>
-										<% end %>
-										<div class="col-md-2">
-											<h4>In used?</h4>
-											<select class="modern_select width100" name="in_use">
-												<option value="">All</option>
-												<option value="true">True</option>
-												<option value="false">False</option>
-											</select>
-										</div>
-										<div class="col-md-2">
-											<h4>Created Year</h4>
-											<select class="modern_select width100" name="year">
-												<option value="">All</option>
-												<% (2010..2030).each do |n| %>
-													<option value="<%= n %>"><%= n %></option>
-												<% end %>
-											</select>
-										</div>
-										<div class="col-md-2">
-											<h4>Created Month</h4>
-											<select class="modern_select width100" name="month">
-												<option value="">All</option>
-												<% (1..12).each do |n| %>
-													<option value="<%= n %>"><%= n %></option>
-												<% end %>
-											</select>
-										</div>
-										<div class="col-md-2 text-right">
-											<h4 syle="color: #fff">.</h4>
-											<button class="btn btn-primary">Export</button>
-										</div>
-									</div>
+								<!--<select class="modern_select" style="width:100%" name="categories[]" multiple="multiple">
+								<option value="">All category</option>
+								<optgroup label="Categories">
+								<% Category.all.each do |category| %>
+								   <% if category.children == [] %>
+									<option value="<%= category.id %>"><%= category.name %></option>
+								   <% end %>
 								<% end %>
+								</optgroup>
+								</select>-->
+
+								<input style="width:100%;margin-bottom: 5px;" name="categories" data="<%= categories_path(format: "json") %>" class="select2-ajax-categories" />
+
+						</div>
+						<div class="col-md-3">
+							<h4>Manufacturers <span class="filter-manu-clear">Clear select</span></h4>
+							<select class="modern_select width100" multiple="multiple" name="manufacturers[]">
+									<% Manufacturer.all.order(:name).each do |manufacturer| %>
+										<option value="<%= manufacturer.id %>"><%= manufacturer.name %></option>
+									<% end %>
+							</select>
+							<div class="filter-manu-scroll">
+
+								<!--<ul class="filter">
+									<% Manufacturer.all.order(:name).each do |manufacturer| %>
+										<li>
+											<div class="checkbox check-success">
+												<input id="manu_checkbox<%= manufacturer.id %>" type="checkbox" value="<%= manufacturer.id %>" name="manufacturers[]" />
+												<label for="manu_checkbox<%= manufacturer.id %>"><%= manufacturer.name %></label>
+											</div>
+										</li>
+									<% end %>
+								</ul>-->
 							</div>
 						</div>
+						<div class="col-md-3">
+							<h4>Status</h4>
+							<select class="modern_select width100" name="status">
+								<option value="">All</option>
+								<option value="not_suspended">Not Suspended</option>
+								<option value="suspended">Suspended</option>
+								<option value="deleted">Deleted</option>
+							</select>
+						</div>
+						<div class="col-md-3">
+							<h4>User</h4>
+							<select class="modern_select width100" name="user_id">
+								<option value="">Tất cả</option>
+								<% User.all.order("users.first_name, users.last_name").each do |user| %>
+									<option value="<%= user.id %>"><%= user.name %></option>
+								<% end %>
+							</select>
+						</div>
 					</div>
+					<div class="row">
+						<% if current_user.can?(:view_suppliers, Contact) %>
+							<div class="col-md-4">
+								<h4>Supplier</h4>
+								<div class="">
+									<div class="input-with-icon  right">                                       
+									<i class=""></i>
+									<input style="width:100%;margin-bottom: 5px;" name="supplier_id" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers" value="" text="" data-placeholder="All"/>
+									</div>
+								</div>
+							</div>
+						<% end %>
+						<div class="col-md-2">
+							<h4>In used?</h4>
+							<select class="modern_select width100" name="in_use">
+								<option value="">All</option>
+								<option value="true">True</option>
+								<option value="false">False</option>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<h4>Created Year</h4>
+							<select class="modern_select width100" name="year">
+								<option value="">All</option>
+								<% (2010..2030).each do |n| %>
+									<option value="<%= n %>"><%= n %></option>
+								<% end %>
+							</select>
+						</div>
+						<div class="col-md-2">
+							<h4>Created Month</h4>
+							<select class="modern_select width100" name="month">
+								<option value="">All</option>
+								<% (1..12).each do |n| %>
+									<option value="<%= n %>"><%= n %></option>
+								<% end %>
+							</select>
+						</div>
+						<div class="col-md-2 text-right">
+							<h4 syle="color: #fff">.</h4>
+							<button class="btn btn-primary">Export</button>
+						</div>
+					</div>
+				<% end %>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<%= link_to 'New Product', new_product_path(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page', title: "New Product" %>
+		<div class="grid simple" style="margin-top: 10px">
+			<div class="grid-title no-border">
+				<h4>Listing  <span class="semi-bold">Products</span></h4>
+				<div class="tools">
+
+	<a href="javascript:;" class="collapse"></a>
+					<a href="#grid-config" data-toggle="modal" class="config"></a>
+	<a href="javascript:;" class="reload"></a>
+	<a href="javascript:;" class="remove"></a>
+
+				</div>
+			</div>
+			<div class="grid-body no-border">
+				<div class="page_jump">
+
 				</div>
 
-				<div class="row">
-					<div class="col-md-12">
-						<%= link_to 'New Product', new_product_path(tab_page: 1), :class => 'btn btn-primary btn-cons tab_page', title: "New Product" %>
-                        <div class="grid simple" style="margin-top: 10px">
-                            <div class="grid-title no-border">
-                                <h4>Listing  <span class="semi-bold">Products</span></h4>
-                                <div class="tools">
+				<table class="table table-striped no-more-tables datatable-products no-filter">
+					<thead>
+						<tr>
+							<th>Cat</th>
+							<th>Manu</th>
+							<th width="30%">Name</th>
+							<th class="text-right">Price</th>
+							<th class="text-center">Stock</th>
+							<th class="text-center">Status</th>
+							<th class="text-center">Image</th>
+							<th class="text-center">Staff</th>
+							<th class="text-right">Action</th>
+						</tr>
+					</thead>
 
-				    <a href="javascript:;" class="collapse"></a>
-                                    <a href="#grid-config" data-toggle="modal" class="config"></a>
-				    <a href="javascript:;" class="reload"></a>
-				    <a href="javascript:;" class="remove"></a>
-
-                                </div>
-                            </div>
-                            <div class="grid-body no-border">
-								<div class="page_jump">
-
-								</div>
-
-								<table class="table table-striped no-more-tables datatable-products no-filter">
-									<thead>
-										<tr>
-											<th>Cat</th>
-											<th>Manu</th>
-											<th width="30%">Name</th>
-											<th class="text-right">Price</th>
-											<th class="text-center">Stock</th>
-											<th class="text-center">Status</th>
-											<th class="text-center">Image</th>
-											<th class="text-center">Staff</th>
-											<th class="text-right">Action</th>
-										</tr>
-									</thead>
-
-								</table>
-
-                            </div>
-                        </div>
-
-                    </div>
-
-                </div>
-
+				</table>
 
 			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+</div>

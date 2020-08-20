@@ -325,19 +325,24 @@ class ProductsController < ApplicationController
 			
 			total = {
         b: 0,
+        b_price: 0,
         purchase: 0,
         sales: 0,
         combine: 0,
         io: 0,
         e: 0,
+        e_price: 0,
       }
 			
 			# @products = @products.where('stock > 0') if params[:remain].present?
       @products.each do |product|
           e = product.calculated_stock(@to_date)
+          e_price = product.cost_price(@from_date).to_f * e
         
           
           b = product.calculated_stock((@from_date - 1.day).end_of_day)
+          b_price = product.cost_price(@from_date).to_f * b
+          
           purchase = product.import_count(@from_date, @to_date)
           sales = product.export_count(@from_date, @to_date)
           combine = product.combination_count(@from_date, @to_date)
@@ -350,19 +355,23 @@ class ProductsController < ApplicationController
           worksheet[iIndex][1].change_contents(product.category.name)
           worksheet[iIndex][2].change_contents(product.display_name_without_category)
           worksheet[iIndex][3].change_contents(b)
-          worksheet[iIndex][4].change_contents(purchase)
-          worksheet[iIndex][5].change_contents(-sales)
-          worksheet[iIndex][6].change_contents(combine)
-          worksheet[iIndex][7].change_contents(io)
-          worksheet[iIndex][8].change_contents(e)
+          worksheet[iIndex][4].change_contents(b_price)
+          worksheet[iIndex][5].change_contents(purchase)
+          worksheet[iIndex][6].change_contents(-sales)
+          worksheet[iIndex][7].change_contents(combine)
+          worksheet[iIndex][8].change_contents(io)
+          worksheet[iIndex][9].change_contents(e)
+          worksheet[iIndex][10].change_contents(e_price)
           
           # total
+          total[:b_price] += b_price
           total[:b] += b
           total[:purchase] += purchase
           total[:sales] += sales
           total[:combine] += combine
           total[:io] += io
           total[:e] += e
+          total[:e_price] += e_price
           
           # increment count
           count += 1
@@ -375,14 +384,16 @@ class ProductsController < ApplicationController
       
       # total
       worksheet[0][3].change_contents(total[:b])
-      worksheet[0][4].change_contents(total[:purchase])
-      worksheet[0][5].change_contents(total[:sales])
-      worksheet[0][6].change_contents(total[:combine])
-      worksheet[0][7].change_contents(total[:io])
-      worksheet[0][8].change_contents(total[:e])
+      worksheet[0][4].change_contents(total[:b_price])
+      worksheet[0][5].change_contents(total[:purchase])
+      worksheet[0][6].change_contents(total[:sales])
+      worksheet[0][7].change_contents(total[:combine])
+      worksheet[0][8].change_contents(total[:io])
+      worksheet[0][9].change_contents(total[:e])
+      worksheet[0][10].change_contents(total[:e_price])
       
       send_data workbook.stream.string,
-          filename: "invoices.xlsx",
+          filename: "stocks.xlsx",
           disposition: 'attachment'
     end
   end
@@ -439,12 +450,21 @@ class ProductsController < ApplicationController
       data["keywords"].each do |kw|
         or_conds = []
         kw[1].each do |cond|
-          or_conds << "LOWER(#{cond[1]["name"]}) LIKE '%#{cond[1]["value"].downcase.strip}%'"
+          #or_conds << "LOWER(#{cond[1]["name"]}) LIKE '%#{cond[1]["value"].downcase.strip}%'"
+          keyword = cond[1]["value"]
+          #or_conds << "(LOWER(products.cache_search) LIKE '%#{k.strip.downcase}%' OR products.cache_search LIKE '%#{k.strip}%')" if k.strip.present?
+          
+          and_conds_2 = []
+          keyword.split(" ").each do |k|
+            and_conds_2 << "(LOWER(products.cache_search) LIKE '%#{k.strip.downcase}%' OR products.cache_search LIKE '%#{k.strip}%')" if k.strip.present?
+          end
+          
+          or_conds << '('+and_conds_2.join(' AND ')+')'
         end
         and_conds << '('+or_conds.join(' OR ')+')'
       end
     end
-
+    
     #filter
     trashed = false
     if data["filters"].present?
@@ -462,7 +482,7 @@ class ProductsController < ApplicationController
           else
             or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
           end
-
+    
           if cond[1]["name"] == 'products.status'
             trashed = true
           end
@@ -470,7 +490,7 @@ class ProductsController < ApplicationController
         and_conds << '('+or_conds.join(' OR ')+')'
       end
     end
-
+    
     if !trashed
       products = products.where(status: 1)
     end
@@ -622,7 +642,7 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:in_use, :is_manual_price_update, :web_price, :no_price, :intro, :short_intro, :note, :serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
+      params.require(:product).permit(:is_manual_cost, :in_use, :is_manual_price_update, :web_price, :no_price, :intro, :short_intro, :note, :serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
                                       product_parts_attributes: [:_destroy, :id, :part_id, :quantity],

@@ -30,7 +30,7 @@
                           
                               <tr class="price_history" <%= index >= 5 ? 'style="display: none"'.html_safe : '' %>>
                                   <td><%= price.supplier_name %></td>
-		          <td class="text-right"><%= Order.format_price(@product.cost_price(price.created_at).to_f) %></td>
+		          <td class="text-right"><%= @product.is_manual_cost ? price.supplier_price_formated : Order.format_price(@product.cost_price(price.created_at).to_f) %></td>
                                   <td class="text-right"><%= price.supplier_price_formated %></td>
                                   <td class="text-right"><%= price.price_formated %></td>
                                   <!--<td class=""><%= price.customer_name %></td>-->
@@ -47,46 +47,48 @@
 <div class="text-center">
 	<button class="btn btn-primary" onclick="$('.price_history').show();$(this).remove()">View more...</button>
 </div>
-					
-<h4>Cost Price - <span class="semi-bold">History</span></h4>
 
-<table class="table datatable-products-statistics">
-<thead>
-<tr>
-<th>Datime</th>
-<th class="text-right">Note</th>
-<th class="text-right">Stock Before</th>
-<!--<th class="">Customer</th>-->
-<th class="text-center">Import/Export</th>
-<th class="text-center">Purchase Price</th>
-<th class="text-center">Stock After</th>
-<th class="text-center">Cost Price</th>
-</tr>
-</thead>
-
-<tbody>
-<% @product.calc_cost_price[:logs].each_with_index do |log,index| %>
-
-<tr class="cost_history" <%= index >= 5 ? 'style="display: none"'.html_safe : '' %>>
-<td><%= log[:note] == 'Mua hàng' ? (log[:datetime] + 1.day).to_date : log[:datetime] %></td>
-<td><%= log[:note] %></td>
-<td><%= log[:stock_before] %></td>
-<td><%= log[:quantity] %></td>
-<td><%= log[:purchase_price] %></td>
-<td><%= log[:stock_after] %></td>
-<td><%= Order.format_price(log[:cost_price].to_f) %></td>
-</tr>
-
-
+<% if !@product.is_manual_cost %>			
+	<h4>Cost Price - <span class="semi-bold">History</span></h4>
+	
+	<table class="table datatable-products-statistics">
+	<thead>
+	<tr>
+	<th>Datime</th>
+	<th class="text-right">Note</th>
+	<th class="text-right">Stock Before</th>
+	<!--<th class="">Customer</th>-->
+	<th class="text-center">Import/Export</th>
+	<th class="text-center">Purchase Price</th>
+	<th class="text-center">Stock After</th>
+	<th class="text-center">Cost Price</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	<% @product.calc_cost_price[:logs].each_with_index do |log,index| %>
+	
+	<tr class="cost_history" <%= index >= 5 ? 'style="display: none"'.html_safe : '' %>>
+	<td><%= log[:note] == 'Mua hàng' ? (log[:datetime] + 1.day).to_date : log[:datetime] %></td>
+	<td><%= log[:note] %></td>
+	<td><%= log[:stock_before] %></td>
+	<td><%= log[:quantity] %></td>
+	<td><%= log[:purchase_price] %></td>
+	<td><%= log[:stock_after] %></td>
+	<td><%= Order.format_price(log[:cost_price].to_f) %></td>
+	</tr>
+	
+	
+	<% end %>
+	</tbody>
+	
+	
+	</table>
+						
+		<div class="text-center">
+		<button class="btn btn-primary" onclick="$('.cost_history').show();$(this).remove()">View more...</button>
+	</div>
 <% end %>
-</tbody>
-
-
-</table>
-					
-	<div class="text-center">
-	<button class="btn btn-primary" onclick="$('.cost_history').show();$(this).remove()">View more...</button>
-</div>				
 					
 				</div>
 			</div>

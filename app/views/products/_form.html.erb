@@ -220,6 +220,20 @@
 		</div>
 	</div>
 </div>
+	
+<div class="row">
+	<div class="col-md-12">
+		<div class="form-group">
+			<label class="form-label">Tính giá vốn thủ công (dành cho dịch vụ kỹ thuật)</label>
+			<span class="help"></span>
+			<div class="input-with-icon  right">
+				<i class=""></i>
+				<input type="hidden" name="product[is_manual_cost]" value="false" />
+				<input type="checkbox" <%= 'checked' if @product.is_manual_cost %> name="product[is_manual_cost]" value="true" />
+			</div>
+		</div>
+	</div>
+</div>
 
 
 

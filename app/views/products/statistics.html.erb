@@ -1,126 +1,126 @@
-                <ul class="breadcrumb">
-                    <li>
-                        <p>YOU ARE HERE</p>
-                    </li> 
-                    <li>
-			<%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
-                    </li>
-		    
-                </ul>
-                <div class="page-title">	<i class="icon-folder-open"></i>
+<ul class="breadcrumb">
+	<li>
+		<p>YOU ARE HERE</p>
+	</li> 
+	<li>
+<%= link_to 'Accounting', {controller: "accounting", action: "index"} %>
+	</li>
 
-                    	<h3>Product - <span class="semi-bold"> Statistics</span></h3>	
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-			
-					<div class="grid simple ">
-						<div class="grid-body no-border filters" method="get">
-						<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "statistics", tab_page: 1})%>">
-							<% if params[:tab_page] %>
-								 <%= hidden_field_tag "tab_page", 1 %>
-							<% end %>
-							<div class="row accounting-statistics-filters">
-								<div class="col-md-4">
-									<h4>From Date</h4>
-									<div class="date_select_filter">
-									<div class="input-with-icon  right">
-										<div class="input-append success date col-md-10 no-padding">
-											<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
-											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-										</div>
-										<br style="clear: both" />
+</ul>
+<div class="page-title">	<i class="icon-folder-open"></i>
+
+		<h3>Product - <span class="semi-bold"> Statistics</span></h3>	
+</div>
+<div class="row">
+	<div class="col-md-12">
+
+	<div class="grid simple ">
+		<div class="grid-body no-border filters" method="get">
+		<form id="accounting-statistics-filters-form" action="<%= url_for({controller: "products", action: "statistics", tab_page: 1})%>">
+			<% if params[:tab_page] %>
+				 <%= hidden_field_tag "tab_page", 1 %>
+			<% end %>
+			<div class="row accounting-statistics-filters">
+				<div class="col-md-4">
+					<h4>From Date</h4>
+					<div class="date_select_filter">
+					<div class="input-with-icon  right">
+						<div class="input-append success date col-md-10 no-padding">
+							<%= text_field_tag :from_date, @from_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+							<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+						</div>
+						<br style="clear: both" />
+						
+					</div>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<h4>To Date</h4>
+					<div class="date_select_filter">
+					<div class="input-with-icon  right">
+						<div class="input-append success date col-md-10 no-padding">
+							<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+							<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+						</div>
+						<br style="clear: both" />
+					</div>
+					</div>
+				</div>
+
+				<div class="col-md-2 pull-right">
+									<div class="">
+										<h4 style="color:#fff">...</h4>
+										
+											<input type="submit" value="Send" class="pull-right btn btn-primary text-center" />
 										
 									</div>
-									</div>
-								</div>
-								<div class="col-md-4">
-									<h4>To Date</h4>
-									<div class="date_select_filter">
-									<div class="input-with-icon  right">
-										<div class="input-append success date col-md-10 no-padding">
-											<%= text_field_tag :to_date, @to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
-											<span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
-										</div>
-										<br style="clear: both" />
-									</div>
-									</div>
-								</div>
-				
-								<div class="col-md-2 pull-right">
-													<div class="">
-														<h4 style="color:#fff">...</h4>
-														
-															<input type="submit" value="Send" class="pull-right btn btn-primary text-center" />
-														
-													</div>
-											</div>
-								
 							</div>
-						</form>
-						</div>		    
-					</div>
-			
-			<%= link_to '<i class="icon-print"></i> All Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
-			<%= link_to '<i class="icon-print"></i> Remain Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
-			<%= link_to '<i class="icon-download"></i> Remain Stock (excel)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), excel: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
-                    
-                    
-                    <div class="grid simple ">
-			    <div class="grid-body no-border filters" method="get">
-					<h4>Stock Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
-					
-					
-					<table class="table datatable-products-statistics">
-						<thead>
-							<tr>
-								
-								<th>Category</th>
-								<th>Manufacturer</th>
-								<th>Name</th>
-								<th>Be.Stock</th>
-								<th>Purchase</th>								
-								<th>Sales</th>
-								<th>Combination</th>
-								<th>I/O</th>
-								<th>Af.Stock</th>
-							</tr>
-						</thead>
-						
-						
-						
-					</table>
-				</div>
+				
 			</div>
-                    
-                    
-			
-			</div>
-                </div>
+		</form>
+		</div>		    
+	</div>
+
+<%= link_to '<i class="icon-print"></i> All Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+<%= link_to '<i class="icon-print"></i> Remain Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+<%= link_to '<i class="icon-download"></i> Remain Stock (excel)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), excel: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+	
+	
+	<div class="grid simple ">
+<div class="grid-body no-border filters" method="get">
+	<h4>Stock Statistics - <span class="semi-bold"><%= @from_date.strftime("%Y-%m-%d") %> -> <%= @to_date.strftime("%Y-%m-%d") %></span></h4>
+	
+	
+	<table class="table datatable-products-statistics">
+		<thead>
+			<tr>
+				
+				<th>Category</th>
+				<th>Manufacturer</th>
+				<th>Name</th>
+				<th>Be.Stock</th>
+				<th>Purchase</th>								
+				<th>Sales</th>
+				<th>Combination</th>
+				<th>I/O</th>
+				<th>Af.Stock</th>
+			</tr>
+		</thead>
+		
+		
+		
+	</table>
+</div>
+</div>
+	
+	
+
+</div>
+</div>
 
 <script>
-    $(document).ready(function() {
-		<% if @month_val.nil? %>
-			$("#order_order_date_2i").select2("val", "");
-		<% end %>
-		
-		//Datatable products statistics
-	    $('.datatable-products-statistics').dataTable( {
-			"processing": true,
-			"serverSide": true,
-			"ajax": {
-				"url": "<%= datatable_products_path(page: "statistics", year: params[:year], month: params[:month]) %>",
-				"data": function ( d ) {
-					d.from_date = "<%= @from_date.strftime("%Y-%m-%d") %>",
-					d.to_date = "<%= @to_date.strftime("%Y-%m-%d") %>"
-				}
-			},
-			"columnDefs": [ { "targets": [3,4,5,6,7,8], "orderable": false } ],
-			"order": [],
-			"aLengthMenu": [[50, 75, 100], [50, 75, 100]],
-			"iDisplayLength": 50
-	    });
-		
-		
-    });
+$(document).ready(function() {
+<% if @month_val.nil? %>
+$("#order_order_date_2i").select2("val", "");
+<% end %>
+
+//Datatable products statistics
+$('.datatable-products-statistics').dataTable( {
+"processing": true,
+"serverSide": true,
+"ajax": {
+"url": "<%= datatable_products_path(page: "statistics", year: params[:year], month: params[:month]) %>",
+"data": function ( d ) {
+	d.from_date = "<%= @from_date.strftime("%Y-%m-%d") %>",
+	d.to_date = "<%= @to_date.strftime("%Y-%m-%d") %>"
+}
+},
+"columnDefs": [ { "targets": [3,4,5,6,7,8], "orderable": false } ],
+"order": [],
+"aLengthMenu": [[50, 75, 100], [50, 75, 100]],
+"iDisplayLength": 50
+});
+
+
+});
 </script>

@@ -163,7 +163,11 @@ class OrderDetail < ActiveRecord::Base
 
   def cost
     #!product_price.nil? ? product_price.supplier_price.to_f : 0
-    product.cost_price(order.order_date).to_f
+    if product.is_manual_cost
+      !product_price.nil? ? product_price.supplier_price.to_f : 0
+    else
+      product.cost_price(order.order_date).to_f
+    end
   end
   def cost_formated
     Order.format_price(cost)

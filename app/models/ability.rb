@@ -224,7 +224,7 @@ class Ability
         order.is_sales && order.status.name == 'items_confirmed'
       end
       can :confirm_price, Order do |order|
-        order.is_sales && order.status.name == 'items_confirmed' # && order.is_price_updated
+        order.is_sales # && order.status.name == 'items_confirmed' && order.is_price_updated
       end
 
 
@@ -303,7 +303,7 @@ class Ability
         order.is_sales && order.status.name == 'items_confirmed'
       end
       can :confirm_price, Order do |order|
-        order.is_sales && order.status.name == 'items_confirmed' # && order.is_price_updated
+        order.is_sales # && order.status.name == 'items_confirmed' && order.is_price_updated
       end
 
       can :update_price, Product
@@ -381,6 +381,7 @@ class Ability
       end
 
       can :download_pdf, PaymentRecord
+      can :download_pdf_2019, PaymentRecord
 
       can :update_info, Order do |order|
         ['new','items_confirmed','price_confirmed','confirmed'].include?(order.status.name)

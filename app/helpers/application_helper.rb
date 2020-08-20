@@ -130,7 +130,7 @@ module ApplicationHelper
         if item.all_order_payments.count > 0
 		  item.all_order_payments.each do |recept|
             actions += '<li>'
-            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Recept ("+recept.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: recept.id}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", title: "Recept [#{item.quotation_code}]", :class => 'tab_page')
+            actions += ActionController::Base.helpers.link_to("<i class=\"icon-print\"></i>".html_safe+" Receipt ("+recept.created_at.strftime("%Y-%m-%d")+")", {controller: "payment_records", action: "show", id: recept.id}, psrc: "/accountings/orders?#{(item.is_purchase ? "purchase=1"+"&" : "")}tab_page=1", title: "Receipt [#{item.quotation_code}]", :class => 'tab_page')
             actions += '</li>'
 		  end
 		  group_2 += 1
