@@ -17,6 +17,7 @@ class ProductStockUpdatesController < ApplicationController
   def new
     @product_stock_update = ProductStockUpdate.new(product_id: params[:product_id])
     @product = Product.find(params[:product_id])
+    @product_stock_update.created_at = Time.now
     
     render layout: "content" if params[:tab_page].present?
   end
@@ -78,6 +79,6 @@ class ProductStockUpdatesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_stock_update_params
-      params.require(:product_stock_update).permit(:note, :is_import, :product_id, :quantity, :serial_numbers)
+      params.require(:product_stock_update).permit(:created_at, :note, :is_import, :product_id, :quantity, :serial_numbers)
     end
 end

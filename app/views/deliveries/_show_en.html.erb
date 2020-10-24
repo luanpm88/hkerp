@@ -1,0 +1,250 @@
+<div class="wrapper page delivery-page" style="">
+
+
+<%
+  header_com = Contact.HK
+
+%>
+<% if @order.supplier.id == 1 %>
+  <table class="cominfo no-filter">
+    <tr>
+      <% if @order.supplier.image.present? %>
+        <td rowspan="2" width="15%">
+          <img src="<%= params[:action] == "download_pdf" ? "file://"+@order.supplier.logo_path(:thumb2x) : @order.supplier.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+        </td>
+      <% end %>
+      <td colspan="2">
+        <h2>HOANG KHANG INFORMATION AND COMMUNICATION TECHNOLOGY SOLUTIONS COMPANY LIMITED</h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p><label>Add: </label>188 Street 1, Ward 16, Go Vap District, HCM City, Vietnam</p>      
+        <p><label>Tel: </label><%= @order.supplier.phone %> - <label>Fax: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
+        <p><label>Bank account number: </label>1883768 at ACB Bank - Ho Chi Minh City Branch</p>
+      </td>
+      <td class="" valign="top">
+        <p><label>Tax code: </label><%= @order.supplier.tax_code %></p>
+        <p><label>Email: </label><%= @order.supplier.email %></p>
+        <p><label>Website: </label><%= @order.supplier.website %></p>
+      </td>
+    </tr>
+  </table>
+<% else %>
+  <table class="cominfo no-filter">
+    <tr>
+      <% if @order.supplier.image.present? %>
+        <td rowspan="2" width="15%">
+          <img src="<%= params[:action] == "download_pdf" ? "file://"+@order.supplier.logo_path(:thumb2x) : @order.supplier.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+        </td>
+      <% end %>
+      <td colspan="2">
+        <h2><%= @order.supplier.name %></h2>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <p><label>Add: </label><%= @order.supplier.full_address %></p>      
+        <p><label>Tel: </label><%= @order.supplier.phone %> - <label>FAX: </label><%= @order.supplier.fax %> - <label>Hotline: </label><%= @order.supplier.hotline %></p>
+        <p><label>Bank account number: </label><%= @order.supplier.account_number %> <%= @order.supplier.bank %></p>
+      </td>
+      <td class="" valign="top">
+        <p><label>Tax code: </label><%= @order.supplier.tax_code %></p>
+        <p><label>Email: </label><%= @order.supplier.email %></p>
+        <p><label>Website: </label><%= @order.supplier.website %></p>
+      </td>
+    </tr>
+  </table>
+<% end %>
+<table class="top-info" cellspacing="0">
+  <tr>
+    <td class="maintitle" align="center" style="padding-bottom: 30px;">
+      <h1>DELIVERY & WARRANTY NOTE</h1>
+    </td>    
+  </tr>
+</table>
+
+
+<table class="cols-info no-filter">  
+  <tr>
+    <td width="16%"></td>
+    <td width="8%"><strong>No.<div class="point2">:</div> </strong></td>
+    <td width="20%"><%= @order.quotation_code %>-<%= @delivery.id %></td>
+    <td width="16%"><strong>Date <div class="point2">:</div> </strong></td>
+    <td><%= @delivery.delivery_date.strftime("%m %B %Y") %></td>
+    <td width="5%"><strong>PO<div class="point2">:</div> </strong></td>
+    <td width="18%"><%= @order.customer_po %></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td align=""><strong>Order<div class="point2">:</div> </strong></td>
+    <td><%= @order.printed_order_number %></td>
+    <td align=""><strong>By<div class="point2">:</div> </strong></td>
+    <td><%= @order.buyer_name %></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="7"><br /></td>    
+  </tr>
+  <% if @order.supplier.id == 1 %>
+       <tr>
+        <td align="" valign="top"><strong>FROM <div class="point2">:</div> </strong></td>
+        <td colspan="6"><strong>Hoang Khang Incotech Co., Ltd.</strong></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">ADD <div class="point2">:</div> </td>
+        <td colspan="6">188 Street 1, Ward 16, Go Vap District, HCM City, Vietnam</td>
+      </tr>
+      <tr>
+        <td align="" valign="top">TEL <div class="point2">:</div> </td>
+        <td colspan="2"><%= @order.supplier.phone %></td>    
+        <td colspan="3">Fax: <%= @order.supplier.fax %></td>
+      </tr>
+  <% else %>
+      <tr>
+        <td align="" valign="top"><strong>FROM <div class="point2">:</div> </strong></td>
+        <td colspan="6"><strong><%= @order.supplier.name %></strong></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">ADD <div class="point2">:</div> </td>
+        <td colspan="6"><%= @order.supplier.full_address %></td>
+      </tr>
+      <tr>
+        <td align="" valign="top">TEL <div class="point2">:</div> </td>
+        <td colspan="2"><%= @order.supplier.phone %></td>    
+        <td colspan="3">Fax: <%= @order.supplier.fax %></td>
+      </tr>
+    <% end %>
+  <tr>
+    <td colspan="7" valign="top"><br /></td>    
+  </tr>  
+  <tr>
+    <td align="" valign="top"><strong>TO <div class="point2">:</div> </strong></td>
+    <td colspan="6"><strong><%= @order.buyer_company %></strong></td>
+  </tr>
+  <tr>
+    <td align="" valign="top">ADD <div class="point2">:</div> </td>
+    <td colspan="6"><%= @order.buyer_address %></td>
+  </tr>
+  <% if @order.buyer_address != @order.shipping_place %>
+    <tr>
+      <td align="" valign="top">TO PLACE <div class="point2">:</div> </td>
+      <td colspan="6"><%= @order.shipping_place %></td>
+    </tr>
+  <% end %>
+  <tr>
+    <td align="" valign="top">TEL <div class="point2">:</div> </td>
+    <td colspan="2"><%= @order.buyer_phone %></td>    
+    <td colspan="3">Fax: <%= @order.buyer_fax %></td>
+  </tr>
+  
+</table>
+
+<br />
+<p>
+  <strong>This note is made to confirm that <%= @order.buyer_company %> has received fully and accepted all the items and service in the list belows from
+  <% if @order.supplier.id != 1 %><%= @order.supplier.name %><% else %>Hoang Khang Incotech<% end %> and all equipments, materials, service and system as required are in good condition after installation.
+  </strong>
+</p>
+
+<table class="list no-filter" cellspacing="0">
+  
+  
+  
+  <tr>
+    <th>No.</th>
+    <th width="55%" style="max-width: 50%;">ITEM/DESCRIPTION</th>
+    <th width="30%">S/N</th>
+    <th>Quantity</th>
+    <th>Warranty</th>
+    
+  </tr>
+
+    <% if !@delivery.delivery_details.nil? %>
+      <% @count = 0 %>
+      <% @delivery.delivery_details.each do |detail| %>
+        <% @count = @count + 1 %>
+          <tr>
+            <td valign="top"><%= @count %></td>
+            <td valign="top" style="text-align: left;">
+              <%= detail.order_detail.product_name %><br />
+              <%= detail.order_detail.product_description %>
+            </td>
+            <td valign="top" style="text-align: center">
+              <% if detail.serial_numbers.present? %>
+                <% detail.serial_numbers_extracted.each_with_index do |serial_number,index| %>
+                      <div>
+                        
+                        <%= serial_number %>
+                      
+                      
+                      </div>
+                <% end %>
+              <% elsif detail.order_detail.order.tax.rate == 0 %>
+                -
+              <% else %>
+                <% (1..detail.quantity).each do |i| %>
+                  <span style="color: #fff">Warranty with S/N</span><br />
+                <% end %>
+                <br />
+              <% end %>
+            </td>
+            <td valign="top"><%= detail.quantity %> unit(s)</td>
+            <td valign="top">
+              <% if detail.order_detail.warranty > 0 %>
+                <%= detail.order_detail.warranty %> month(s)
+              <% else %>
+                -
+              <% end %>
+            </td>
+            
+          </tr>
+      <% end %>
+    <% end %>
+  
+
+</table>
+
+
+<br />
+<p><strong>WARRANTY CONDITIONS:</strong></p>
+<p>
+  1.	This warranty only applies where a detect has arisen, wholly or substantially, as a result of faulty manufacture, parts of workmanship during
+  the Warranty Period.
+	
+</p>
+
+<p>
+  2.	 The warranty does not apply where any of the seals on the battery, enclosure or cells are broken or show evidence of tampering.
+</p>
+<p>
+  3.	The warranty does not apply where damage is caused by other factors, including without limitation.						
+</p>
+<p>
+  4.	This warranty dose not cover: accidents, acts of God, lightning, water, fire, public disturbances, improper ventilation, voltage fluctuations  or any cause beyond the control of Hoang Khang Incotech.			
+</p>
+<p>
+  5.	This warranty is send-back basic and dose not include nether on-site service of repair nor replacement.						
+</p>
+<p>
+  6.	This warranty is to be read together with any benefits that Hoang Khang Incotech may provide a Customer under statute.
+</p>
+<p>DISCLAIMER : Hoang Khang Incotech shall not be liable for the loss of any saved / stored data in products that are either repaired or replaced.</p>
+
+<br />
+<table class="no-filter">
+  <tr>
+    <td align="center">
+      <strong>DELIVERED BY</strong><br />
+
+    </td>
+    <td align="center">
+      <strong>RECEIVED BY</strong><br />
+
+    </td>
+
+  </tr>
+</table>
+
+</div>

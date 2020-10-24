@@ -1811,7 +1811,8 @@ CREATE TABLE public.products (
     cache_display_name character varying,
     cache_price numeric,
     in_use boolean DEFAULT true,
-    cache_recent_supplier_ids text
+    cache_recent_supplier_ids text,
+    is_manual_cost boolean DEFAULT false
 );
 
 
@@ -3687,4 +3688,6 @@ INSERT INTO schema_migrations (version) VALUES ('20190920021522');
 INSERT INTO schema_migrations (version) VALUES ('20200806164620');
 
 INSERT INTO schema_migrations (version) VALUES ('20200807014217');
+
+INSERT INTO schema_migrations (version) VALUES ('20200810072705');
 

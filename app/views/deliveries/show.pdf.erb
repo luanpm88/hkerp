@@ -115,5 +115,9 @@
 <% if params[:export_ticket].present? %>
   <%= render 'export_ticket' %>
 <% else %>
-  <%= render 'show' %>
+  <% if params[:lang].present? and params[:lang] == 'en' %>
+					<%= render 'show_en' %>
+				<% else %>
+					<%= render 'show' %>
+				<% end %>
 <% end %>
