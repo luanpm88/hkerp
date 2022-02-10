@@ -62,8 +62,11 @@
 	</div>
 
 <%= link_to '<i class="icon-print"></i> All Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
-<%= link_to '<i class="icon-print"></i> Remain Stock'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+<%= link_to '<i class="icon-print"></i> Remain Stock (pdf)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+<%= link_to '<i class="icon-download"></i> Remain Stock with prices (pdf)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), pdf: 1, remain: 1, price: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
 <%= link_to '<i class="icon-download"></i> Remain Stock (excel)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), excel: 1, remain: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+<%= link_to '<i class="icon-download"></i> Remain Stock with prices (excel)'.html_safe, statistics_products_url(from_date: @from_date.strftime("%Y-%m-%d"), to_date: @to_date.strftime("%Y-%m-%d"), excel: 1, remain: 1, price: 1), :class => 'btn btn-primary btn-cons', target: "_blank" %>
+
 	
 	
 	<div class="grid simple ">

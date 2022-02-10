@@ -1,0 +1,80 @@
+					<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+					<style>
+						.list * {
+							font-size: 12px;
+						}
+						.text-center {
+							text-align: center !important;
+						}
+						.text-right {
+							text-align: right !important;
+						}
+						.text-left {
+							text-align: left !important;
+						}
+						.list {
+							width: 100%;
+							margin-top: 20px;
+							border-left: 1px solid #000000;
+							border-top: 1px solid #000000;
+							border-bottom: none;
+							border-right: none;
+						  }
+						  .list th {
+							  background: none repeat scroll 0 0 #EFEFEF;
+							  border-bottom: 1px solid #000000;
+							  border-right: 1px solid #000000;
+							  border-top: none;
+							  border-left: none;
+							  padding: 5px;
+						  }
+						  .list td {
+							  border-bottom: 1px solid #000000;
+							  border-right: 1px solid #000000;
+							  border-top: none;
+							  border-left: none;
+							  padding: 5px;
+							  text-align: center;
+						  }
+					</style>
+
+					<h3>BẢNG KÊ KHO - TỪ <%= @from_date.strftime("%d/%m/%Y") %> ĐẾN <%= @to_date.strftime("%d/%m/%Y") %></h3>
+
+					<table cellspacing="0" celpadding="0" class="table datatable-products-statistics-pdf list">
+						<thead>
+							<tr>
+								<th class="text-center" width="1%">STT</th>
+								<th class="text-left" width="50%">Name</th>
+								<th class="text-center" width="1%">Af.Stock</th>
+								<th class="text-center" width="14%">Supplier Price (no VAT)</th>
+								<th class="text-center" width="13%">Sell Price (no VAT)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%
+							count = 1;
+							cat = nil;
+							@products.each do |product| %>
+								
+									<% if cat != product.category %>
+										<% cat = product.category %>
+										<tr>
+											<th class="text-left" colspan="8"><%= cat.name %></td>
+										</tr>
+									<% end %>
+									<tr>
+										<th class="text-center"><%= count %></th>
+										<td class="text-left" width="50%"><%= product.display_name_without_category %></td>
+										<td class="text-center"><%= product.calculated_stock(@to_date) %></td>
+										<td class="text-center"><%= product.product_price.supplier_price_formated %></td>
+										<td class="text-center"><%= product.product_price.price_formated %></td>
+									</tr>
+									<%
+										count += 1
+									%>
+								<% end %>
+
+
+						</tbody>
+
+                    </table>

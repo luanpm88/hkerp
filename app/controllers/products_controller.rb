@@ -298,11 +298,12 @@ class ProductsController < ApplicationController
       @to_date =  DateTime.now.end_of_day
     end
 
-    @products = Product.statistics(@from_date, @to_date)
+    @products = Product.statistics(@from_date, @to_date).limit(1)
 
-    if params[:pdf] == "1"
+    if params[:pdf] == "1" and params[:price] == "1"
+      @products = @products.where('stock > ?', 0)
         render  :pdf => "products_statistics_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
-            :template => 'products/statistics.pdf.erb',
+            :template => 'products/statistics_with_prices.pdf.erb',
             :layout => nil,
             :footer => {
                :center => "",
@@ -314,7 +315,83 @@ class ProductsController < ApplicationController
                           :left   => 0,
                           :right  => 0},
             }
+    elsif params[:pdf] == "1"      
+      render  :pdf => "products_statistics_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
+          :template => 'products/statistics.pdf.erb',
+          :layout => nil,
+          :footer => {
+              :center => "",
+              :left => "",
+              :right => "",
+              :page_size => "A4",
+              :margin  => {:top    => 0, # default 10 (mm)
+                        :bottom => 0,
+                        :left   => 0,
+                        :right  => 0},
+          }
+    elsif params[:excel] == "1" and params[:price] == "1"
+      @products = @products.where('stock > ?', 0)
+
+      require 'rubyXL/convenience_methods/worksheet'
+      require 'rubyXL/convenience_methods/cell'
+
+      workbook = RubyXL::Parser.parse('templates/RemainStockWithPrices.xlsx')      
+      worksheet = workbook[0]      
+      # Begin
+      worksheet[0][0].change_contents("Tồn kho đến ngày #{@to_date.strftime("%Y-%m-%d")}")
+      
+      count = 1
+			cat = nil
+			iIndex = 3
+			
+			total = {
+        b: 0,
+        b_price: 0,
+        purchase: 0,
+        sales: 0,
+        combine: 0,
+        io: 0,
+        e: 0,
+        e_price: 0,
+      }
+			
+			# @products = @products.where('stock > 0') if params[:remain].present?
+      @products.each do |product|
+          e = product.calculated_stock(@to_date)    
+        
+        if params[:remain].nil? || (!params[:remain].nil? && (e > 0 || purchase > 0 || sales > 0 || combine > 0 || io > 0))
+    
+          # insert product
+          worksheet.insert_row(iIndex)
+          worksheet[iIndex][0].change_contents(count)
+          worksheet[iIndex][1].change_contents(product.category.name)
+          worksheet[iIndex][2].change_contents(product.display_name_without_category)
+          worksheet[iIndex][3].change_contents(e)
+          worksheet[iIndex][4].change_contents(product.product_price.supplier_price)
+          worksheet[iIndex][5].change_contents(product.product_price.price)
+          
+          # total
+          total[:e] += e
+          
+          # increment count
+          count += 1
+          iIndex += 1
+        end
+      end
+      
+      worksheet.delete_row(2)
+      worksheet.delete_row(iIndex-1)
+      
+      # total
+      worksheet[0][3].change_contents(total[:e])
+      
+      send_data workbook.stream.string,
+          filename: "stocks.xlsx",
+          disposition: 'attachment'
     elsif params[:excel] == "1"
+      require 'rubyXL/convenience_methods/worksheet'
+      require 'rubyXL/convenience_methods/cell'
+
       workbook = RubyXL::Parser.parse('templates/RemainStock.xlsx')      
       worksheet = workbook[0]      
       # Begin
