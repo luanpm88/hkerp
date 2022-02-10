@@ -1,0 +1,54 @@
+<ul class="breadcrumb">
+<li>
+    <p>YOU ARE HERE</p>
+</li> 
+<li><%= link_to 'Payment Records', custom_payments_payment_records_path, :class => "active" %></li>
+</ul>
+<div class="page-title">
+    <i class="icon-archive"></i>
+    <h3>Contact Report</h3>	
+</div>
+
+
+<div class="row">
+<div class="col-md-12">
+
+<div class="grid simple ">
+    <div class="grid-body no-border filters" method="get">
+    <form method="POST" action="<%= url_for({controller: "contacts", action: "report_export"})%>" target="_blank">
+        <div class="row">
+            <div class="col-md-3">
+                <h4>From Date</h4>
+                <div class="date_select_filter">
+                <div class="input-with-icon  right">
+                    <div class="input-append success date col-md-10 no-padding">
+                        <%= text_field_tag :from_date, (Time.now - 1.month).strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                        <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                    </div>
+                    <br style="clear: both" />
+                    
+                </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h4>To Date</h4>
+                <div class="date_select_filter">
+                <div class="input-with-icon  right">
+                    <div class="input-append success date col-md-10 no-padding">
+                        <%= text_field_tag :from_date, Time.now.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                        <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                    </div>
+                    <br style="clear: both" />
+                    
+                </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div style="padding-top:42px">
+                    <button type="submit" class="btn btn-primary btn-cons">Export</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    </div>		    
+</div>

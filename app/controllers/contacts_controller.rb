@@ -208,6 +208,9 @@ class ContactsController < ApplicationController
   end
   
   def top_buyers
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
     authorize! :top_buyers, Contact
     
     workbook = RubyXL::Parser.parse('templates/TopBuyers.xlsx')
@@ -417,6 +420,14 @@ class ContactsController < ApplicationController
     send_data workbook.stream.string,
         filename: "NotReturnCustomers.xlsx",
         disposition: 'attachment'
+  end
+
+  def report
+
+  end
+
+  def report_export
+
   end
 
   private

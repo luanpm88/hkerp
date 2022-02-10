@@ -219,6 +219,9 @@ Hkerp::Application.routes.draw do
       
       get :top_buyers
       get :not_buy_customers
+
+      get :report
+      get :report_export
     end
   end
 

@@ -720,6 +720,10 @@ class Product < ActiveRecord::Base
   def self.statistics(from_date, to_date)
     Product.where(status: 1).joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
   end
+
+  def self.stock_statistics(from_date, to_date)
+    Product.where(status: 1).joins(:categories, :manufacturer).order("categories.name, manufacturers.name, stock desc")
+  end
   
   def self.report(from_date, to_date, remain=true)
     products = self.statistics(from_date, to_date).limit(1000)

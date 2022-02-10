@@ -1,5 +1,5 @@
 /* Font Import */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700);
 :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
     color:#333843! important;
 }
@@ -7675,7 +7675,7 @@ ul.filter {
     color: #aa6708;
 }
 .btn-group.actions > .dropdown-menu {
-    margin-left: -90px;
+    margin-left: -167px;
 }
 .price_outdated {
     color: #aa6708;

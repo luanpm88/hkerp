@@ -298,10 +298,10 @@ class ProductsController < ApplicationController
       @to_date =  DateTime.now.end_of_day
     end
 
-    @products = Product.statistics(@from_date, @to_date).limit(1)
+    @products = Product.stock_statistics(@from_date, @to_date)
 
     if params[:pdf] == "1" and params[:price] == "1"
-      @products = @products.where('stock > ?', 0)
+      @products = @products.where('stock > ?', 0).order('stock desc')
         render  :pdf => "products_statistics_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}",
             :template => 'products/statistics_with_prices.pdf.erb',
             :layout => nil,
@@ -330,7 +330,7 @@ class ProductsController < ApplicationController
                         :right  => 0},
           }
     elsif params[:excel] == "1" and params[:price] == "1"
-      @products = @products.where('stock > ?', 0)
+      @products = @products.where('stock > ?', 0).order('stock desc')
 
       require 'rubyXL/convenience_methods/worksheet'
       require 'rubyXL/convenience_methods/cell'
