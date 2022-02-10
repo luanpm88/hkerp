@@ -40,9 +40,10 @@ class ProductsController < ApplicationController
     result[:items].each_with_index do |item, index|
 
 
-      actions = '<div class="text-right"><div class="btn-group actions">
-                    <button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
-      actions += '<ul class="dropdown-menu">'
+      actions = '<div class="text-right" style="display: flex;align-items: center;justify-content: right;">
+        '+view_context.link_to('<i class="icon-pencil"></i>'.html_safe, edit_product_path(id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Edit: #{item.display_name}", class: "tab_page btn btn-mini btn-white")+'<div class="btn-group actions">
+                    <button style="margin:0" class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>'
+      actions += '<ul class="dropdown-menu dropdown-menu-right">'
 
       if can? :update, item
         actions += '<li>'+view_context.link_to("Edit", edit_product_path(id: item.id, tab_page: 1), psrc: products_url(tab_page: 1), title: "Edit: #{item.display_name}", class: "tab_page")+'</li>'
@@ -337,11 +338,6 @@ class ProductsController < ApplicationController
 			# @products = @products.where('stock > 0') if params[:remain].present?
       @products.each do |product|
           e = product.calculated_stock(@to_date)
-          e_price = product.cost_price(@from_date).to_f * e
-        
-          
-          b = product.calculated_stock((@from_date - 1.day).end_of_day)
-          b_price = product.cost_price(@from_date).to_f * b
           
           purchase = product.import_count(@from_date, @to_date)
           sales = product.export_count(@from_date, @to_date)
@@ -349,6 +345,10 @@ class ProductsController < ApplicationController
           io = product.stock_update_count(@from_date, @to_date)          
         
         if params[:remain].nil? || (!params[:remain].nil? && (e > 0 || purchase > 0 || sales > 0 || combine > 0 || io > 0))
+          b = product.calculated_stock((@from_date - 1.day).end_of_day)
+          e_price = product.cost_price(@from_date).to_f * e
+          b_price = product.cost_price(@from_date).to_f * b
+          
           # insert product
           worksheet.insert_row(iIndex)
           worksheet[iIndex][0].change_contents(count)
@@ -511,8 +511,10 @@ class ProductsController < ApplicationController
         "id": item.id,
         "display_name": item.display_name,
         "name": item.name,
+        "fixed_name": item.fixed_name,
         "product_code": item.product_code,
         "price": item.get_web_price,
+        "listed_price": item.listed_price,
         "description": item.description,
         "stock": item.calculated_stock,
         "unit": item.unit,
@@ -520,6 +522,7 @@ class ProductsController < ApplicationController
         "out_of_date": item.out_of_date,
         "warranty": item.warranty,
         "status": item.status,
+        "discount_percent": item.discount_percent,
       }}),
       "total": products.count('products.id'),
       "per_page": per_page
@@ -567,6 +570,9 @@ class ProductsController < ApplicationController
       "stock": product.calculated_stock,
       "unit": product.unit,
       "warranty": product.warranty,
+      "listed_price": product.listed_price,
+      "fixed_name": product.fixed_name,
+      "discount_percent": product.discount_percent,
     }
   end
 
@@ -642,7 +648,7 @@ class ProductsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
-      params.require(:product).permit(:is_manual_cost, :in_use, :is_manual_price_update, :web_price, :no_price, :intro, :short_intro, :note, :serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
+      params.require(:product).permit(:listed_price, :fixed_name, :is_manual_cost, :in_use, :is_manual_price_update, :web_price, :no_price, :intro, :short_intro, :note, :serial_numbers, :stock, :name, :description, :price, :product_code, :manufacturer_id, :unit, :warranty,
                                       :category_ids => [],
                                       :product_prices => [:price, :supplier_price, :supplier_id],
                                       product_parts_attributes: [:_destroy, :id, :part_id, :quantity],

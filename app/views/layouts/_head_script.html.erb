@@ -67,7 +67,8 @@
 
 
 		} else {
-		  $('#main-tab a[rel="'+tid+'"]').tab('show')
+		  $('#main-tab a[rel="'+tid+'"]').tab('show');
+		  // reloadTab(tid);
 		}
 		$(document).scrollTop(0);
 		if($(window).width() <= 750 && $('.page-sidebar').css("display") == "block") {
@@ -1768,8 +1769,18 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 
 		setTimeout("$('.dataTables_wrapper select').select2();", 2000);
 
-		$('.price-history').fancybox();
-
+		// $('.price-history').fancybox();
+		if (window.self !== window.top) {
+			$(document).on("click", ".price-history", function(e) {
+				e.preventDefault();
+				var b = $(this).clone();
+				b.hide();
+				parent.$('.price-history').remove();
+				parent.$('body').append(b);
+				parent.$('.price-history').fancybox();
+				parent.$('.price-history').click();
+			});
+		}
 
 
 		//paid day checkbox
@@ -1790,7 +1801,18 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 			updateShipmentAddress();
 		});
 
-		$('.fancybox_link').fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+		// $('.fancybox_link').fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+		if (window.self !== window.top) {
+			$(document).on("click", ".fancybox_link", function(e) {
+				e.preventDefault();
+				var b = $(this).clone();
+				b.hide();
+				parent.$('.fancybox_link').remove();
+				parent.$('body').append(b);
+				parent.$('.fancybox_link').fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+				parent.$('.fancybox_link').click();
+			});
+		}
 
 		$("#contact_filter input, #contact_filter select").click(function() {
 			$('.datatable-contacts').dataTable().fnFilter();
@@ -1848,7 +1870,17 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 			parent.closeTab(window.parent.$("#main-tab li.active a").attr("href").replace("#",""))
 		})
 
-		$(".fancybox_image").fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+		if (window.self !== window.top) {
+			$(document).on("click", ".fancybox_image", function(e) {
+				e.preventDefault();
+				var b = $(this).clone();
+				b.hide();
+				parent.$('.fancybox_image').remove();
+				parent.$('body').append(b);
+				parent.$('.fancybox_image').fancybox({width: "100%",'autoDimensions': false, 'autoSize':false});
+				parent.$('.fancybox_image').click();
+			});
+		}
 
 		$(document).on("click", ".ajax-check-radio", function(e) {
 			e.preventDefault();

@@ -167,7 +167,7 @@ class System < ActiveRecord::Base
     return if latest_backup_file.nil?
     file_name = latest_backup_file.split("/").last
     puts "Uploading... " + latest_backup_file
-
+puts file_name
     # Connect
     session = GoogleDrive::Session.from_config(params[:token])
 

@@ -25,7 +25,7 @@
                                       <div class="form-group">
                                               <select name="year" style="width:100px" onchange="$('#CheckinoutsFilter').submit()">
                                                 <option value="2014"><%= @year %></option>
-                                                <% (2010..2020).each do |i| %>
+                                                <% (2010..2030).each do |i| %>
                                                   <% if Checkinout.min_date <= @timezone.parse(i.to_s+"-12-31") %>
                                                     <option <% if @year == i %>selected="selected"<% end %> value="<%= i %>"><%= i.to_s %></option>
                                                   <% end %>
@@ -114,7 +114,7 @@
                                           <% @users.each do |user| %>
 					  <% if user.ATT_No.present? %>
                                             <tr>
-                                              <td><%= user.name %></td>
+                                              <td><%= user.name %> - <%= user.ATT_No %></td>
                                               <td style="text-align: center"><%= Checkinout.default_hours_per_month %></td>
                                               <td style="text-align: center"><%= user.work_time_by_month(@month, @year) %></td>
 					      <td style="text-align: center"><%= user.addition_time_formatted(@month, @year).html_safe %></td>

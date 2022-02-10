@@ -49,6 +49,15 @@ class Product < ActiveRecord::Base
   def self.all_products
     self.where(status: 1)
   end
+  
+  def listed_price=(new_price)
+    self[:listed_price] = new_price.to_s.gsub(/[\,]/, '')
+  end
+  
+  def discount_percent
+    return 0 if listed_price.to_f == 0
+    ((listed_price.to_f - product_price.price.to_f)/listed_price.to_f) * 100
+  end
 
   def order_supplier_history(user)
     @list = OrderDetail.joins(:order).where("order_id IS NOT NULL")
@@ -77,6 +86,10 @@ class Product < ActiveRecord::Base
   end
 
   def display_name
+    # if fixed_name.present?
+    #   return fixed_name
+    # end
+
     result = ''
     if categories.first.present? and categories.first.name.downcase != 'none'
       result += categories.first.name + " "
@@ -300,7 +313,7 @@ class Product < ActiveRecord::Base
                 item = [
                         "<div class=\"text-left #{trashed_class}\">"+product.categories.first.name+'</div>',
                         "<div class=\"text-left #{trashed_class}\">"+product.manufacturer.name+'</div>',
-                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name.to_s+" "+product.product_code.to_s+"</strong><div>"+product.description.to_s[0..80]+"<div>#{(product.note.present? ? "(#{product.note})": "")}</div></div>"++(product.warranty.empty? ? '' :"<div>Warranty: "+product.warranty.to_s+"</div>") + suppliers.to_s + '</div>',
+                        "<div class=\"text-left #{trashed_class}\"><strong class=\"main-title\">"+product.name.to_s+" "+product.product_code.to_s+"</strong><div>"+product.description.to_s[0..80]+"<div>#{(product.note.present? ? "(#{product.note})": "")}</div></div>"+(!product.fixed_name.present? ? '' :"<div>Fixed name: "+product.fixed_name.to_s+"</div>")+(product.warranty.empty? ? '' :"<div>Warranty: "+product.warranty.to_s+"</div>") + suppliers.to_s + '</div>',
                         #"<div class=\"text-right #{trashed_class}\">"+supplier_price+'</div>',
                         "<div class=\"text-right #{trashed_class}\">"+product.price_col(user)+'</div>',
                         "<div class=\"text-center #{trashed_class}\">"+product.calculated_stock.to_s+'</div>',
@@ -359,6 +372,8 @@ class Product < ActiveRecord::Base
           <a class='btn btn-small btn-cancel' href='#save'>Cancel</a>
         </div>"
       html += "</div>"
+      
+      html += "<div>List Price: #{Order.format_price(self.listed_price.to_f)} <br>Discount: #{self.discount_percent.round(2)}%</div>" if self.listed_price.to_f != 0
       
       if self.product_price.present? and self.product_price.updated_at.present?
 				html += "<span class='label label-success'>#{self.product_price.updated_at.strftime('%d-%m-%Y')}</span>"
@@ -622,7 +637,6 @@ class Product < ActiveRecord::Base
     end
 
     return count
-
   end
 
   def statistic_stock(datetime)
@@ -705,6 +719,71 @@ class Product < ActiveRecord::Base
 
   def self.statistics(from_date, to_date)
     Product.where(status: 1).joins(:categories, :manufacturer).order("categories.name, manufacturers.name")
+  end
+  
+  def self.report(from_date, to_date, remain=true)
+    products = self.statistics(from_date, to_date).limit(1000)
+
+    data = {
+      items: [],
+      count: 0,
+      total: {
+        b: 0,
+        b_price: 0,
+        purchase: 0,
+        sales: 0,
+        combine: 0,
+        io: 0,
+        e: 0,
+        e_price: 0,
+      },
+    }
+
+    total = products.count.to_s
+
+    products.each_with_index do |product, index|
+      e = product.calculated_stock(to_date.end_of_day)
+      
+      purchase = product.import_count(from_date, to_date)
+      sales = product.export_count(from_date, to_date)
+      combine = product.combination_count(from_date, to_date)
+      io = product.stock_update_count(from_date, to_date)          
+      
+      if remain.nil? || (!remain.nil? && (e > 0 || purchase > 0 || sales > 0 || combine > 0 || io > 0))
+        b = product.calculated_stock((from_date - 1.day).end_of_day)
+        e_price = product.cost_price(from_date).to_f * e
+        b_price = product.cost_price(from_date).to_f * b
+
+        # insert product
+        data[:items] << {
+          b: b,
+          b_price: b_price,
+          purchase: purchase,
+          sales: sales,
+          combine: combine,
+          io: io,
+          e: e,
+          e_price: e_price,
+        }
+        
+        # total
+        data[:total][:b_price] += b_price
+        data[:total][:b] += b
+        data[:total][:purchase] += purchase
+        data[:total][:sales] += sales
+        data[:total][:combine] += combine
+        data[:total][:io] += io
+        data[:total][:e] += e
+        data[:total][:e_price] += e_price
+        
+        # increment count
+        data[:count] += 1
+      end
+
+      puts index.to_s + '/' + total.to_s
+    end
+
+    return data
   end
 
   def import_count(from_date=nil, to_date=nil)

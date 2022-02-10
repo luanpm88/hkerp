@@ -3,8 +3,12 @@ source 'https://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
+# Set Ruby version
+ruby '2.3.3'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.3'
+#gem 'rails', '4.2.3'
+gem 'rails', '4.2.5'
 
 # Use postgresql as the database for Active Record
 gem 'pg', '0.20.0'
@@ -39,7 +43,8 @@ end
 gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use unicorn as the app server
-# gem 'unicorn'
+gem 'kgio', '~> 2.11', '>= 2.11.3'
+gem 'unicorn'
 
 # Use Capistrano for deployment
 # gem 'capistrano', group: :development

@@ -65,6 +65,17 @@
 																					   </div>
 															 </div>
 
+															<% if current_user.has_role? "admin" %>
+																<div class="form-group">
+																	<label class="form-label"><%= f.label :fixed_name %></label>
+																	<span class="help"></span>
+																	<div class="input-with-icon  right">
+																			<i class=""></i>
+																			<%= f.text_field :fixed_name, :class => "form-control" %>
+																	</div>
+																</div>
+															<% end %>
+
 															<div class="form-group">
 																<label class="form-label"><%= f.label :part_number %></label>
 																<span class="help"></span>
@@ -135,7 +146,27 @@
 
 													   <div class="col-md-6">
 
-
+															<div class="row column-seperation">
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="form-label"><%= f.label :listed_price %></label>
+																		<span class="help"></span>
+																		<div class="input-with-icon  right">
+																				<i class=""></i>
+																				<%= f.text_field :listed_price, :class => "form-control price_input" %>
+																		</div>
+																	</div>
+																</div>
+																<div class="col-md-6">
+																	<div class="form-group">
+																		<label class="form-label"><%= f.label :discount_percent %></label>
+																		<span class="help"></span>
+																		<div class="input-with-icon  right">
+																				<strong><%= @product.discount_percent.round(2) %>%</strong>
+																		</div>
+																	</div>
+																</div>
+															</div>
 
 
 

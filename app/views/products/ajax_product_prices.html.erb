@@ -43,10 +43,11 @@
 			 </tbody>			
 						
 					</table>
-					
-<div class="text-center">
-	<button class="btn btn-primary" onclick="$('.price_history').show();$(this).remove()">View more...</button>
-</div>
+<% if @product.product_prices.count > 5 %>		
+	<div class="text-center">
+		<button class="btn btn-primary" onclick="$('.price_history').show();$(this).remove()">View more...</button>
+	</div>
+<% end %>
 
 <% if !@product.is_manual_cost %>			
 	<h4>Cost Price - <span class="semi-bold">History</span></h4>
@@ -66,7 +67,10 @@
 	</thead>
 	
 	<tbody>
-	<% @product.calc_cost_price[:logs].each_with_index do |log,index| %>
+	<%
+		cost_prices = @product.calc_cost_price[:logs]
+	%>
+	<% cost_prices.each_with_index do |log,index| %>
 	
 	<tr class="cost_history" <%= index >= 5 ? 'style="display: none"'.html_safe : '' %>>
 	<td><%= log[:note] == 'Mua hàng' ? (log[:datetime] + 1.day).to_date : log[:datetime] %></td>
@@ -84,10 +88,11 @@
 	
 	
 	</table>
-						
+	<% if cost_prices.count > 5 %>				
 		<div class="text-center">
-		<button class="btn btn-primary" onclick="$('.cost_history').show();$(this).remove()">View more...</button>
-	</div>
+			<button class="btn btn-primary" onclick="$('.cost_history').show();$(this).remove()">View more...</button>
+		</div>
+	<% end %>
 <% end %>
 					
 				</div>
