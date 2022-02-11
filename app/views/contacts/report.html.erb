@@ -15,7 +15,9 @@
 
 <div class="grid simple ">
     <div class="grid-body no-border filters" method="get">
+    <h2>New Contacts Report</h2>
     <form method="POST" action="<%= url_for({controller: "contacts", action: "report_export"})%>" target="_blank">
+        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
         <div class="row">
             <div class="col-md-3">
                 <h4>From Date</h4>
@@ -35,7 +37,7 @@
                 <div class="date_select_filter">
                 <div class="input-with-icon  right">
                     <div class="input-append success date col-md-10 no-padding">
-                        <%= text_field_tag :from_date, Time.now.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                        <%= text_field_tag :to_date, Time.now.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
                         <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                     </div>
                     <br style="clear: both" />

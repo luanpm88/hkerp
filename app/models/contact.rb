@@ -37,6 +37,10 @@ class Contact < ActiveRecord::Base
 
   after_validation :update_cache
 
+  def self.customers
+    self.where("contacts.contact_types_cache NOT LIKE '%[#{ContactType.supplier}]%'")
+  end
+
   def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers

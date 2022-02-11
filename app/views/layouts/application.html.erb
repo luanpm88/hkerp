@@ -469,7 +469,9 @@
 	      <% end %>
 	      <ul class="sub-menu">
 			<li<% if params[:controller] == "contacts" && params[:action] == "index" %> class="active"<% end %>><%= link_to 'Contacts', contacts_url(tab_page:1), class: "tab_page" %></li>
-			<li<% if params[:controller] == "contacts" && params[:action] == "report" %> class="active"<% end %>><%= link_to 'Report', report_contacts_url(tab_page:1), class: "tab_page" %></li>
+			<% if current_user.has_role? "admin" %>
+				<li<% if params[:controller] == "contacts" && params[:action] == "report" %> class="active"<% end %>><%= link_to 'Report', report_contacts_url(tab_page:1), class: "tab_page" %></li>
+			<% end %>
 
 	      </ul>
 	    </li>

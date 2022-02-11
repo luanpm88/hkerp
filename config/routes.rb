@@ -221,7 +221,7 @@ Hkerp::Application.routes.draw do
       get :not_buy_customers
 
       get :report
-      get :report_export
+      post :report_export
     end
   end
 
