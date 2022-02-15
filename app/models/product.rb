@@ -113,7 +113,7 @@ class Product < ActiveRecord::Base
   def display_name_without_category
     result = ''
 
-    if manufacturer.present? and manufacturer.name != 'none'
+    if manufacturer.present? and manufacturer.name.downcase != 'none'
       result += manufacturer.name + " "
     end
 
