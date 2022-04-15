@@ -1390,4 +1390,47 @@ class Product < ActiveRecord::Base
     return calc_cost_price[:finalPrice]
   end
 
+  def has_price
+    #return false if self.categories.map(&:id).include?(8) || self.suspended == true
+    return false if self.suspended == true
+    return false if self.is_price_outdated
+    self.cache_price.to_i != 0 and !self.no_price
+  end
+  
+  def is_price_outdated
+    if product_price.nil?
+       return true
+    end
+
+    if product_price.price.nil? || product_price.price.to_f == 0.00
+       return true
+    end
+
+    if product_price.supplier_price.nil? || product_price.supplier_price.to_f == 0.00
+       return true
+    end
+
+    if product_price.supplier_id.nil?
+       return true
+    end
+
+    # if empty stock for 30 days
+    if (stock <= 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 90)
+      return true
+    end
+
+    return false
+  end
+
+
+  after_save :updateThcnInfo
+  def updateThcnInfo
+    begin
+      logger.info('https://timhangcongnghe.com/hkerp/product-info/' + self.id.to_s)
+      Net::HTTP::get(URI('https://timhangcongnghe.com/hkerp/product-info/' + self.id.to_s))
+    rescue => e
+      logger.error(e);
+    end
+  end
+
 end

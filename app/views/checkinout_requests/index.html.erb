@@ -86,7 +86,7 @@
                                               </tr>
                                           </thead>
                                           <tbody>
-                                              <% CheckinoutRequest.where.not(user_id: current_user.id).order("created_at DESC").each do |checkinout_request| %>
+                                              <% CheckinoutRequest.where.not(user_id: current_user.id).order("created_at DESC").limit(200).each do |checkinout_request| %>
                                                 <tr>
                                                   <td><%= checkinout_request.user.name %></td>
                                                   <td><%= checkinout_request.check_time.strftime("%a")+", "+checkinout_request.check_time.to_formatted_s(:long) %></td>

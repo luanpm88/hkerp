@@ -224,7 +224,7 @@ class ContactsController < ApplicationController
     ContactStat.where.not(contact_id: 1).where('buy_last_6_months > 0').order('buy_last_6_months desc').each do |stat|          
         # insert product
         worksheet.insert_row(iIndex)
-        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][0].change_contents(stat.contact.id.to_s)
         worksheet[iIndex][1].change_contents(stat.contact.name)
         worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
         worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
@@ -248,7 +248,7 @@ class ContactsController < ApplicationController
     ContactStat.where.not(contact_id: 1).where('buy_last_1_year > 0').order('buy_last_1_year desc').each do |stat|          
         # insert product
         worksheet.insert_row(iIndex)
-        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][0].change_contents(stat.contact.id.to_s)
         worksheet[iIndex][1].change_contents(stat.contact.name)
         worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
         worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
@@ -272,7 +272,7 @@ class ContactsController < ApplicationController
     ContactStat.where.not(contact_id: 1).where('buy_last_3_years > 0').order('buy_last_3_years desc').each do |stat|          
         # insert product
         worksheet.insert_row(iIndex)
-        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][0].change_contents(stat.contact.id.to_s)
         worksheet[iIndex][1].change_contents(stat.contact.name)
         worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
         worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)
@@ -296,7 +296,7 @@ class ContactsController < ApplicationController
     ContactStat.where.not(contact_id: 1).where('buy_all_time > 0').order('buy_all_time desc').each do |stat|          
         # insert product
         worksheet.insert_row(iIndex)
-        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][0].change_contents(stat.contact.id.to_s)
         worksheet[iIndex][1].change_contents(stat.contact.name)
         worksheet[iIndex][2].change_contents(stat.contact.tex_info_line)
         worksheet[iIndex][3].change_contents(stat.contact.agent_list_text)

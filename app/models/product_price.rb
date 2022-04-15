@@ -86,4 +86,9 @@ class ProductPrice < ActiveRecord::Base
   def update_product_cache_price
     self.product.update_cache_price if self.product.present?
   end
+
+  after_save :updateThcnInfo
+  def updateThcnInfo
+    self.product.updateThcnInfo
+  end
 end

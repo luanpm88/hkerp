@@ -310,7 +310,7 @@
 																						<%= p.text_field :part_id, :class => "width100 select2-ajax-products", data: products_path(format: "json"), value: part.part_id, text: !part.part.nil? ? part.part.display_name : "" %>
 																					 </div>
 																					 <div class="col-sm-3 col-md-3">
-																						  <%= p.select :quantity, options_for_select(1.upto(100).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
+																						  <%= p.select :quantity, options_for_select(1.upto(200).map { |u| [u, u] },part.quantity), {}, {:class => "width100 modern_select"} %>
 																					 </div>
 																				</div>
 																			 </div>

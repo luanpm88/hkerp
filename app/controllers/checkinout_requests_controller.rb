@@ -6,7 +6,7 @@ class CheckinoutRequestsController < ApplicationController
   # GET /checkinout_requests
   # GET /checkinout_requests.json
   def index
-    @checkinout_requests = CheckinoutRequest.where(user_id: current_user.id).order("check_time DESC")
+    @checkinout_requests = CheckinoutRequest.where(user_id: current_user.id).order("check_time DESC").limit(50)
   end
 
   # GET /checkinout_requests/1

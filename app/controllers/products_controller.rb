@@ -363,7 +363,7 @@ class ProductsController < ApplicationController
     
           # insert product
           worksheet.insert_row(iIndex)
-          worksheet[iIndex][0].change_contents(count)
+          worksheet[iIndex][0].change_contents(product.id.to_s)
           worksheet[iIndex][1].change_contents(product.category.name)
           worksheet[iIndex][2].change_contents(product.display_name_without_category)
           worksheet[iIndex][3].change_contents(e)
@@ -650,6 +650,7 @@ class ProductsController < ApplicationController
       "listed_price": product.listed_price,
       "fixed_name": product.fixed_name,
       "discount_percent": product.discount_percent,
+      "has_price": product.has_price,
     }
   end
 

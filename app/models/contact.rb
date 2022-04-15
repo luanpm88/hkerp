@@ -97,7 +97,7 @@ class Contact < ActiveRecord::Base
     actions_col = 6
     @records.each do |item|
       item = [
-              link_helper.link_to("<img width='60' src='#{item.logo(:thumb)}' />".html_safe, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name),
+              link_helper.link_to(("<img width='60' src='#{item.logo(:thumb)}' />").html_safe, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name) + ("<div style='text-align:center;background:#555;color:#fff;'>"+item.id.to_s+"</div>").html_safe,
               link_helper.link_to(item.name, {controller: "contacts", action: "edit", id: item.id, tab_page: 1}, class: "main-title tab_page", title: item.short_name)+item.html_info_line.html_safe,
               '<div class="text-center nowrap">'+item.city_name+"</div>",              
               item.agent_list_html,

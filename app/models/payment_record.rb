@@ -84,7 +84,7 @@ class PaymentRecord < ActiveRecord::Base
     end
     
     if type_name == 'tip'
-      if order.remain_tip != amount.to_f
+      if order.remain_tip.to_f != amount.to_f
         errors.add(:amount, "not valid")
       end
     end
