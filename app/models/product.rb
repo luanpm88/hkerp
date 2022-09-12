@@ -1410,12 +1410,12 @@ class Product < ActiveRecord::Base
        return true
     end
 
-    if product_price.supplier_id.nil?
-       return true
-    end
+    # if product_price.supplier_id.nil?
+    #    return true
+    # end
 
     # if empty stock for 30 days
-    if (stock <= 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 90)
+    if (stock <= 0 && !product_price.updated_at.nil? && (Time.now.to_date - product_price.updated_at.to_date).to_i >= 180)
       return true
     end
 
@@ -1423,7 +1423,7 @@ class Product < ActiveRecord::Base
   end
 
 
-  after_save :updateThcnInfo
+  # after_save :updateThcnInfo
   def updateThcnInfo
     begin
       logger.info('https://timhangcongnghe.com/hkerp/product-info/' + self.id.to_s)
@@ -1431,6 +1431,16 @@ class Product < ActiveRecord::Base
     rescue => e
       logger.error(e);
     end
+  end
+
+  def self.updateThcnInfoLast500
+    ProductPrice.order('updated_at desc').limit(500).each do |pp|
+      pp.product.updateThcnInfo
+    end
+  end
+
+  def is_new
+    return self.created_at > (Time.now - 30.days)
   end
 
 end

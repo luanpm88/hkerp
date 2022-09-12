@@ -1,6 +1,8 @@
 class ProductImagesController < ApplicationController
   before_action :set_product_image, only: [:image, :show, :edit, :update, :destroy]
 
+  before_action :authenticate_user!, except: [:image]
+
   # GET /product_images
   # GET /product_images.json
   def index

@@ -342,13 +342,13 @@
 			</li>
 
 
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
+		  <li style="display:none" <% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
 
-		  <li<% if ["payment_records"].include?(params[:controller]) && ["statistics"].include?(params[:action]) %> class="active"<% end %>>
+		  <li style="display:none" <% if ["payment_records"].include?(params[:controller]) && ["statistics"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
 
-		  <li<% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
+		  <li style="display:none" <% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
 			<%= link_to 'Stock Statistics', "accounting/statistic_stock?tab_page=1", class: "tab_page" %>
 		  </li>
 
@@ -455,7 +455,7 @@
 		    <li<% if params[:controller] == "categories" %> class="active"<% end %>><%= link_to 'Catgories', categories_url(tab_page:1), class: "tab_page" %></li>
 		    <li<% if params[:controller] == "manufacturers" %> class="active"<% end %>><%= link_to 'Manufacturers', manufacturers_url(tab_page:1), class: "tab_page" %></li>
 			<% if can? :statistics, Product %>
-				<li<% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url(tab_page:1), class: "tab_page" %></li>
+				<li <% if params[:controller] == "products" && params[:action] == "statistics" %> class="active"<% end %>><%= link_to 'Statistics', statistics_products_url(tab_page:1), class: "tab_page" %></li>
 			<% end %>
 			<% if can? :bhpv_connector, Product %>
 				<li<% if params[:controller] == "products" && params[:action] == "bhpv_connector" %> class="active"<% end %>><%= link_to 'BHPhotoVideo Connector', bhpv_connector_products_url(tab_page:1), class: "tab_page" %></li>

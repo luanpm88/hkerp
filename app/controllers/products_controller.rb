@@ -14,7 +14,8 @@ class ProductsController < ApplicationController
     :erp_set_sold_out,
     :erp_set_cache_thcn_url,
     :erp_set_cache_thcn_properties,
-    :erp_manufacturers_dataselect
+    :erp_manufacturers_dataselect,
+    :erp_stock_products,
   ]
   protect_from_forgery :except  => [:erp_connector]
   before_action :set_product, only: [:quick_update_price, :unsuspend, :suspend, :product_log, :ajax_product_prices, :trash, :do_combine_parts, :combine_parts, :do_update_price, :update_price, :show, :edit, :update, :destroy, :ajax_show]
@@ -163,6 +164,9 @@ class ProductsController < ApplicationController
     respond_to do |format|
       if @product.update(product_params)
         @product.update_price(params["product_prices"], current_user) if can? :update_public_price, @product
+
+        @product.updateThcnInfo
+        
         format.html { redirect_to params[:tab_page].present? ? {action: "edit", id: @product.id, tab_page: 1} : edit_product_path(@product), notice: 'Product was successfully updated.' }
         format.json { head :no_content }
       else
@@ -651,6 +655,8 @@ class ProductsController < ApplicationController
       "fixed_name": product.fixed_name,
       "discount_percent": product.discount_percent,
       "has_price": product.has_price,
+      "images": product.product_images.where.not(filename: nil).map{|i| i.image},
+      "brand_name": (product.manufacturer.present? and product.manufacturer.name.downcase != 'none' ? product.manufacturer.name : ''),
     }
   end
 
@@ -679,6 +685,8 @@ class ProductsController < ApplicationController
 
   def quick_update_price
     @product.update_price(params["product_prices"], current_user)
+
+    @product.updateThcnInfo
 
     render json: {
       price_col: @product.price_col(current_user),
@@ -716,6 +724,102 @@ class ProductsController < ApplicationController
   # BHPhotoVideo connector
   def bhpv_connector
     @list = params[:url].present? ? Product.bhpv_list(url: params[:url]) : []
+  end
+
+  def erp_stock_products
+    per_page = 20
+    page = params[:page].present? ? params[:page].to_i : 0
+
+    products = Product.joins(:categories).joins(:manufacturer)
+
+    #FILTERS
+    and_conds = []
+
+    #All data
+    data = params['data'].present? ? JSON.parse(params['data']) : {}
+
+    #keywords
+    if data["keywords"].present?
+      data["keywords"].each do |kw|
+        or_conds = []
+        kw[1].each do |cond|
+          #or_conds << "LOWER(#{cond[1]["name"]}) LIKE '%#{cond[1]["value"].downcase.strip}%'"
+          keyword = cond[1]["value"]
+          #or_conds << "(LOWER(products.cache_search) LIKE '%#{k.strip.downcase}%' OR products.cache_search LIKE '%#{k.strip}%')" if k.strip.present?
+          
+          and_conds_2 = []
+          keyword.split(" ").each do |k|
+            and_conds_2 << "(LOWER(products.cache_search) LIKE '%#{k.strip.downcase}%' OR products.cache_search LIKE '%#{k.strip}%')" if k.strip.present?
+          end
+          
+          or_conds << '('+and_conds_2.join(' AND ')+')'
+        end
+        and_conds << '('+or_conds.join(' OR ')+')'
+      end
+    end
+    
+    #filter
+    trashed = false
+    if data["filters"].present?
+      data["filters"].each do |kw|
+        or_conds = []
+        kw[1].each do |cond|
+          if cond[1]["name"] == 'stock'
+            or_conds << "(products.stock > 0)"
+          elsif cond[1]["name"] == 'out_of_date'
+            or_conds << "(products.cache_search) LIKE '%[out_of_date]%'"
+          elsif cond[1]["name"] == 'not_out_of_date'
+            or_conds << "(products.cache_search) NOT LIKE '%[out_of_date]%'"
+          elsif cond[1]["name"] == 'products.erp_price_updated'
+            or_conds << "(#{cond[1]["name"]} = '#{cond[1]["value"]}' AND products.erp_imported = true)"
+          else
+            or_conds << "#{cond[1]["name"]} = '#{cond[1]["value"]}'"
+          end
+    
+          if cond[1]["name"] == 'products.status'
+            trashed = true
+          end
+        end
+        and_conds << '('+or_conds.join(' OR ')+')'
+      end
+    end
+    
+    if !trashed
+      products = products.where(status: 1)
+    end
+
+    # conditions
+    products = products.where(and_conds.join(' AND ')) if !and_conds.empty?
+
+    # order
+      if data["sort_by"].present?
+        order = data["sort_by"]
+        order += " #{data["sort_direction"]}" if data["sort_direction"].present?
+
+        products = products.order(order)
+      end
+
+    render json: {
+      "products": (products.offset(per_page*page).limit(per_page).map {|item| {
+        "id": item.id,
+        "display_name": item.display_name,
+        "name": item.name,
+        "fixed_name": item.fixed_name,
+        "product_code": item.product_code,
+        "price": item.get_web_price,
+        "listed_price": item.listed_price,
+        "description": item.description,
+        "stock": item.calculated_stock,
+        "unit": item.unit,
+        "suspended": item.suspended,
+        "out_of_date": item.out_of_date,
+        "warranty": item.warranty,
+        "status": item.status,
+        "discount_percent": item.discount_percent,
+      }}),
+      "total": products.count('products.id'),
+      "per_page": per_page
+    }
   end
 
   private

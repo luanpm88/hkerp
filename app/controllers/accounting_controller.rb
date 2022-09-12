@@ -1,5 +1,8 @@
 class AccountingController < ApplicationController
   def order_export
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
     @params = YAML.load(File.read('report/report_' + params["report_hook"] + '.yml'))
     items = Order.get_query(@params, current_user)
     
@@ -272,6 +275,9 @@ class AccountingController < ApplicationController
   end
 
   def export
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
     @from_date = params[:from_date].present? ? params[:from_date].to_date : DateTime.now.beginning_of_month
     @to_date =  params[:to_date].present? ? params[:to_date].to_date.end_of_day : DateTime.now
     
@@ -408,6 +414,43 @@ class AccountingController < ApplicationController
           disposition: 'attachment'
       end
     end
+  end
+
+  def sales_by_category_export
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
+    @from_date = params[:from_date].present? ? params[:from_date].to_date : DateTime.now.beginning_of_month
+    @to_date =  params[:to_date].present? ? params[:to_date].to_date.end_of_day : DateTime.now
+    
+    workbook = RubyXL::Parser.parse('templates/sales_by_category_export.xlsx')      
+    groups = [
+      {worksheet: workbook[0], data: Order.sales_by_category(@from_date, @to_date, {without_kddi: true})},
+      {worksheet: workbook[1], data: Order.sales_by_category(@from_date, @to_date)},
+    ]
+
+    groups.each do |group|
+      worksheet = group[:worksheet]
+      data = group[:data]
+
+      # dates
+      worksheet[2][0].change_contents("Từ #{@from_date.strftime("%Y-%m-%d")} Đến #{@to_date.strftime("%Y-%m-%d")}")
+
+      #
+      worksheet[3][1].change_contents(data[:total])
+      worksheet[3][2].change_contents(data[:quantity])
+      data[:records].each_with_index do |record,index|
+        row = index + 5
+
+        worksheet[row][0].change_contents(record[:category].to_s)
+        worksheet[row][1].change_contents(record[:total])
+        worksheet[row][2].change_contents(record[:quantity])
+      end
+    end
+    
+    send_data workbook.stream.string,
+      filename: "sales_by_category_export_#{@from_date.strftime("%Y-%m-%d")}_#{@to_date.strftime("%Y-%m-%d")}.xlsx",
+      disposition: 'attachment'
   end
   
 end

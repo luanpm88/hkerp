@@ -1776,4 +1776,54 @@ class Order < ActiveRecord::Base
     self.update_column(:cache_search, str.join(" ") + " " + str.join(" ").unaccent)
   end
 
+  def self.sales_by_category(from_date=nil, to_date=nil, params = {})
+    # times
+    from_date = from_date.present? ? from_date.to_date : DateTime.now.beginning_of_month
+    to_date =  to_date.present? ? to_date.to_date.end_of_day : DateTime.now
+
+    result = {
+      from_date: from_date,
+      to_date: to_date,
+      total: 0,
+      quantity: 0,
+      records: []
+    }
+
+    # get categories
+    categories = Category.all
+
+    # wrong: Order.customer_orders.joins(:order_details).where(order_details: {product_id: Category.find(2).products.map(&:id)}).sum(:cache_total).to_f
+    # .to_a.sum(&:total).to_f
+    # OrderDetail.includes(:order => :order_statuses).where(order_statuses: {name: "finished"}).where("orders.supplier_id="+Contact.HK.id.to_s).where(orders: {parent_id: nil}).where(product_id: Category.find(2).products.map(&:id)).to_a.sum(&:total).to_f
+
+    categories.each_with_index do |c,index|
+      order_details = OrderDetail.includes(:order => :order_statuses, :product => :categories)
+        .where(order_statuses: {name: "finished"})
+        .where("orders.supplier_id="+Contact.HK.id.to_s)
+        .where(orders: {parent_id: nil})
+        .where(product_id: Category.find(c.id.to_s).products.map(&:id))
+        .where('orders.order_date >= ?', from_date.beginning_of_day)
+        .where('orders.order_date <= ?', to_date.end_of_day)
+
+      if params[:without_kddi].present?
+        order_details = order_details.where.not(orders: {customer_id: [58,486,62,862]})
+      end
+
+      row = {
+        category: c.name,
+        total: order_details.to_a.sum(&:total).to_f,
+        quantity: order_details.sum(:quantity)
+      }
+      if row[:total] > 0 and row[:quantity] > 0
+        result[:total] += row[:total]
+        result[:quantity] += row[:quantity]
+        result[:records] << row
+      end
+    end
+
+    result[:records] = result[:records].sort {|a,b| b[:total].to_i <=> a[:total].to_i}
+
+    return result
+  end
+
 end
