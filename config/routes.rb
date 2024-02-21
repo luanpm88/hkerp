@@ -222,6 +222,9 @@ Hkerp::Application.routes.draw do
 
       get :report
       post :report_export
+
+      post :report_not_buy_from
+      post :supplier_export
     end
   end
 
@@ -278,6 +281,10 @@ Hkerp::Application.routes.draw do
       get :refresh_price
       
       get :bhpv_connector
+
+      get :erp_stock_products
+
+      get :stock_report
     end
   end
 
@@ -295,11 +302,14 @@ Hkerp::Application.routes.draw do
       post :export
       
       get :order_export
+
+      post :sales_by_category_export
     end
   end
 
   get '/accountings', to: 'accounting#index', as: 'accountings'
   get '/accountings/orders', to: 'accounting#orders', as: 'orders_accountings'
+  # get '/contacts/:id/logo/:type.jpg', to: 'contacts#logo', as: 'contacts_logo'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

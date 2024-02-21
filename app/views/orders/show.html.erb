@@ -5,7 +5,16 @@
 <div class="show_order_page">
 	  <div style="margin-bottom: 5px;display: inline-block; width: 100%">
 			<div class="order_histories" style="float: right">
-			  <%= render_order_actions(@order, "big") %>
+                <div style="display:flex;align-items:center">
+                    <div class="" style="margin-right:5px"><%= render_order_actions(@order, "big") %></div>
+                    <div>
+                        <% if params[:language] == 'en' %>
+                            <%= link_to 'VI', {action: "show", id: @order.id, tab_page: 1}, :class => "btn btn-info" %>
+                        <% else %>
+                            <%= link_to 'EN', {action: "show", id: @order.id, tab_page: 1, language: 'en'}, :class => "btn btn-info" %>
+                        <% end %>
+                    </div>
+                </div>
 			</div>
 			
 			<div class="order_histories" style="float: left">
@@ -19,7 +28,11 @@
 			</div>
 	  </div>
 	  <br style="clear: both" />
-	  <%= render 'show' %>
+        <% if params[:language] == 'en' %>
+            <%= render 'show_en' %>
+        <% else %>
+            <%= render 'show' %>
+        <% end %>
 	  
 </div>
 <br style="clear: both" />

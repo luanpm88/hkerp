@@ -1,0 +1,143 @@
+--- !ruby/hash-with-ivars:ActionController::Parameters
+elements:
+  page: accounting
+  draw: '1'
+  columns: !ruby/hash-with-ivars:ActionController::Parameters
+    elements:
+      '0': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '0'
+          name: ''
+          searchable: 'true'
+          orderable: 'true'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '1': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '1'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '2': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '2'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '3': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '3'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '4': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '4'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '5': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '5'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '6': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '6'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '7': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '7'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+    ivars:
+      :@permitted: false
+  start: '0'
+  length: '10'
+  search: !ruby/hash-with-ivars:ActionController::Parameters
+    elements:
+      value: ''
+      regex: 'false'
+    ivars:
+      :@permitted: false
+  tip_status: ''
+  payment_status: ''
+  order_status: ''
+  customer_id: ''
+  year: ''
+  month: ''
+  day: ''
+  order_by: ''
+  order_by_cend: ''
+  report_hook: '1612433265_55'
+  _: '1612433267366'
+  controller: orders
+  action: datatable
+ivars:
+  :@permitted: false

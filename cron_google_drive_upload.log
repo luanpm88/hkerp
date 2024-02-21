@@ -1,4 +1,27 @@
-Uploading... /home/hoangkhang/hkerp/../backup/2022_02_10_013002_hkerp_production_db_source.zip
-2022_02_10_013002_hkerp_production_db_source.zip
-Deleting old backup... 2022_02_08_013003_hkerp_production_db_source.zip
-done
+Top level ::CompositeIO is deprecated, require 'multipart/post' and use `Multipart::Post::CompositeReadIO` instead!
+Top level ::Parts is deprecated, require 'multipart/post' and use `Multipart::Post::Parts` instead!
+/home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/faraday-0.17.4/lib/faraday/upload_io.rb:65: warning: constant ::UploadIO is deprecated
+/home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/faraday-0.17.4/lib/faraday/upload_io.rb:66: warning: constant ::Parts is deprecated
+Uploading... /home/hoangkhang/hkerp/../backup/2024_02_21_013002_hkerp_production_db_source.zip
+2024_02_21_013002_hkerp_production_db_source.zip
+/home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/http_command.rb:228:in `check_status': storageQuotaExceeded: The user's Drive storage quota has been exceeded. (Google::Apis::ClientError)
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/api_command.rb:117:in `check_status'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/http_command.rb:193:in `process_response'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/upload.rb:170:in `process_response'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/upload.rb:246:in `execute_once'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/http_command.rb:113:in `block (2 levels) in execute'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:61:in `block in retriable'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:56:in `times'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:56:in `retriable'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/http_command.rb:110:in `block in execute'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:61:in `block in retriable'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:56:in `times'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/retriable-3.1.2/lib/retriable.rb:56:in `retriable'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/http_command.rb:102:in `execute'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/lib/google/apis/core/base_service.rb:360:in `execute_or_queue_command'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google-api-client-0.32.1/generated/google/apis/drive_v3/service.rb:909:in `create_file'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google_drive-3.0.6/lib/google_drive/session.rb:675:in `upload_from_source'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google_drive-3.0.6/lib/google_drive/session.rb:562:in `upload_from_file'
+	from /home/hoangkhang/.rvm/gems/ruby-2.3.3/gems/google_drive-3.0.6/lib/google_drive/collection.rb:100:in `upload_from_file'
+	from /home/hoangkhang/hkerp/app/models/system.rb:188:in `upload_backup_to_google_drive'
+	from /home/hoangkhang/hkerp/cron_google_drive_upload.rb:8:in `<main>'

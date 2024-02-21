@@ -1,0 +1,6 @@
+---
+:datas: []
+:total_pay: 0.0
+:total_recieve: 0.0
+:begin: !ruby/object:BigDecimal 36:0.1951733773E8
+:end: !ruby/object:BigDecimal 36:0.1951733773E8

@@ -479,6 +479,113 @@ class ContactsController < ApplicationController
         disposition: 'attachment'
   end
 
+  def report_not_buy_from
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
+    authorize! :top_buyers, Contact
+
+    if params[:from_date].present?
+      @from_date = params[:from_date].to_date.beginning_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+    end
+
+    @contacts = Contact.customers_not_buy_from(@from_date.beginning_of_day)
+
+    puts @from_date
+    puts @contacts.count
+    
+    workbook = RubyXL::Parser.parse('templates/NotVisitContacts.xlsx')    
+    
+    # Last 6 months
+    worksheet = workbook[0]
+
+    # Begin
+    worksheet[0][0].change_contents("Khách hàng không mua hàng từ ngày #{@from_date.strftime("%Y-%m-%d")} đến nay")
+
+    iIndex = 4
+    count = 1
+    @contacts.each do |contact|       
+        last_order = contact.customer_orders
+          .where(parent_id: nil)
+          .where(order_status_name: ["confirmed","finished"])
+          .last
+      
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(contact.name)
+        worksheet[iIndex][2].change_contents(contact.email)
+        worksheet[iIndex][3].change_contents(contact.phone)
+        worksheet[iIndex][4].change_contents(contact.tex_info_line)
+        worksheet[iIndex][5].change_contents(contact.agent_list_text)
+        worksheet[iIndex][6].change_contents(contact.contact_stat.buy_all_time)
+        worksheet[iIndex][7].change_contents(
+          last_order.present? ? last_order.created_at.strftime("%F") : "N/A"
+        )
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+
+    worksheet[1][1].change_contents(@contacts.count)
+
+    worksheet.delete_row(3)
+    
+    send_data workbook.stream.string,
+        filename: "NotVisitContacts-#{@from_date.strftime("%Y-%m-%d")}.xlsx",
+        disposition: 'attachment'
+  end
+
+  def supplier_export
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
+    authorize! :top_buyers, Contact
+
+    @contacts = Contact.suppliers
+    
+    workbook = RubyXL::Parser.parse('templates/SupplierList.xlsx')    
+    
+    # Last 6 months
+    worksheet = workbook[0]
+
+    # Begin
+    worksheet[0][0].change_contents("Danh sách NCC")
+
+    iIndex = 4
+    count = 1
+    @contacts.each do |contact|       
+        last_order = contact.customer_orders
+          .where(parent_id: nil)
+          .where(order_status_name: ["confirmed","finished"])
+          .last
+      
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(contact.name)
+        worksheet[iIndex][2].change_contents(contact.email)
+        worksheet[iIndex][3].change_contents(contact.phone)
+        worksheet[iIndex][4].change_contents(contact.tex_info_line)
+        worksheet[iIndex][5].change_contents(contact.agent_list_text)
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+
+    worksheet[1][1].change_contents(@contacts.count)
+
+    worksheet.delete_row(3)
+    
+    send_data workbook.stream.string,
+        filename: "SupplierList.xlsx",
+        disposition: 'attachment'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_contact

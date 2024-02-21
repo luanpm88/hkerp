@@ -41,6 +41,10 @@ class Contact < ActiveRecord::Base
     self.where("contacts.contact_types_cache NOT LIKE '%[#{ContactType.supplier}]%'")
   end
 
+  def self.suppliers
+    self.where("contacts.contact_types_cache LIKE '%[#{ContactType.supplier}]%'")
+  end
+
   def self.datatable(params, user)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
     link_helper = ActionController::Base.helpers
@@ -476,6 +480,22 @@ class Contact < ActiveRecord::Base
     
     result.sum(:cache_total)
   end
+
+  def sell_amount(from_date=nil, to_date=nil)
+    result = purchase_orders
+      .joins(:order_status)
+      .where(order_statuses: {name: ["finished"]})
+      .where(parent_id: nil)
+    
+    if from_date.present?
+      result = result.where('order_date >= ?', from_date.beginning_of_day)
+    end
+    if to_date.present?
+      result = result.where('order_date <= ?', to_date.end_of_day)
+    end
+    
+    result.sum(:cache_total)
+  end
   
   def update_stats
     stat = self.contact_stat
@@ -500,5 +520,14 @@ class Contact < ActiveRecord::Base
     self.all.each do |c|
       c.update_stats
     end
+  end
+
+  def self.customers_not_buy_from(date)
+    return self.customers
+      .where.not(
+        id: Order.customer_orders.select(:customer_id)
+          .where('orders.created_at >= ?', date.beginning_of_day)          
+          .where(order_status_name: ["confirmed","finished"])
+      )
   end
 end

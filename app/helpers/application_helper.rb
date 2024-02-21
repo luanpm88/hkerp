@@ -178,6 +178,9 @@ module ApplicationHelper
       if can? :read, item
         actions += '<li>'+ActionController::Base.helpers.link_to('PDF', download_pdf_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end
+      if can? :read, item
+        actions += '<li>'+ActionController::Base.helpers.link_to('PDF (en)', download_pdf_orders_path(:id => item.id, :language => 'en'), :target => "_blank")+'</li>'
+      end
       if can? :print_order, item
         actions += '<li>'+ActionController::Base.helpers.link_to('Print Order (raw)', print_order_orders_path(:id => item.id), :target => "_blank")+'</li>'
       end

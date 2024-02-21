@@ -1,0 +1,18 @@
+current directory: /home/hoangkhang/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.7/ext/unf_ext
+/home/hoangkhang/.rvm/rubies/ruby-2.3.3/bin/ruby -I /home/hoangkhang/.rvm/rubies/ruby-2.3.3/lib/ruby/site_ruby/2.3.0 -r ./siteconf20210629-62768-1p1fpua.rb extconf.rb
+checking for main() in -lstdc++... yes
+creating Makefile
+
+current directory: /home/hoangkhang/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.7/ext/unf_ext
+make "DESTDIR=" clean
+
+current directory: /home/hoangkhang/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.7/ext/unf_ext
+make "DESTDIR="
+compiling unf.cc
+cc1plus: warning: command line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++
+cc1plus: warning: command line option ‘-Wimplicit-function-declaration’ is valid for C/ObjC but not for C++
+linking shared-object unf_ext.so
+
+current directory: /home/hoangkhang/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.7/ext/unf_ext
+make "DESTDIR=" install
+/usr/bin/install -m 0755 unf_ext.so ./.gem.20210629-62768-1286eaw

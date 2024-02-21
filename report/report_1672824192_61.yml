@@ -1,0 +1,146 @@
+--- !ruby/hash-with-ivars:ActionController::Parameters
+elements:
+  page: accounting
+  draw: '6'
+  columns: !ruby/hash-with-ivars:ActionController::Parameters
+    elements:
+      '0': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '0'
+          name: ''
+          searchable: 'true'
+          orderable: 'true'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '1': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '1'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '2': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '2'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '3': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '3'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '4': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '4'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '5': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '5'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '6': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '6'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+      '7': !ruby/hash-with-ivars:ActionController::Parameters
+        elements:
+          data: '7'
+          name: ''
+          searchable: 'true'
+          orderable: 'false'
+          search: !ruby/hash-with-ivars:ActionController::Parameters
+            elements:
+              value: ''
+              regex: 'false'
+            ivars:
+              :@permitted: false
+        ivars:
+          :@permitted: false
+    ivars:
+      :@permitted: false
+  start: '0'
+  length: '10'
+  search: !ruby/hash-with-ivars:ActionController::Parameters
+    elements:
+      value: 'HD Độ phân giải: 1920 x 1080 ( 16:9 ) Tần số quét: 60Hz Thời gian
+        phản hồi: 5 ms Độ sáng: 250 cd/m2 Góc nhìn: 178 (H) / 178 (V) kết nối:
+        cổng DisplayPort , HDMI kèm: cáp DisplayPort  Đơn giá: 5,270,000 + VAT 10%
+        (BH: 36 tháng)'
+      regex: 'false'
+    ivars:
+      :@permitted: false
+  tip_status: ''
+  payment_status: ''
+  order_status: ''
+  customer_id: ''
+  year: ''
+  month: ''
+  day: ''
+  order_by: ''
+  order_by_cend: ''
+  report_hook: '1672824192_61'
+  _: '1672824505216'
+  controller: orders
+  action: datatable
+ivars:
+  :@permitted: false

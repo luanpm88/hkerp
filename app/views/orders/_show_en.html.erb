@@ -1,0 +1,239 @@
+<div class="wrapper page" style="">
+
+
+
+
+<table class="cominfo">
+  <tr>
+    <% if @order.supplier == Contact.HK %>
+      <td rowspan="2" width="15%">
+        <img src="<%= params[:action] == "download_pdf" ? "file://"+@order.supplier.logo_path(:thumb2x) : @order.supplier.logo(:thumb2x) %>" width="170" style="margin-top: -10px;margin-right: 10px" valign="top" />
+      </td>
+    <% end %>
+    <td colspan="2">
+      <h2>HOANG KHANG INFORMATION AND COMMUNICATION TECHNOLOGY SOLUTIONS COMPANY LIMITED</h2>
+    </td>
+  </tr>
+    <% if @order.supplier == Contact.HK && params[:language] == 'en' %>
+        <tr>
+            <td>
+            <p>Address: 188 1 St., Ward 16, Go Vap Dist., HCM City; Vietnam</p>
+            
+            <p><span>Phone: </span><%= @order.supplier.phone %> - <span>Fax: </span><%= @order.supplier.fax %> - <span>Hotline: </span><%= @order.supplier.hotline %></p>
+            <p><span>Bank Account Number: </span><%= @order.supplier.account_number %> - <%= @order.supplier.bank %></p>
+            </td>
+            <td class="" valign="top">
+            <p><span>Tax Code: </span><%= @order.supplier.tax_code %></p>
+            <p><span>Email: </span><%= @order.supplier.email %></p>
+            <p><span>Website: </span><%= @order.supplier.website %></p>
+            </td>
+        </tr>
+    <% else %>
+        <tr>
+            <td>
+            <p><%= @order.supplier.full_address %></p>
+            
+            <p><span>ĐT: </span><%= @order.supplier.phone %> - <span>Fax: </span><%= @order.supplier.fax %> - <span>Hotline: </span><%= @order.supplier.hotline %></p>
+            <p><span>STK: </span><%= @order.supplier.account_number %> <%= @order.supplier.bank %></p>
+            </td>
+            <td class="" valign="top">
+            <p><span>MST: </span><%= @order.supplier.tax_code %></p>
+            <p><span>Email: </span><%= @order.supplier.email %></p>
+            <p><span>Website: </span><%= @order.supplier.website %></p>
+            </td>
+        </tr>
+    <% end %>
+</table>
+
+<table class="top-info" cellspacing="0">
+  <tr>
+    <td class="maintitle" align="center" style="padding-bottom: 30px;">
+      <h1>
+        <%= @order.display_title_en %>
+      </h1>
+    </td>
+    <td class="mid middle1" style="padding-bottom: 30px;">
+      <p><label>Date: </label><%= @order.order_date.strftime("%d/%m/%Y") %></p>
+      <p><label>Validity date: </label><%= @order.order_deadline.strftime("%d/%m/%Y") %></p>
+      <p style="white-space: nowrap"><label>Quote Number: </label><%= @order.quotation_code %></p>
+      <p style="white-space: nowrap"><label>Order Number: </label><%= @order.printed_order_number %></p>
+      <p style="white-space: nowrap"><label>PO: </label><%= @order.customer_po %></p>
+    </td>
+  </tr>
+  <tr>
+    <td class="mid middle2" width="70%" style="padding-top: 5px;border-top: solid 0px #000">
+      <p><label style="white-space:nowrap">Buyer: </label><%= @order.buyer_name %></p>
+      <p><label style="white-space:nowrap">Customer: </label><%= @order.buyer_company %></p>
+      <p><label style="white-space:nowrap">Tax.code: </label><%= @order.buyer_tax_code %></p>
+      <p><label>Address: </label><span><%= @order.buyer_address %></span></p>
+    </td>
+    <td class="mid middle3" style="padding-top: 5px;border-top: solid 0px #000" valign="top">
+      <p style="color: #fff">.</p>
+      <p><label>Email: </label><%= @order.buyer_email %></p>
+      <p><label>Phone: </label><%= @order.buyer_phone %></p>
+    </td>
+  </tr>
+</table>
+
+<p style="margin-bottom:0;">With reference to your value enquiry, we are pleased to quote under terms and conditions:</p>
+
+<table class="list" cellspacing="0">
+  <tr>
+    <th>No.</th>
+    <th width="55%" style="max-width: 50%;" width="40%" colspan="2">Description</th>
+    <th>Warranty</th>
+    <th>Quantity</th>
+    <th>Unit Price<br />(VNĐ)</th>
+    <th>Amount<br />(VNĐ)</th>
+    
+  </tr>
+  <tr class="num_note">
+    <td>(1)</td>
+    <td width="30%" colspan="2">(2)</td>
+    <td>(3)</td>
+    <td>(4)</td>
+    <td>(5)</td>
+    <td>(6) = (4) x (5)</td>
+  </tr>
+
+    <% if !@order.order_details.nil? %>
+      <% @count = 0 %>
+      <% @order.order_details.each do |order_detail| %>
+        <% @count = @count + 1 if order_detail.quantity > 0 %>
+          <tr class="quantity-<%= order_detail.quantity %>">
+            <td><%= @count %></td>
+            <td>
+              <% if !order_detail.product.product_image.nil? %>
+                <a class="fancybox_image" href="<%= order_detail.product.image %>.png">
+                  <img src="<%= params[:action] == "download_pdf" ? "file://"+order_detail.product.product_image.image_path(:thumb) : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+                </a>
+              <% else %>
+                  <img src="<%= params[:action] == "download_pdf" ? "file://"+Rails.root.to_s+"/public/img/photo.png" : order_detail.product.image(:thumb) %>" width="70" valign="top" />
+              <% end %>
+            </td>
+            <td style="text-align: left;">
+              
+              <%= order_detail.product_name %><br />
+              <%= order_detail.product_description %>
+            </td>
+            <td><%= order_detail.warranty %> (tháng)</td>
+            <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
+            <td style="text-align: right"><%= format_price(order_detail.price, true) %></td>
+            <td style="text-align: right"><%= format_price(order_detail.total, true) %></td>
+            
+          </tr>
+      <% end %>
+    <% end %>
+  
+  <tr>
+    <td colspan="6" style="text-align: right">TOTAL AMOUNT (VAT EXCLUDED)					</td>
+    <td style="text-align: right"><%= format_price(@order.total, true, true) %></td>
+
+  </tr>
+  
+  <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
+    <tr>
+      <td colspan="6" style="text-align: right">DISCOUNT</td>
+      <td style="text-align: right"><%= format_price(@order.discount_amount, true, true) %></td>
+  
+    </tr>
+  <% end %>
+  
+  <tr>
+    <td colspan="6" style="text-align: right">VAT AMOUNT (<%= @order.tax.name %>)</td>
+    <td style="text-align: right"><%= format_price(@order.vat_amount, true, true) %></td>
+
+  </tr>
+  
+  
+
+  <tr>
+    <td colspan="6" style="text-align: right">TOTAL PAYMENT (VAT INCLUDED)</td>
+    <td style="text-align: right"><%= format_price(@order.total_vat, true, true) %></td>
+
+  </tr>
+</table>
+
+
+<p></p><p></p>
+<p><strong>Commercial Terms:</strong></p>
+<p>
+  1.	100% new goods. Standard warranty of the manufacturer and Hoang Khang Incotech warranty stamp.				
+	
+</p>
+
+<p>
+  2.	<b>Delivery and warranty</b>: On-site in HCMC area.<% if !@order.warranty_cost.nil? && @order.warranty_cost != "0" && @order.warranty_cost != "" %>; Warranty Cost: <%= @order.formated_warranty_cost %> VNĐ <% end %>
+</p>
+<p>3.					
+   <b>Payment method</b>: Cash or Bank Transfer;																		
+   <b>Payment currency</b>: Vietnam Dong.												
+</p>
+<p class="paid-box">
+  <label>4.	<b>Payment terms</b>:</label>
+  We are require <%= @order.deposit if !@order.deposit.nil? %>% deposit or advance payment within 03 days after you received order confirmation.
+  <br />
+  
+  <% if !@order.deposit.nil? && 100 - @order.deposit > 0 %>
+    The remaining amount <%= 100 - @order.deposit %>%  must be paid within
+    <%
+    debt_days = !@order.debt_date.nil? ? (@order.debt_date.to_date - @order.order_date.to_date).to_i : 0
+    if debt_days > 0 %>
+      <%= (@order.debt_date.to_date - @order.order_date.to_date).to_i if !@order.debt_date.nil? %>
+    <% end %>
+    
+     days of receiving an invoice or the goods or service.
+  
+    
+  <% else %>
+    <br />
+  <% end %>
+</p>
+<p>
+  6. <b>Exchange rate:</b> apply the exchange rate at the time of payment. 						
+</p>
+<p>
+  7. <b>Delivery time:</b> payment conditions and agreements with the seller.		
+</p>
+<p>
+  8. <b>Delivery location:</b> <%= @order.shipping_place %>		
+</p>
+<p>- In case you cancel the order, we will not refund the deposit amount.		</p>					
+<p>- After receiving the delivery notice, if the customer has not paid the invoice on time, we do not commit to delivery on schedule even if the customer pays later.					</p>		
+
+<p>
+For more information, please contact us: Sales Department: (028) 3984 7690					
+</p>
+<p>
+  
+  <% if @order.is_purchase %>
+    Email:	<%= @order.purchaser.email %><% if !@order.purchaser.mobile.nil? %>; Phone:	<%= @order.purchaser.mobile %><% end %>		
+  <% else %>
+    Email:	<%= @order.salesperson.email %><% if !@order.salesperson.mobile.nil? %>; Phone:	<%= @order.salesperson.mobile %><% end %>		
+  <% end %>
+  
+</p>
+
+<p>
+  <b><i>Sincere thanks and best regards!</i></b>
+</p>
+		
+<p><br></p><p></p>
+<table>
+  <tr>
+
+      <td width="33%" align="center" valign="top">
+        <p><strong>CUSTOMER SIGNATURE</strong></p>
+        
+      </td>
+      <td width="33%" align="center" valign="top">
+        
+      </td>
+      <td width="33%" align="center" valign="top">
+        <p><strong>HOANG KHANG INCOTECH</strong></p>
+      </td>
+
+  </tr>
+</table>
+
+</div>

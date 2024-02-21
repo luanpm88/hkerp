@@ -1,0 +1,52 @@
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  Exclude:
+    - bin/**/*
+
+Style/StringLiterals:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 21
+
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*
+
+Layout/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': '[]'
+    '%W': '[]'
+
+Style/GuardClause:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: snake_case
+
+Bundler/OrderedGems:
+  Enabled: false
+
+Bundler/DuplicatedGem:
+  Enabled: false
+
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# Waiting on false positives to go away with:
+# https://github.com/bbatsov/rubocop/pull/5230
+Style/FormatStringToken:
+  Enabled: false

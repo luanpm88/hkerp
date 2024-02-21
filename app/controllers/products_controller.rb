@@ -432,7 +432,7 @@ class ProductsController < ApplicationController
           
           # insert product
           worksheet.insert_row(iIndex)
-          worksheet[iIndex][0].change_contents(count)
+          worksheet[iIndex][0].change_contents(product.id)
           worksheet[iIndex][1].change_contents(product.category.name)
           worksheet[iIndex][2].change_contents(product.display_name_without_category)
           worksheet[iIndex][3].change_contents(b)
@@ -477,6 +477,102 @@ class ProductsController < ApplicationController
           filename: "stocks.xlsx",
           disposition: 'attachment'
     end
+  end
+
+  def stock_report
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date.beginning_of_day
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now.end_of_day
+    end
+
+    @products = Product.stock_report(@from_date, @to_date).order("stock desc")
+
+    workbook = RubyXL::Parser.parse('templates/StockReport.xlsx')      
+    worksheet = workbook[0]      
+    # Begin
+    worksheet[0][0].change_contents("Tồn kho từ #{@from_date.strftime("%Y-%m-%d")} đến #{@to_date.strftime("%Y-%m-%d")}")
+    
+    count = 1
+    cat = nil
+    iIndex = 3
+    
+    total = {
+      b: 0,
+      b_price: 0,
+      purchase: 0,
+      sales: 0,
+      combine: 0,
+      io: 0,
+      e: 0,
+      e_price: 0,
+    }
+    
+    # @products = @products.where('stock > 0') if params[:remain].present?
+    @products.each do |product|
+        e = product.stock #product.calculated_stock(@to_date)
+        
+        purchase = 0 #product.import_count(@from_date, @to_date)
+        sales = 0 #product.export_count(@from_date, @to_date)
+        combine = 0 #product.combination_count(@from_date, @to_date)
+        io = 0 #product.stock_update_count(@from_date, @to_date)          
+      
+      if true
+        b = 0 #product.calculated_stock((@from_date - 1.day).end_of_day)
+        e_price = 0 #product.cost_price(@from_date).to_f * e
+        b_price = 0 #product.cost_price(@from_date).to_f * b
+        
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(product.id)
+        worksheet[iIndex][1].change_contents(product.category.name)
+        worksheet[iIndex][2].change_contents(product.display_name_without_category)
+        worksheet[iIndex][3].change_contents(b)
+        worksheet[iIndex][4].change_contents(b_price)
+        worksheet[iIndex][5].change_contents(purchase)
+        worksheet[iIndex][6].change_contents(-sales)
+        worksheet[iIndex][7].change_contents(combine)
+        worksheet[iIndex][8].change_contents(io)
+        worksheet[iIndex][9].change_contents(e)
+        worksheet[iIndex][10].change_contents(e_price)
+        
+        # total
+        total[:b_price] += b_price
+        total[:b] += b
+        total[:purchase] += purchase
+        total[:sales] += sales
+        total[:combine] += combine
+        total[:io] += io
+        total[:e] += e
+        total[:e_price] += e_price
+        
+        # increment count
+        count += 1
+        iIndex += 1
+      end
+    end
+    
+    worksheet.delete_row(2)
+    worksheet.delete_row(iIndex-1)
+    
+    # total
+    worksheet[0][3].change_contents(total[:b])
+    worksheet[0][4].change_contents(total[:b_price])
+    worksheet[0][5].change_contents(total[:purchase])
+    worksheet[0][6].change_contents(total[:sales])
+    worksheet[0][7].change_contents(total[:combine])
+    worksheet[0][8].change_contents(total[:io])
+    worksheet[0][9].change_contents(total[:e])
+    worksheet[0][10].change_contents(total[:e_price])
+    
+    send_data workbook.stream.string,
+        filename: "stocks.xlsx",
+        disposition: 'attachment'
   end
 
   def ajax_product_prices

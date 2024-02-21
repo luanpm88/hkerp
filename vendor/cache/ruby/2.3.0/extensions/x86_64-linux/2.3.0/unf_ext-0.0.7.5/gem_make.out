@@ -1,0 +1,18 @@
+current directory: /home/hkerp/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.5/ext/unf_ext
+/usr/local/rvm/rubies/ruby-2.3.3/bin/ruby -r ./siteconf20200807-32525-1a5lzmd.rb extconf.rb
+checking for main() in -lstdc++... yes
+creating Makefile
+
+current directory: /home/hkerp/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.5/ext/unf_ext
+make "DESTDIR=" clean
+
+current directory: /home/hkerp/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.5/ext/unf_ext
+make "DESTDIR="
+compiling unf.cc
+cc1plus: warning: command line option ‘-Wdeclaration-after-statement’ is valid for C/ObjC but not for C++
+cc1plus: warning: command line option ‘-Wimplicit-function-declaration’ is valid for C/ObjC but not for C++
+linking shared-object unf_ext.so
+
+current directory: /home/hkerp/hkerp/vendor/cache/ruby/2.3.0/gems/unf_ext-0.0.7.5/ext/unf_ext
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 unf_ext.so ./.gem.20200807-32525-1pt69y2

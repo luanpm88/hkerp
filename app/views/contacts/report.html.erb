@@ -15,42 +15,84 @@
 
 <div class="grid simple ">
     <div class="grid-body no-border filters" method="get">
-    <h2>New Contacts Report</h2>
-    <form method="POST" action="<%= url_for({controller: "contacts", action: "report_export"})%>" target="_blank">
-        <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-        <div class="row">
-            <div class="col-md-3">
-                <h4>From Date</h4>
-                <div class="date_select_filter">
-                <div class="input-with-icon  right">
-                    <div class="input-append success date col-md-10 no-padding">
-                        <%= text_field_tag :from_date, (Time.now - 1.month).strftime("%Y-%m-%d"), :class => "datetime form-control" %>
-                        <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+        <h2>New Contacts Report</h2>
+        <form method="POST" action="<%= url_for({controller: "contacts", action: "report_export"})%>" target="_blank">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>From Date</h4>
+                    <div class="date_select_filter">
+                    <div class="input-with-icon  right">
+                        <div class="input-append success date col-md-10 no-padding">
+                            <%= text_field_tag :from_date, (Time.now - 1.month).strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>
+                        <br style="clear: both" />
+                        
                     </div>
-                    <br style="clear: both" />
-                    
-                </div>
-                </div>
-            </div>
-            <div class="col-md-3">
-                <h4>To Date</h4>
-                <div class="date_select_filter">
-                <div class="input-with-icon  right">
-                    <div class="input-append success date col-md-10 no-padding">
-                        <%= text_field_tag :to_date, Time.now.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
-                        <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
                     </div>
-                    <br style="clear: both" />
-                    
                 </div>
+                <div class="col-md-3">
+                    <h4>To Date</h4>
+                    <div class="date_select_filter">
+                    <div class="input-with-icon  right">
+                        <div class="input-append success date col-md-10 no-padding">
+                            <%= text_field_tag :to_date, Time.now.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>
+                        <br style="clear: both" />
+                        
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="padding-top:42px">
+                        <button type="submit" class="btn btn-primary btn-cons">Export</button>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div style="padding-top:42px">
-                    <button type="submit" class="btn btn-primary btn-cons">Export</button>
-                </div>
-            </div>
-        </div>
-    </form>
+        </form>
     </div>		    
+<br><br><br>
+    <div class="grid-body no-border filters" method="get">
+        <h2>Customers not buy from</h2>
+        <form method="POST" action="<%= url_for({controller: "contacts", action: "report_not_buy_from"})%>" target="_blank">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <div class="row">
+                <div class="col-md-3">
+                    <h4>From Date</h4>
+                    <div class="date_select_filter">
+                    <div class="input-with-icon  right">
+                        <div class="input-append success date col-md-10 no-padding">
+                            <%= text_field_tag :from_date, '2022-07-01'.to_date.strftime("%Y-%m-%d"), :class => "datetime form-control" %>
+                            <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                        </div>
+                        <br style="clear: both" />
+                        
+                    </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div style="padding-top:42px">
+                        <button type="submit" class="btn btn-primary btn-cons">Export</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>		 
+
+<br><br><br>
+    <div class="grid-body no-border filters" method="get">
+        <h2>Export all Suppliers</h2>
+        <form method="POST" action="<%= url_for({controller: "contacts", action: "supplier_export"})%>" target="_blank">
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <div class="row">
+                <div class="col-md-3">
+                    <div style="padding-top:42px">
+                        <button type="submit" class="btn btn-primary btn-cons">Export</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>	   
 </div>

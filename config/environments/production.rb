@@ -3,6 +3,8 @@ Hkerp::Application.configure do
 
   # Code is not reloaded between requests.
   config.cache_classes = true
+  
+  # config.force_ssl = true
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both thread web servers
@@ -12,7 +14,7 @@ Hkerp::Application.configure do
 
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
-  config.action_controller.perform_caching = true
+  config.action_controller.perform_caching = false
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.
@@ -90,4 +92,6 @@ Hkerp::Application.configure do
     :authentication       => "plain",
     :enable_starttls_auto => true
   }
+
+  config.logger = ActiveSupport::Logger.new(config.paths['log'].first, 1, 50 * 1024 * 1024)
 end

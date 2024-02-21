@@ -2,34 +2,26 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
+-- Dumped by pg_dump version 12.12 (Ubuntu 12.12-0ubuntu0.20.04.1)
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SELECT pg_catalog.set_config('search_path', '', false);
 SET check_function_bodies = false;
+SET xmloption = content;
 SET client_min_messages = warning;
-
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
+SET row_security = off;
 
 SET default_tablespace = '';
 
-SET default_with_oids = false;
+SET default_table_access_method = heap;
 
 --
--- Name: agents_contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: agents_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.agents_contacts (
@@ -61,7 +53,7 @@ ALTER SEQUENCE public.agents_contacts_id_seq OWNED BY public.agents_contacts.id;
 
 
 --
--- Name: articles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: articles; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.articles (
@@ -99,7 +91,7 @@ ALTER SEQUENCE public.articles_id_seq OWNED BY public.articles.id;
 
 
 --
--- Name: assignments; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: assignments; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.assignments (
@@ -131,7 +123,7 @@ ALTER SEQUENCE public.assignments_id_seq OWNED BY public.assignments.id;
 
 
 --
--- Name: autotask_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: autotask_details; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.autotask_details (
@@ -163,7 +155,7 @@ ALTER SEQUENCE public.autotask_details_id_seq OWNED BY public.autotask_details.i
 
 
 --
--- Name: autotasks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: autotasks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.autotasks (
@@ -195,7 +187,7 @@ ALTER SEQUENCE public.autotasks_id_seq OWNED BY public.autotasks.id;
 
 
 --
--- Name: bank_accounts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: bank_accounts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.bank_accounts (
@@ -227,7 +219,7 @@ ALTER SEQUENCE public.bank_accounts_id_seq OWNED BY public.bank_accounts.id;
 
 
 --
--- Name: carts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: carts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.carts (
@@ -257,7 +249,7 @@ ALTER SEQUENCE public.carts_id_seq OWNED BY public.carts.id;
 
 
 --
--- Name: categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: categories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.categories (
@@ -293,7 +285,7 @@ ALTER SEQUENCE public.categories_id_seq OWNED BY public.categories.id;
 
 
 --
--- Name: categories_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: categories_menus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.categories_menus (
@@ -303,7 +295,7 @@ CREATE TABLE public.categories_menus (
 
 
 --
--- Name: categories_products; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: categories_products; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.categories_products (
@@ -313,7 +305,7 @@ CREATE TABLE public.categories_products (
 
 
 --
--- Name: checkinout_requests; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: checkinout_requests; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.checkinout_requests (
@@ -348,7 +340,7 @@ ALTER SEQUENCE public.checkinout_requests_id_seq OWNED BY public.checkinout_requ
 
 
 --
--- Name: checkinouts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: checkinouts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.checkinouts (
@@ -383,7 +375,7 @@ ALTER SEQUENCE public.checkinouts_id_seq OWNED BY public.checkinouts.id;
 
 
 --
--- Name: cities; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: cities; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.cities (
@@ -416,7 +408,7 @@ ALTER SEQUENCE public.cities_id_seq OWNED BY public.cities.id;
 
 
 --
--- Name: city_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: city_types; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.city_types (
@@ -447,7 +439,7 @@ ALTER SEQUENCE public.city_types_id_seq OWNED BY public.city_types.id;
 
 
 --
--- Name: combination_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: combination_details; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.combination_details (
@@ -483,7 +475,7 @@ ALTER SEQUENCE public.combination_details_id_seq OWNED BY public.combination_det
 
 
 --
--- Name: combinations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: combinations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.combinations (
@@ -520,7 +512,7 @@ ALTER SEQUENCE public.combinations_id_seq OWNED BY public.combinations.id;
 
 
 --
--- Name: commission_programs; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: commission_programs; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.commission_programs (
@@ -560,7 +552,7 @@ ALTER SEQUENCE public.commission_programs_id_seq OWNED BY public.commission_prog
 
 
 --
--- Name: contact_stats; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_stats; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.contact_stats (
@@ -595,7 +587,7 @@ ALTER SEQUENCE public.contact_stats_id_seq OWNED BY public.contact_stats.id;
 
 
 --
--- Name: contact_types; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_types; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.contact_types (
@@ -607,7 +599,7 @@ CREATE TABLE public.contact_types (
 
 
 --
--- Name: contact_types_contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_types_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.contact_types_contacts (
@@ -658,7 +650,7 @@ ALTER SEQUENCE public.contact_types_id_seq OWNED BY public.contact_types.id;
 
 
 --
--- Name: contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: contacts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.contacts (
@@ -712,7 +704,7 @@ ALTER SEQUENCE public.contacts_id_seq OWNED BY public.contacts.id;
 
 
 --
--- Name: countries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: countries; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.countries (
@@ -743,7 +735,7 @@ ALTER SEQUENCE public.countries_id_seq OWNED BY public.countries.id;
 
 
 --
--- Name: customer_order_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_order_details; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.customer_order_details (
@@ -777,7 +769,7 @@ ALTER SEQUENCE public.customer_order_details_id_seq OWNED BY public.customer_ord
 
 
 --
--- Name: customer_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_orders; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.customer_orders (
@@ -818,7 +810,7 @@ ALTER SEQUENCE public.customer_orders_id_seq OWNED BY public.customer_orders.id;
 
 
 --
--- Name: deliveries; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: deliveries; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.deliveries (
@@ -855,7 +847,7 @@ ALTER SEQUENCE public.deliveries_id_seq OWNED BY public.deliveries.id;
 
 
 --
--- Name: delivery_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: delivery_details; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.delivery_details (
@@ -890,7 +882,7 @@ ALTER SEQUENCE public.delivery_details_id_seq OWNED BY public.delivery_details.i
 
 
 --
--- Name: feedbacks; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.feedbacks (
@@ -925,7 +917,7 @@ ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
 
 
 --
--- Name: line_items; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: line_items; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.line_items (
@@ -958,7 +950,7 @@ ALTER SEQUENCE public.line_items_id_seq OWNED BY public.line_items.id;
 
 
 --
--- Name: logins; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: logins; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.logins (
@@ -998,7 +990,7 @@ ALTER SEQUENCE public.logins_id_seq OWNED BY public.logins.id;
 
 
 --
--- Name: manages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: manages; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.manages (
@@ -1028,7 +1020,7 @@ ALTER SEQUENCE public.manages_id_seq OWNED BY public.manages.id;
 
 
 --
--- Name: manufacturers; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: manufacturers; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.manufacturers (
@@ -1062,7 +1054,7 @@ ALTER SEQUENCE public.manufacturers_id_seq OWNED BY public.manufacturers.id;
 
 
 --
--- Name: menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: menus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.menus (
@@ -1101,7 +1093,7 @@ ALTER SEQUENCE public.menus_id_seq OWNED BY public.menus.id;
 
 
 --
--- Name: messages; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: messages; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.messages (
@@ -1135,7 +1127,7 @@ ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
 
 
 --
--- Name: newsletters; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: newsletters; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.newsletters (
@@ -1166,7 +1158,7 @@ ALTER SEQUENCE public.newsletters_id_seq OWNED BY public.newsletters.id;
 
 
 --
--- Name: notifications; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: notifications; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.notifications (
@@ -1205,7 +1197,7 @@ ALTER SEQUENCE public.notifications_id_seq OWNED BY public.notifications.id;
 
 
 --
--- Name: order_details; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: order_details; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.order_details (
@@ -1247,7 +1239,7 @@ ALTER SEQUENCE public.order_details_id_seq OWNED BY public.order_details.id;
 
 
 --
--- Name: order_statuses; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: order_statuses; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.order_statuses (
@@ -1279,7 +1271,7 @@ ALTER SEQUENCE public.order_statuses_id_seq OWNED BY public.order_statuses.id;
 
 
 --
--- Name: order_statuses_orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: order_statuses_orders; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.order_statuses_orders (
@@ -1312,7 +1304,7 @@ ALTER SEQUENCE public.order_statuses_orders_id_seq OWNED BY public.order_statuse
 
 
 --
--- Name: orders; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: orders; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.orders (
@@ -1387,7 +1379,7 @@ ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
 
 
 --
--- Name: parent_categories; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_categories; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.parent_categories (
@@ -1417,7 +1409,7 @@ ALTER SEQUENCE public.parent_categories_id_seq OWNED BY public.parent_categories
 
 
 --
--- Name: parent_contacts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_contacts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.parent_contacts (
@@ -1447,7 +1439,7 @@ ALTER SEQUENCE public.parent_contacts_id_seq OWNED BY public.parent_contacts.id;
 
 
 --
--- Name: parent_menus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_menus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.parent_menus (
@@ -1479,7 +1471,7 @@ ALTER SEQUENCE public.parent_menus_id_seq OWNED BY public.parent_menus.id;
 
 
 --
--- Name: partners; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: partners; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.partners (
@@ -1511,7 +1503,7 @@ ALTER SEQUENCE public.partners_id_seq OWNED BY public.partners.id;
 
 
 --
--- Name: payment_methods; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_methods; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.payment_methods (
@@ -1543,7 +1535,7 @@ ALTER SEQUENCE public.payment_methods_id_seq OWNED BY public.payment_methods.id;
 
 
 --
--- Name: payment_records; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_records; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.payment_records (
@@ -1589,7 +1581,7 @@ ALTER SEQUENCE public.payment_records_id_seq OWNED BY public.payment_records.id;
 
 
 --
--- Name: product_images; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: product_images; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.product_images (
@@ -1622,7 +1614,7 @@ ALTER SEQUENCE public.product_images_id_seq OWNED BY public.product_images.id;
 
 
 --
--- Name: product_infos; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: product_infos; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.product_infos (
@@ -1665,7 +1657,7 @@ ALTER SEQUENCE public.product_infos_id_seq OWNED BY public.product_infos.id;
 
 
 --
--- Name: product_parts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: product_parts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.product_parts (
@@ -1698,7 +1690,7 @@ ALTER SEQUENCE public.product_parts_id_seq OWNED BY public.product_parts.id;
 
 
 --
--- Name: product_prices; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: product_prices; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.product_prices (
@@ -1735,7 +1727,7 @@ ALTER SEQUENCE public.product_prices_id_seq OWNED BY public.product_prices.id;
 
 
 --
--- Name: product_stock_updates; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: product_stock_updates; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.product_stock_updates (
@@ -1771,7 +1763,7 @@ ALTER SEQUENCE public.product_stock_updates_id_seq OWNED BY public.product_stock
 
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: products; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.products (
@@ -1812,7 +1804,9 @@ CREATE TABLE public.products (
     cache_price numeric,
     in_use boolean DEFAULT true,
     cache_recent_supplier_ids text,
-    is_manual_cost boolean DEFAULT false
+    is_manual_cost boolean DEFAULT false,
+    fixed_name character varying,
+    listed_price numeric(16,2)
 );
 
 
@@ -1836,7 +1830,7 @@ ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
 
 
 --
--- Name: roles; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: roles; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.roles (
@@ -1867,7 +1861,7 @@ ALTER SEQUENCE public.roles_id_seq OWNED BY public.roles.id;
 
 
 --
--- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.schema_migrations (
@@ -1876,7 +1870,7 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: slide_shows; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: slide_shows; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.slide_shows (
@@ -1910,7 +1904,7 @@ ALTER SEQUENCE public.slide_shows_id_seq OWNED BY public.slide_shows.id;
 
 
 --
--- Name: states; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: states; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.states (
@@ -1942,7 +1936,7 @@ ALTER SEQUENCE public.states_id_seq OWNED BY public.states.id;
 
 
 --
--- Name: tags; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tags; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tags (
@@ -1974,7 +1968,7 @@ ALTER SEQUENCE public.tags_id_seq OWNED BY public.tags.id;
 
 
 --
--- Name: taxes; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: taxes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.taxes (
@@ -2006,7 +2000,7 @@ ALTER SEQUENCE public.taxes_id_seq OWNED BY public.taxes.id;
 
 
 --
--- Name: tmpcats; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpcats; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tmpcats (
@@ -2058,7 +2052,7 @@ ALTER SEQUENCE public.tmpcats_id_seq OWNED BY public.tmpcats.id;
 
 
 --
--- Name: tmpmanus; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpmanus; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tmpmanus (
@@ -2109,7 +2103,7 @@ ALTER SEQUENCE public.tmpmanus_id_seq OWNED BY public.tmpmanus.id;
 
 
 --
--- Name: tmpproducts; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpproducts; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tmpproducts (
@@ -2184,7 +2178,7 @@ ALTER SEQUENCE public.tmpproducts_id_seq OWNED BY public.tmpproducts.id;
 
 
 --
--- Name: tmpproducttocats; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpproducttocats; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.tmpproducttocats (
@@ -2217,7 +2211,7 @@ ALTER SEQUENCE public.tmpproducttocats_id_seq OWNED BY public.tmpproducttocats.i
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.users (
@@ -2264,420 +2258,420 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: agents_contacts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.agents_contacts ALTER COLUMN id SET DEFAULT nextval('public.agents_contacts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: articles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.articles ALTER COLUMN id SET DEFAULT nextval('public.articles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: assignments id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.assignments ALTER COLUMN id SET DEFAULT nextval('public.assignments_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: autotask_details id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autotask_details ALTER COLUMN id SET DEFAULT nextval('public.autotask_details_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: autotasks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autotasks ALTER COLUMN id SET DEFAULT nextval('public.autotasks_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: bank_accounts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bank_accounts ALTER COLUMN id SET DEFAULT nextval('public.bank_accounts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: carts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.carts ALTER COLUMN id SET DEFAULT nextval('public.carts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.categories ALTER COLUMN id SET DEFAULT nextval('public.categories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: checkinout_requests id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.checkinout_requests ALTER COLUMN id SET DEFAULT nextval('public.checkinout_requests_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: checkinouts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.checkinouts ALTER COLUMN id SET DEFAULT nextval('public.checkinouts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: cities id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cities ALTER COLUMN id SET DEFAULT nextval('public.cities_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: city_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.city_types ALTER COLUMN id SET DEFAULT nextval('public.city_types_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: combination_details id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.combination_details ALTER COLUMN id SET DEFAULT nextval('public.combination_details_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: combinations id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.combinations ALTER COLUMN id SET DEFAULT nextval('public.combinations_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: commission_programs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.commission_programs ALTER COLUMN id SET DEFAULT nextval('public.commission_programs_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contact_stats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_stats ALTER COLUMN id SET DEFAULT nextval('public.contact_stats_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contact_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_types ALTER COLUMN id SET DEFAULT nextval('public.contact_types_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contact_types_contacts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_types_contacts ALTER COLUMN id SET DEFAULT nextval('public.contact_types_contacts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: contacts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contacts ALTER COLUMN id SET DEFAULT nextval('public.contacts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: countries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.countries ALTER COLUMN id SET DEFAULT nextval('public.countries_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customer_order_details id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customer_order_details ALTER COLUMN id SET DEFAULT nextval('public.customer_order_details_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: customer_orders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customer_orders ALTER COLUMN id SET DEFAULT nextval('public.customer_orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: deliveries id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.deliveries ALTER COLUMN id SET DEFAULT nextval('public.deliveries_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: delivery_details id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.delivery_details ALTER COLUMN id SET DEFAULT nextval('public.delivery_details_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: line_items id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.line_items ALTER COLUMN id SET DEFAULT nextval('public.line_items_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: logins id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.logins ALTER COLUMN id SET DEFAULT nextval('public.logins_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: manages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.manages ALTER COLUMN id SET DEFAULT nextval('public.manages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: manufacturers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.manufacturers ALTER COLUMN id SET DEFAULT nextval('public.manufacturers_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: menus id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.menus ALTER COLUMN id SET DEFAULT nextval('public.menus_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: messages id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.messages_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: newsletters id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.newsletters ALTER COLUMN id SET DEFAULT nextval('public.newsletters_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: notifications id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.notifications ALTER COLUMN id SET DEFAULT nextval('public.notifications_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: order_details id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_details ALTER COLUMN id SET DEFAULT nextval('public.order_details_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: order_statuses id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_statuses ALTER COLUMN id SET DEFAULT nextval('public.order_statuses_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: order_statuses_orders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_statuses_orders ALTER COLUMN id SET DEFAULT nextval('public.order_statuses_orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: parent_categories id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_categories ALTER COLUMN id SET DEFAULT nextval('public.parent_categories_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: parent_contacts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_contacts ALTER COLUMN id SET DEFAULT nextval('public.parent_contacts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: parent_menus id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_menus ALTER COLUMN id SET DEFAULT nextval('public.parent_menus_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: partners id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.partners ALTER COLUMN id SET DEFAULT nextval('public.partners_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: payment_methods id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_methods ALTER COLUMN id SET DEFAULT nextval('public.payment_methods_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: payment_records id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_records ALTER COLUMN id SET DEFAULT nextval('public.payment_records_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: product_images id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_images ALTER COLUMN id SET DEFAULT nextval('public.product_images_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: product_infos id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_infos ALTER COLUMN id SET DEFAULT nextval('public.product_infos_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: product_parts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_parts ALTER COLUMN id SET DEFAULT nextval('public.product_parts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: product_prices id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_prices ALTER COLUMN id SET DEFAULT nextval('public.product_prices_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: product_stock_updates id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_stock_updates ALTER COLUMN id SET DEFAULT nextval('public.product_stock_updates_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: roles id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.roles ALTER COLUMN id SET DEFAULT nextval('public.roles_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: slide_shows id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.slide_shows ALTER COLUMN id SET DEFAULT nextval('public.slide_shows_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: states id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.states ALTER COLUMN id SET DEFAULT nextval('public.states_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tags id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tags ALTER COLUMN id SET DEFAULT nextval('public.tags_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: taxes id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.taxes ALTER COLUMN id SET DEFAULT nextval('public.taxes_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tmpcats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpcats ALTER COLUMN id SET DEFAULT nextval('public.tmpcats_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tmpmanus id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpmanus ALTER COLUMN id SET DEFAULT nextval('public.tmpmanus_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tmpproducts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpproducts ALTER COLUMN id SET DEFAULT nextval('public.tmpproducts_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: tmpproducttocats id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpproducttocats ALTER COLUMN id SET DEFAULT nextval('public.tmpproducttocats_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
 
 
 --
--- Name: agents_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: agents_contacts agents_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.agents_contacts
@@ -2685,7 +2679,7 @@ ALTER TABLE ONLY public.agents_contacts
 
 
 --
--- Name: articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: articles articles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.articles
@@ -2693,7 +2687,7 @@ ALTER TABLE ONLY public.articles
 
 
 --
--- Name: assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: assignments assignments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.assignments
@@ -2701,7 +2695,7 @@ ALTER TABLE ONLY public.assignments
 
 
 --
--- Name: autotask_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: autotask_details autotask_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autotask_details
@@ -2709,7 +2703,7 @@ ALTER TABLE ONLY public.autotask_details
 
 
 --
--- Name: autotasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: autotasks autotasks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.autotasks
@@ -2717,7 +2711,7 @@ ALTER TABLE ONLY public.autotasks
 
 
 --
--- Name: bank_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: bank_accounts bank_accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.bank_accounts
@@ -2725,7 +2719,7 @@ ALTER TABLE ONLY public.bank_accounts
 
 
 --
--- Name: carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: carts carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.carts
@@ -2733,7 +2727,7 @@ ALTER TABLE ONLY public.carts
 
 
 --
--- Name: categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.categories
@@ -2741,7 +2735,7 @@ ALTER TABLE ONLY public.categories
 
 
 --
--- Name: checkinout_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: checkinout_requests checkinout_requests_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.checkinout_requests
@@ -2749,7 +2743,7 @@ ALTER TABLE ONLY public.checkinout_requests
 
 
 --
--- Name: checkinouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: checkinouts checkinouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.checkinouts
@@ -2757,7 +2751,7 @@ ALTER TABLE ONLY public.checkinouts
 
 
 --
--- Name: cities_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: cities cities_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.cities
@@ -2765,7 +2759,7 @@ ALTER TABLE ONLY public.cities
 
 
 --
--- Name: city_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: city_types city_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.city_types
@@ -2773,7 +2767,7 @@ ALTER TABLE ONLY public.city_types
 
 
 --
--- Name: combination_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: combination_details combination_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.combination_details
@@ -2781,7 +2775,7 @@ ALTER TABLE ONLY public.combination_details
 
 
 --
--- Name: combinations_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: combinations combinations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.combinations
@@ -2789,7 +2783,7 @@ ALTER TABLE ONLY public.combinations
 
 
 --
--- Name: commission_programs_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: commission_programs commission_programs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.commission_programs
@@ -2797,7 +2791,7 @@ ALTER TABLE ONLY public.commission_programs
 
 
 --
--- Name: contact_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_stats contact_stats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_stats
@@ -2805,7 +2799,7 @@ ALTER TABLE ONLY public.contact_stats
 
 
 --
--- Name: contact_types_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_types_contacts contact_types_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_types_contacts
@@ -2813,7 +2807,7 @@ ALTER TABLE ONLY public.contact_types_contacts
 
 
 --
--- Name: contact_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: contact_types contact_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contact_types
@@ -2821,7 +2815,7 @@ ALTER TABLE ONLY public.contact_types
 
 
 --
--- Name: contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.contacts
@@ -2829,7 +2823,7 @@ ALTER TABLE ONLY public.contacts
 
 
 --
--- Name: countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: countries countries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.countries
@@ -2837,7 +2831,7 @@ ALTER TABLE ONLY public.countries
 
 
 --
--- Name: customer_order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_order_details customer_order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customer_order_details
@@ -2845,7 +2839,7 @@ ALTER TABLE ONLY public.customer_order_details
 
 
 --
--- Name: customer_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: customer_orders customer_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.customer_orders
@@ -2853,7 +2847,7 @@ ALTER TABLE ONLY public.customer_orders
 
 
 --
--- Name: deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: deliveries deliveries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.deliveries
@@ -2861,7 +2855,7 @@ ALTER TABLE ONLY public.deliveries
 
 
 --
--- Name: delivery_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: delivery_details delivery_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.delivery_details
@@ -2869,7 +2863,7 @@ ALTER TABLE ONLY public.delivery_details
 
 
 --
--- Name: feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.feedbacks
@@ -2877,7 +2871,7 @@ ALTER TABLE ONLY public.feedbacks
 
 
 --
--- Name: line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: line_items line_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.line_items
@@ -2885,7 +2879,7 @@ ALTER TABLE ONLY public.line_items
 
 
 --
--- Name: logins_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: logins logins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.logins
@@ -2893,7 +2887,7 @@ ALTER TABLE ONLY public.logins
 
 
 --
--- Name: manages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: manages manages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.manages
@@ -2901,7 +2895,7 @@ ALTER TABLE ONLY public.manages
 
 
 --
--- Name: manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: manufacturers manufacturers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.manufacturers
@@ -2909,7 +2903,7 @@ ALTER TABLE ONLY public.manufacturers
 
 
 --
--- Name: menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: menus menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.menus
@@ -2917,7 +2911,7 @@ ALTER TABLE ONLY public.menus
 
 
 --
--- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: messages messages_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.messages
@@ -2925,7 +2919,7 @@ ALTER TABLE ONLY public.messages
 
 
 --
--- Name: newsletters_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: newsletters newsletters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.newsletters
@@ -2933,7 +2927,7 @@ ALTER TABLE ONLY public.newsletters
 
 
 --
--- Name: notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: notifications notifications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.notifications
@@ -2941,7 +2935,7 @@ ALTER TABLE ONLY public.notifications
 
 
 --
--- Name: order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: order_details order_details_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_details
@@ -2949,7 +2943,7 @@ ALTER TABLE ONLY public.order_details
 
 
 --
--- Name: order_statuses_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: order_statuses_orders order_statuses_orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_statuses_orders
@@ -2957,7 +2951,7 @@ ALTER TABLE ONLY public.order_statuses_orders
 
 
 --
--- Name: order_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: order_statuses order_statuses_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.order_statuses
@@ -2965,7 +2959,7 @@ ALTER TABLE ONLY public.order_statuses
 
 
 --
--- Name: orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.orders
@@ -2973,7 +2967,7 @@ ALTER TABLE ONLY public.orders
 
 
 --
--- Name: parent_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_categories parent_categories_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_categories
@@ -2981,7 +2975,7 @@ ALTER TABLE ONLY public.parent_categories
 
 
 --
--- Name: parent_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_contacts parent_contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_contacts
@@ -2989,7 +2983,7 @@ ALTER TABLE ONLY public.parent_contacts
 
 
 --
--- Name: parent_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: parent_menus parent_menus_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.parent_menus
@@ -2997,7 +2991,7 @@ ALTER TABLE ONLY public.parent_menus
 
 
 --
--- Name: partners_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: partners partners_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.partners
@@ -3005,7 +2999,7 @@ ALTER TABLE ONLY public.partners
 
 
 --
--- Name: payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_methods payment_methods_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_methods
@@ -3013,7 +3007,7 @@ ALTER TABLE ONLY public.payment_methods
 
 
 --
--- Name: payment_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: payment_records payment_records_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.payment_records
@@ -3021,7 +3015,7 @@ ALTER TABLE ONLY public.payment_records
 
 
 --
--- Name: product_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: product_images product_images_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_images
@@ -3029,7 +3023,7 @@ ALTER TABLE ONLY public.product_images
 
 
 --
--- Name: product_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: product_infos product_infos_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_infos
@@ -3037,7 +3031,7 @@ ALTER TABLE ONLY public.product_infos
 
 
 --
--- Name: product_parts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: product_parts product_parts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_parts
@@ -3045,7 +3039,7 @@ ALTER TABLE ONLY public.product_parts
 
 
 --
--- Name: product_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: product_prices product_prices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_prices
@@ -3053,7 +3047,7 @@ ALTER TABLE ONLY public.product_prices
 
 
 --
--- Name: product_stock_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: product_stock_updates product_stock_updates_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.product_stock_updates
@@ -3061,7 +3055,7 @@ ALTER TABLE ONLY public.product_stock_updates
 
 
 --
--- Name: products_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
@@ -3069,7 +3063,7 @@ ALTER TABLE ONLY public.products
 
 
 --
--- Name: roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.roles
@@ -3077,7 +3071,7 @@ ALTER TABLE ONLY public.roles
 
 
 --
--- Name: slide_shows_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: slide_shows slide_shows_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.slide_shows
@@ -3085,7 +3079,7 @@ ALTER TABLE ONLY public.slide_shows
 
 
 --
--- Name: states_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: states states_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.states
@@ -3093,7 +3087,7 @@ ALTER TABLE ONLY public.states
 
 
 --
--- Name: tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tags tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tags
@@ -3101,7 +3095,7 @@ ALTER TABLE ONLY public.tags
 
 
 --
--- Name: taxes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: taxes taxes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.taxes
@@ -3109,7 +3103,7 @@ ALTER TABLE ONLY public.taxes
 
 
 --
--- Name: tmpcats_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpcats tmpcats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpcats
@@ -3117,7 +3111,7 @@ ALTER TABLE ONLY public.tmpcats
 
 
 --
--- Name: tmpmanus_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpmanus tmpmanus_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpmanus
@@ -3125,7 +3119,7 @@ ALTER TABLE ONLY public.tmpmanus
 
 
 --
--- Name: tmpproducts_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpproducts tmpproducts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpproducts
@@ -3133,7 +3127,7 @@ ALTER TABLE ONLY public.tmpproducts
 
 
 --
--- Name: tmpproducttocats_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: tmpproducttocats tmpproducttocats_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.tmpproducttocats
@@ -3141,7 +3135,7 @@ ALTER TABLE ONLY public.tmpproducttocats
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
@@ -3149,56 +3143,63 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_line_items_on_cart_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_line_items_on_cart_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_line_items_on_cart_id ON public.line_items USING btree (cart_id);
 
 
 --
--- Name: index_line_items_on_product_id; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_line_items_on_product_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_line_items_on_product_id ON public.line_items USING btree (product_id);
 
 
 --
--- Name: index_logins_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_logins_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_logins_on_email ON public.logins USING btree (email);
 
 
 --
--- Name: index_logins_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_logins_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_logins_on_reset_password_token ON public.logins USING btree (reset_password_token);
 
 
 --
--- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_products_on_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_products_on_status ON public.products USING btree (status);
+
+
+--
+-- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_email ON public.users USING btree (email);
 
 
 --
--- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING btree (reset_password_token);
 
 
 --
--- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
 
 
 --
--- Name: fk_rails_11e15d5c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: line_items fk_rails_11e15d5c6b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.line_items
@@ -3206,7 +3207,7 @@ ALTER TABLE ONLY public.line_items
 
 
 --
--- Name: fk_rails_af645e8e5f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: line_items fk_rails_af645e8e5f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.line_items
@@ -3217,7 +3218,7 @@ ALTER TABLE ONLY public.line_items
 -- PostgreSQL database dump complete
 --
 
-SET search_path TO "$user",public;
+SET search_path TO "$user", public;
 
 INSERT INTO schema_migrations (version) VALUES ('20131109010419');
 
@@ -3690,4 +3691,10 @@ INSERT INTO schema_migrations (version) VALUES ('20200806164620');
 INSERT INTO schema_migrations (version) VALUES ('20200807014217');
 
 INSERT INTO schema_migrations (version) VALUES ('20200810072705');
+
+INSERT INTO schema_migrations (version) VALUES ('20210521014201');
+
+INSERT INTO schema_migrations (version) VALUES ('20210607015220');
+
+INSERT INTO schema_migrations (version) VALUES ('20220926030222');
 

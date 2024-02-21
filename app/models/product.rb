@@ -305,7 +305,7 @@ class Product < ActiveRecord::Base
                 data << item
                 actions_col = 0
       else
-                supplier_price = user.can?(:view_supplier_price, product) ? product.product_price.supplier_price_formated : "####"
+                # supplier_price = user.can?(:view_supplier_price, product) ? product.product_price.supplier_price_formated : "####"
                 
                 suppliers = params["supplier_id"].present? ? product.display_suppliers(user) : ""
 
@@ -723,6 +723,10 @@ class Product < ActiveRecord::Base
 
   def self.stock_statistics(from_date, to_date)
     Product.where(status: 1).joins(:categories, :manufacturer).order("categories.name, manufacturers.name, stock desc")
+  end
+
+  def self.stock_report(from_date, to_date)
+    Product.where(status: 1).joins(:categories, :manufacturer)
   end
   
   def self.report(from_date, to_date, remain=true)

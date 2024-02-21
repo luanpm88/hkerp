@@ -151,7 +151,11 @@ class OrdersController < ApplicationController
   def pdf_preview
     @hk = @order.supplier
 
-    render layout: nil, template: 'orders/_show.html.erb'
+    if params[:language] == 'en'
+        render layout: nil, template: 'orders/_show_en.html.erb'
+    else
+        render layout: nil, template: 'orders/_show.html.erb'
+    end
   end
 
   def print_order

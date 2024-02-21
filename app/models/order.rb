@@ -103,7 +103,9 @@ class Order < ActiveRecord::Base
   end
 
   def create_quotation_code
-    lastest = Order.where("order_date::text LIKE :val", :val => order_date.strftime("%Y")+"-"+order_date.strftime("%m")+"%").order("quotation_code DESC").first
+    lastest = Order.where("order_date::text LIKE :val", :val => order_date.strftime("%Y")+"-"+order_date.strftime("%m")+"%")
+        .where(parent_id: nil)
+        .order("quotation_code DESC").first
 
     if !lastest.nil? && !lastest.quotation_code.nil?
       num = lastest.quotation_code.split(/\-/).last.to_i + 1
@@ -1462,6 +1464,19 @@ class Order < ActiveRecord::Base
 
   end
 
+  def display_title_en
+    if ['confirmed'].include?(status.name)
+      return "ORDER"
+    elsif ['finished'].include?(status.name)
+      return "ORDER"
+    elsif ['canceled'].include?(status.name)
+      return "CANCELED"
+    else
+      return "QUOTATION"
+    end
+
+  end
+
   def display_description
     arr = []
     order_details.each do |od|
@@ -1768,6 +1783,8 @@ class Order < ActiveRecord::Base
     str << supplier.address.to_s.downcase.strip if purchaser.present?
     str << supplier.email.to_s.downcase.strip if purchaser.present?
 
+    str << quotation_code.to_s.downcase.strip if quotation_code.present?
+
     order_details.each do |od|
       str << od.product_name.to_s.downcase.strip
       str << od.product_description.to_s.downcase.strip
@@ -1825,5 +1842,4 @@ class Order < ActiveRecord::Base
 
     return result
   end
-
 end
