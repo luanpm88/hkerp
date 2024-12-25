@@ -281,6 +281,8 @@
 			discount_amount_box.val(total);
 			$('.total_discount').html(ReplaceNumberWithDots(total.toFixed(2)))
 		//}
+
+		updateOrderPrices();
 	}
 
 	function update_update_price_form(rel, first) {
@@ -430,7 +432,7 @@
 		if ($('.discount_amount').val() == "") {
 			$('.discount_amount').val(0)
 		}
-		var discount = parseFloat($('.discount_amount').val().replace(/,/g,""))
+		var discount = parseFloat($('.discount_amount').val().replace(/,/g,""));
 
 
 		var vat = 0; // ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(2));
@@ -443,7 +445,7 @@
 			vat = vat + ((ivat_rate/100)*iprice)*iquantity;
 		});
 
-		var sumvatdiscount = sum+vat-discount;
+		var sumvatdiscount = (sum+vat)-discount;
 
 		$('.product_order_list .footer .total_vat').html(ReplaceNumberWithDots(vat.toFixed(2)));
 		$('.product_order_list .footer .total_without_vat').html(ReplaceNumberWithDots(sum.toFixed(2)));
