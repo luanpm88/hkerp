@@ -15,7 +15,7 @@ class Order < ActiveRecord::Base
 
   belongs_to :customer, :class_name => "Contact"
   belongs_to :supplier, :class_name => "Contact"
-  belongs_to :tax
+  # belongs_to :tax
   belongs_to :payment_method
   belongs_to :salesperson, :class_name => "User"
   belongs_to :purchase_manager, :class_name => "User"
@@ -63,15 +63,20 @@ class Order < ActiveRecord::Base
   end
 
   def total_vat
-    sum = self.total*(tax.rate/100+1)
-    if !discount_amount.nil?
-      sum -= discount_amount
-    end
+    # sum = self.total*(tax.rate/100+1)
+    sum = 0;
+    order_details.each {|item|
+      sum = sum + item.total_vat
+    }
     return sum.round(2)
   end
 
   def vat_amount
-    return total*(tax.rate/100)
+    total = 0;
+    order_details.each {|item|
+      total = total + item.vat_amount
+    }
+    return total
   end
 
   def vat_amount_formated
@@ -438,7 +443,7 @@ class Order < ActiveRecord::Base
         total_vat_sell += order.vat_amount
 
         payment_recieved_vat += order.paid_amount
-        payment_recieved += order.paid_amount/(order.tax.rate/100+1)
+        payment_recieved += order.paid_amount - order.vat_amount
         #payment_vat_recieved += order.paid_amount*(order.tax.rate/100)
 
         total_sell_with_vat_notpaid += order.remain_amount
@@ -491,8 +496,8 @@ class Order < ActiveRecord::Base
         total_vat_buy += order.vat_amount
 
         payment_paid_vat += order.paid_amount
-        payment_paid += order.paid_amount/(order.tax.rate/100+1)
-        payment_vat_paid += order.paid_amount*(order.tax.rate/100)
+        payment_paid += order.paid_amount - order.vat_amount
+        payment_vat_paid += order.vat_amount
 
         total_buy_with_vat_notpaid += order.remain_amount
         total_buy_with_vat_paid += order.paid_amount
@@ -1311,7 +1316,8 @@ class Order < ActiveRecord::Base
             warranty: line[:warranty],
             discount_amount: line[:discount_amount],
             tip_amount: line[:tip_amount],
-            shipment_amount: line[:shipment_amount]
+            shipment_amount: line[:shipment_amount],
+            tax_id: line[:tax_id]
           )
         end
       end

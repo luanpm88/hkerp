@@ -13,6 +13,7 @@ class OrderDetail < ActiveRecord::Base
   belongs_to :product
   belongs_to :product_price
   belongs_to :supplier, :class_name => "Contact"
+  belongs_to :tax
 
   has_many :sales_delivery_details
 
@@ -53,7 +54,8 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def total_vat
-    sum = self.total*(order.tax.rate/100+1)
+    return total if !self.tax.present?
+    sum = self.total*(self.tax.rate/100+1)
     if !discount_amount.nil?
       sum -= discount_amount
     end
@@ -65,7 +67,7 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def vat_amount
-    total*(order.tax.rate/100)
+    total*(self.tax.rate/100)
   end
 
   def vat_amount_formated
@@ -174,7 +176,7 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def cost_vat
-    cost*(order.tax.rate/100+1)
+    cost*(self.tax.rate/100+1)
   end
   def cost_vat_formated
     Order.format_price(cost_vat)
@@ -188,7 +190,7 @@ class OrderDetail < ActiveRecord::Base
   end
 
   def cost_total_vat
-    cost_total*(order.tax.rate/100+1)
+    cost_total*(self.tax.rate/100+1)
   end
   def cost_total_vat_formated
     Order.format_price(cost_total_vat)

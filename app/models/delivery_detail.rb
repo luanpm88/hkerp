@@ -17,8 +17,20 @@ class DeliveryDetail < ActiveRecord::Base
     (order_detail.price * quantity).abs
   end
   
+  def vat_amount
+    (order_detail.vat_amount * quantity).abs
+  end
+
+  def total_vat
+    (order_detail.total_vat * quantity).abs
+  end
+  
   def formated_total
     Order.format_price(total)
+  end
+
+  def formated_total_vat
+    Order.format_price(total_vat)
   end
   
   def serial_numbers_extracted

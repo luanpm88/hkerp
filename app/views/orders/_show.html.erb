@@ -70,6 +70,8 @@
     <th>Bảo hành<br />Warranty<br />(Đơn vị)</th>
     <th>Số lượng<br />Quantity<br />(Đơn vị)</th>
     <th>Đơn giá<br />Unit Price<br />VNĐ</th>
+    <th>Thành tiền<br />Sub-Total<br />VNĐ</th>
+    <th>Thuế xuất<br />Tax<br />%</th>
     <th>Tổng cộng<br />Total<br />VNĐ</th>
     
   </tr>
@@ -79,7 +81,9 @@
     <td>(3)</td>
     <td>(4)</td>
     <td>(5)</td>
-    <td>(6) = (4) x (5)</td>
+    <td>(6)=(4)x(5)</td>
+    <td>(7)</td>
+    <td>(8)=(6)x(7)</td>
   </tr>
 
     <% if !@order.order_details.nil? %>
@@ -106,43 +110,42 @@
             <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
             <td style="text-align: right"><%= format_price(order_detail.price, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.total, true) %></td>
-            
+            <td style="text-align: right"><%= format_price(order_detail.tax.rate, true) %>%</td>
+            <td style="text-align: right"><%= format_price(order_detail.total_vat, true) %></td>
           </tr>
       <% end %>
     <% end %>
   
   <tr>
     <td colspan="6" style="text-align: right">Cộng tiền hàng</td>
-    <td style="text-align: right"><%= format_price(@order.total, true, true) %></td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
 
   </tr>
   
   <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
     <tr>
       <td colspan="6" style="text-align: right">Giảm giá</td>
-      <td style="text-align: right"><%= format_price(@order.discount_amount, true, true) %></td>
+      <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.discount_amount, true, true) %></td>
   
     </tr>
   <% end %>
-  
+
   <tr>
-    <td colspan="6" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
-    <td style="text-align: right"><%= format_price(@order.vat_amount, true, true) %></td>
+    <td colspan="6" style="text-align: right">Tiền thuế GTGT</td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
 
   </tr>
-  
-  
 
   <tr>
     <td colspan="6" style="text-align: right">Tổng cộng tiền thanh toán</td>
-    <td style="text-align: right"><%= format_price(@order.total_vat, true, true) %></td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
 
   </tr>
 </table>
 
 
 <p></p><p></p>
-<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ <%= @order.tax.name %></strong></p>
+<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ VAT</strong></p>
 <p><strong>Điều khoản thương mại:</strong></p>
 <p>
   1.	Hàng hóa được Bảo hành theo phiếu bảo hành và tem bảo hành HK Incotech:								

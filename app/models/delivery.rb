@@ -119,13 +119,17 @@ class Delivery < ActiveRecord::Base
   def total_vat
     total = 0
     delivery_details.each {|item|
-      total = total + item.total
+      total = total + item.total_vat
     }
-    return (total*(order.tax.rate/100+1)).abs
+    return (total).abs
   end
   
   def vat_amount
-    return (total*(order.tax.rate/100)).abs
+    total = 0
+    delivery_details.each {|item|
+      total = total + item.vat_amount
+    }
+    return (total).abs
   end
   
   def total_formated

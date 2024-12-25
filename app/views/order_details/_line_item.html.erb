@@ -24,6 +24,15 @@
                                         <input class="form-control price_input price" type="text" name="order_details[<%= order_detail.product_id %>][price]" value="<%= order_detail.price %>" />
                                         <label class="col_label">Quantity:</label>
                                         <input class="form-control number_input quantity" type="text" name="order_details[<%= order_detail.product_id %>][quantity]" value="<%= order_detail.quantity %>" />
+
+                                        <label class="col_label">Tax:</label>
+                                        <select name="order_details[<%= order_detail.product_id %>][tax_id]" class="modern_select tax-select">                                    
+                                          <% Tax.all.order("created_at DESC").each do |tax| %>
+                                              <option rel="<%= tax.rate %>" value="<%= tax.id %>" <% if !order_detail.tax_id.nil? && order_detail.tax_id == tax.id %>selected="selected"<% end %>>
+                                                <%= tax.name %>
+                                              </option>
+                                          <% end %>
+                                        </select>
                                       </td>
                                       <td class="text-right">
                                         <label class="col_label top0">Total:</label>

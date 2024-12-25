@@ -111,6 +111,7 @@
     <th>Bảo hành</th>
     <th>Đơn giá</th>
     <th>Thành tiền</th>
+    <th>Thành tiền + VAT</th>
   </tr>
 
     <% if !@delivery.delivery_details.nil? %>
@@ -127,22 +128,18 @@
             <td><%= detail.order_detail.warranty %> (tháng)</td>
             <td style="text-align: right"><%= detail.order_detail.formated_price %></td>
             <td style="text-align: right"><%= detail.formated_total %></td>
+            <td style="text-align: right"><%= detail.formated_total_vat %></td>
           </tr>
       <% end %>
     <% end %>
     
   <tr>
-    <td colspan="5" style="text-align: right">Cộng tiền hàng</td>
+    <td colspan="6" style="text-align: right">Cộng tiền hàng</td>
     <td style="text-align: right"><%= @delivery.total_formated %></td>
 
   </tr>
   <tr>
-    <td colspan="5" style="text-align: right">Tiền thuế GTGT (<%= @order.tax.name %>)</td>
-    <td style="text-align: right"><%= @delivery.vat_amount_formated %></td>
-
-  </tr>
-  <tr>
-    <td colspan="5" style="text-align: right">Tổng cộng tiền thanh toán</td>
+    <td colspan="6" style="text-align: right">Tổng cộng tiền thanh toán</td>
     <td style="text-align: right"><%= @delivery.total_vat_formated %></td>
 
   </tr>

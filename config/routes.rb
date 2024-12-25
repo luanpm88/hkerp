@@ -222,6 +222,7 @@ Hkerp::Application.routes.draw do
 
       get :report
       post :report_export
+      post :report_export_email_phone
 
       post :report_not_buy_from
       post :supplier_export

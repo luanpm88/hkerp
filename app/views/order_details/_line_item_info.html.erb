@@ -15,6 +15,10 @@
                                         <%= format_price(order_detail.price) %> / <%= order_detail.quantity %>
                                       </td>
                                       <td class="text-right">
+                                        <label class="col_label top0">Tax:</label>
+                                        <%= order_detail.tax ? order_detail.tax.name : '' %>
+                                      </td>
+                                      <td class="text-right">
                                         <label class="col_label top0">Total:</label>
                                         <strong class="total"><%= format_price(order_detail.total) %></strong>
                                         <label class="col_label"><i class="icon-ambulance"></i> Ship.Cost:</label>

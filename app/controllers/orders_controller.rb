@@ -521,7 +521,8 @@ class OrdersController < ApplicationController
     end
 
     def permit_order_detail_params(params)
-      params.permit(:tip_amount,
+      params.permit(:tax_id,
+                    :tip_amount,
                     :discount_amount,
                     :product_price_id,
                     :order_id,

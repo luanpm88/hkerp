@@ -429,7 +429,7 @@ class ContactsController < ApplicationController
 
   end
 
-  def report_export
+  def report_export_
     require 'rubyXL/convenience_methods/worksheet'
     require 'rubyXL/convenience_methods/cell'
 
@@ -462,6 +462,56 @@ class ContactsController < ApplicationController
         worksheet[iIndex][1].change_contents(contact.name)
         # worksheet[iIndex][2].change_contents(contact.tex_info_line)
         # worksheet[iIndex][3].change_contents(contact.agent_list_text)
+        worksheet[iIndex][2].change_contents(contact.contact_stat.buy_all_time)
+        worksheet[iIndex][3].change_contents(contact.created_at.strftime("%F"))
+        
+        # increment count
+        count += 1
+        iIndex += 1
+    end
+
+    worksheet[1][1].change_contents(@contacts.count)
+
+    worksheet.delete_row(3)
+    
+    send_data workbook.stream.string,
+        filename: "NewContacts-#{@from_date.strftime("%Y-%m-%d")}-#{@to_date.strftime("%Y-%m-%d")}.xlsx",
+        disposition: 'attachment'
+  end
+
+  def report_export
+    require 'rubyXL/convenience_methods/worksheet'
+    require 'rubyXL/convenience_methods/cell'
+
+    authorize! :top_buyers, Contact
+
+    if params[:from_date].present? && params[:to_date].present?
+      @from_date = params[:from_date].to_date.beginning_of_day
+      @to_date =  params[:to_date].to_date.end_of_day
+    else
+      @from_date = DateTime.now.beginning_of_month
+      @to_date =  DateTime.now.end_of_day
+    end
+
+    @contacts = Contact.customers.where('created_at > ?', @from_date.beginning_of_day).where('created_at < ?', @to_date.end_of_day).order('created_at desc')
+    
+    workbook = RubyXL::Parser.parse('templates/NewContactsEmailPhone.xlsx')    
+    
+    # Last 6 months
+    worksheet = workbook[0]
+
+    # Begin
+    worksheet[0][0].change_contents("Khách hàng mới từ ngày #{@from_date.strftime("%Y-%m-%d")} đến ngày #{@to_date.strftime("%Y-%m-%d")}")
+
+    iIndex = 4
+    count = 1
+    @contacts.each do |contact|          
+        # insert product
+        worksheet.insert_row(iIndex)
+        worksheet[iIndex][0].change_contents(count)
+        worksheet[iIndex][1].change_contents(contact.name)
+        worksheet[iIndex][2].change_contents(contact.email)
+        worksheet[iIndex][3].change_contents(contact.phone)
         worksheet[iIndex][2].change_contents(contact.contact_stat.buy_all_time)
         worksheet[iIndex][3].change_contents(contact.created_at.strftime("%F"))
         

@@ -84,7 +84,9 @@
     <th>Warranty</th>
     <th>Quantity</th>
     <th>Unit Price<br />(VNĐ)</th>
-    <th>Amount<br />(VNĐ)</th>
+    <th>Sub-total<br />(VNĐ)</th>
+    <th>Tax<br />(%)</th>
+    <th>Total<br />(VNĐ)</th>
     
   </tr>
   <tr class="num_note">
@@ -93,7 +95,9 @@
     <td>(3)</td>
     <td>(4)</td>
     <td>(5)</td>
-    <td>(6) = (4) x (5)</td>
+    <td>(6)=(4)x(5)</td>
+    <td>(7)</td>
+    <td>(8)=(6)x(7)</td>
   </tr>
 
     <% if !@order.order_details.nil? %>
@@ -120,28 +124,30 @@
             <td><%= order_detail.quantity %> (<%= order_detail.unit %>)</td>
             <td style="text-align: right"><%= format_price(order_detail.price, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.total, true) %></td>
+            <td style="text-align: right"><%= format_price(order_detail.tax.rate, true) %>%</td>
+            <td style="text-align: right"><%= format_price(order_detail.total_vat, true) %></td>
             
           </tr>
       <% end %>
     <% end %>
   
   <tr>
-    <td colspan="6" style="text-align: right">TOTAL AMOUNT (VAT EXCLUDED)					</td>
-    <td style="text-align: right"><%= format_price(@order.total, true, true) %></td>
+    <td colspan="6" style="text-align: right">TOTAL AMOUNT (VAT EXCLUDED)</td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
 
   </tr>
   
   <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
     <tr>
       <td colspan="6" style="text-align: right">DISCOUNT</td>
-      <td style="text-align: right"><%= format_price(@order.discount_amount, true, true) %></td>
+      <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.discount_amount, true, true) %></td>
   
     </tr>
   <% end %>
   
   <tr>
-    <td colspan="6" style="text-align: right">VAT AMOUNT (<%= @order.tax.name %>)</td>
-    <td style="text-align: right"><%= format_price(@order.vat_amount, true, true) %></td>
+    <td colspan="6" style="text-align: right">VAT AMOUNT</td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
 
   </tr>
   
@@ -149,7 +155,7 @@
 
   <tr>
     <td colspan="6" style="text-align: right">TOTAL PAYMENT (VAT INCLUDED)</td>
-    <td style="text-align: right"><%= format_price(@order.total_vat, true, true) %></td>
+    <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
 
   </tr>
 </table>

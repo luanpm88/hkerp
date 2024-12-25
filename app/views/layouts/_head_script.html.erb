@@ -408,8 +408,11 @@
 		$('#product-line-items .order_details_line').each(function() {
 			quantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
 			price = parseFloat($(this).find('.price').val().replace(/,/g,""))
+			vat_rate = parseFloat($(this).find('.tax-select option:selected').attr('rel'));
 
-			total = ReplaceNumberWithDots((quantity*price).toFixed(2));
+			var price_with_vat = (vat_rate/100)*price + price;
+
+			total = ReplaceNumberWithDots((quantity*price_with_vat).toFixed(2));
 
 			$(this).find('.total').html(total);
 		});
