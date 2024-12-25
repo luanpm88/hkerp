@@ -419,8 +419,12 @@
 
 
 		var sum = 0;
-		$('#product-line-items .total').each(function() {
-			sum = sum + parseFloat($(this).html().replace(/,/g,"")) //parseFloat($(this).val());
+		$('#product-line-items .order_details_line').each(function() {
+			var iquantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
+			var iprice = parseFloat($(this).find('.price').val().replace(/,/g,""))
+			var ivat_rate = parseFloat($(this).find('.tax-select option:selected').attr('rel'));
+
+			sum = sum + iprice*iquantity; //parseFloat($(this).val());
 		});
 		//alert(sum);
 		if ($('.discount_amount').val() == "") {
@@ -429,15 +433,22 @@
 		var discount = parseFloat($('.discount_amount').val().replace(/,/g,""))
 
 
-		var vat = ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(2));
-		var dist = ReplaceNumberWithDots(discount.toFixed(2));
-		var sum_all = ReplaceNumberWithDots(sum.toFixed(2));
-		var sumvatdiscount = ReplaceNumberWithDots(((sum*(parseFloat($('select.tax-select option:selected').attr("rel"))/100 + 1))-discount).toFixed(2));
+		var vat = 0; // ReplaceNumberWithDots(((sum*parseFloat($('select.tax-select option:selected').attr("rel"))/100)).toFixed(2));
 
-		$('.product_order_list .footer .total_vat').html(vat);
-		$('.product_order_list .footer .total_without_vat').html(sum_all);
-		$('.product_order_list .footer .total_with_vat').html(sumvatdiscount);
-		$('.product_order_list .footer .total_discount').html(dist);
+		$('#product-line-items .order_details_line').each(function() {
+			var iquantity = parseFloat($(this).find('.quantity').val().replace(/,/g,""))
+			var iprice = parseFloat($(this).find('.price').val().replace(/,/g,""))
+			var ivat_rate = parseFloat($(this).find('.tax-select option:selected').attr('rel'));
+
+			vat = vat + ((ivat_rate/100)*iprice)*iquantity;
+		});
+
+		var sumvatdiscount = sum+vat-discount;
+
+		$('.product_order_list .footer .total_vat').html(ReplaceNumberWithDots(vat.toFixed(2)));
+		$('.product_order_list .footer .total_without_vat').html(ReplaceNumberWithDots(sum.toFixed(2)));
+		$('.product_order_list .footer .total_with_vat').html(ReplaceNumberWithDots(sumvatdiscount.toFixed(2)));
+		$('.product_order_list .footer .total_discount').html(ReplaceNumberWithDots(discount.toFixed(2)));
 
 		$('.order_tax_name').html($('select.tax-select option:selected').html());
 
