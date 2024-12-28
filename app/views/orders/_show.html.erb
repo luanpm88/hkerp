@@ -66,24 +66,24 @@
 <table class="list" cellspacing="0">
   <tr>
     <th>STT<br />No.</th>
-    <th width="55%" style="max-width: 50%;" width="40%" colspan="2">Mô tả<br />Description</th>
-    <th>Bảo hành<br />Warranty<br />(Đơn vị)</th>
-    <th>Số lượng<br />Quantity<br />(Đơn vị)</th>
-    <th>Đơn giá<br />Unit Price<br />VNĐ</th>
-    <th>Thành tiền<br />Sub-Total<br />VNĐ</th>
-    <th>Thuế xuất<br />Tax<br />%</th>
-    <th>Tổng cộng<br />Total<br />VNĐ</th>
+    <th style="white-space:nowrap;" width="55%" style="max-width: 50%;" width="40%" colspan="2">Mô tả<br />Description</th>
+    <th style="white-space:nowrap;">Bảo hành<br />Warranty<br />(Đơn vị)</th>
+    <th style="white-space:nowrap;">Số lượng<br />Quantity<br />(Đơn vị)</th>
+    <th style="white-space:nowrap;">Đơn giá<br />Unit Price<br />VNĐ</th>
+    <th style="white-space:nowrap;">Thành tiền<br />Sub-Total<br />VNĐ</th>
+    <th style="white-space:nowrap;">Thuế xuất<br />Tax<br />%</th>
+    <th style="white-space:nowrap;">Tiền thuế<br />Tax Amount<br />VNĐ</th>
     
   </tr>
   <tr class="num_note">
-    <td>(1)</td>
-    <td width="30%" colspan="2">(2)</td>
-    <td>(3)</td>
-    <td>(4)</td>
-    <td>(5)</td>
-    <td>(6)=(4)x(5)</td>
-    <td>(7)</td>
-    <td>(8)=(6)x(7)</td>
+    <td style="white-space:nowrap;">(1)</td>
+    <td width="30%" colspan="2" style="white-space:nowrap;">(2)</td>
+    <td style="white-space:nowrap;">(3)</td>
+    <td style="white-space:nowrap;">(4)</td>
+    <td style="white-space:nowrap;">(5)</td>
+    <td style="white-space:nowrap;">(6)=(4)x(5)</td>
+    <td style="white-space:nowrap;">(7)</td>
+    <td style="white-space:nowrap;">(8)=(6)x(7)</td>
   </tr>
 
     <% if !@order.order_details.nil? %>
@@ -111,12 +111,14 @@
             <td style="text-align: right"><%= format_price(order_detail.price, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.total, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.tax.rate, true) %>%</td>
-            <td style="text-align: right"><%= format_price(order_detail.total_vat, true) %></td>
+            <td style="text-align: right"><%= format_price(order_detail.vat_amount, true) %></td>
           </tr>
       <% end %>
     <% end %>
   
-  <tr>
+  <%
+=begin%>
+ <tr>
     <td colspan="6" style="text-align: right">Cộng tiền hàng</td>
     <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
 
@@ -140,12 +142,27 @@
     <td colspan="6" style="text-align: right">Tổng cộng tiền thanh toán</td>
     <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
 
+  </tr> 
+<%
+=end%>
+</table>
+
+<table class="list" cellspacing="0">
+  <tr style="white-space:nowrap;">
+    <th></th>
+    <th style="text-align:center">Thành tiền trước thuế GTGT (VNĐ)</th>
+    <th style="text-align:center">Tiền thuế GTGT (VNĐ)</th>
+    <th style="text-align:center">Cộng tiền thanh toán (VNĐ)</th>
+  </tr>
+  <tr class="">
+    <th style="text-align:center">Tỗng cộng:</th>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
   </tr>
 </table>
 
-
-<p></p><p></p>
-<p><strong>ĐƠN GIÁ CHƯA BAO GỒM THUẾ VAT</strong></p>
+<br>
 <p><strong>Điều khoản thương mại:</strong></p>
 <p>
   1.	Hàng hóa được Bảo hành theo phiếu bảo hành và tem bảo hành HK Incotech:								

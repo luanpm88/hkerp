@@ -78,7 +78,7 @@
 <p style="margin-bottom:0;">With reference to your value enquiry, we are pleased to quote under terms and conditions:</p>
 
 <table class="list" cellspacing="0">
-  <tr>
+  <tr style="white-space:nowrap;">
     <th>No.</th>
     <th width="55%" style="max-width: 50%;" width="40%" colspan="2">Description</th>
     <th>Warranty</th>
@@ -86,10 +86,10 @@
     <th>Unit Price<br />(VNĐ)</th>
     <th>Sub-total<br />(VNĐ)</th>
     <th>Tax<br />(%)</th>
-    <th>Total<br />(VNĐ)</th>
+    <th>Tax Amount<br />(VNĐ)</th>
     
   </tr>
-  <tr class="num_note">
+  <tr class="num_note" style="white-space:nowrap;">
     <td>(1)</td>
     <td width="30%" colspan="2">(2)</td>
     <td>(3)</td>
@@ -97,7 +97,7 @@
     <td>(5)</td>
     <td>(6)=(4)x(5)</td>
     <td>(7)</td>
-    <td>(8)=(6)x(7)</td>
+    <td style="white-space:nowrap;">(8)=(6)x(7)</td>
   </tr>
 
     <% if !@order.order_details.nil? %>
@@ -125,13 +125,15 @@
             <td style="text-align: right"><%= format_price(order_detail.price, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.total, true) %></td>
             <td style="text-align: right"><%= format_price(order_detail.tax.rate, true) %>%</td>
-            <td style="text-align: right"><%= format_price(order_detail.total_vat, true) %></td>
+            <td style="text-align: right"><%= format_price(order_detail.vat_amount, true) %></td>
             
           </tr>
       <% end %>
     <% end %>
   
-  <tr>
+  <%
+=begin%>
+ <tr>
     <td colspan="6" style="text-align: right">TOTAL AMOUNT (VAT EXCLUDED)</td>
     <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
 
@@ -157,12 +159,27 @@
     <td colspan="6" style="text-align: right">TOTAL PAYMENT (VAT INCLUDED)</td>
     <td colspan="3" style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
 
+  </tr> 
+<%
+=end%>
+</table>
+
+<table class="list" cellspacing="0">
+  <tr style="white-space:nowrap;">
+    <th></th>
+    <th style="text-align:center">Amount Before VAT (VND)</th>
+    <th style="text-align:center">VAT Amount (VND)</th>
+    <th style="text-align:center">Total Payment (VND)</th>
+  </tr>
+  <tr class="">
+    <th style="text-align:center">Total:</th>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
+    <td style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
   </tr>
 </table>
 
-
-<p></p><p></p>
-<p><strong>Commercial Terms:</strong></p>
+<br>
 <p>
   1.	100% new goods. Standard warranty of the manufacturer and Hoang Khang Incotech warranty stamp.				
 	
