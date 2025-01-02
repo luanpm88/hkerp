@@ -18,3 +18,7 @@
 /backup
 /config/database.yml
 /crontab*.log
+/vendor/
+/report/
+/shared/
+cash_book.yml
