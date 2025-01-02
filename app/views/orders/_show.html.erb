@@ -152,12 +152,18 @@
     <th></th>
     <th style="text-align:center">Thành tiền trước thuế GTGT (VNĐ)</th>
     <th style="text-align:center">Tiền thuế GTGT (VNĐ)</th>
+    <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
+      <th style="text-align:center">Giảm giá (VNĐ)</th>
+    <% end %>
     <th style="text-align:center">Cộng tiền thanh toán (VNĐ)</th>
   </tr>
   <tr class="">
     <th style="text-align:center">Tỗng cộng:</th>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
+    <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
+      <td style="text-align: right;font-weight:600"><%= format_price(@order.discount_amount, true, true) %></td>
+    <% end %>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
   </tr>
 </table>

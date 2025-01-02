@@ -169,12 +169,18 @@
     <th></th>
     <th style="text-align:center">Amount Before VAT (VND)</th>
     <th style="text-align:center">VAT Amount (VND)</th>
+    <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
+      <th style="text-align:center">Discount Amount (VNĐ)</th>
+    <% end %>
     <th style="text-align:center">Total Payment (VND)</th>
   </tr>
   <tr class="">
     <th style="text-align:center">Total:</th>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.total, true, true) %></td>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.vat_amount, true, true) %></td>
+    <% if !@order.discount_amount.nil? && @order.discount_amount > 0 %>
+      <td style="text-align: right;font-weight:600"><%= format_price(@order.discount_amount, true, true) %></td>
+    <% end %>
     <td style="text-align: right;font-weight:600"><%= format_price(@order.total_vat, true, true) %></td>
   </tr>
 </table>
