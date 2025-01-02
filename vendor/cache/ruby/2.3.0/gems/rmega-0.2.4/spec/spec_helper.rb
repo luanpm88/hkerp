@@ -1,2 +1,0 @@
-require 'rmega'
-require 'pry'
