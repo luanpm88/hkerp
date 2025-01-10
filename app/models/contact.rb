@@ -361,6 +361,19 @@ class Contact < ActiveRecord::Base
     result = result.limit(50).map {|model| {:id => model.id, :text => model.short_name} }
   end
 
+  def self.company_search(q, user)
+    result = self.where(active: true)
+    if !user.can?(:view_all_customers, Contact)
+      result = result.where(user_id: user.id)
+    end
+
+    q.split(" ").each do |k|
+      result = result.where("LOWER(contacts.tax_code) LIKE ?", "%#{k.strip.downcase}")
+    end
+
+    result = result.limit(50).map {|model| {:id => model.id, :text => model.nameWithTax} }
+  end
+
   def short_name
     name.gsub(/công ty /i,'').gsub(/TNHH /i,'').gsub(/cổ phần /i,'')
   end
@@ -529,5 +542,9 @@ class Contact < ActiveRecord::Base
           .where('orders.created_at >= ?', date.beginning_of_day)          
           .where(order_status_name: ["confirmed","finished"])
       )
+  end
+
+  def nameWithTax
+    (self.tax_code.present? ? self.tax_code + "-" : '') + self.short_name
   end
 end

@@ -111,17 +111,100 @@
                                                                 </div>
                                                             </div>
                                                         <% else %>
-                                                               <div class="form-group">
-                                                                  <label class="form-label"><%= f.label :customer %></label>
+                                                              <div class="form-group">
+                                                                  <label class="form-label">Customer type</label>
                                                                   <span class="help">(required)</span>
-                                                                  <div class="input-with-icon  right">                                       
-                                                                         <i class=""></i>
-                                                                             <div class="input-with_add_but">
-                                                                                    <%= link_to '<i class="icon-plus"></i>'.html_safe, new_contact_path(:type_id => ContactType.supplier, tab_page: 1), title: "New Contact", :class => 'btn btn-sm btn-small btn-white add-agent-button tab_page' %>
-                                                                                    <input style="width:100%;margin-bottom: 5px;" name="order[customer_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-customers required" value="<%= @order.customer.id if !@order.customer.nil? %>" text="<%= @order.customer.name if !@order.customer.nil? %>" />
-                                                                             </div>
+                                                                  <div class="">                                     
+                                                                    <input <%= ((!@order.customer.nil? and !@order.customer.tax_code.present?) ? 'checked' : '') %> type="radio" name="customer_type" value="individual" > Cá nhân
+                                                                    | <input <%= ((@order.customer.nil? or @order.customer.tax_code.present?) ? 'checked' : '') %> type="radio" name="customer_type" value="company" > Doanh nghiệp
                                                                   </div>
-                                                               </div>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label class="form-label"><%= f.label :customer %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div data-control="customer-select-box"></div>
+                                                                  
+                                                              </div>
+
+                                                              <script>
+                                                                $(() => {
+                                                                  new CustomerSelector({
+                                                                    typeSelectors: $('[name="customer_type"]'),
+                                                                    value: '<%= @order.customer.id if !@order.customer.nil? %>',
+                                                                    text: '<%= @order.customer.nameWithTax if !@order.customer.nil? %>',
+                                                                    customerBox: $('[data-control="customer-select-box"]'),
+                                                                    newLink: '<%= new_contact_path(:type_id => ContactType.supplier, tab_page: 1) %>',
+                                                                    dataIndividualUrl: '<%= individual_contacts_contacts_path(format: "json") %>',
+                                                                    dataCompanyUrl: '<%= company_contacts_contacts_path(format: "json") %>',
+                                                                  });
+                                                                });
+
+                                                                var CustomerSelector = class {
+                                                                  constructor(options) {
+                                                                    this.typeSelectors = options.typeSelectors;
+                                                                    this.value = options.value;
+                                                                    this.text = options.text;
+                                                                    this.customerBox = options.customerBox;
+                                                                    this.newLink = options.newLink;
+                                                                    this.dataIndividualUrl = options.dataIndividualUrl;
+                                                                    this.dataCompanyUrl = options.dataCompanyUrl;
+
+                                                                    this.render();
+
+                                                                    this.events();
+                                                                  }
+
+                                                                  events() {
+                                                                    this.typeSelectors.on('change', () => {
+                                                                      this.render();
+                                                                    });
+                                                                  }
+
+                                                                  getType() {
+                                                                    return this.typeSelectors.filter(':checked').val();
+                                                                  }
+
+                                                                  render() {
+                                                                    var url;
+                                                                    if (this.getType() == 'individual') {
+                                                                      url = this.dataIndividualUrl;
+                                                                    } else {
+                                                                      url = this.dataCompanyUrl;
+                                                                    }
+
+                                                                    this.customerBox.html(`
+                                                                        <div class="input-with-icon  right">                                       
+                                                                              <i class=""></i>
+                                                                              <div class="input-with_add_but">
+                                                                                  <a title="New Contact" class="btn btn-sm btn-small btn-white add-agent-button tab_page" href="`+this.newLink+`"><i class="icon-plus"></i></a>
+                                                                                  <input data-control="customer-selector" style="width:100%;margin-bottom: 5px;" name="order[customer_id]" data="`+this.url+`" class="select2-ajax-customers-individual required" value="`+this.value+`" text="`+this.text+`" />
+                                                                              </div>
+                                                                        </div>
+                                                                    `);
+
+                                                                    this.customerBox.find('[data-control="customer-selector"]').select2({
+                                                                        placeholder: (this.getType() == 'individual' ? 'Nhập từ khóa' : 'Nhập mã số thuế (tax_code), ít nhất 4 số'),
+                                                                        minimumInputLength: (this.getType() == 'individual' ? 2 : 4),
+                                                                        allowClear: true,
+                                                                        ajax: {
+                                                                          url: url,
+                                                                          dataType: 'json',
+                                                                          data: function (term, page) { // page is the one-based page number tracked by Select2
+                                                                          return {
+                                                                            q: term, //search term
+                                                                          };
+                                                                          },
+                                                                          results: function (data, page) {
+                                                                          return {results: data};
+                                                                          }
+                                                                        },
+                                                                        initSelection: function (element, callback) {
+                                                                          callback({ id: element.val(), text: element.attr('text') });
+                                                                        }
+                                                                    });
+                                                                  }
+                                                                }
+                                                              </script>
                                                         <% end %>
                                                         
                                                         
