@@ -368,7 +368,7 @@ class Contact < ActiveRecord::Base
     end
 
     q.split(" ").each do |k|
-      result = result.where("LOWER(contacts.tax_code) LIKE ?", "%#{k.strip.downcase}")
+      result = result.where("LOWER(contacts.tax_code) LIKE ?", "%#{k.strip.downcase}%")
     end
 
     result = result.limit(50).map {|model| {:id => model.id, :text => model.nameWithTax} }
