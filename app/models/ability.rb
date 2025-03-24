@@ -291,6 +291,8 @@ class Ability
 
       can :view_supplier_price, Product
       can :view_suppliers, Contact
+
+      can :company, Contact
     end
 
     if user.has_role? "purchase_manager"
@@ -356,6 +358,8 @@ class Ability
       can :view_supplier_price, Product
       can :view_suppliers, Contact
       can :statistic_stock, Product
+
+      can :company, Contact
     end
 
     if user.has_role? "accountant"
@@ -431,6 +435,8 @@ class Ability
       can :cash_book_xls, PaymentRecord
       can :account_book, PaymentRecord
       can :account_book_xls, PaymentRecord
+
+      can :company, Contact
     end
 
     if user.has_role? "accountant_manager"
