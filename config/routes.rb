@@ -226,6 +226,9 @@ Hkerp::Application.routes.draw do
 
       post :report_not_buy_from
       post :supplier_export
+
+      get :individual, as: :individual_contacts
+      get :company, as: :company_contacts
     end
   end
 

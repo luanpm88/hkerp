@@ -17,6 +17,28 @@ class ContactsController < ApplicationController
     end
   end
 
+  def individual
+    @types = [ContactType.customer, ContactType.supplier]
+    
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Contact.full_text_search(params[:q], current_user)
+      }
+    end
+  end
+
+  def company
+    @types = [ContactType.customer, ContactType.supplier]
+    
+    respond_to do |format|
+      format.html
+      format.json {
+        render json: Contact.company_search(params[:q], current_user)
+      }
+    end
+  end
+
   # GET /contacts/1
   # GET /contacts/1.json
   def show
