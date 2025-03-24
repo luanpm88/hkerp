@@ -40,9 +40,9 @@ class Category < ActiveRecord::Base
     new_rows = []
     new_rows << {id: "", text: "No category"}
     rows.each do |row|
-      if self.find(row[:id]).children == []
+      # if self.find(row[:id]).children == []
         new_rows << row
-      end
+      # end
     end
     
     return new_rows

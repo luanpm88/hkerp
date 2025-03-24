@@ -1,6 +1,6 @@
 # set path to application
 app_dir = File.expand_path("../..", __FILE__)
-shared_dir = '/hdd/hkerp/shared'
+shared_dir = '/home/hoangkhang/hkerp/shared'
 working_directory app_dir
 
 

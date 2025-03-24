@@ -22,7 +22,7 @@ class DeliveryDetail < ActiveRecord::Base
   end
 
   def total_vat
-    (order_detail.total_vat * quantity).abs
+    (total*(order_detail.tax.rate/100+1)).abs
   end
   
   def formated_total
