@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
--- Dumped by pg_dump version 12.17 (Ubuntu 12.17-0ubuntu0.20.04.1)
+-- Dumped from database version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.2)
+-- Dumped by pg_dump version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.2)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -1356,7 +1356,8 @@ CREATE TABLE public.orders (
     shipment_contact_id integer,
     cache_total numeric,
     cache_search text,
-    cache_total_vat double precision
+    cache_total_vat double precision,
+    survey_data text
 );
 
 
@@ -3144,6 +3145,13 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: index_contacts_on_tax_code_unique; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_contacts_on_tax_code_unique ON public.contacts USING btree (tax_code) WHERE (tax_code IS NOT NULL);
+
+
+--
 -- Name: index_line_items_on_cart_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3700,4 +3708,8 @@ INSERT INTO schema_migrations (version) VALUES ('20210607015220');
 INSERT INTO schema_migrations (version) VALUES ('20220926030222');
 
 INSERT INTO schema_migrations (version) VALUES ('20240221103159');
+
+INSERT INTO schema_migrations (version) VALUES ('20240524092654');
+
+INSERT INTO schema_migrations (version) VALUES ('20250110034144');
 

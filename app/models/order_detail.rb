@@ -39,6 +39,7 @@ class OrderDetail < ActiveRecord::Base
 
   def update_order_cache_total
     order.update_cache_total if !order.nil?
+    order.update_status_names if !order.nil?
   end
 
   def total

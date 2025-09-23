@@ -63,8 +63,6 @@
 													
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.total_vat) %>
-														<br />
-														(<%= order.tax.rate.round(0).to_i.to_s+"%" %>)
 													</td>
 													<td rowspan="<%= count %>" class="text-right">
 														<%= format_price(order.paid_amount) %>

@@ -46,7 +46,9 @@
                                 <div class="row">
                                           <div class="col-md-8">
                                                         <% if @order.is_purchase %>
-                                                            <div class="form-group">
+                                                            <%
+=begin%>
+ <div class="form-group">
                                                                  <label class="form-label"><%= f.label :supplier %></label>
                                                                <span class="help">(required)</span>
                                                                  <div class="input-with-icon  right">                                       
@@ -56,7 +58,104 @@
                                                                              <input style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" data="<%= contacts_path(format: "json") %>" class="select2-ajax-suppliers required" value="<%= @order.supplier.id if !@order.supplier.nil? %>" text="<%= @order.supplier.name if !@order.supplier.nil? %>" />
                                                                       </div>
                                                                  </div>
-                                                            </div>
+                                                            </div> 
+<%
+=end%>
+
+                                                              <div class="form-group">
+                                                                  <label class="form-label">Supplier type</label>
+                                                                  <span class="help">(required)</span>
+                                                                  <div class="">                                     
+                                                                    <input <%= ((!@order.supplier.nil? and !@order.supplier.tax_code.present?) ? 'checked' : '') %> type="radio" name="supplier_type" value="individual" > Cá nhân
+                                                                    | <input <%= ((@order.supplier.nil? or @order.supplier.tax_code.present?) ? 'checked' : '') %> type="radio" name="supplier_type" value="company" > Doanh nghiệp
+                                                                  </div>
+                                                              </div>
+                                                              <div class="form-group">
+                                                                <label class="form-label"><%= f.label :supplier %></label>
+                                                                <span class="help">(required)</span>
+                                                                <div data-control="supplier-select-box"></div>
+                                                                  
+                                                              </div>
+
+                                                              <script>
+                                                                $(() => {
+                                                                  new SupplierSelector({
+                                                                    typeSelectors: $('[name="supplier_type"]'),
+                                                                    value: '<%= @order.supplier.id if !@order.supplier.nil? %>',
+                                                                    text: '<%= @order.supplier.nameWithTax if !@order.supplier.nil? %>',
+                                                                    supplierBox: $('[data-control="supplier-select-box"]'),
+                                                                    newLink: '<%= new_contact_path(:type_id => ContactType.supplier, tab_page: 1) %>',
+                                                                    dataIndividualUrl: '<%= individual_contacts_contacts_path(format: "json") %>',
+                                                                    dataCompanyUrl: '<%= company_contacts_contacts_path(format: "json") %>',
+                                                                  });
+                                                                });
+
+                                                                var SupplierSelector = class {
+                                                                  constructor(options) {
+                                                                    this.typeSelectors = options.typeSelectors;
+                                                                    this.value = options.value;
+                                                                    this.text = options.text;
+                                                                    this.supplierBox = options.supplierBox;
+                                                                    this.newLink = options.newLink;
+                                                                    this.dataIndividualUrl = options.dataIndividualUrl;
+                                                                    this.dataCompanyUrl = options.dataCompanyUrl;
+
+                                                                    this.render();
+
+                                                                    this.events();
+                                                                  }
+
+                                                                  events() {
+                                                                    this.typeSelectors.on('change', () => {
+                                                                      this.render();
+                                                                    });
+                                                                  }
+
+                                                                  getType() {
+                                                                    return this.typeSelectors.filter(':checked').val();
+                                                                  }
+
+                                                                  render() {
+                                                                    var url;
+                                                                    if (this.getType() == 'individual') {
+                                                                      url = this.dataIndividualUrl;
+                                                                    } else {
+                                                                      url = this.dataCompanyUrl;
+                                                                    }
+
+                                                                    this.supplierBox.html(`
+                                                                        <div class="input-with-icon  right">                                       
+                                                                              <i class=""></i>
+                                                                              <div class="input-with_add_but">
+                                                                                  <a title="New Contact" class="btn btn-sm btn-small btn-white add-agent-button tab_page" href="`+this.newLink+`"><i class="icon-plus"></i></a>
+                                                                                  <input data-control="supplier-selector" style="width:100%;margin-bottom: 5px;" name="order[supplier_id]" data="`+this.url+`" class="select2-ajax-suppliers-individual required" value="`+this.value+`" text="`+this.text+`" />
+                                                                              </div>
+                                                                        </div>
+                                                                    `);
+
+                                                                    this.supplierBox.find('[data-control="supplier-selector"]').select2({
+                                                                        placeholder: (this.getType() == 'individual' ? 'Nhập từ khóa' : 'Nhập mã số thuế (tax_code), ít nhất 4 số'),
+                                                                        minimumInputLength: (this.getType() == 'individual' ? 2 : 4),
+                                                                        allowClear: true,
+                                                                        ajax: {
+                                                                          url: url,
+                                                                          dataType: 'json',
+                                                                          data: function (term, page) { // page is the one-based page number tracked by Select2
+                                                                          return {
+                                                                            q: term, //search term
+                                                                          };
+                                                                          },
+                                                                          results: function (data, page) {
+                                                                          return {results: data};
+                                                                          }
+                                                                        },
+                                                                        initSelection: function (element, callback) {
+                                                                          callback({ id: element.val(), text: element.attr('text') });
+                                                                        }
+                                                                    });
+                                                                  }
+                                                                }
+                                                              </script>
                                                         <% else %>
                                                             <div class="form-group">
                                                                 <label class="form-label"><%= f.label :supplier %></label>

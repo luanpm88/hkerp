@@ -206,6 +206,7 @@ class Ability
       can :order_log, Order
 
       can :company, Contact
+      can :individual, Contact
 
 
       if user.has_role? "company_salesperson"
@@ -293,6 +294,7 @@ class Ability
       can :view_suppliers, Contact
 
       can :company, Contact
+      can :individual, Contact
     end
 
     if user.has_role? "purchase_manager"
@@ -360,6 +362,7 @@ class Ability
       can :statistic_stock, Product
 
       can :company, Contact
+      can :individual, Contact
     end
 
     if user.has_role? "accountant"
@@ -437,6 +440,7 @@ class Ability
       can :account_book_xls, PaymentRecord
 
       can :company, Contact
+      can :individual, Contact
     end
 
     if user.has_role? "accountant_manager"
