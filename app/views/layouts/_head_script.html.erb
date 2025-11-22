@@ -675,10 +675,11 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 	    var postData = $(this).serializeArray();
 	    var formURL = $(this).attr("action");
 
-	    $(this).find(".btn[type='submit']").addClass("btn-submitting");
+		var $form = $(this);
+		var $submitBtn = $form.find(".btn[type='submit']");
+		$submitBtn.addClass("btn-submitting").prop("disabled", true);
 
-	    $.ajax(
-	    {
+		$.ajax({
 			url : formURL,
 			type: "POST",
 			data : postData,
@@ -748,12 +749,14 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 					$('#ajax-contact-form').validate();
 				}
 			},
-			error: function(jqXHR, textStatus, errorThrown)
-			{
+			error: function(jqXHR, textStatus, errorThrown) {
 				alert("error");
+			},
+			complete: function() {
+				$submitBtn.removeClass("btn-submitting").prop("disabled", false);
 			}
-	    });
-	    e.preventDefault(); //STOP default action
+		});
+		e.preventDefault(); //STOP default action
 	});
 
 	//prevent submit while submitting form

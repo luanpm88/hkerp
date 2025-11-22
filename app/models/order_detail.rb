@@ -281,4 +281,10 @@ class OrderDetail < ActiveRecord::Base
     order.commission[:program].nil? ? 0.00 : (order.commission[:program].commission_rate/100.00)*self.total
   end
 
+  after_save :destroy_if_quantity_zero
+
+  def destroy_if_quantity_zero
+    destroy if quantity.to_f == 0
+  end
+
 end
