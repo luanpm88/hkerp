@@ -547,4 +547,18 @@ class Contact < ActiveRecord::Base
   def nameWithTax
     (self.tax_code.present? ? self.tax_code + "-" : '') + self.short_name
   end
+
+  def self.rag_export
+    self.main_contacts.map do |contact|
+      {
+        id: contact.id,
+        name: contact.name,
+        short_name: contact.short_name,
+        tax_code: contact.tax_code,
+        address: contact.full_address,
+        phone: contact.phone,
+        email: contact.email,
+      }
+    end
+  end
 end

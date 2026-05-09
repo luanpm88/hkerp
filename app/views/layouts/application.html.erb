@@ -96,7 +96,7 @@
 	$(document).ready(function() {
 		//notification
 		update_notification();
-		setInterval('update_notification()', 10000);
+		setInterval('update_notification()', 30000);
 		$('.notification_button').on("click", function() {
 			setTimeout('read_notification()', 5000);
 		});
@@ -490,14 +490,14 @@
 	      <% end %>
 	      <ul class="sub-menu">
 		  <li<% if params[:controller] == "checkinouts" && params[:action] == "index" %> class="active"<% end %>>
-		      <%= link_to 'Monthly Attendance Reports', checkinouts_url(tab_page:1), class: "tab_page" %>
+		      <%= link_to 'Monthly Attendance Reports', 'https://lerp.hoangkhang.com.vn/attendance' %>
 		  </li>
 		  <li<% if params[:controller] == "checkinout_requests" %> class="active"<% end %>>
-		      <%= link_to 'Attendance Requests', checkinout_requests_url(tab_page:1), class: "tab_page" %>
+		      <%= link_to 'Attendance Requests', 'https://lerp.hoangkhang.com.vn/checkinout-requests' %>
 		  </li>
 		    <% if can? :import, Checkinout %>
 			<li<% if params[:controller] == "checkinouts" && params[:action] == "import" %> class="active"<% end %>>
-			    <%= link_to 'Import', import_checkinouts_url(tab_page:1), class: "tab_page" %>
+			    <%= link_to 'Import', 'https://lerp.hoangkhang.com.vn/attendance/import' %>
 			</li>
 		    <% end %>
 	      </ul>

@@ -1447,4 +1447,16 @@ class Product < ActiveRecord::Base
     return self.created_at > (Time.now - 30.days)
   end
 
+  def self.rag_export
+    self.all.map do |product|
+      {
+        id: product.id,
+        name: product.display_name,
+        product_code: product.product_code,
+        stock: product.calculated_stock,
+        price: product.product_price.price,
+      }
+    end
+  end
+
 end

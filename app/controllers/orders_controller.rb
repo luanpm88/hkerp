@@ -19,6 +19,8 @@ class OrdersController < ApplicationController
   def show
     @hk = @order.supplier
 
+    @order.update_status_names
+
     render layout: "content"
   end
 
@@ -89,6 +91,8 @@ class OrdersController < ApplicationController
           format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : purchase_orders_orders_path, notice: 'Order was successfully created.' }
           format.json { render action: 'show', status: :created, location: @order }
         end
+
+        @order.update_status_names
       else
         format.html { render action: 'new', tab_page: params[:tab_page] }
         format.json { render json: @order.errors, status: :unprocessable_entity }
@@ -112,6 +116,8 @@ class OrdersController < ApplicationController
             format.html { redirect_to params[:tab_page].present? ? {action: "show", id: @order.id, tab_page:1} : list_path, notice: 'Order was successfully updated.' }
             format.json { head :no_content }
           end
+
+          @order.update_status_names
         else
           format.html { render action: 'edit', tab_page: params[:tab_page] }
           format.json { render json: @order.errors, status: :unprocessable_entity }

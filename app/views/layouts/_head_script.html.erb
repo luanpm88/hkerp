@@ -310,6 +310,8 @@
 		})
 	}
 
+	var notificationRequestInFlight = false;
+
 	function read_notification() {
 		$.ajax({
 			url : '<%= read_notification_notifications_url %>',
@@ -322,13 +324,29 @@
 	}
 
 	function update_notification() {
+		if (notificationRequestInFlight) {
+			return;
+		}
+
+		if (document.hidden) {
+			return;
+		}
+
+		notificationRequestInFlight = true;
+
 		$.ajax({
 			url : '<%= update_notification_notifications_url %>',
 			type: "GET",
+			timeout: 5000,
 			success:function(data, textStatus, jqXHR)
 			{
+				var countHtml = $('<div>').html(data).find('.notification_count').html() || '';
 				$('.top_notification').html(data);
-				$('.notification_count').html($('<div>').html(data).find('.notification_count').html().trim());
+				$('.notification_count').html($.trim(countHtml));
+			},
+			complete:function()
+			{
+				notificationRequestInFlight = false;
 			}
 		});
 	}

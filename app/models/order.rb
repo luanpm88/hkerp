@@ -1848,4 +1848,61 @@ class Order < ActiveRecord::Base
 
     return result
   end
+
+  def self.sales_rag_export
+    self.customer_orders.map do |order|
+      {
+        id: order.id,
+        total: order.total_vat,
+        order_date: order.order_date,
+        customer_id: order.customer_id,
+        supplier_id: order.supplier_id,
+        status: order.order_status_name,
+        items: order.order_details.map do |od|
+          {
+            id: od.id,
+            product_id: od.product_id,
+            product_name: od.product_name,
+            product_description: od.product_description,
+            warranty: od.warranty,
+            quantity: od.quantity,
+            unit: od.unit,
+            price: od.price,
+            total: od.total,
+          }
+        end
+      }
+    end
+  end
+
+  def self.purchase_rag_export
+    self.purchase_orders.map do |order|
+      {
+        id: order.id,
+        total: order.total_vat,
+        order_date: order.order_date,
+        customer_id: order.customer_id,
+        supplier_id: order.supplier_id,
+        status: order.order_status_name,
+        items: order.order_details.map do |od|
+          {
+            id: od.id,
+            product_id: od.product_id,
+            product_name: od.product_name,
+            product_description: od.product_description,
+            warranty: od.warranty,
+            quantity: od.quantity,
+            unit: od.unit,
+            price: od.price,
+            total: od.total,
+          }
+        end
+      }
+    end
+  end
+
 end
+
+
+
+

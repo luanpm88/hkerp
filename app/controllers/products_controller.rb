@@ -361,10 +361,14 @@ class ProductsController < ApplicationController
 			
 			# @products = @products.where('stock > 0') if params[:remain].present?
       @products.each do |product|
-          e = product.calculated_stock(@to_date)    
-        
+          e = product.calculated_stock(@to_date)
+          purchase = 0
+          sales = 0
+          combine = 0
+          io = 0
+
         if params[:remain].nil? || (!params[:remain].nil? && (e > 0 || purchase > 0 || sales > 0 || combine > 0 || io > 0))
-    
+
           # insert product
           worksheet.insert_row(iIndex)
           worksheet[iIndex][0].change_contents(product.id.to_s)

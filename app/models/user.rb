@@ -406,5 +406,20 @@ class User < ActiveRecord::Base
     puts "rm -rf tmp/backup/*"
     
   end
+
+  def self.rag_export
+    rag = {
+      orders: Order.sales_rag_export,
+      purcahse_orders: Order.purchase_rag_export,
+      products: Product.rag_export,
+      contacts: Contact.rag_export,
+    }
+
+    # write to file
+    file_path = "public/rag_export.json"
+    File.open(file_path, 'w') do |file|
+      file.write(JSON.pretty_generate(rag))
+    end
+  end
   
 end

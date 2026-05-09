@@ -22,3 +22,21 @@
 /report/
 /shared/
 cash_book.yml
+account_book.yml
+
+# DB dumps and one-off data exports
+/data.dump
+*.dump
+/addresses*.json
+/extracted_text.*
+
+# Editor / manual backup files
+*.bak
+*.bak.*
+
+# Uploaded media (managed outside repo)
+/public/uploads/
+
+# Cron / backup script logs
+/cron_*.log
+/backup_*.log

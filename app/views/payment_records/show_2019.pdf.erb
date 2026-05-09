@@ -143,7 +143,7 @@ table {
         </h1>
         Ngày <%= @payment_record.paid_date.strftime("%d/%m/%Y") %>
       </td>
-      <td valign="top" style="text-align: center">
+      <td valign="top" style="text-align: centerl;display:none;">
         <table>
           <% if @payment_record.is_paid %>
             <tr>
@@ -151,31 +151,11 @@ table {
               <!--<td align="right" width="50">1111</td>-->
               <td align="right"><strong><%= @payment_record.tax_formated %> VND</strong></td>
             </tr>
-            <tr>
-              <td>Có</td>
-              <!--<td align="right">333111</td>-->
-              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_without_tax_formated %> <% end %> VND</strong></td>
-            </tr>
-            <tr>
-              <td></td>
-              <!--<td align="right">5111</td>-->
-              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_formated %> <% end %> VND</strong></td>
-            </tr>
           <% else %>
             <tr>
               <td width="30">Nợ</td>
               <!--<td align="right" width="50">1111</td>-->
               <td align="right"><strong><%= @payment_record.amount_formated %> VND</strong></td>
-            </tr>
-            <tr>
-              <td>Có</td>
-              <!--<td align="right">333111</td>-->
-              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.tax_formated %> <% end %> VND</strong></td>
-            </tr>
-            <tr>
-              <td></td>
-              <!--<td align="right">5111</td>-->
-              <td align="right"><strong><% if !@order.nil? %> <%= @payment_record.amount_without_tax_formated %> <% end %> VND</strong></td>
             </tr>
           <% end %>
         </table>
