@@ -14,7 +14,7 @@ timeout 3600
 check_client_connection true
 
 # Set up socket location
-listen "#{shared_dir}/sockets/unicorn.sock", :backlog => 64
+listen "#{shared_dir}/sockets/unicorn.sock", :backlog => 1024
 
 # Logging
 stderr_path "#{shared_dir}/log/unicorn.stderr.log"

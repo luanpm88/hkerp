@@ -1,0 +1,32 @@
+[Unit]
+Description=HKERP Rails Unicorn Server (production)
+After=network.target postgresql.service
+Wants=postgresql.service
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=forking
+User=hoangkhang
+Group=hoangkhang
+WorkingDirectory=/home/hoangkhang/hkerp
+PIDFile=/home/hoangkhang/hkerp/shared/pids/unicorn.pid
+
+# Mirror PATH from /etc/init.d/hkerp-unicorn (RVM gemset for ruby-2.3.3)
+Environment="PATH=/home/hoangkhang/.rvm/gems/ruby-2.3.3/bin:/home/hoangkhang/.rvm/gems/ruby-2.3.3@global/bin:/home/hoangkhang/.rvm/rubies/ruby-2.3.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+
+ExecStart=/home/hoangkhang/.rvm/wrappers/ruby-2.3.3/bundle exec unicorn -c config/unicorn.rb -E production -D
+ExecReload=/bin/kill -USR2 $MAINPID
+
+# Let systemd handle stop via signal (avoids ExecStop = empty $MAINPID issues)
+KillSignal=SIGQUIT
+KillMode=mixed
+TimeoutStopSec=600
+SendSIGKILL=yes
+
+# Auto-restart on crash (not on clean stop)
+Restart=on-failure
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

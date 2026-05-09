@@ -74,3 +74,6 @@ gem 'google_drive'
 gem 'rest-client'
 gem 'rubyXL'
 gem 'whenever', require: false
+
+# Auto-restart workers exceeding RSS threshold (memory leak guard)
+gem 'unicorn-worker-killer'
