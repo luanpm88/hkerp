@@ -175,8 +175,25 @@
 		});
 	}
 
+	// 2026-08-12 fix: Discount / Tip % must be calculated on the PRE-TAX base
+	// (price × quantity), not on the post-VAT total. updateOrderPrices() rewrites
+	// the .total cell to be quantity × price × (1 + vat_rate) — post-tax — so
+	// reading t_box.html() inflates the % by the VAT rate. Derive the pre-tax
+	// base from the row's .price and .quantity inputs; fall back to t_box only
+	// if the row can't be resolved (defensive — real call sites always pass a
+	// v_box inside .order_details_line).
+	function _lineBasePreTax(v_box, t_box) {
+		var row = v_box.parents('.order_details_line').first();
+		if (row.length && row.find('.price').length && row.find('.quantity').length) {
+			var price = parseFloat((row.find('.price').val() || '0').replace(/,/g,"")) || 0;
+			var qty   = parseFloat((row.find('.quantity').val() || '0').replace(/,/g,"")) || 0;
+			return price * qty;
+		}
+		return parseFloat((t_box.html() || '0').replace(/,/g,"")) || 0;
+	}
+
 	function updateTipAmount(p_box,v_box,t_box) {
-		var total = parseFloat(t_box.html().replace(/,/g,""));
+		var total = _lineBasePreTax(v_box, t_box);
 		var percent = parseFloat(p_box.val().replace(/,/g,""));
 
 		var value = ReplaceNumberWithDots(((percent/100)*total).toFixed(2));
@@ -184,13 +201,15 @@
 	}
 
 	function updateTipPercent(p_box,v_box,t_box) {
-		var total = parseFloat(t_box.html().replace(/,/g,""));
+		var total = _lineBasePreTax(v_box, t_box);
 		var value = parseFloat(v_box.val().replace(/,/g,""));
 
-		var percent = ((value/total)*100).toFixed(2);
+		var percent = total > 0 ? ((value/total)*100).toFixed(2) : "0.00";
 		p_box.val(percent)
 	}
 
+	// Discount: intentionally kept on post-VAT total (legacy behavior); user
+	// scope on 2026-08-12 was TIP-only pre-tax. Do not change without approval.
 	function updateDiscountAmount(p_box,v_box,t_box) {
 		var total = parseFloat(t_box.html().replace(/,/g,""));
 		var percent = parseFloat(p_box.val().replace(/,/g,""));

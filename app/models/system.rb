@@ -23,12 +23,19 @@ class System < ActiveRecord::Base
     revision_max = 0
 
     # remove over 100 backup old
-    @files = Dir.glob("#{bk_dir}/*").sort{|a,b| b <=> a}
-    @files.each_with_index do |f,index|
-      if index > revision_max-1
-        `rm -rf #{f}`
-      end
-    end
+    # === DISARMED 2026-05-22 ===========================================
+    # The block below was an UNFILTERED Dir.glob + `rm -rf #{f}` retention
+    # that wiped /hdd2/backup/{apps,bin,etc} on hk-server on 2026-05-21 at
+    # 23:14. Pattern matched ANY entry in backup_dir, not just backup zips.
+    # Re-enable ONLY with a safe filename glob (e.g. "*_db_source.zip").
+    # See DESIGN.md post-mortem.
+    # ====================================================================
+    # DISARMED-2026-05-22 @files = Dir.glob("#{bk_dir}/*").sort{|a,b| b <=> a}
+    # DISARMED-2026-05-22 @files.each_with_index do |f,index|
+    # DISARMED-2026-05-22 if index > revision_max-1
+    # DISARMED-2026-05-22 `rm -rf #{f}`
+    # DISARMED-2026-05-22 end
+    # DISARMED-2026-05-22 end
 
     `mkdir #{bk_dir}` if !File.directory?(bk_dir)
 
