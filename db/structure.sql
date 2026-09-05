@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.2)
--- Dumped by pg_dump version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.2)
+-- Dumped from database version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4)
+-- Dumped by pg_dump version 12.22 (Ubuntu 12.22-0ubuntu0.20.04.4)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -351,7 +351,8 @@ CREATE TABLE public.checkinouts (
     updated_at timestamp without time zone,
     check_date date,
     note text,
-    checkinout_request_id integer
+    checkinout_request_id integer,
+    pushed_at timestamp(0) without time zone
 );
 
 
@@ -882,6 +883,79 @@ ALTER SEQUENCE public.delivery_details_id_seq OWNED BY public.delivery_details.i
 
 
 --
+-- Name: device_sync_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.device_sync_logs (
+    id bigint NOT NULL,
+    device_ip character varying(255) NOT NULL,
+    status character varying(255) NOT NULL,
+    records_fetched integer DEFAULT 0 NOT NULL,
+    records_imported integer DEFAULT 0 NOT NULL,
+    records_skipped integer DEFAULT 0 NOT NULL,
+    error_message text,
+    duration_ms integer DEFAULT 0 NOT NULL,
+    created_at timestamp(0) without time zone,
+    updated_at timestamp(0) without time zone
+);
+
+
+--
+-- Name: device_sync_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.device_sync_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: device_sync_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.device_sync_logs_id_seq OWNED BY public.device_sync_logs.id;
+
+
+--
+-- Name: email_attachments; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.email_attachments (
+    id bigint NOT NULL,
+    inbound_email_id bigint NOT NULL,
+    filename character varying(512) NOT NULL,
+    content_type character varying(128),
+    size_bytes integer DEFAULT 0 NOT NULL,
+    storage_path text NOT NULL,
+    is_invoice_pdf boolean DEFAULT false NOT NULL,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: email_attachments_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.email_attachments_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: email_attachments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.email_attachments_id_seq OWNED BY public.email_attachments.id;
+
+
+--
 -- Name: feedbacks; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -914,6 +988,52 @@ CREATE SEQUENCE public.feedbacks_id_seq
 --
 
 ALTER SEQUENCE public.feedbacks_id_seq OWNED BY public.feedbacks.id;
+
+
+--
+-- Name: inbound_emails; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.inbound_emails (
+    id bigint NOT NULL,
+    mailbox character varying(128) NOT NULL,
+    message_id character varying(255) NOT NULL,
+    thread_id character varying(255),
+    from_address character varying(255) NOT NULL,
+    from_name character varying(255),
+    subject text NOT NULL,
+    body_text text,
+    body_html text,
+    received_at timestamp(0) with time zone NOT NULL,
+    classified_supplier_id integer,
+    linked_misa_invoice_id bigint,
+    linked_purchase_order_id integer,
+    status character varying(20) DEFAULT 'pending'::character varying NOT NULL,
+    ignored_reason text,
+    processed_by_user_id bigint,
+    processed_at timestamp(0) with time zone,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: inbound_emails_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.inbound_emails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: inbound_emails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.inbound_emails_id_seq OWNED BY public.inbound_emails.id;
 
 
 --
@@ -1124,6 +1244,297 @@ CREATE SEQUENCE public.messages_id_seq
 --
 
 ALTER SEQUENCE public.messages_id_seq OWNED BY public.messages.id;
+
+
+--
+-- Name: migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.migrations (
+    id integer NOT NULL,
+    migration character varying(255) NOT NULL,
+    batch integer NOT NULL
+);
+
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.migrations_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
+
+
+--
+-- Name: misa_customer_mappings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_customer_mappings (
+    id bigint NOT NULL,
+    misa_customer_id character varying(64) NOT NULL,
+    lerp_contact_id integer NOT NULL,
+    created_by_user_id bigint,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_customer_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_customer_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_customer_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_customer_mappings_id_seq OWNED BY public.misa_customer_mappings.id;
+
+
+--
+-- Name: misa_fetch_logs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_fetch_logs (
+    id bigint NOT NULL,
+    command character varying(64) NOT NULL,
+    started_at timestamp(0) with time zone,
+    finished_at timestamp(0) with time zone,
+    fetched_count integer DEFAULT 0 NOT NULL,
+    upserted_count integer DEFAULT 0 NOT NULL,
+    error_message text,
+    status character varying(20) NOT NULL,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_fetch_logs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_fetch_logs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_fetch_logs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_fetch_logs_id_seq OWNED BY public.misa_fetch_logs.id;
+
+
+--
+-- Name: misa_inbound_invoices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_inbound_invoices (
+    id bigint NOT NULL,
+    misa_invoice_id character varying(64) NOT NULL,
+    misa_invoice_no character varying(64),
+    invoice_date date,
+    misa_supplier_id character varying(64),
+    misa_supplier_name text,
+    misa_supplier_tax_code character varying(20),
+    total_amount numeric(18,2),
+    vat_amount numeric(18,2),
+    currency character varying(10) DEFAULT 'VND'::character varying NOT NULL,
+    raw_payload jsonb NOT NULL,
+    status character varying(20) DEFAULT 'pending'::character varying NOT NULL,
+    imported_at timestamp(0) with time zone,
+    imported_order_id integer,
+    fetched_at timestamp(0) with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone,
+    source character varying(10) DEFAULT 'misa'::character varying NOT NULL
+);
+
+
+--
+-- Name: misa_inbound_invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_inbound_invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_inbound_invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_inbound_invoices_id_seq OWNED BY public.misa_inbound_invoices.id;
+
+
+--
+-- Name: misa_outbound_invoices; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_outbound_invoices (
+    id bigint NOT NULL,
+    misa_invoice_id character varying(64) NOT NULL,
+    misa_invoice_no character varying(64),
+    invoice_date date,
+    misa_customer_id character varying(64),
+    misa_customer_name text,
+    total_amount numeric(18,2),
+    pdf_path text,
+    raw_payload jsonb NOT NULL,
+    status character varying(20) DEFAULT 'pending'::character varying NOT NULL,
+    fetched_at timestamp(0) with time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    sent_at timestamp(0) with time zone,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_outbound_invoices_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_outbound_invoices_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_outbound_invoices_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_outbound_invoices_id_seq OWNED BY public.misa_outbound_invoices.id;
+
+
+--
+-- Name: misa_product_mappings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_product_mappings (
+    id bigint NOT NULL,
+    misa_product_id character varying(64) NOT NULL,
+    misa_product_code character varying(64),
+    lerp_product_id integer NOT NULL,
+    created_by_user_id bigint,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_product_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_product_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_product_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_product_mappings_id_seq OWNED BY public.misa_product_mappings.id;
+
+
+--
+-- Name: misa_settings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_settings (
+    id bigint NOT NULL,
+    tax_code character varying(20) NOT NULL,
+    app_id_encrypted text,
+    secret_key_encrypted text,
+    environment character varying(20) DEFAULT 'sandbox'::character varying NOT NULL,
+    last_fetched_at timestamp(0) with time zone,
+    is_enabled boolean DEFAULT false NOT NULL,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_settings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_settings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_settings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_settings_id_seq OWNED BY public.misa_settings.id;
+
+
+--
+-- Name: misa_supplier_mappings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.misa_supplier_mappings (
+    id bigint NOT NULL,
+    misa_supplier_id character varying(64) NOT NULL,
+    misa_supplier_tax_code character varying(20),
+    lerp_contact_id integer NOT NULL,
+    created_by_user_id bigint,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: misa_supplier_mappings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.misa_supplier_mappings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: misa_supplier_mappings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.misa_supplier_mappings_id_seq OWNED BY public.misa_supplier_mappings.id;
 
 
 --
@@ -1378,6 +1789,47 @@ CREATE SEQUENCE public.orders_id_seq
 --
 
 ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
+-- Name: outbound_emails; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.outbound_emails (
+    id bigint NOT NULL,
+    misa_outbound_invoice_id bigint,
+    to_address character varying(255),
+    subject character varying(500) NOT NULL,
+    body text NOT NULL,
+    status character varying(30) DEFAULT 'queued'::character varying NOT NULL,
+    scheduled_for timestamp(0) with time zone,
+    sent_at timestamp(0) with time zone,
+    cancelled_at timestamp(0) with time zone,
+    error_message text,
+    attempts smallint DEFAULT '0'::smallint NOT NULL,
+    created_by_user_id bigint,
+    created_at timestamp(0) with time zone,
+    updated_at timestamp(0) with time zone
+);
+
+
+--
+-- Name: outbound_emails_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.outbound_emails_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: outbound_emails_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.outbound_emails_id_seq OWNED BY public.outbound_emails.id;
 
 
 --
@@ -2428,10 +2880,31 @@ ALTER TABLE ONLY public.delivery_details ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
+-- Name: device_sync_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.device_sync_logs ALTER COLUMN id SET DEFAULT nextval('public.device_sync_logs_id_seq'::regclass);
+
+
+--
+-- Name: email_attachments id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_attachments ALTER COLUMN id SET DEFAULT nextval('public.email_attachments_id_seq'::regclass);
+
+
+--
 -- Name: feedbacks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.feedbacks ALTER COLUMN id SET DEFAULT nextval('public.feedbacks_id_seq'::regclass);
+
+
+--
+-- Name: inbound_emails id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.inbound_emails ALTER COLUMN id SET DEFAULT nextval('public.inbound_emails_id_seq'::regclass);
 
 
 --
@@ -2477,6 +2950,62 @@ ALTER TABLE ONLY public.messages ALTER COLUMN id SET DEFAULT nextval('public.mes
 
 
 --
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
+
+
+--
+-- Name: misa_customer_mappings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_customer_mappings ALTER COLUMN id SET DEFAULT nextval('public.misa_customer_mappings_id_seq'::regclass);
+
+
+--
+-- Name: misa_fetch_logs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_fetch_logs ALTER COLUMN id SET DEFAULT nextval('public.misa_fetch_logs_id_seq'::regclass);
+
+
+--
+-- Name: misa_inbound_invoices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_inbound_invoices ALTER COLUMN id SET DEFAULT nextval('public.misa_inbound_invoices_id_seq'::regclass);
+
+
+--
+-- Name: misa_outbound_invoices id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_outbound_invoices ALTER COLUMN id SET DEFAULT nextval('public.misa_outbound_invoices_id_seq'::regclass);
+
+
+--
+-- Name: misa_product_mappings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_product_mappings ALTER COLUMN id SET DEFAULT nextval('public.misa_product_mappings_id_seq'::regclass);
+
+
+--
+-- Name: misa_settings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_settings ALTER COLUMN id SET DEFAULT nextval('public.misa_settings_id_seq'::regclass);
+
+
+--
+-- Name: misa_supplier_mappings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_supplier_mappings ALTER COLUMN id SET DEFAULT nextval('public.misa_supplier_mappings_id_seq'::regclass);
+
+
+--
 -- Name: newsletters id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -2516,6 +3045,13 @@ ALTER TABLE ONLY public.order_statuses_orders ALTER COLUMN id SET DEFAULT nextva
 --
 
 ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
+-- Name: outbound_emails id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.outbound_emails ALTER COLUMN id SET DEFAULT nextval('public.outbound_emails_id_seq'::regclass);
 
 
 --
@@ -2865,11 +3401,43 @@ ALTER TABLE ONLY public.delivery_details
 
 
 --
+-- Name: device_sync_logs device_sync_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.device_sync_logs
+    ADD CONSTRAINT device_sync_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: email_attachments email_attachments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_attachments
+    ADD CONSTRAINT email_attachments_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: feedbacks feedbacks_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.feedbacks
     ADD CONSTRAINT feedbacks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: inbound_emails inbound_emails_message_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.inbound_emails
+    ADD CONSTRAINT inbound_emails_message_id_unique UNIQUE (message_id);
+
+
+--
+-- Name: inbound_emails inbound_emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.inbound_emails
+    ADD CONSTRAINT inbound_emails_pkey PRIMARY KEY (id);
 
 
 --
@@ -2921,6 +3489,110 @@ ALTER TABLE ONLY public.messages
 
 
 --
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_customer_mappings misa_customer_mappings_misa_customer_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_customer_mappings
+    ADD CONSTRAINT misa_customer_mappings_misa_customer_id_unique UNIQUE (misa_customer_id);
+
+
+--
+-- Name: misa_customer_mappings misa_customer_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_customer_mappings
+    ADD CONSTRAINT misa_customer_mappings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_fetch_logs misa_fetch_logs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_fetch_logs
+    ADD CONSTRAINT misa_fetch_logs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_inbound_invoices misa_inbound_invoices_misa_invoice_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_inbound_invoices
+    ADD CONSTRAINT misa_inbound_invoices_misa_invoice_id_unique UNIQUE (misa_invoice_id);
+
+
+--
+-- Name: misa_inbound_invoices misa_inbound_invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_inbound_invoices
+    ADD CONSTRAINT misa_inbound_invoices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_outbound_invoices misa_outbound_invoices_misa_invoice_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_outbound_invoices
+    ADD CONSTRAINT misa_outbound_invoices_misa_invoice_id_unique UNIQUE (misa_invoice_id);
+
+
+--
+-- Name: misa_outbound_invoices misa_outbound_invoices_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_outbound_invoices
+    ADD CONSTRAINT misa_outbound_invoices_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_product_mappings misa_product_mappings_misa_product_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_product_mappings
+    ADD CONSTRAINT misa_product_mappings_misa_product_id_unique UNIQUE (misa_product_id);
+
+
+--
+-- Name: misa_product_mappings misa_product_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_product_mappings
+    ADD CONSTRAINT misa_product_mappings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_settings misa_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_settings
+    ADD CONSTRAINT misa_settings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: misa_supplier_mappings misa_supplier_mappings_misa_supplier_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_supplier_mappings
+    ADD CONSTRAINT misa_supplier_mappings_misa_supplier_id_unique UNIQUE (misa_supplier_id);
+
+
+--
+-- Name: misa_supplier_mappings misa_supplier_mappings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.misa_supplier_mappings
+    ADD CONSTRAINT misa_supplier_mappings_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: newsletters newsletters_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -2966,6 +3638,14 @@ ALTER TABLE ONLY public.order_statuses
 
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: outbound_emails outbound_emails_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.outbound_emails
+    ADD CONSTRAINT outbound_emails_pkey PRIMARY KEY (id);
 
 
 --
@@ -3145,6 +3825,62 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: checkinouts_pushed_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX checkinouts_pushed_at_index ON public.checkinouts USING btree (pushed_at);
+
+
+--
+-- Name: email_attachments_is_invoice_pdf_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX email_attachments_is_invoice_pdf_index ON public.email_attachments USING btree (is_invoice_pdf);
+
+
+--
+-- Name: idx_notifications_unread_user_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX idx_notifications_unread_user_created_at ON public.notifications USING btree (user_id, created_at DESC) WHERE (viewed = 0);
+
+
+--
+-- Name: inbound_emails_classified_supplier_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX inbound_emails_classified_supplier_id_index ON public.inbound_emails USING btree (classified_supplier_id);
+
+
+--
+-- Name: inbound_emails_linked_misa_invoice_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX inbound_emails_linked_misa_invoice_id_index ON public.inbound_emails USING btree (linked_misa_invoice_id);
+
+
+--
+-- Name: inbound_emails_linked_purchase_order_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX inbound_emails_linked_purchase_order_id_index ON public.inbound_emails USING btree (linked_purchase_order_id);
+
+
+--
+-- Name: inbound_emails_mailbox_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX inbound_emails_mailbox_index ON public.inbound_emails USING btree (mailbox);
+
+
+--
+-- Name: inbound_emails_status_received_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX inbound_emails_status_received_at_index ON public.inbound_emails USING btree (status, received_at);
+
+
+--
 -- Name: index_contacts_on_tax_code_unique; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3201,10 +3937,102 @@ CREATE UNIQUE INDEX index_users_on_reset_password_token ON public.users USING bt
 
 
 --
+-- Name: misa_customer_mappings_lerp_contact_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_customer_mappings_lerp_contact_id_index ON public.misa_customer_mappings USING btree (lerp_contact_id);
+
+
+--
+-- Name: misa_fetch_logs_command_started_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_fetch_logs_command_started_at_index ON public.misa_fetch_logs USING btree (command, started_at);
+
+
+--
+-- Name: misa_inbound_invoices_imported_order_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_inbound_invoices_imported_order_id_index ON public.misa_inbound_invoices USING btree (imported_order_id);
+
+
+--
+-- Name: misa_inbound_invoices_source_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_inbound_invoices_source_index ON public.misa_inbound_invoices USING btree (source);
+
+
+--
+-- Name: misa_inbound_invoices_status_invoice_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_inbound_invoices_status_invoice_date_index ON public.misa_inbound_invoices USING btree (status, invoice_date);
+
+
+--
+-- Name: misa_outbound_invoices_status_invoice_date_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_outbound_invoices_status_invoice_date_index ON public.misa_outbound_invoices USING btree (status, invoice_date);
+
+
+--
+-- Name: misa_product_mappings_lerp_product_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_product_mappings_lerp_product_id_index ON public.misa_product_mappings USING btree (lerp_product_id);
+
+
+--
+-- Name: misa_supplier_mappings_lerp_contact_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_supplier_mappings_lerp_contact_id_index ON public.misa_supplier_mappings USING btree (lerp_contact_id);
+
+
+--
+-- Name: misa_supplier_mappings_misa_supplier_tax_code_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX misa_supplier_mappings_misa_supplier_tax_code_index ON public.misa_supplier_mappings USING btree (misa_supplier_tax_code);
+
+
+--
+-- Name: outbound_emails_created_at_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX outbound_emails_created_at_index ON public.outbound_emails USING btree (created_at);
+
+
+--
+-- Name: outbound_emails_misa_outbound_invoice_id_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX outbound_emails_misa_outbound_invoice_id_index ON public.outbound_emails USING btree (misa_outbound_invoice_id);
+
+
+--
+-- Name: outbound_emails_status_scheduled_for_index; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX outbound_emails_status_scheduled_for_index ON public.outbound_emails USING btree (status, scheduled_for);
+
+
+--
 -- Name: unique_schema_migrations; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE UNIQUE INDEX unique_schema_migrations ON public.schema_migrations USING btree (version);
+
+
+--
+-- Name: email_attachments email_attachments_inbound_email_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.email_attachments
+    ADD CONSTRAINT email_attachments_inbound_email_id_foreign FOREIGN KEY (inbound_email_id) REFERENCES public.inbound_emails(id) ON DELETE CASCADE;
 
 
 --
@@ -3221,6 +4049,14 @@ ALTER TABLE ONLY public.line_items
 
 ALTER TABLE ONLY public.line_items
     ADD CONSTRAINT fk_rails_af645e8e5f FOREIGN KEY (cart_id) REFERENCES public.carts(id);
+
+
+--
+-- Name: outbound_emails outbound_emails_misa_outbound_invoice_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.outbound_emails
+    ADD CONSTRAINT outbound_emails_misa_outbound_invoice_id_foreign FOREIGN KEY (misa_outbound_invoice_id) REFERENCES public.misa_outbound_invoices(id) ON DELETE SET NULL;
 
 
 --
@@ -3712,4 +4548,8 @@ INSERT INTO schema_migrations (version) VALUES ('20240221103159');
 INSERT INTO schema_migrations (version) VALUES ('20240524092654');
 
 INSERT INTO schema_migrations (version) VALUES ('20250110034144');
+
+INSERT INTO schema_migrations (version) VALUES ('20260407093000');
+
+INSERT INTO schema_migrations (version) VALUES ('20260905060000');
 
