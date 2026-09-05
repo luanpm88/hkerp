@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:12
+    platform: linux/amd64
+    environment:
+      POSTGRES_USER: hoangkhang
+      POSTGRES_PASSWORD: "aA456321@#$"
+      POSTGRES_DB: hkerp_development
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  web:
+    build: .
+    image: hkerp-web
+    platform: linux/amd64
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    volumes:
+      - .:/app
+    environment:
+      RAILS_ENV: development
+      DATABASE_HOST: db
+
+volumes:
+  pgdata:

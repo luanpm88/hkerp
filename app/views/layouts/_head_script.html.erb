@@ -1397,6 +1397,25 @@ var AUTH_TOKEN = $('meta[name=csrf-token]').attr('content');
 			"iDisplayLength": 10
 	    });
 
+		//Datatable Cash - Pay / Cash - Receive (one table per direction)
+	    $('.datatable-cash-records').each(function () {
+	        var $table = $(this);
+	        $table.dataTable({
+	            "processing": true,
+	            "serverSide": true,
+	            "ajax": {
+	                "url": "<%= cash_datatable_payment_records_path %>",
+	                "data": function ( d ) {
+	                    d.direction = $table.data('direction');
+	                }
+	            },
+	            "columnDefs": [ { "targets": [0], "orderable": false } ],
+	            "order": [],
+	            "aLengthMenu": [[10, 25, 50, 75, 100], [10, 25, 50, 75, 100]],
+	            "iDisplayLength": 10
+	        });
+	    });
+
 		//Datatable products
 	    $('.datatable-contacts').dataTable( {
 			"processing": true,

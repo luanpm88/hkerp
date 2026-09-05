@@ -1,0 +1,169 @@
+<%#
+  Shared form for Cash - Pay and Cash - Receive.
+
+  The old _custom_form had a "Type" dropdown (Pay / Receive) that defaulted to
+  Pay; choosing the wrong entry silently produced a record with the wrong
+  amount sign. That dropdown is gone. The direction comes from the route the
+  form posts to and is restated in a coloured banner so the user can always see
+  which book they are writing into.
+
+  Locals:
+    direction  'pay' | 'receive'
+    url        form target (nil on edit, so form_for uses the record's own path)
+%>
+<% is_pay  = (direction == 'pay') %>
+<% title   = PaymentRecord.cash_direction_label(direction) %>
+<% accent  = is_pay ? 'danger' : 'success' %>
+<% editing = @payment_record.persisted? %>
+
+<% if @payment_record.errors.any? %>
+    <div class="alert alert-error">
+        <button data-dismiss="alert" class="close"></button>
+        <div id="error_explanation">
+            <h5><%= pluralize(@payment_record.errors.count, "error") %> prohibited this record from being saved:</h5>
+            <ul>
+                <% @payment_record.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    </div>
+<% end %>
+
+<div class="alert alert-<%= accent %>">
+    <h4 style="margin:0 0 4px 0">
+        <i class="<%= is_pay ? 'icon-arrow-up' : 'icon-arrow-down' %>"></i>
+        <%= title %>
+    </h4>
+    <% if is_pay %>
+        This records money <strong>leaving</strong> the company. It will appear in the
+        <strong>Paid</strong> column of the cash book.
+    <% else %>
+        This records money <strong>coming in</strong> to the company. It will appear in the
+        <strong>Received</strong> column of the cash book.
+    <% end %>
+    <% if editing %>
+        <br><small>The direction of an existing record cannot be changed. Delete it and create a new one if it was filed under the wrong type.</small>
+    <% end %>
+</div>
+
+<%= form_for(@payment_record, url: url) do |f| %>
+
+    <% if params[:tab_page] %>
+        <%= hidden_field_tag "tab_page", 1 %>
+    <% end %>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label class="form-label">Amount</label>
+                        <span class="help">(required)</span>
+                        <div class="input-with-icon right text-left">
+                            <i class=""></i>
+                            <%= f.text_field :amount,
+                                             value: (@payment_record.amount.present? ? @payment_record.amount.abs : nil),
+                                             class: "form-control price_input required" %>
+                        </div>
+                        <span class="help">Enter a positive number &mdash; the sign is set by the <%= title %> screen.</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Bank account</label>
+                        <span class="help"></span>
+                        <div class="input-with-icon right">
+                            <i class=""></i>
+                            <select name="payment_record[bank_account_id]" class="modern_select" style="width: 100%">
+                                <option value="">None</option>
+                                <% BankAccount.all.each do |ba| %>
+                                    <option value="<%= ba.id %>" <%= 'selected="selected"'.html_safe if @payment_record.bank_account_id == ba.id %>>
+                                        <%= ba.name %>
+                                    </option>
+                                <% end %>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label class="form-label">Paid date</label>
+                        <span class="help"></span>
+                        <div class="input-with-icon right">
+                            <i class=""></i>
+                            <div class="input-append success date col-md-10 no-padding">
+                                <%= f.text_field :paid_date, :class => "form-control" %>
+                                <span class="add-on"><span class="arrow"></span><i class="icon-th"></i></span>
+                            </div>
+                            <br style="clear: both" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Payment method</label>
+                        <span class="help">(required)</span>
+                        <div class="input-with-icon right">
+                            <i class=""></i>
+                            <select name="payment_record[payment_method_id]" class="modern_select required" style="width: 100%">
+                                <option value="">Select Method</option>
+                                <% PaymentMethod.all.each do |payment| %>
+                                    <option value="<%= payment.id %>" <%= 'selected="selected"'.html_safe if @payment_record.payment_method_id == payment.id %>>
+                                        <%= payment.name %>
+                                    </option>
+                                <% end %>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <label class="form-label">Note</label>
+                <span class="help">(required)</span>
+                <div class="input-with-icon right">
+                    <i class=""></i>
+                    <%= f.text_area :note, :class => "form-control required" %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><%= is_pay ? 'Paid to (name)' : 'Received from (name)' %></label>
+                <span class="help"></span>
+                <div class="input-with-icon right">
+                    <i class=""></i>
+                    <%= f.text_field :paid_person, :class => "form-control" %>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Address</label>
+                <span class="help"></span>
+                <div class="input-with-icon right">
+                    <i class=""></i>
+                    <%= f.text_field :paid_address, :class => "form-control" %>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="text-right">
+                <%= link_to 'Cancel',
+                            (is_pay ? cash_pays_payment_records_path(tab_page: params[:tab_page]) : cash_receives_payment_records_path(tab_page: params[:tab_page])),
+                            class: 'btn btn-white btn-cons' %>
+                <input name="save" type="submit" class="btn btn-<%= accent %> btn-cons"
+                       value="<%= editing ? "Update #{title}" : "Confirm #{title}" %>" />
+            </div>
+        </div>
+    </div>
+
+<% end %>

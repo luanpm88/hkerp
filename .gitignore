@@ -49,3 +49,13 @@ account_book.yml
 # One-off data exports & scratch scripts
 /rag_export.json
 /export.rb
+
+# Compressed DB dumps (data.dump.gz is a full production dump)
+*.dump.gz
+*.sql.gz
+
+# Local TLS material for hkerp.local — private keys must never be committed
+/ssl/
+
+# Local docker-compose overrides
+/docker-compose.override.yml

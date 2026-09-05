@@ -345,7 +345,7 @@
 		  <li style="display:none" <% if ["accounting"].include?(params[:controller]) && ["statistic_purchase"].include?(params[:action]) %> class="active"<% end %>><%= link_to 'Purchase Statistics', "/accounting/statistic_purchase?tab_page=1", class: "tab_page" %></li>
 
 		  <li style="display:none" <% if ["payment_records"].include?(params[:controller]) && ["statistics"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Pay/Recieve Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>
+			<%= link_to 'Pay/Receive Statistics', statistics_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
 
 		  <li style="display:none" <% if ["accounting"].include?(params[:controller]) && ["statistic_stock"].include?(params[:action]) %> class="active"<% end %>>
@@ -361,8 +361,12 @@
 			<%= link_to 'Purchase Orders', "/accountings/orders?purchase=1&tab_page=1", class: "tab_page" %>
 		  </li>
 
-		  <li<% if ["payment_records"].include?(params[:controller]) && ["custom_payments"].include?(params[:action]) %> class="active"<% end %>>
-			<%= link_to 'Custom Pay/Recieve', custom_payments_payment_records_path(tab_page: 1), class: "tab_page" %>
+		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_pays", "new_cash_pay", "create_cash_pay"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Cash - Pay', cash_pays_payment_records_path(tab_page: 1), class: "tab_page" %>
+		  </li>
+
+		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_receives", "new_cash_receive", "create_cash_receive"].include?(params[:action]) %> class="active"<% end %>>
+			<%= link_to 'Cash - Receive', cash_receives_payment_records_path(tab_page: 1), class: "tab_page" %>
 		  </li>
 
 		  <li<% if ["payment_records"].include?(params[:controller]) && ["cash_book"].include?(params[:action]) %> class="active"<% end %>>

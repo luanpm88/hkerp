@@ -228,6 +228,31 @@ module ApplicationHelper
       return actions.html_safe
   end
 
+  # Row actions for the split Cash - Pay / Cash - Receive screens.
+  # Same shape as render_custom_payments_actions but points at the new
+  # direction-preserving edit route and adds a link to the printable receipt.
+  def render_cash_record_actions(item)
+    actions  = '<div class="text-right"><div class="btn-group actions">'
+    actions += '<button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
+    actions += '<ul class="dropdown-menu">'
+
+    if can? :show, item
+      actions += '<li>' + ActionController::Base.helpers.link_to('View receipt', {controller: "payment_records", action: "show", id: item.id}) + '</li>'
+    end
+
+    if can? :edit_cash_record, item
+      actions += '<li>' + ActionController::Base.helpers.link_to('Edit', {controller: "payment_records", action: "edit_cash_record", id: item.id}) + '</li>'
+    end
+
+    if can? :destroy, item
+      actions += '<li>' + ActionController::Base.helpers.link_to('Delete', item, method: :delete, data: { confirm: 'Are you sure?' }) + '</li>'
+    end
+
+    actions += '</ul></div></div>'
+
+    actions.html_safe
+  end
+
   def get_months_between_time(from_date, to_date)
 	months = []
 

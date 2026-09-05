@@ -3,7 +3,7 @@ class PaymentRecordsController < ApplicationController
   
   load_and_authorize_resource :except => [:pay_commission, :do_pay_commission, :pay_tip, :do_pay_tip]
   
-  before_action :set_payment_record, only: [:edit_pay_custom, :trash, :download_pdf, :show, :edit, :update, :destroy]
+  before_action :set_payment_record, only: [:edit_pay_custom, :edit_cash_record, :update_cash_record, :trash, :download_pdf, :show, :edit, :update, :destroy]
 
   # GET /payment_records
   # GET /payment_records.json
@@ -11,8 +11,12 @@ class PaymentRecordsController < ApplicationController
     @payment_records = PaymentRecord.all
   end
   
+  # Legacy combined Custom Pay/Recieve screen.
+  # Superseded by the split Cash - Pay / Cash - Receive screens; kept as a
+  # redirect so old bookmarks and any stale tab state still land somewhere
+  # sensible instead of 404ing.
   def custom_payments
-     render layout: "content" if params[:tab_page].present?
+    redirect_to cash_pays_payment_records_path(tab_page: params[:tab_page])
   end
   
   def datatable
@@ -166,18 +170,17 @@ class PaymentRecordsController < ApplicationController
     end    
   end
   
+  # Legacy "New Pay/Recieve Record" form (single form with a direction
+  # dropdown). Replaced by the two direction-specific forms; redirect to the
+  # Pay one, which is what the dropdown defaulted to.
   def pay_custom
-    @payment_record = PaymentRecord.new
-    
-    @payment_record.paid_date = (Time.now).strftime("%Y-%m-%d")
-    @payment_record.is_recieved = false
-    
-    render layout: "content" if params[:tab_page].present?
+    redirect_to new_cash_pay_payment_records_path(tab_page: params[:tab_page])
   end
-  
+
+  # Legacy edit screen. The replacement derives the direction from the record
+  # itself, so just hand over to it.
   def edit_pay_custom
-    
-    render layout: "content" if params[:tab_page].present?
+    redirect_to edit_cash_record_payment_record_path(@payment_record, tab_page: params[:tab_page])
   end
   
   def do_pay_custom
@@ -199,6 +202,73 @@ class PaymentRecordsController < ApplicationController
         format.json { render json: @payment_record.errors, status: :unprocessable_entity }
       end
     end    
+  end
+
+  # ===========================================================================
+  # Cash - Pay  /  Cash - Receive
+  #
+  # These replace the single "Custom Pay/Recieve" screen, whose form asked the
+  # user to pick the direction from a dropdown that defaulted to Pay. Picking
+  # the wrong option produced a record with the wrong amount sign, which then
+  # flowed into the cash book, account book and statistics. Each direction now
+  # has its own menu entry, its own list and its own form with no dropdown at
+  # all, so the direction is decided by which screen you are on.
+  # ===========================================================================
+
+  def cash_pays
+    @direction = 'pay'
+    render_cash_index
+  end
+
+  def cash_receives
+    @direction = 'receive'
+    render_cash_index
+  end
+
+  def cash_datatable
+    direction = PaymentRecord::CASH_DIRECTIONS.include?(params[:direction]) ? params[:direction] : 'pay'
+    result = PaymentRecord.cash_datatable(params, direction)
+
+    result[:items].each_with_index do |item, index|
+      result[:result]['data'][index][result[:actions_col]] = render_cash_record_actions(item)
+    end
+
+    render json: result[:result]
+  end
+
+  def new_cash_pay
+    build_cash_record('pay')
+  end
+
+  def new_cash_receive
+    build_cash_record('receive')
+  end
+
+  def create_cash_pay
+    persist_cash_record('pay')
+  end
+
+  def create_cash_receive
+    persist_cash_record('receive')
+  end
+
+  def edit_cash_record
+    @direction = @payment_record.cash_direction
+    render_cash :edit_cash_record
+  end
+
+  def update_cash_record
+    # Direction is intentionally NOT taken from the request: it is derived from
+    # the persisted amount sign inside the model, so an edit can never flip a
+    # Pay into a Receive.
+    @direction = @payment_record.cash_direction
+
+    if @payment_record.update(payment_record_params)
+      redirect_to cash_index_path_for(@direction),
+                  notice: "#{PaymentRecord.cash_direction_label(@direction)} record was successfully updated."
+    else
+      render_cash :edit_cash_record
+    end
   end
 
   # PATCH/PUT /payment_records/1
@@ -394,6 +464,61 @@ class PaymentRecordsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_payment_record
       @payment_record = PaymentRecord.find(params[:id])
+    end
+
+    # --- Cash - Pay / Cash - Receive helpers --------------------------------
+
+    # The app renders inside a tabbed shell: opened as a tab it wants the bare
+    # "content" layout, opened directly it wants the full chrome.
+    #
+    # Note `render layout: nil` DISABLES the layout in Rails rather than
+    # falling back to the default, which silently drops the whole sidebar — so
+    # the option is only passed when there really is a layout to force.
+    def render_cash(view)
+      if params[:tab_page].present?
+        render view, layout: 'content'
+      else
+        render view
+      end
+    end
+
+    def render_cash_index
+      @cash_total = PaymentRecord.cash_total(@direction)
+      render_cash :cash_index
+    end
+
+    def build_cash_record(direction)
+      @direction      = direction
+      @payment_record = PaymentRecord.new(type_name: PaymentRecord::CASH_TYPE)
+      @payment_record.cash_direction_input = direction
+      @payment_record.paid_date            = Time.now.strftime('%Y-%m-%d')
+
+      render_cash :new_cash_record
+    end
+
+    def persist_cash_record(direction)
+      @direction      = direction
+      @payment_record = PaymentRecord.new(payment_record_params)
+      @payment_record.accountant           = current_user
+      @payment_record.type_name            = PaymentRecord::CASH_TYPE
+      @payment_record.cash_direction_input = direction
+
+      if @payment_record.save
+        redirect_to @payment_record,
+                    notice: "#{PaymentRecord.cash_direction_label(direction)} record was successfully created."
+      else
+        render_cash :new_cash_record
+      end
+    end
+
+    def cash_index_path_for(direction)
+      opts = { tab_page: params[:tab_page] }.reject { |_k, v| v.blank? }
+
+      if direction.to_s == 'pay'
+        cash_pays_payment_records_path(opts)
+      else
+        cash_receives_payment_records_path(opts)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

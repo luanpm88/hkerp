@@ -1,0 +1,31 @@
+<%#
+  New Cash - Pay / Cash - Receive record.
+  @direction is set by the controller from the route, never from user input.
+%>
+<% is_pay    = (@direction == 'pay') %>
+<% title     = PaymentRecord.cash_direction_label(@direction) %>
+<% list_path = is_pay ? cash_pays_payment_records_path(tab_page: 1) : cash_receives_payment_records_path(tab_page: 1) %>
+<% post_url  = is_pay ? create_cash_pay_payment_records_path : create_cash_receive_payment_records_path %>
+
+<ul class="breadcrumb">
+    <li>
+        <p>YOU ARE HERE</p>
+    </li>
+    <li><%= link_to title, list_path %></li>
+    <li><%= link_to "New record", "javascript:;", :class => "active" %></li>
+</ul>
+
+<div class="page-title">
+    <i class="<%= is_pay ? 'icon-arrow-up' : 'icon-arrow-down' %>"></i>
+    <h3>New <span class="semi-bold"><%= title %></span> Record</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="grid simple">
+            <div class="grid-body">
+                <%= render 'cash_form', direction: @direction, url: post_url %>
+            </div>
+        </div>
+    </div>
+</div>

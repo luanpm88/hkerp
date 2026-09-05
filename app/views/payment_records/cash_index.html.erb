@@ -1,0 +1,79 @@
+<%#
+  Listing for a single cash direction.
+
+  Rendered by both #cash_pays and #cash_receives; @direction ('pay' | 'receive')
+  decides every label, colour and link on the page. There is deliberately no
+  control here that lets the user switch direction — switching is done by
+  choosing the other menu entry, which is the whole point of the split.
+%>
+<% is_pay      = (@direction == 'pay') %>
+<% title       = PaymentRecord.cash_direction_label(@direction) %>
+<% accent      = is_pay ? 'danger' : 'success' %>
+<% amount_head = is_pay ? 'Amount paid out' : 'Amount received' %>
+<% new_path    = is_pay ? new_cash_pay_payment_records_path(tab_page: 1) : new_cash_receive_payment_records_path(tab_page: 1) %>
+<% list_path   = is_pay ? cash_pays_payment_records_path(tab_page: 1)   : cash_receives_payment_records_path(tab_page: 1) %>
+
+<ul class="breadcrumb">
+    <li>
+        <p>YOU ARE HERE</p>
+    </li>
+    <li><%= link_to title, list_path, :class => "active" %></li>
+</ul>
+
+<div class="page-title">
+    <i class="<%= is_pay ? 'icon-arrow-up' : 'icon-arrow-down' %>"></i>
+    <h3>Cash - <span class="semi-bold"><%= is_pay ? 'Pay' : 'Receive' %></span></h3>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="alert alert-<%= accent %>" style="margin-bottom:15px">
+            <strong><%= title %></strong>
+            &mdash;
+            <% if is_pay %>
+                money going <strong>out</strong> of the company.
+            <% else %>
+                money coming <strong>in</strong> to the company.
+            <% end %>
+            <span class="pull-right">
+                Total: <strong><%= format_price(@cash_total) %></strong>
+            </span>
+        </div>
+
+        <%= link_to "New #{title} Record",
+                    new_path,
+                    :class => "btn btn-#{accent} btn-cons tab_page",
+                    title:  "New #{title} Record",
+                    pname:  title,
+                    psrc:   list_path %>
+
+        <div class="grid simple">
+            <div class="grid-title no-border">
+                <h4><%= title %> <span class="semi-bold">records</span></h4>
+                <div class="tools">
+                    <a href="javascript:;" class="collapse"></a>
+                    <a href="javascript:;" class="reload"></a>
+                    <a href="javascript:;" class="remove"></a>
+                </div>
+            </div>
+
+            <div class="grid-body no-border">
+                <table class="table table-striped no-more-tables datatable-cash-records no-filter"
+                       data-direction="<%= @direction %>">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th class="text-right"><%= amount_head %></th>
+                            <th class="text-center">Date</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>

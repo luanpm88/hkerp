@@ -5,7 +5,39 @@ class PaymentRecord < ActiveRecord::Base
   belongs_to :user
   belongs_to :bank_account
 
-  
+  # ---------------------------------------------------------------------------
+  # Cash (a.k.a. "custom") pay / receive records
+  #
+  # Direction is encoded in the SIGN of `amount`, and that is the single source
+  # of truth — `is_paid` and every report (cash_book, account_book, statistics,
+  # total_cash) derive the direction from it:
+  #
+  #     amount < 0  =>  Pay      (money leaves the company)
+  #     amount > 0  =>  Receive  (money comes in)
+  #
+  # The `is_recieved` column exists but was historically never populated
+  # correctly: the old form submitted it as a top-level `is_recieved` param
+  # while strong params only permitted it nested under `payment_record[...]`,
+  # so it silently kept its `false` default. On production 1,091 of the 1,096
+  # receive records still carry `is_recieved = false`. It is now kept in sync
+  # with the sign by `normalise_cash_direction` and is safe to read, but any
+  # new logic should still prefer `cash_direction` / the sign.
+  # ---------------------------------------------------------------------------
+  CASH_TYPE       = 'custom'.freeze
+  CASH_DIRECTIONS = %w(pay receive).freeze
+
+  scope :cash_records,  -> { where(type_name: CASH_TYPE, status: 1) }
+  scope :cash_pays,     -> { cash_records.where('amount < 0') }
+  scope :cash_receives, -> { cash_records.where('amount >= 0') }
+
+  # Set by the controller when creating a record so the sign can be applied
+  # before validation. On an existing record the direction is immutable — the
+  # persisted sign wins — which is what stops an edit from silently turning a
+  # Pay into a Receive.
+  attr_accessor :cash_direction_input
+
+  before_validation :normalise_cash_direction, if: :cash_record?
+
   validates :note, presence: true
   validates :payment_method, presence: true
   validates :amount, presence: true
@@ -30,6 +62,74 @@ class PaymentRecord < ActiveRecord::Base
         .where(status: 1)
         .order("created_at DESC")
   end
+
+  # --- Cash pay/receive helpers ----------------------------------------------
+
+  def cash_record?
+    type_name == CASH_TYPE
+  end
+
+  # 'pay' | 'receive' — derived from the amount sign, which is authoritative.
+  # A brand-new unsaved record falls back to the direction the controller asked
+  # for, so the form can render the right labels before anything is persisted.
+  def cash_direction
+    if amount.present?
+      amount.to_f < 0 ? 'pay' : 'receive'
+    else
+      CASH_DIRECTIONS.include?(cash_direction_input) ? cash_direction_input : 'pay'
+    end
+  end
+
+  def cash_pay?
+    cash_direction == 'pay'
+  end
+
+  def cash_receive?
+    cash_direction == 'receive'
+  end
+
+  def self.cash_direction_label(direction)
+    direction.to_s == 'pay' ? 'Cash - Pay' : 'Cash - Receive'
+  end
+
+  def cash_direction_label
+    self.class.cash_direction_label(cash_direction)
+  end
+
+  # Single place where a cash record's amount sign is decided.
+  #
+  # Runs on create AND update, which fixes two long-standing bugs:
+  #   1. `is_recieved` was never persisted from the form, so the column was
+  #      wrong for virtually every receive record.
+  #   2. `update` re-saved whatever the user typed without re-applying the
+  #      sign, so editing a Pay record and entering a positive amount silently
+  #      converted it into a Receive (and vice versa).
+  #
+  # On a persisted record the direction cannot change: we re-apply the sign the
+  # record already had. Direction is only taken from the controller for a new
+  # record.
+  def normalise_cash_direction
+    return if amount.blank?
+
+    direction =
+      if new_record? && CASH_DIRECTIONS.include?(cash_direction_input)
+        cash_direction_input
+      elsif persisted?
+        amount_was.to_f < 0 ? 'pay' : 'receive'
+      else
+        cash_direction
+      end
+
+    self.amount      = direction == 'pay' ? -amount.to_f.abs : amount.to_f.abs
+    self.is_recieved = (direction == 'receive')
+
+    # Rails 4.2 halts the callback chain when a before_* callback returns
+    # false, and `valid?` then fails with an empty errors hash. Assigning
+    # is_recieved = false on a Pay record would do exactly that, so return an
+    # explicit truthy value. (Rails 5 replaced this with `throw :abort`.)
+    true
+  end
+  private :normalise_cash_direction
   
   def self.datatable(params)
     ActionView::Base.send(:include, Rails.application.routes.url_helpers)
@@ -63,8 +163,59 @@ class PaymentRecord < ActiveRecord::Base
               "recordsFiltered" => total
     }
     result["data"] = data
-    
+
     return {result: result, items: @records, actions_col: actions_col}
+  end
+
+  # Datatable feed for the split Cash - Pay / Cash - Receive screens.
+  #
+  # Unlike `datatable` (the old combined view, which needed a separate column
+  # per direction and left one of them blank on every row) each screen shows a
+  # single direction, so there is one unambiguous Amount column. Amounts are
+  # rendered as absolute values — the direction is already stated by the page
+  # the user is on, and showing "-1,500,000" under a heading that says "Pay"
+  # was a large part of why the two got confused.
+  #
+  # Columns: 0 note | 1 amount | 2 paid_date | 3 actions
+  def self.cash_datatable(params, direction)
+    scope = direction.to_s == 'pay' ? cash_pays : cash_receives
+
+    search = params[:search].is_a?(Hash) ? params[:search][:value].to_s.strip : ''
+    if search.present?
+      like = "%#{search}%"
+      scope = scope.where('note ILIKE ? OR paid_person ILIKE ?', like, like)
+    end
+
+    scope = scope.reorder('paid_date DESC, created_at DESC')
+
+    total   = scope.count
+    records = scope.limit(params[:length]).offset(params['start'])
+
+    data = records.map do |item|
+      [
+        item.note.to_s,
+        '<div class="text-right">' + ApplicationController.helpers.format_price(item.amount.abs).to_s + '</div>',
+        '<div class="text-center">' + (item.paid_date.present? ? item.paid_date.strftime('%Y-%m-%d') : '') + '</div>',
+        '1'
+      ]
+    end
+
+    {
+      result: {
+        'drawn'           => params[:drawn],
+        'recordsTotal'    => total,
+        'recordsFiltered' => total,
+        'data'            => data
+      },
+      items:       records,
+      actions_col: 3
+    }
+  end
+
+  # Running total for the header of each cash screen.
+  def self.cash_total(direction)
+    scope = direction.to_s == 'pay' ? cash_pays : cash_receives
+    scope.sum(:amount).to_f.abs
   end
   
   def update_order_status_names

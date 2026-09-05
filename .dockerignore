@@ -1,0 +1,11 @@
+.git
+data.dump
+data.dump.gz
+backup_hkerp.log
+report/
+log/
+tmp/
+.claude/
+.vscode/
+*.json
+rag_export.json

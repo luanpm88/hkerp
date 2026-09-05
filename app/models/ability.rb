@@ -423,6 +423,25 @@ class Ability
       can :datatable, PaymentRecord
       can :custom_payments, PaymentRecord
 
+      # Cash - Pay / Cash - Receive (split screens). Collection actions are
+      # open to any accountant; the per-record actions keep exactly the same
+      # restriction as the old edit_pay_custom — you may only touch cash
+      # records you yourself entered.
+      can :cash_pays, PaymentRecord
+      can :cash_receives, PaymentRecord
+      can :cash_datatable, PaymentRecord
+      can :new_cash_pay, PaymentRecord
+      can :new_cash_receive, PaymentRecord
+      can :create_cash_pay, PaymentRecord
+      can :create_cash_receive, PaymentRecord
+
+      can :edit_cash_record, PaymentRecord do |p|
+        p.accountant_id == user.id && p.type_name == "custom"
+      end
+      can :update_cash_record, PaymentRecord do |p|
+        p.accountant_id == user.id && p.type_name == "custom"
+      end
+
       can :destroy, PaymentRecord do |p|
         p.accountant_id == user.id && p.type_name == "custom"
       end

@@ -69,6 +69,25 @@ Hkerp::Application.routes.draw do
       
       get :account_book
       get :account_book_xls
+
+      # Cash - Pay / Cash - Receive.
+      # Two fully separate screens; the direction is carried by the route, not
+      # by a field in the form, so it cannot be mis-selected.
+      get  :cash_pays
+      get  :cash_receives
+      get  :cash_datatable
+      get  :new_cash_pay
+      post :create_cash_pay
+      get  :new_cash_receive
+      post :create_cash_receive
+    end
+
+    member do
+      # Editing keeps the record's existing direction — see
+      # PaymentRecord#normalise_cash_direction.
+      get   :edit_cash_record
+      patch :update_cash_record
+      put   :update_cash_record
     end
   end
 
