@@ -40,3 +40,12 @@ account_book.yml
 # Cron / backup script logs
 /cron_*.log
 /backup_*.log
+
+# Rotated / compressed logs (complements /log/*.log)
+/log/*.log.[0-9]*
+/log/*.gz
+/public/log.txt
+
+# One-off data exports & scratch scripts
+/rag_export.json
+/export.rb
