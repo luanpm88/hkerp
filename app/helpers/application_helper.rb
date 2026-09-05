@@ -231,21 +231,33 @@ module ApplicationHelper
   # Row actions for the split Cash - Pay / Cash - Receive screens.
   # Same shape as render_custom_payments_actions but points at the new
   # direction-preserving edit route and adds a link to the printable receipt.
+  #
+  # URLs are built from Rails.application.routes.url_helpers and passed to
+  # link_to as plain strings. `ActionController::Base.helpers` is a bare view
+  # context with no routes attached, so handing it a hash makes url_for raise
+  # "arguments passed to url_for can't be handled". The older
+  # render_custom_payments_actions gets away with the hash form only because
+  # PaymentRecord.datatable monkey-patches url_helpers into ActionView::Base
+  # at call time — a global side effect that has not necessarily run yet.
   def render_cash_record_actions(item)
+    routes = Rails.application.routes.url_helpers
+    h      = ActionController::Base.helpers
+
     actions  = '<div class="text-right"><div class="btn-group actions">'
     actions += '<button class="btn btn-mini btn-white btn-demo-space dropdown-toggle" data-toggle="dropdown">Actions <span class="caret"></span></button>'
     actions += '<ul class="dropdown-menu">'
 
     if can? :show, item
-      actions += '<li>' + ActionController::Base.helpers.link_to('View receipt', {controller: "payment_records", action: "show", id: item.id}) + '</li>'
+      actions += '<li>' + h.link_to('View receipt', routes.payment_record_path(item)) + '</li>'
     end
 
     if can? :edit_cash_record, item
-      actions += '<li>' + ActionController::Base.helpers.link_to('Edit', {controller: "payment_records", action: "edit_cash_record", id: item.id}) + '</li>'
+      actions += '<li>' + h.link_to('Edit', routes.edit_cash_record_payment_record_path(item)) + '</li>'
     end
 
     if can? :destroy, item
-      actions += '<li>' + ActionController::Base.helpers.link_to('Delete', item, method: :delete, data: { confirm: 'Are you sure?' }) + '</li>'
+      actions += '<li>' + h.link_to('Delete', routes.payment_record_path(item),
+                                    method: :delete, data: { confirm: 'Are you sure?' }) + '</li>'
     end
 
     actions += '</ul></div></div>'

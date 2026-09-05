@@ -17,6 +17,17 @@ BASE_URL="${BASE_URL:-http://localhost:3000}"
 EMAIL="${EMAIL:?set EMAIL}"
 PASSWORD="${PASSWORD:?set PASSWORD}"
 
+# The create checks insert real rows into the cash book. That is fine against
+# the local Docker stack, where they can be deleted again straight afterwards,
+# but it must never happen silently against a shared or production instance.
+# Writes are therefore enabled only for a localhost target unless the operator
+# explicitly opts in with ALLOW_WRITES=1.
+case "$BASE_URL" in
+  http://localhost*|http://127.0.0.1*) IS_LOCAL=1 ;;
+  *)                                   IS_LOCAL=0 ;;
+esac
+ALLOW_WRITES="${ALLOW_WRITES:-$IS_LOCAL}"
+
 JAR="$(mktemp)"
 TMP="$(mktemp -d)"
 trap 'rm -rf "$JAR" "$TMP"' EXIT
@@ -111,11 +122,16 @@ post_cash() { # path, amount, note -> writes $TMP/created.html
        "$BASE_URL$path" >/dev/null 2>&1
 }
 
-post_cash /payment_records/create_cash_pay 123456 'SMOKE_CASH_SPLIT pay' "$TMP/new_pay.html"
-! grep -qi 'prohibited this record' "$TMP/created.html"; check 'Pay record created without validation errors' $?
+if [ "$ALLOW_WRITES" = "1" ]; then
+  post_cash /payment_records/create_cash_pay 123456 'SMOKE_CASH_SPLIT pay' "$TMP/new_pay.html"
+  ! grep -qi 'prohibited this record' "$TMP/created.html"; check 'Pay record created without validation errors' $?
 
-post_cash /payment_records/create_cash_receive 654321 'SMOKE_CASH_SPLIT receive' "$TMP/new_rec.html"
-! grep -qi 'prohibited this record' "$TMP/created.html"; check 'Receive record created without validation errors' $?
+  post_cash /payment_records/create_cash_receive 654321 'SMOKE_CASH_SPLIT receive' "$TMP/new_rec.html"
+  ! grep -qi 'prohibited this record' "$TMP/created.html"; check 'Receive record created without validation errors' $?
+else
+  printf '  --    skipped: %s is not local, so no rows are written\n' "$BASE_URL"
+  printf '        (re-run with ALLOW_WRITES=1 to include the create checks)\n'
+fi
 
 # ---------------------------------------------------------------------------
 section 'Datatable feed is filtered by direction'
@@ -159,16 +175,23 @@ grep -q '>Cash - Receive<' "$TMP/pays.html"; check 'sidebar has a Cash - Receive
 section 'Cleanup'
 # ---------------------------------------------------------------------------
 
-# The create checks above insert real rows. Remove them so repeated runs do not
+# The create checks insert real rows. Remove them so repeated runs do not
 # accumulate junk in the cash book. Only rows this script created are touched.
-if command -v docker >/dev/null 2>&1 && docker compose ps db >/dev/null 2>&1; then
-  DELETED="$(docker compose exec -T db psql -U hoangkhang -d hkerp_development -tAc \
-    "DELETE FROM payment_records WHERE note LIKE 'SMOKE_CASH_SPLIT%'; SELECT 1;" 2>/dev/null | tail -1)"
+#
+# The cleanup talks to the local Docker database, so it is only correct when
+# the run itself targeted that same stack — deleting from Docker after testing
+# a remote host would leave the remote rows behind while reporting success.
+if [ "$ALLOW_WRITES" != "1" ]; then
+  printf '  --    nothing to clean: no rows were written\n'
+elif [ "$IS_LOCAL" = "1" ] && command -v docker >/dev/null 2>&1 && docker compose ps db >/dev/null 2>&1; then
+  docker compose exec -T db psql -U hoangkhang -d hkerp_development -qtAc \
+    "DELETE FROM payment_records WHERE note LIKE 'SMOKE_CASH_SPLIT%';" >/dev/null 2>&1
   LEFT="$(docker compose exec -T db psql -U hoangkhang -d hkerp_development -tAc \
     "SELECT count(*) FROM payment_records WHERE note LIKE 'SMOKE_CASH_SPLIT%';" 2>/dev/null | tr -d '[:space:]')"
   [ "$LEFT" = "0" ]; check 'smoke records removed from the database' $?
 else
-  printf '  --    skipped (docker compose not available from here)\n'
+  fail "rows were written to $BASE_URL and must be removed by hand"
+  printf "        DELETE FROM payment_records WHERE note LIKE 'SMOKE_CASH_SPLIT%%';\n"
 fi
 
 # ---------------------------------------------------------------------------
