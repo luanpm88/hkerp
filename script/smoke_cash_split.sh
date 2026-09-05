@@ -22,9 +22,11 @@ PASSWORD="${PASSWORD:?set PASSWORD}"
 # but it must never happen silently against a shared or production instance.
 # Writes are therefore enabled only for a localhost target unless the operator
 # explicitly opts in with ALLOW_WRITES=1.
+# hkerp.local is the same Docker stack, reached through the local nginx vhost
+# that terminates TLS (see DEVELOPMENT.md), so it counts as local too.
 case "$BASE_URL" in
-  http://localhost*|http://127.0.0.1*) IS_LOCAL=1 ;;
-  *)                                   IS_LOCAL=0 ;;
+  http://localhost*|http://127.0.0.1*|https://hkerp.local*|http://hkerp.local*) IS_LOCAL=1 ;;
+  *)                                                                            IS_LOCAL=0 ;;
 esac
 ALLOW_WRITES="${ALLOW_WRITES:-$IS_LOCAL}"
 
