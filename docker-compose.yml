@@ -15,6 +15,15 @@ services:
     build: .
     image: hkerp-web
     platform: linux/amd64
+    # tmp/ lives in the bind-mounted source tree, so tmp/pids/server.pid
+    # outlives the container. After an unclean stop (Mac reboot, `colima
+    # stop`, `docker kill`) the stale pid file makes Rails refuse to boot
+    # with "A server is already running" and the container exits. Clear it
+    # before starting -- nothing else can be holding it, because a fresh
+    # container has no processes of its own.
+    command: >
+      sh -c "rm -f tmp/pids/server.pid &&
+             bundle exec rails server -b 0.0.0.0 -p 3000"
     ports:
       - "3000:3000"
     depends_on:

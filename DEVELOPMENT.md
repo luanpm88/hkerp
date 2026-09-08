@@ -136,3 +136,13 @@ docker compose down -v                            # stop and wipe the database
 - Jessie's apt repositories are archived and their signatures have expired; the
   Dockerfile relaxes validity checking deliberately. Do not "fix" it by
   removing those apt options — the build will stop working.
+- **Stale `tmp/pids/server.pid` after an unclean stop.** `tmp/` is inside the
+  bind-mounted source tree, so the pid file outlives the container. After a
+  Mac reboot, `colima stop`, or `docker kill`, Rails would refuse to boot with
+  *"A server is already running. Check /app/tmp/pids/server.pid"* and the web
+  container would exit immediately — the stack looked started (`docker compose
+  up -d` reported success) but nothing answered on port 3000. The `web`
+  service in `docker-compose.yml` therefore starts with
+  `rm -f tmp/pids/server.pid` before `rails server`. That is safe because a
+  freshly created container cannot have a server of its own already running.
+  If you replace that `command:`, keep the `rm -f`.
